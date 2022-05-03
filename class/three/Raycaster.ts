@@ -1,11 +1,10 @@
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
 import { EntitiesLayer } from '@/constants/ENTITIES'
 
-class Raycaster extends WebGLSub {
+class Raycaster extends THREE.EventDispatcher {
 	instance: THREE.Raycaster = new THREE.Raycaster()
 	pointer: THREE.Vector2 = new THREE.Vector2(-10, -10)
 

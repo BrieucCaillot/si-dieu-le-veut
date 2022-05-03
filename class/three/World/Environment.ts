@@ -1,9 +1,8 @@
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
-class Environment extends WebGLSub {
+class Environment extends THREE.EventDispatcher {
 	debugFolder!: { [key: string]: any }
 	sunLight!: THREE.DirectionalLight
 	environmentMap: { [key: string]: any } = {}
@@ -56,13 +55,7 @@ class Environment extends WebGLSub {
 
 		// Debug
 		if (WebGL.debug.active) {
-			this.debugFolder
-				.add(this.environmentMap, 'intensity')
-				.name('envMapIntensity')
-				.min(0)
-				.max(4)
-				.step(0.001)
-				.onChange(this.environmentMap.updateMaterials)
+			this.debugFolder.add(this.environmentMap, 'intensity').name('envMapIntensity').min(0).max(4).step(0.001).onChange(this.environmentMap.updateMaterials)
 		}
 	}
 }

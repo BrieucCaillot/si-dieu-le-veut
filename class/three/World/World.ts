@@ -1,14 +1,14 @@
+import * as THREE from 'three'
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
 import Floor from '@/class/three/World/Floor'
 import Fox from '@/class/three/World/Fox'
 import Cube from '@/class/three/World/Cube'
 import Environment from '@/class/three/World/Environment'
 
-import { EntitiesLayer } from '@/constants/ENTITIES'
+import useStore from '@/composables/useStore'
 
-class World extends WebGLSub {
+class World extends THREE.EventDispatcher {
 	floor: Floor | null = null
 	fox: Fox | null = null
 	cube: Cube | null = null
@@ -23,7 +23,7 @@ class World extends WebGLSub {
 
 	onResourcesLoaded() {
 		console.log('Resources loaded')
-		this.store.resourcesLoaded = true
+		WebGL.resources.resourcesLoaded = true
 		this.floor = new Floor()
 		this.fox = new Fox()
 		this.cube = new Cube()
@@ -32,7 +32,7 @@ class World extends WebGLSub {
 
 	onUpdate() {
 		const { deltaTime } = WebGL.time
-		if (!this.store.resourcesLoaded) return
+		if (!WebGL.resources.resourcesLoaded) return
 		this.fox.update(deltaTime)
 		this.cube.update(deltaTime)
 	}

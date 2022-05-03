@@ -3,20 +3,14 @@
 		<nav class="max-w-[250px] ml-auto">
 			<ul class="text-white flex justify-between list-none">
 				<li>
-					<NuxtLink to="/">Home Page</NuxtLink>
+					<NuxtLink to="/">Home</NuxtLink>
 				</li>
 				<li>
-					<NuxtLink to="about">About Page</NuxtLink>
+					<NuxtLink to="about">About</NuxtLink>
 				</li>
 			</ul>
 		</nav>
 	</header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-	setup() {},
-})
-</script>
+<script setup lang="ts"></script>

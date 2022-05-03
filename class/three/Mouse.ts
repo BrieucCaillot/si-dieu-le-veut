@@ -1,9 +1,8 @@
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
-class Mouse extends WebGLSub {
+class Mouse extends THREE.EventDispatcher {
 	position: THREE.Vector2 = new THREE.Vector2(0)
 	normalizedPosition: THREE.Vector2 = new THREE.Vector2(-1, -1)
 

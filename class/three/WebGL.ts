@@ -9,7 +9,6 @@ import Raycaster from '@/class/three/Raycaster'
 import Renderer from '@/class/three/Renderer'
 import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
-import Layers from '@/class/three/Layers'
 
 class WebGL {
 	canvas: HTMLCanvasElement
@@ -23,7 +22,6 @@ class WebGL {
 	renderer: Renderer
 	world: World
 	debug: Debug
-	layers: Layers
 
 	setup(_canvas: HTMLCanvasElement) {
 		this.canvas = _canvas
@@ -37,7 +35,6 @@ class WebGL {
 		this.renderer = new Renderer()
 		this.debug = new Debug()
 		this.world = new World()
-		this.layers = new Layers()
 
 		// Listeners
 		this.sizes.addEventListener('resize', this.resize)

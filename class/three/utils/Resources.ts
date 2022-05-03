@@ -10,9 +10,10 @@ class Resources extends THREE.EventDispatcher {
 		textureLoader: THREE.TextureLoader
 		cubeTextureLoader: THREE.CubeTextureLoader
 	}
-	itemsLoaded: [key: string, value: GLTF | THREE.Texture | THREE.CubeTexture][] = []
 	toLoad: number
+	itemsLoaded: [key: string, value: GLTF | THREE.Texture | THREE.CubeTexture][] = []
 	totalLoaded: number
+	resourcesLoaded: boolean
 
 	constructor() {
 		super()
@@ -22,9 +23,10 @@ class Resources extends THREE.EventDispatcher {
 			textureLoader: new THREE.TextureLoader(),
 			cubeTextureLoader: new THREE.CubeTextureLoader(),
 		}
-		this.itemsLoaded = []
 		this.toLoad = this.sources.length
+		this.itemsLoaded = []
 		this.totalLoaded = 0
+		this.resourcesLoaded = false
 
 		this.startLoading()
 	}

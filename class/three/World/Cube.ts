@@ -1,13 +1,12 @@
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 import vertexShader from '@/class/three/shaders/cube/vertex.glsl'
 import fragmentShader from '@/class/three/shaders/cube/fragment.glsl'
 
 import { EntitiesLayer, EntitiesName } from '@/constants/ENTITIES'
 
-class Cube extends WebGLSub {
+class Cube extends THREE.EventDispatcher {
 	geometry!: THREE.BoxGeometry
 	material!: THREE.ShaderMaterial
 	mesh!: THREE.Mesh

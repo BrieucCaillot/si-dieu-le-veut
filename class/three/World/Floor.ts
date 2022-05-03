@@ -1,11 +1,10 @@
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
 import { EntitiesName } from '@/constants/ENTITIES'
 
-class Floor extends WebGLSub {
+class Floor extends THREE.EventDispatcher {
 	geometry!: THREE.CircleGeometry
 	material!: THREE.MeshStandardMaterial
 	mesh!: THREE.Mesh

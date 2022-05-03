@@ -1,9 +1,8 @@
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
-class Renderer extends WebGLSub {
+class Renderer extends THREE.EventDispatcher {
 	instance: THREE.WebGLRenderer | null = null
 
 	constructor() {

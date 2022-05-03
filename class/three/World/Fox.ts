@@ -2,11 +2,10 @@ import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
 import { EntitiesName } from '@/constants/ENTITIES'
 
-class Fox extends WebGLSub {
+class Fox extends THREE.EventDispatcher {
 	debugFolder: { [key: string]: any } | undefined
 	resource: GLTF
 	model!: THREE.Object3D

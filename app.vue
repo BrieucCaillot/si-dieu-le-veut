@@ -10,9 +10,11 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import '@/assets/css/tailwind.css'
 import '@/assets/sass/styles.scss'
+
+const { data } = await useFetch(() => '/api/data')
 </script>
 
 <style lang="scss">

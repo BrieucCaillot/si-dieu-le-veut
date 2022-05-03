@@ -2,11 +2,10 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import WebGL from '@/class/three/WebGL'
-import WebGLSub from '@/class/three/WebGLSub'
 
 import { EntitiesLayer } from '@/constants/ENTITIES'
 
-class Camera extends WebGLSub {
+class Camera extends THREE.EventDispatcher {
 	instance: THREE.PerspectiveCamera | null = null
 	controls: OrbitControls | null = null
 
