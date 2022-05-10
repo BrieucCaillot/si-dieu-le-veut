@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import Header from '@/components/ui/Header.vue'
 import Canvas from '@/components/three/Canvas.vue'
 
 console.log('SETUP DEFAULT LAYOUT')

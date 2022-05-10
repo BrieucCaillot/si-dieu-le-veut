@@ -1,5 +1,5 @@
 // PAGES
-// @import 'pages/_home.scss';
+@import 'pages/_home.scss';
 
 // COMMON
 body {
@@ -7,8 +7,10 @@ body {
 	overflow: hidden;
 }
 
-.page {
-	padding: 0 2rem;
-	width: 100%;
-	height: 100%;
+main {
+	@apply relative min-h-screen;
+}
+
+.content {
+	@apply relative z-10;
 }
