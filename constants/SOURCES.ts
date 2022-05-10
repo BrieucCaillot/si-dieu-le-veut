@@ -38,6 +38,11 @@ const sources = [
 		type: SourceType.gltfModel,
 		path: 'models/Fox/glTF/Fox.gltf',
 	},
+	{
+		name: 'characterModel',
+		type: SourceType.gltfModel,
+		path: 'models/Character/test_rig.glb',
+	},
 ]
 
 export { SourceType, Source, sources }

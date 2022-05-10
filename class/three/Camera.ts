@@ -6,11 +6,14 @@ import WebGL from '@/class/three/WebGL'
 import { EntitiesLayer } from '@/constants/ENTITIES'
 
 class Camera extends THREE.EventDispatcher {
-	instance: THREE.PerspectiveCamera | null = null
-	controls: OrbitControls | null = null
+	instance: THREE.PerspectiveCamera
+	controls: OrbitControls
+	debugFolder: { [key: string]: any }
 
 	constructor() {
 		super()
+
+		if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('camera')
 
 		this.setInstance()
 		this.setControls()
@@ -18,7 +21,7 @@ class Camera extends THREE.EventDispatcher {
 
 	setInstance() {
 		this.instance = new THREE.PerspectiveCamera(35, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
-		this.instance.position.set(6, 4, 8)
+		this.instance.position.set(15, 3, 6)
 		WebGL.scene.add(this.instance)
 	}
 
@@ -29,6 +32,10 @@ class Camera extends THREE.EventDispatcher {
 	setControls() {
 		this.controls = new OrbitControls(this.instance!, WebGL.canvas)
 		this.controls.enableDamping = true
+
+		if (WebGL.debug.active) {
+			this.debugFolder.add(this.controls, 'enabled')
+		}
 	}
 
 	onResize() {

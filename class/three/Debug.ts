@@ -2,7 +2,7 @@ import GUI from 'lil-gui'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 
 class Debug {
-	active: boolean = false
+	active: boolean = true
 	gui!: GUI
 	stats: Stats = Stats()
 
@@ -13,7 +13,8 @@ class Debug {
 
 	setGUI() {
 		this.gui = new GUI()
-		this.active = window.location.hash === '#debug'
+		// this.active = window.location.hash === '#debug'
+		this.active = true
 		this.gui.hide()
 		if (!this.active) return
 		this.gui.show()

@@ -1,5 +1,6 @@
 enum EntitiesName {
 	FOX = 'FOX',
+	CHARACTER = 'CHARACTER',
 	CUBE = 'CUBE',
 	FLOOR = 'FLOOR',
 }

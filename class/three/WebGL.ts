@@ -30,10 +30,10 @@ class WebGL {
 		this.time = new Time()
 		this.scene = new THREE.Scene()
 		this.resources = new Resources()
+		this.debug = new Debug()
 		this.camera = new Camera()
 		this.raycaster = new Raycaster()
 		this.renderer = new Renderer()
-		this.debug = new Debug()
 		this.world = new World()
 
 		// Listeners
