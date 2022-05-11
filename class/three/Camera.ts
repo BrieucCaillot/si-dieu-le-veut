@@ -21,7 +21,7 @@ class Camera extends THREE.EventDispatcher {
 
 	setInstance() {
 		this.instance = new THREE.PerspectiveCamera(35, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
-		this.instance.position.set(15, 3, 6)
+		this.instance.position.set(0, 0, 16)
 		WebGL.scene.add(this.instance)
 	}
 

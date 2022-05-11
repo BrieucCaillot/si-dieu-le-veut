@@ -32,8 +32,8 @@ class Character extends THREE.EventDispatcher {
 	setModel() {
 		this.model = this.resource.scene
 		this.model.scale.set(1, 1, 1)
-		this.model.position.set(0, 0, 0)
 		this.model.name = EntitiesName.CHARACTER
+		// this.model.rotateY(Math.PI / 2)
 		WebGL.scene.add(this.model)
 
 		this.model.traverse((child) => {
@@ -50,8 +50,6 @@ class Character extends THREE.EventDispatcher {
 
 		// Actions
 		this.animation.actions = {}
-
-		// console.log(this.resource.animations)
 
 		this.animation.actions.idleLeft = this.animation.mixer.clipAction(this.resource.animations[0])
 		this.animation.actions.idleRight = this.animation.mixer.clipAction(this.resource.animations[1])
@@ -121,20 +119,21 @@ class Character extends THREE.EventDispatcher {
 			case 'a':
 				this.debugParams().animations.playWalkLeftRight()
 				gsap.to(this.model.position, {
-					z: this.model.position.z + forward,
+					x: this.model.position.x + forward,
 				})
 				break
 
 			case 'd':
 				this.debugParams().animations.playWalkRightLeft()
 				gsap.to(this.model.position, {
-					z: this.model.position.z + forward,
+					x: this.model.position.x + forward,
 				})
 				break
 		}
 	}
 
-	update(deltaTime: number) {
+	update() {
+		const { deltaTime } = WebGL.time
 		this.animation.mixer.update(deltaTime * 0.001)
 	}
 }

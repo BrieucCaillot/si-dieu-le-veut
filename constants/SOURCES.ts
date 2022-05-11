@@ -1,3 +1,5 @@
+import { ORDALIES } from './ORDALIES'
+
 enum SourceType {
 	texture = 'texture',
 	cubeTexture = 'cubeTexture',
@@ -10,7 +12,7 @@ interface Source {
 	path: string | string[]
 }
 
-const sources = [
+const commonSources = [
 	{
 		name: 'environmentMapTexture',
 		type: SourceType.cubeTexture,
@@ -45,4 +47,31 @@ const sources = [
 	},
 ]
 
-export { SourceType, Source, sources }
+const ORDALIE_SOURCES = {
+	[ORDALIES.ORDALIES_1]: [
+		{
+			name: 'tapisserieBase',
+			type: SourceType.texture,
+			path: 'textures/tapisserie/test.png',
+		},
+		{
+			name: 'billboardNormal',
+			type: SourceType.texture,
+			path: 'textures/Billboard/billboard-normal.jpeg',
+		},
+	],
+	[ORDALIES.ORDALIES_2]: [
+		// {
+		// 	name: 'tapisserieBase',
+		// 	type: SourceType.texture,
+		// 	path: 'textures/tapisserie/test.png',
+		// },
+		// {
+		// 	name: 'billboardNormal',
+		// 	type: SourceType.texture,
+		// 	path: 'textures/Billboard/billboard-normal.jpeg',
+		// },
+	],
+}
+
+export { SourceType, Source, commonSources, ORDALIE_SOURCES }
