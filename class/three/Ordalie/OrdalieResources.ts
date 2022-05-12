@@ -6,74 +6,73 @@ import { ORDALIES } from '@/constants/ORDALIES'
 import { ORDALIE_SOURCES } from '@/constants/SOURCES'
 
 import WebGL from '@/class/three/WebGL'
+import OrdalieManager from './OrdalieManager'
 
 class OrdalieResources extends THREE.EventDispatcher {
-  gltfLoader: GLTFLoader
-  textureLoader: THREE.TextureLoader
-  cubeTextureLoader: THREE.CubeTextureLoader
-
-  toLoad: number
-  itemsLoaded: [key: string, value: GLTF | THREE.Texture | THREE.CubeTexture][] = []
-  totalLoaded: number
-  resourcesLoaded: boolean
-
-  type: ORDALIES | string
-  sources: Source[]
-
-  constructor({ _type = '' }: { _type: ORDALIES | string }) {
-    super()
-
-    const { gltfLoader, textureLoader, cubeTextureLoader } = WebGL.resources.loaders
-
-    this.gltfLoader = gltfLoader
-    this.textureLoader = textureLoader
-    this.cubeTextureLoader = cubeTextureLoader
-
-    this.type = _type
-
-    this.sources = ORDALIE_SOURCES[this.type]
-    this.itemsLoaded = []
-    this.totalLoaded = 0
-    this.resourcesLoaded = false
-
-    this.loadResources()
+  loaders: {
+    gltfLoader: GLTFLoader
+    textureLoader: THREE.TextureLoader
+    cubeTextureLoader: THREE.CubeTextureLoader
   }
 
-  loadResources() {
-    this.toLoad = this.sources.length
+  constructor() {
+    super()
+
+    this.loaders = {
+      gltfLoader: new GLTFLoader(),
+      textureLoader: new THREE.TextureLoader(),
+      cubeTextureLoader: new THREE.CubeTextureLoader(),
+    }
+  }
+
+  shouldLoadResources(_type: ORDALIES) {
+    return !OrdalieManager.ordaliesResources[_type]
+  }
+
+  loadResources(_type: ORDALIES) {
+    console.log('load resources')
+    if (!this.shouldLoadResources) return
+
+    const sources = ORDALIE_SOURCES[_type]
+    const itemsLoaded = []
+
+    let totalLoaded = 0
+
+    const toLoad = sources.length
+
+    const sourceLoaded = (source: Source, file: GLTF | THREE.Texture | THREE.CubeTexture) => {
+      itemsLoaded[source.name] = file
+
+      totalLoaded++
+
+      if (totalLoaded === toLoad) {
+        console.log('resources loaded ', _type)
+        OrdalieManager.ordaliesResources[_type] = itemsLoaded
+        console.log(OrdalieManager.ordaliesResources)
+      }
+    }
 
     // Load each source
-    for (const source of this.sources) {
+    for (const source of sources) {
       switch (source.type) {
         case 'gltfModel':
           this.gltfLoader.load(source.path as string, (file) => {
-            this.sourceLoaded(source, file)
+            sourceLoaded(source, file)
           })
           break
         case 'texture':
           this.textureLoader.load(source.path as string, (file) => {
-            this.sourceLoaded(source, file)
+            sourceLoaded(source, file)
           })
           break
         case 'cubeTexture':
           this.cubeTextureLoader.load(source.path as [], (file) => {
-            this.sourceLoaded(source, file)
+            sourceLoaded(source, file)
           })
           break
       }
     }
   }
-
-  sourceLoaded(source: Source, file: GLTF | THREE.Texture | THREE.CubeTexture) {
-    this.itemsLoaded[source.name] = file
-
-    this.totalLoaded++
-
-    if (this.totalLoaded === this.toLoad)
-      this.dispatchEvent({
-        type: 'ordalieResourcesLoaded',
-      })
-  }
 }
 
-export default OrdalieResources
+export default new OrdalieResources()

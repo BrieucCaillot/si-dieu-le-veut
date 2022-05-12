@@ -11,89 +11,89 @@ import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
 
 class WebGL {
-	canvas: HTMLCanvasElement
-	sizes: Sizes
-	mouse: Mouse
-	time: Time
-	scene: THREE.Scene
-	resources: Resources
-	camera: Camera
-	raycaster: Raycaster
-	renderer: Renderer
-	world: World
-	debug: Debug
+  canvas: HTMLCanvasElement
+  sizes: Sizes
+  mouse: Mouse
+  time: Time
+  scene: THREE.Scene
+  resources: Resources
+  camera: Camera
+  raycaster: Raycaster
+  renderer: Renderer
+  world: World
+  debug: Debug
 
-	setup(_canvas: HTMLCanvasElement) {
-		this.canvas = _canvas
-		this.sizes = new Sizes()
-		this.mouse = new Mouse()
-		this.time = new Time()
-		this.scene = new THREE.Scene()
-		this.resources = new Resources()
-		this.debug = new Debug()
-		this.camera = new Camera()
-		this.raycaster = new Raycaster()
-		this.renderer = new Renderer()
-		this.world = new World()
+  setup(_canvas: HTMLCanvasElement) {
+    this.canvas = _canvas
+    this.sizes = new Sizes()
+    this.mouse = new Mouse()
+    this.time = new Time()
+    this.scene = new THREE.Scene()
+    this.resources = new Resources()
+    this.debug = new Debug()
+    this.camera = new Camera()
+    this.raycaster = new Raycaster()
+    this.renderer = new Renderer()
+    this.world = new World()
 
-		// Listeners
-		this.sizes.addEventListener('resize', this.resize)
-		this.mouse.addEventListener('mousemove', this.mouseMove)
+    // Listeners
+    this.sizes.addEventListener('resize', this.resize)
+    this.mouse.addEventListener('mousemove', this.mouseMove)
 
-		// Update
-		this.time.addUpdate(this.update)
+    // Update
+    this.time.addUpdate(this.update)
 
-		// Dispose WebGL
-		// setTimeout(() => this.destroy(), 3000)
-	}
+    // Dispose WebGL
+    // setTimeout(() => this.destroy(), 3000)
+  }
 
-	resize = () => {
-		this.camera.onResize()
-		this.renderer.onResize()
-	}
+  resize = () => {
+    this.camera.onResize()
+    this.renderer.onResize()
+  }
 
-	mouseMove = (e) => {
-		// To do on mousemove
-		this.raycaster.onMouseMove()
-	}
+  mouseMove = (e) => {
+    // To do on mousemove
+    this.raycaster.onMouseMove()
+  }
 
-	update = () => {
-		this.camera.onUpdate()
-		this.world.onUpdate()
-		this.raycaster.onUpdate()
-		this.renderer.onUpdate()
-	}
+  update = () => {
+    this.camera.onUpdate()
+    this.world.onUpdate()
+    this.raycaster.onUpdate()
+    this.renderer.onUpdate()
+  }
 
-	destroy() {
-		// @TODO Destroy from inside all classes
+  destroy() {
+    // @TODO Destroy from inside all classes
 
-		// Traverse the whole scene
-		this.scene.traverse((child) => {
-			// Test if it's a mesh
-			if (child instanceof THREE.Mesh) {
-				child.geometry.dispose()
-				console.log('Disposed geometry')
+    // Traverse the whole scene
+    this.scene.traverse((child) => {
+      // Test if it's a mesh
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose()
+        console.log('Disposed geometry')
 
-				// Loop through the material properties
-				for (const key in child.material) {
-					const value = child.material[key]
+        // Loop through the material properties
+        for (const key in child.material) {
+          const value = child.material[key]
 
-					// Test if there is a dispose function
-					if (value && typeof value.dispose === 'function') {
-						value.dispose()
-						console.log('Disposed material')
-					}
-				}
-			}
-		})
+          // Test if there is a dispose function
+          if (value && typeof value.dispose === 'function') {
+            value.dispose()
+            console.log('Disposed material')
+          }
+        }
+      }
+    })
 
-		// Destroy from classes
-		this.camera.destroy()
-		this.renderer.destroy()
+    // Destroy from classes
+    this.camera.destroy()
+    this.renderer.destroy()
 
-		// Remove update
-		this.time.removeUpdate(this.update)
-	}
+    // Remove update
+    this.time.removeUpdate(this.update)
+  }
 }
 
 export default new WebGL()

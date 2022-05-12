@@ -1,10 +1,12 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
-import { Source, commonSources } from '@/constants/SOURCES'
+import { Source, ALL_SOURCES } from '@/constants/SOURCES'
+import ORDALIES from '@/constants/ORDALIES'
+import TRANSITIONS from '@/constants/TRANSITIONS'
 
 class Resources extends THREE.EventDispatcher {
-  sources: Source[] = commonSources
+  sources = ALL_SOURCES
   loaders: {
     gltfLoader: GLTFLoader
     textureLoader: THREE.TextureLoader
@@ -23,7 +25,7 @@ class Resources extends THREE.EventDispatcher {
       textureLoader: new THREE.TextureLoader(),
       cubeTextureLoader: new THREE.CubeTextureLoader(),
     }
-    this.toLoad = this.sources.length
+    this.toLoad = Object.keys(this.sources).length
     this.itemsLoaded = []
     this.totalLoaded = 0
     this.resourcesLoaded = false
@@ -32,8 +34,11 @@ class Resources extends THREE.EventDispatcher {
   }
 
   startLoading() {
+    console.log(this.sources)
+    console.log(this.toLoad)
+    console.log(Object.entries(this.sources))
     // Load each source
-    for (const source of commonSources) {
+    for (const source of this.sources) {
       switch (source.type) {
         case 'gltfModel':
           this.loaders.gltfLoader.load(source.path as string, (file) => {

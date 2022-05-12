@@ -2,25 +2,25 @@ import * as THREE from 'three'
 
 import { ORDALIES } from '@/constants/ORDALIES'
 
+import WebGL from '@/class/three/WebGL'
 import OrdalieResources from '@/class/three/Ordalie/OrdalieResources'
+import OrdalieManager from './OrdalieManager'
 
-class Ordalie {
-  type: string
+class Ordalie extends THREE.EventDispatcher {
+  type: ORDALIES
   model: any
-  resources: OrdalieResources
 
-  constructor({ _type = '' }: { _type: ORDALIES | string }) {
+  constructor({ _type = ORDALIES.ORDALIES_1 }: { _type: ORDALIES }) {
+    super()
+
     this.type = _type
 
-    this.resources = new OrdalieResources({
-      _type: this.type,
-    })
-
-    this.setModel()
+    OrdalieResources.loadResources(this.type)
+    // this.setModel()
   }
 
   setModel() {
-    console.log(this)
+    // WebGL.scene.add(this.resources.itemsLoaded.model)
   }
 }
 

@@ -1,19 +1,21 @@
 import Ordalie from '@/class/three/Ordalie/Ordalie'
+import OrdalieResources from '@/class/three/Ordalie/OrdalieResources'
 
 import { ORDALIES } from '@/constants/ORDALIES'
 
 class OrdalieManager {
   ordalies: Ordalie[]
+  ordaliesResources!: { [key in ORDALIES]: any[] }
 
-  constructor() {
-    this.createOrdalie()
-  }
-
-  createOrdalie() {
+  createOrdalie(_type: ORDALIES) {
     new Ordalie({
-      _type: ORDALIES.ORDALIES_1,
+      _type: _type,
     })
   }
+
+  onOrdalieCreated() {}
+
+  onOrdalieFinished() {}
 }
 
-export default OrdalieManager
+export default new OrdalieManager()
