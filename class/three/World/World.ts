@@ -1,34 +1,31 @@
 import * as THREE from 'three'
-import WebGL from '@/class/three/WebGL'
+import { watch } from 'vue'
 
-import Floor from '@/class/three/World/Floor'
+import ORDALIES from '@/constants/ORDALIES'
+import useStore from '@/composables/useStore'
+
+import WebGL from '@/class/three/WebGL'
 import Character from '@/class/three/World/Character'
-import Environment from '@/class/three/World/Environment'
-import OrdalieManager from '@/class/three/Ordalie/OrdalieManager'
-import { ORDALIES } from '@/constants/ORDALIES'
 
 class World extends THREE.EventDispatcher {
-  floor: Floor
   character: Character
-  environment: Environment
 
   constructor() {
     super()
 
     // Wait for resources
-    WebGL.resources.addEventListener('resourcesLoaded', () => this.onResourcesLoaded())
+    watch(useStore().resourcesLoaded, (value) => this.onResourcesLoaded())
   }
 
   onResourcesLoaded() {
-    console.log('Resources loaded')
-    WebGL.resources.resourcesLoaded = true
-    this.environment = new Environment()
+    console.log('All Resources loaded')
+    const items = WebGL.resources.getItems(ORDALIES.ORDALIES_1, 'model')
+    console.log('Example to load a resource ', items)
     // OrdalieManager.createOrdalie(ORDALIES.ORDALIES_1)
   }
 
   onUpdate() {
     if (!WebGL.resources.resourcesLoaded) return
-    // this.billboard.update()
   }
 }
 

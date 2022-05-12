@@ -1,7 +1,7 @@
-const useStore = () => {
-	const resourcesLoaded = ref(false)
+const resourcesLoaded = ref(false)
 
-	return { resourcesLoaded }
+export default () => {
+  return {
+    resourcesLoaded,
+  }
 }
-
-export default useStore
