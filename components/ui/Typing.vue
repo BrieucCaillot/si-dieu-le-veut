@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { ref, onMounted } from 'vue'
-//
+
 export default {
   setup() {
     const inputRef = ref('')

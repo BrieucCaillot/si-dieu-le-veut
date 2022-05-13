@@ -11,6 +11,7 @@ import Croix from '@/class/three/World/Croix'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Intro from '@/class/three/World/Intro/Intro'
 import Didacticiel from './Didacticiel/Didacticiel'
+import AudioManager from '../utils/AudioManager'
 
 class World extends THREE.EventDispatcher {
   character: Character
@@ -21,6 +22,7 @@ class World extends THREE.EventDispatcher {
     super()
 
     // Wait for resources
+    AudioManager.setup()
     watch(useStore().resourcesLoaded, (value) => this.onResourcesLoaded())
   }
 

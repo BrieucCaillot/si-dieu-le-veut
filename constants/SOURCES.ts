@@ -80,15 +80,6 @@ const CHARACTER_SOURCES = {
   ],
 }
 
-const SOUND_SOURCES = {
-  [SOUNDS.TYPING]: [
-    //   {
-    //     name: 'typing',
-    //     path: 'sounds/typing-feedback.mp3',
-    //   },
-  ],
-}
-
 const ALL_SOURCES = { ...OTHER_SOURCES, ...ORDALIE_SOURCES, ...TRANSITION_SOURCES, ...CHARACTER_SOURCES }
 
-export { SourceType, Source, ALL_SOURCES, SOUND_SOURCES }
+export { SourceType, Source, ALL_SOURCES }
