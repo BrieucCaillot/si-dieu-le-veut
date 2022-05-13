@@ -6,10 +6,15 @@ import useStore from '@/composables/useStore'
 
 import WebGL from '@/class/three/WebGL'
 import Character from '@/class/three/World/Character'
+import Environment from '@/class/three/World/old/Environment'
 import Croix from '@/class/three/World/Croix'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import Intro from '@/class/three/World/Intro/Intro'
+import Didacticiel from './Didacticiel/Didacticiel'
 
 class World extends THREE.EventDispatcher {
   character: Character
+  environment: Environment
   croix: Croix
 
   constructor() {
@@ -23,8 +28,11 @@ class World extends THREE.EventDispatcher {
     console.log('All Resources loaded')
     const items = WebGL.resources.getItems(ORDALIES.ORDALIES_1, 'model')
     console.log('Example to load a resource ', items)
-    // OrdalieManager.createOrdalie(ORDALIES.ORDALIES_1)
+    this.environment = new Environment()
 
+    Intro.create()
+    Didacticiel.create()
+    // OrdalieManager.create(ORDALIES.ORDALIES_1)
     this.croix = new Croix()
   }
 
