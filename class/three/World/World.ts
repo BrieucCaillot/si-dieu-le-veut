@@ -1,37 +1,31 @@
 import * as THREE from 'three'
-import WebGL from '@/class/three/WebGL'
+import { watch } from 'vue'
 
-import Floor from '@/class/three/World/Floor'
+import ORDALIES from '@/constants/ORDALIES'
+import useStore from '@/composables/useStore'
+
+import WebGL from '@/class/three/WebGL'
 import Character from '@/class/three/World/Character'
-import Environment from '@/class/three/World/Environment'
-import Billboard from '@/class/three/Billboard/Billboard'
-import OrdalieFactory from '~~/class/three/Ordalie/OrdalieManager'
-import Croix from './Croix'
+import Croix from '@/class/three/World/Croix'
 
 class World extends THREE.EventDispatcher {
-  floor: Floor
   character: Character
-  environment: Environment
-  billboard: Billboard
-  ordalieFactory: OrdalieFactory
   croix: Croix
 
   constructor() {
     super()
 
     // Wait for resources
-    WebGL.resources.addEventListener('resourcesLoaded', () => this.onResourcesLoaded())
+    watch(useStore().resourcesLoaded, (value) => this.onResourcesLoaded())
   }
 
   onResourcesLoaded() {
-    console.log('Resources loaded')
-    WebGL.resources.resourcesLoaded = true
-    // this.floor = new Floor()
-    // this.character = new Character()
+    console.log('All Resources loaded')
+    const items = WebGL.resources.getItems(ORDALIES.ORDALIES_1, 'model')
+    console.log('Example to load a resource ', items)
+    // OrdalieManager.createOrdalie(ORDALIES.ORDALIES_1)
+
     this.croix = new Croix()
-    this.environment = new Environment()
-    this.ordalieFactory = new OrdalieFactory()
-    // this.billboard = new Billboard()
   }
 
   onUpdate() {
@@ -39,7 +33,6 @@ class World extends THREE.EventDispatcher {
 
     this.croix.update()
     // this.character.update()
-    // this.billboard.update()
   }
 }
 
