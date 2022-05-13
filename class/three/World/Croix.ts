@@ -17,15 +17,15 @@ class Croix extends THREE.EventDispatcher {
     super()
 
     // Debug
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('croixModel')
+    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Personnage de face')
 
     // Resource
     this.resource = WebGL.resources.itemsLoaded['croixModel'] as GLTF
     this.model = this.resource.scene
 
     this.setAnimation()
-    this.play('Croix_idle')
-    this.play('Croix_Descend')
+    // this.play('Croix_idle')
+    // this.play('Croix_Descend')
     WebGL.scene.add(this.resource.scene)
 
     setTimeout(() => {
@@ -43,9 +43,27 @@ class Croix extends THREE.EventDispatcher {
     }
 
     console.log(this.animation)
+
+    if (WebGL.debug.active) {
+      this.debugFolder!.add(this.debugParams().animations, 'armsUp')
+      this.debugFolder!.add(this.debugParams().animations, 'playCroix')
+    }
+  }
+
+  debugParams() {
+    return {
+      animations: {
+        armsUp: () => this.invertTimeScale(),
+        playCroix: () => {
+          this.animation.actions['Croix_Descend'].play()
+        },
+      },
+    }
   }
 
   invertTimeScale() {
+    console.log(this.animation.actions)
+
     this.animation.actions['Croix_Descend'].timeScale = -1
 
     setTimeout(() => {
