@@ -7,8 +7,8 @@ class TransitionManager {
 
   constructor() {}
 
-  createTransitions() {
-    this.transitions.push(new Transition(TRANSITIONS.TRANSITION_1))
+  create(_type: TRANSITIONS) {
+    this.transitions.push(new Transition(_type))
   }
 
   onTransitionCreated() {
@@ -20,4 +20,4 @@ class TransitionManager {
   }
 }
 
-export default TransitionManager
+export default new TransitionManager()
