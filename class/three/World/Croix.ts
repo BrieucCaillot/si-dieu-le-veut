@@ -4,7 +4,7 @@ import gsap from 'gsap'
 
 import WebGL from '@/class/three/WebGL'
 
-import { EntitiesName } from '@/constants/ENTITIES'
+import CHARACTER from '@/constants/CHARACTER'
 
 class Croix extends THREE.EventDispatcher {
   debugFolder: { [key: string]: any } | undefined
@@ -12,6 +12,7 @@ class Croix extends THREE.EventDispatcher {
   baseTexture: THREE.Texture | undefined
   model!: THREE.Object3D
   animation!: { [key: string]: any }
+  ambientLight: THREE.AmbientLight
 
   constructor() {
     super()
@@ -20,13 +21,17 @@ class Croix extends THREE.EventDispatcher {
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Personnage de face')
 
     // Resource
-    this.resource = WebGL.resources.itemsLoaded['croixModel'] as GLTF
+    // this.resource = WebGL.resources.itemsLoaded['croixModel'] as GLTF
+    this.resource = WebGL.resources.getItems(CHARACTER.ALL, 'model')
     this.model = this.resource.scene
 
     this.setAnimation()
     // this.play('Croix_idle')
     // this.play('Croix_Descend')
     WebGL.scene.add(this.resource.scene)
+
+    // this.ambientLight = new THREE.AmbientLight(0xffffff, 1)
+    // WebGL.scene.add(this.ambientLight)
 
     setTimeout(() => {
       this.invertTimeScale()

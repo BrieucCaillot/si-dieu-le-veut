@@ -1,5 +1,6 @@
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import CHARACTER from '@/constants/CHARACTER'
 
 enum SourceType {
   gltfModel = 'gltfLoader',
@@ -50,6 +51,16 @@ const ORDALIE_SOURCES = {
   ],
 }
 
-const ALL_SOURCES = { ...ORDALIE_SOURCES, ...TRANSITION_SOURCES }
+const CHARACTER_SOURCES = {
+  [CHARACTER.ALL]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Character/test_croix.glb',
+    },
+  ],
+}
+
+const ALL_SOURCES = { ...ORDALIE_SOURCES, ...TRANSITION_SOURCES, ...CHARACTER_SOURCES }
 
 export { SourceType, Source, ALL_SOURCES }
