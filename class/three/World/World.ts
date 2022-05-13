@@ -6,6 +6,7 @@ import Character from '@/class/three/World/Character'
 import Environment from '@/class/three/World/Environment'
 import Billboard from '@/class/three/Billboard/Billboard'
 import OrdalieFactory from '~~/class/three/Ordalie/OrdalieManager'
+import Croix from './Croix'
 
 class World extends THREE.EventDispatcher {
   floor: Floor
@@ -13,6 +14,7 @@ class World extends THREE.EventDispatcher {
   environment: Environment
   billboard: Billboard
   ordalieFactory: OrdalieFactory
+  croix: Croix
 
   constructor() {
     super()
@@ -26,6 +28,7 @@ class World extends THREE.EventDispatcher {
     WebGL.resources.resourcesLoaded = true
     // this.floor = new Floor()
     // this.character = new Character()
+    this.croix = new Croix()
     this.environment = new Environment()
     this.ordalieFactory = new OrdalieFactory()
     // this.billboard = new Billboard()
@@ -33,6 +36,9 @@ class World extends THREE.EventDispatcher {
 
   onUpdate() {
     if (!WebGL.resources.resourcesLoaded) return
+
+    this.croix.update()
+    // this.character.update()
     // this.billboard.update()
   }
 }

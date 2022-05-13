@@ -1,16 +1,17 @@
 // PAGES
 @import 'pages/_home.scss';
+@import 'components/typing.scss';
 
 // COMMON
 body {
-	background-color: skyblue;
-	overflow: hidden;
+  background-color: skyblue;
+  overflow: hidden;
 }
 
 main {
-	@apply relative min-h-screen;
+  @apply relative min-h-screen;
 }
 
 .content {
-	@apply relative z-10;
+  @apply relative z-10;
 }
