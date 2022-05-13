@@ -30,8 +30,8 @@ class Croix extends THREE.EventDispatcher {
     // this.play('Croix_Descend')
     WebGL.scene.add(this.resource.scene)
 
-    // this.ambientLight = new THREE.AmbientLight(0xffffff, 1)
-    // WebGL.scene.add(this.ambientLight)
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 10)
+    WebGL.scene.add(this.ambientLight)
 
     setTimeout(() => {
       this.invertTimeScale()
@@ -46,8 +46,6 @@ class Croix extends THREE.EventDispatcher {
       Croix_Descend: this.animation.mixer.clipAction(this.resource.animations[0]),
       Croix_idle: this.animation.mixer.clipAction(this.resource.animations[1]),
     }
-
-    console.log(this.animation)
 
     if (WebGL.debug.active) {
       this.debugFolder!.add(this.debugParams().animations, 'armsUp')
@@ -67,8 +65,6 @@ class Croix extends THREE.EventDispatcher {
   }
 
   invertTimeScale() {
-    console.log(this.animation.actions)
-
     this.animation.actions['Croix_Descend'].timeScale = -1
 
     setTimeout(() => {
@@ -82,11 +78,7 @@ class Croix extends THREE.EventDispatcher {
 
   update() {
     const { deltaTime } = WebGL.time
-    // console.log(deltaTime)
-
     this.animation.mixer.update(deltaTime * 0.001)
-
-    // console.log(this.animation.actions['Croix_Descend'].time)
   }
 }
 

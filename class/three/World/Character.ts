@@ -32,7 +32,6 @@ class Character extends THREE.EventDispatcher {
   setModel() {
     this.model = this.resource.scene
     this.model.scale.set(1, 1, 1)
-    this.model.name = EntitiesName.CHARACTER
     // this.model.rotateY(Math.PI / 2)
     WebGL.scene.add(this.model)
 

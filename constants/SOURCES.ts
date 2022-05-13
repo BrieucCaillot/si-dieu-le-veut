@@ -1,6 +1,7 @@
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 import CHARACTER from '@/constants/CHARACTER'
+import SOUNDS from '@/constants/SOUNDS'
 
 enum SourceType {
   gltfModel = 'gltfLoader',
@@ -61,6 +62,15 @@ const CHARACTER_SOURCES = {
   ],
 }
 
+const SOUND_SOURCES = {
+  [SOUNDS.TYPING]: [
+    //   {
+    //     name: 'typing',
+    //     path: 'sounds/typing-feedback.mp3',
+    //   },
+  ],
+}
+
 const ALL_SOURCES = { ...ORDALIE_SOURCES, ...TRANSITION_SOURCES, ...CHARACTER_SOURCES }
 
-export { SourceType, Source, ALL_SOURCES }
+export { SourceType, Source, ALL_SOURCES, SOUND_SOURCES }

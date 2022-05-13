@@ -22,14 +22,14 @@ class World extends THREE.EventDispatcher {
   onResourcesLoaded() {
     console.log('All Resources loaded')
     const items = WebGL.resources.getItems(ORDALIES.ORDALIES_1, 'model')
-    console.log('Example to load a resource ', items)
+    // console.log('Example to load a resource ', items)
     // OrdalieManager.createOrdalie(ORDALIES.ORDALIES_1)
 
     this.croix = new Croix()
   }
 
   onUpdate() {
-    if (!WebGL.resources.resourcesLoaded) return
+    if (!useStore().resourcesLoaded.value) return
 
     this.croix.update()
     // this.character.update()
