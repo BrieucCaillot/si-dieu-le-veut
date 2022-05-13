@@ -1,3 +1,4 @@
+import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 import CHARACTER from '@/constants/CHARACTER'
@@ -13,6 +14,23 @@ interface Source {
   name: string
   type: SourceType
   path: string | string[]
+}
+
+const OTHER_SOURCES = {
+  [OTHERS.INTRO]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/intro.glb',
+    },
+  ],
+  [OTHERS.DIDACTICIEL]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/didacticiel.glb',
+    },
+  ],
 }
 
 const TRANSITION_SOURCES = {
@@ -71,6 +89,6 @@ const SOUND_SOURCES = {
   ],
 }
 
-const ALL_SOURCES = { ...ORDALIE_SOURCES, ...TRANSITION_SOURCES, ...CHARACTER_SOURCES }
+const ALL_SOURCES = { ...OTHER_SOURCES, ...ORDALIE_SOURCES, ...TRANSITION_SOURCES, ...CHARACTER_SOURCES }
 
 export { SourceType, Source, ALL_SOURCES, SOUND_SOURCES }

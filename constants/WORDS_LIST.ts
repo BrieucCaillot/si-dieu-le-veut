@@ -1,3 +1,5 @@
+import ORDALIES from '@/constants/ORDALIES'
+
 export default {
-	ordalie_1: [],
+  [ORDALIES.ORDALIES_1]: [],
 }

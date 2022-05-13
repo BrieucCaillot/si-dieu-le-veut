@@ -4,6 +4,7 @@ import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import useStore from '@/composables/useStore'
 
 import { Source, ALL_SOURCES } from '@/constants/SOURCES'
+import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 import CHARACTER from '@/constants/CHARACTER'
@@ -44,7 +45,7 @@ class Resources extends THREE.EventDispatcher {
     })
   }
 
-  async loadItems({ key, sources }: { key: keyof ORDALIES | TRANSITIONS | CHARACTER; sources: Source[] }) {
+  async loadItems({ key, sources }: { key: keyof OTHERS | ORDALIES | TRANSITIONS | CHARACTER; sources: Source[] }) {
     return new Promise((resolve, reject) => {
       const itemsToLoad = sources.length
       let numberOfItemsLoaded = 0
@@ -70,7 +71,7 @@ class Resources extends THREE.EventDispatcher {
     })
   }
 
-  getItems(type: ORDALIES | TRANSITIONS | CHARACTER, name: string) {
+  getItems(type: OTHERS | ORDALIES | TRANSITIONS | CHARACTER, name: string) {
     return this.itemsLoaded[type].filter((item) => item.name === name).map((item) => item.file)[0]
   }
 }
