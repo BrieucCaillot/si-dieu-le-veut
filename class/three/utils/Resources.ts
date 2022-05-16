@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 import useStore from '@/composables/useStore'
 import { Howl } from 'howler'
@@ -63,7 +63,6 @@ class Resources extends THREE.EventDispatcher {
           })
           numberOfItemsLoaded++
           if (itemsToLoad === numberOfItemsLoaded) {
-            console.log(key, 'items loaded')
             resolve(itemsLoaded)
           }
         })

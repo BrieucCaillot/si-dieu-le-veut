@@ -40,10 +40,12 @@ const TRANSITION_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Transitions/transition_1.glb',
     },
+  ],
+  [TRANSITIONS.TRANSITION_2]: [
     {
-      name: 'texture',
-      type: SourceType.texture,
-      path: 'textures/Transitions/transition_1.png',
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Transitions/transition_2.glb',
     },
   ],
 }
@@ -53,19 +55,14 @@ const ORDALIE_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_1.glb',
-    },
-    {
-      name: 'textureTest',
-      type: SourceType.texture,
-      path: 'textures/Ordalies/ordalie_1.png',
+      path: 'models/Ordalies/ordalie_croix.glb',
     },
   ],
   [ORDALIES.ORDALIES_2]: [
     {
-      name: 'billboardNormal',
-      type: SourceType.texture,
-      path: 'textures/Billboard/billboard-normal.jpeg',
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Ordalies/ordalie_1.glb',
     },
   ],
 }
