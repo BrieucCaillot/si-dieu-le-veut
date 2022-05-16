@@ -7,6 +7,7 @@ import Resources from '@/class/three/utils/Resources'
 import Camera from '@/class/three/Camera'
 import Raycaster from '@/class/three/Raycaster'
 import Renderer from '@/class/three/Renderer'
+import CSSRenderer from '@/class/three/CSSRenderer'
 import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
 
@@ -20,6 +21,7 @@ class WebGL {
   camera: Camera
   raycaster: Raycaster
   renderer: Renderer
+  cssrenderer: CSSRenderer
   world: World
   debug: Debug
 
@@ -35,6 +37,7 @@ class WebGL {
     this.raycaster = new Raycaster()
     this.renderer = new Renderer()
     this.world = new World()
+    this.cssrenderer = new CSSRenderer()
 
     // Listeners
     this.sizes.addEventListener('resize', this.resize)

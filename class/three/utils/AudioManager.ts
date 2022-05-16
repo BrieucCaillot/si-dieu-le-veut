@@ -30,9 +30,9 @@ class AudioManager {
 
     this.sounds = await Promise.all(promises)
 
-    console.log(this.sounds)
+    // console.log(this.sounds)
 
-    this.play('success')
+    // this.play('success')
   }
 
   async loadSound(sound: { name: string; path: string }) {
