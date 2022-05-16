@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import normalizeWheel from 'normalize-wheel'
 
 import WebGL from '@/class/three/WebGL'
 
@@ -26,7 +27,10 @@ class Mouse extends THREE.EventDispatcher {
   }
 
   onScroll(e: WheelEvent) {
-    WebGL.camera.moveOnX(e.deltaY < 0 ? 'right' : 'left')
+    const normalized = normalizeWheel(event)
+
+    console.log(normalized.pixelX)
+    WebGL.camera.moveOnX(normalized.pixelY < 0 ? 'right' : 'left')
   }
 
   setEvents = () => {
