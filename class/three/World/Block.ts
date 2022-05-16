@@ -13,11 +13,11 @@ class Block extends THREE.EventDispatcher {
   // Model
   model: GLTF
   object: THREE.Object3D
-  position: THREE.Vector3 = new THREE.Vector3()
+  private position: THREE.Vector3 = new THREE.Vector3()
   // Box3
-  modelBox: THREE.Box3
-  box: THREE.BoxHelper
-  size: THREE.Vector3
+  private modelBox: THREE.Box3
+  private box: THREE.BoxHelper
+  private size: THREE.Vector3
 
   constructor(_type: OTHERS | ORDALIES | TRANSITIONS) {
     super()
@@ -53,6 +53,10 @@ class Block extends THREE.EventDispatcher {
     if (Blocks.getBlockInstances().length < 1) return
     this.object.position.setX(Blocks.getLastBlockInstance().position.x + this.size.x)
     this.position = this.object.position
+  }
+
+  getSize() {
+    return this.size
   }
 
   /**

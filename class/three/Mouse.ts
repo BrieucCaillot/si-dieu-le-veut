@@ -6,6 +6,7 @@ import WebGL from '@/class/three/WebGL'
 class Mouse extends THREE.EventDispatcher {
   position: THREE.Vector2 = new THREE.Vector2(0)
   normalizedPosition: THREE.Vector2 = new THREE.Vector2(-1, -1)
+  screenPosition: THREE.Vector2 = new THREE.Vector2(0)
 
   timeoutMouseMove = null
   isMoving: boolean = false
@@ -20,6 +21,7 @@ class Mouse extends THREE.EventDispatcher {
     this.isMoving = true
     this.position.set(e.clientX, e.clientY)
     this.normalizedPosition.set((e.clientX / WebGL.sizes.width) * 2 - 1, -(e.clientY / WebGL.sizes.height) * 2 + 1)
+    this.screenPosition.set((e.clientX / WebGL.sizes.width) * 2 - 1, -(e.clientY / WebGL.sizes.height) * 2 + 1)
   }
 
   onMouseStop() {
@@ -27,9 +29,7 @@ class Mouse extends THREE.EventDispatcher {
   }
 
   onScroll(e: WheelEvent) {
-    const normalized = normalizeWheel(event)
-
-    console.log(normalized.pixelX)
+    const normalized = normalizeWheel(e)
     WebGL.camera.moveOnX(normalized.pixelY < 0 ? 'right' : 'left')
   }
 

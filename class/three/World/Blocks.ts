@@ -6,6 +6,7 @@ import TRANSITIONS from '@/constants/TRANSITIONS'
 
 class Blocks {
   private blocksInstances: Block[] = []
+  private blocksWidth: number = 0
 
   constructor() {}
 
@@ -25,7 +26,20 @@ class Blocks {
     return this.blocksInstances[this.blocksInstances.length - 1]
   }
 
+  public getBlocksWidth() {
+    return this.blocksWidth
+  }
+
+  public getBlocksMaxWidth() {
+    return this.blocksWidth - this.getLastBlock().getSize().x
+  }
+
+  public getLastBlock() {
+    return this.blocksInstances[this.blocksInstances.length - 1]
+  }
+
   public onBlockCreated(block: Block) {
+    this.blocksWidth += block.getSize().x
     this.blocksInstances.push(block)
     console.log(this.blocksInstances)
   }
