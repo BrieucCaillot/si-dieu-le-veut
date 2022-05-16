@@ -21,6 +21,7 @@
   "dependencies": {
     "gsap": "^3.10.3",
     "howler": "^2.2.3",
+    "normalize-wheel": "^1.0.1",
     "three": "^0.136.0"
   }
 }
