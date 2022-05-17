@@ -9,18 +9,21 @@
 import { ref, onMounted } from 'vue'
 import AudioManager from '@/class/three/utils/AudioManager'
 import Blocks from '@/class/three/World/Blocks'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
 
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
   'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo aliquam fugit eligendi cum pariatur sint ducimus eum impedit nobis? Fuga doloremque ex delectus maxime maiores molestias ipsum incidunt ea esse necessitatibus quod harum magni.'
 )
 
+const ordalie = ref<OrdalieCroix>()
+
 onMounted(() => {
   inputRef.value.focus()
 
   watch(useStore().resourcesLoaded, () => {
-    const ordalie = Blocks.getBlockInstance(2)
-    console.log(ordalie)
+    ordalie.value = OrdalieManager.ordalies[0].ordalie
   })
 })
 
@@ -84,6 +87,8 @@ const newChar = (e: KeyboardEvent) => {
     // console.log('good')
 
     // WebGL.world.croix.invertTimeScale()
+
+    ordalie.value.armsUp()
 
     currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-green')
     // currentLetterDOM.value = currentLetterDOM.value.nextSibling

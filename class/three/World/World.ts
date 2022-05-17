@@ -39,7 +39,6 @@ class World extends THREE.EventDispatcher {
   onUpdate() {
     if (!useStore().resourcesLoaded.value) return
 
-    // this.croix.update()
     // this.character.update()
   }
 }

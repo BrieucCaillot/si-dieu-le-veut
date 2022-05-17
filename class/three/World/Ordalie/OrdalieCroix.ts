@@ -1,30 +1,26 @@
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
-import gsap from 'gsap'
-
 import WebGL from '@/class/three/WebGL'
 
-import CHARACTER from '@/constants/CHARACTER'
+import { remap } from '@/class/three/utils/Maths'
 
-class Croix extends THREE.EventDispatcher {
+class OrdalieCroix extends THREE.EventDispatcher {
   debugFolder: { [key: string]: any } | undefined
   resource: GLTF
   baseTexture: THREE.Texture | undefined
   model!: GLTF
+  gameRolling: boolean
   animation!: { [key: string]: any }
   ambientLight: THREE.AmbientLight
 
   constructor({ model }) {
     super()
-
-    // Debug
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Personnage de face')
-
-    // Resource
-    // this.resource = WebGL.resources.itemsLoaded['croixModel'] as GLTF
+    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
     this.model = model
 
-    console.log(this.model)
+    console.log(model)
+
+    this.gameRolling = true
 
     this.model.scene.position.y = -0.4
     this.model.scene.scale.multiplyScalar(0.5)
@@ -37,6 +33,16 @@ class Croix extends THREE.EventDispatcher {
 
     this.animation.mixer = new THREE.AnimationMixer(this.model.scene)
 
+    this.animation.mixer.addEventListener('finished', (e) => {
+      console.log(e)
+
+      if (e.direction === -1) {
+      }
+
+      // this.animation.actions['Croix_Descend'].timeScale = 1
+      // this.animation.actions['Croix_Descend'].play()
+    })
+
     this.animation.actions = {
       Croix_Descend: this.animation.mixer.clipAction(this.model.animations[0]),
       Croix_idle: this.animation.mixer.clipAction(this.model.animations[1]),
@@ -44,29 +50,32 @@ class Croix extends THREE.EventDispatcher {
 
     this.animation.actions.Croix_Descend.clampWhenFinished = true
     this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
+    this.animation.actions.Croix_Descend.timeScale = 0.5
+
+    console.log(this.animation.actions.Croix_Descend)
 
     if (WebGL.debug.active) {
       this.debugFolder!.add(this.debugParams().animations, 'armsUp')
-      this.debugFolder!.add(this.debugParams().animations, 'playCroix')
+      this.debugFolder!.add(this.debugParams().animations, 'startGame')
     }
   }
 
   debugParams() {
     return {
       animations: {
-        armsUp: () => this.invertTimeScale(),
-        playCroix: () => {
+        armsUp: () => this.armsUp(),
+        startGame: () => {
           this.animation.actions['Croix_Descend'].play()
         },
       },
     }
   }
 
-  invertTimeScale() {
+  armsUp() {
     this.animation.actions['Croix_Descend'].timeScale = -1
 
     setTimeout(() => {
-      this.animation.actions['Croix_Descend'].timeScale = 1
+      this.animation.actions['Croix_Descend'].timeScale = 0.5
     }, 100)
   }
 
@@ -76,8 +85,15 @@ class Croix extends THREE.EventDispatcher {
 
   update() {
     const { deltaTime } = WebGL.time
+
+    // console.log(this.animation.actions.Croix_Descend.time)
+    // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.model.animations[0].duration, 1, 0)
+
+    // if (remapped > 0) return
+
     this.animation.mixer.update(deltaTime * 0.001)
+    // console.log(remapped)
   }
 }
 
-export default Croix
+export default OrdalieCroix
