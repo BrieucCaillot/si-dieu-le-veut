@@ -7,7 +7,8 @@ import Blocks from '@/class/three/World/Blocks'
 class RendererCSS {
   container: HTMLElement
   instance: CSS3DRenderer
-  scene: THREE.Scene = new THREE.Scene()
+  cssScene: THREE.Scene = new THREE.Scene()
+  debugFolder: { [key: string]: any } | undefined
 
   constructor() {}
 
@@ -19,37 +20,40 @@ class RendererCSS {
     this.container = _container
     this.container.appendChild(this.instance.domElement)
 
-    // setTimeout(() => {
-    //   this.createText()
-    // }, 1000)
+    // Debug
+    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('renderer css')
+
+    setTimeout(() => {
+      this.createText()
+    }, 1000)
   }
 
   createText() {
-    const element = document.querySelector('#text') as HTMLElement
-    const object = new CSS3DObject(element)
-    // object.position.multiplyScalar(75)
+    const textHtml = document.querySelector('#text') as HTMLElement
+    const textObject = new CSS3DObject(textHtml)
+    textObject.position.x = 0.5
+    textObject.position.y = 0.5
 
-    object.matrixAutoUpdate = false
-    object.updateMatrix()
+    // this.cssScene.add(textObject)
+    // this.cssScene.position.set
+    this.cssScene.scale.set(0.01, 0.01, 0.01)
 
-    // console.log(Blocks.getBlockPlaneText(0).box)
-    // console.log(Blocks.getBlockPlaneText(0).mesh)
-    // console.log(Blocks.getBlockInstance(0).model)
-    // console.log(x, y)
+    // Debug
+    if (WebGL.debug.active) {
+      // this.debugFolder!.add(this.debugParams().animations, 'playIdleLeft')
+      // this.debugFolder!.add(this.debugParams().animations, 'playIdleRight')
+      this.debugFolder!.add(this.cssScene.position, 'x').name('position x')
+      this.debugFolder!.add(this.cssScene.position, 'y').name('position y')
+      this.debugFolder!.add(this.cssScene.position, 'z').name('position z')
 
-    const pos = Blocks.getBlockPlaneText(0).mesh.position
-    console.log(pos)
-    // Blocks.getBlockPlaneText(0).mesh.position.x = -0.5 * WebGL.camera.instance.aspect
-    object.position.copy(new THREE.Vector3(0, 0, -5))
-    // object.scale.copy(Blocks.getBlockPlaneText(0).scale)
-    // console.log(Blocks.getBlockPlaneText(0))
-    // console.log(Blocks.getBlockPlaneText(0).geometry.computeBoundingBox())
-    console.log(object)
-    // this.scene.add(object)
+      this.debugFolder!.add(this.cssScene.scale, 'x').name('scale x')
+      this.debugFolder!.add(this.cssScene.scale, 'y').name('scale y')
+      this.debugFolder!.add(this.cssScene.scale, 'z').name('scale z')
+    }
   }
 
   onUpdate() {
-    this.instance.render(this.scene, WebGL.camera.instance!)
+    this.instance.render(this.cssScene, WebGL.camera.instance!)
   }
 }
 

@@ -21,7 +21,7 @@ const OTHER_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Others/intro.glb',
+      path: 'models/Ordalies/ordalie-small.glb',
     },
   ],
   [OTHERS.DIDACTICIEL]: [

@@ -75,8 +75,8 @@ class Camera extends THREE.EventDispatcher {
   moveOnX(direction: 'left' | 'right') {
     if (!this.instance || this.isGoingBack) return
     const isRight = direction === 'right'
-    const isOverlappingBlocksStart = this.parent.position.x <= 0 - 0.01
-    const isOverlappingBlocksEnd = this.parent.position.x >= Blocks.getBlocksMaxWidth()
+    const isOverlappingBlocksStart = this.parent.position.x <= 0 - 0.01 * 2
+    const isOverlappingBlocksEnd = this.parent.position.x >= Blocks.getBlocksMaxWidth() * 2
     const targets = [this.parent.position, this.target]
 
     const x = this.debugParams.moveXSpeed

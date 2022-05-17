@@ -10,7 +10,7 @@ import Character from '@/class/three/World/Character'
 import Environment from '@/class/three/World/old/Environment'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Blocks from '@/class/three/World/Blocks'
-import TransitionManager from './Transition/TransitionManager'
+import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import AudioManager from '../utils/AudioManager'
 
 class World extends THREE.EventDispatcher {

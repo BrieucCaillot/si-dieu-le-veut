@@ -30,6 +30,7 @@ class Block extends THREE.EventDispatcher {
     this.getModel()
     this.add()
     this.setPosition()
+    this.setBoxHelper()
     Blocks.onBlockCreated(this)
   }
 
@@ -57,8 +58,18 @@ class Block extends THREE.EventDispatcher {
    */
   setPosition() {
     if (Blocks.getBlockInstances().length < 1) return
-    this.object.position.setX(Blocks.getLastBlockInstance().position.x + this.size.x)
+    const lastBlockPositionX = Blocks.getLastBlockInstance().getPosition().x
+    const lastBlockSizeX = Blocks.getLastBlockInstance().getSize().x
+    const x = lastBlockSizeX + this.size.x
+    this.object.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
     this.position = this.object.position
+  }
+
+  /**
+   * Get position
+   */
+  getPosition() {
+    return this.position
   }
 
   /**
