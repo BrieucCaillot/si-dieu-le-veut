@@ -1,5 +1,5 @@
 enum ORDALIES {
-  ORDALIES_1 = 'Ordalie_1',
+  CROIX = 'CROIX',
   ORDALIES_2 = 'Ordalies_2',
 }
 

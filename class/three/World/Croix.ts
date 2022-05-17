@@ -10,11 +10,11 @@ class Croix extends THREE.EventDispatcher {
   debugFolder: { [key: string]: any } | undefined
   resource: GLTF
   baseTexture: THREE.Texture | undefined
-  model!: THREE.Object3D
+  model!: GLTF
   animation!: { [key: string]: any }
   ambientLight: THREE.AmbientLight
 
-  constructor() {
+  constructor({ model }) {
     super()
 
     // Debug
@@ -22,30 +22,28 @@ class Croix extends THREE.EventDispatcher {
 
     // Resource
     // this.resource = WebGL.resources.itemsLoaded['croixModel'] as GLTF
-    this.resource = WebGL.resources.getItems(CHARACTER.ALL, 'model')
-    this.model = this.resource.scene
+    this.model = model
+
+    console.log(this.model)
+
+    this.model.scene.position.y = -0.4
+    this.model.scene.scale.multiplyScalar(0.5)
 
     this.setAnimation()
-    // this.play('Croix_idle')
-    // this.play('Croix_Descend')
-    WebGL.scene.add(this.resource.scene)
-
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 10)
-    WebGL.scene.add(this.ambientLight)
-
-    setTimeout(() => {
-      this.invertTimeScale()
-    }, 2000)
   }
 
   setAnimation() {
     this.animation = {}
 
-    this.animation.mixer = new THREE.AnimationMixer(this.model)
+    this.animation.mixer = new THREE.AnimationMixer(this.model.scene)
+
     this.animation.actions = {
-      Croix_Descend: this.animation.mixer.clipAction(this.resource.animations[0]),
-      Croix_idle: this.animation.mixer.clipAction(this.resource.animations[1]),
+      Croix_Descend: this.animation.mixer.clipAction(this.model.animations[0]),
+      Croix_idle: this.animation.mixer.clipAction(this.model.animations[1]),
     }
+
+    this.animation.actions.Croix_Descend.clampWhenFinished = true
+    this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
 
     if (WebGL.debug.active) {
       this.debugFolder!.add(this.debugParams().animations, 'armsUp')

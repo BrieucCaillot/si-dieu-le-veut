@@ -51,11 +51,11 @@ const TRANSITION_SOURCES = {
 }
 
 const ORDALIE_SOURCES = {
-  [ORDALIES.ORDALIES_1]: [
+  [ORDALIES.CROIX]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_croix.glb',
+      path: 'models/Character/test_croix.glb',
     },
   ],
   [ORDALIES.ORDALIES_2]: [

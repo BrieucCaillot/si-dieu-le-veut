@@ -1,13 +1,15 @@
 <template>
   <div>
     <div class="text-white" id="typing" v-SplitText></div>
-    <input type="text" :ref="(el) => (inputRef = el)" v-on:keydown="newChar" v-on:keyup.enter="confirmWord" class="" />
+    <input type="text" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import AudioManager from '@/class/three/utils/AudioManager'
+import WebGL from '@/class/three/WebGL'
+import Blocks from '@/class/three/World/Blocks'
 
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
@@ -16,22 +18,30 @@ const textToWrite = ref(
 
 onMounted(() => {
   inputRef.value.focus()
+  console.log(Blocks)
 })
 
-const currentLetterDOM = ref(null)
+const currentWordDOM = ref(null)
 
 const vSplitText = {
   beforeMount: (el: HTMLDivElement) => {
     textToWriteSplit.forEach((word) => {
       const splittedWord = word.split('')
+      const div = document.createElement('div')
+      div.setAttribute('class', 'word-item inline mr-[5px]')
+      el.append(div)
+
       splittedWord.forEach((letter) => {
         const span = document.createElement('span')
         span.innerHTML = letter
-        el.appendChild(span)
+        div.appendChild(span)
       })
     })
 
-    currentLetterDOM.value = el.querySelector('span')
+    currentWordDOM.value = el.querySelector('.word-item')
+    console.log(currentWordDOM.value)
+
+    // currentLetterDOM.value = el.querySelector('span')
   },
 }
 
@@ -50,11 +60,17 @@ let letterToType = lettersToType[wordProgressIndex]
 
 // console.log('word to type is', wordToType)
 
-const confirmWord = () => {
-  // console.log('confirm word!', inputRef.value)
-  // if(inputRef.value === wordToType){
-  //   inputRef.value = ''
-  // }
+const wordCompleted = () => {
+  // console.log('undefined, next word')
+  wordProgressIndex = 0
+  index++
+  wordToType = textToWriteSplit[index]
+  lettersToType = wordToType.split('')
+  letterToType = lettersToType[wordProgressIndex]
+
+  currentWordDOM.value = currentWordDOM.value.nextSibling
+
+  // console.log(wordProgressIndex, index, wordToType, lettersToType, letterToType)
 }
 
 const newChar = (e: KeyboardEvent) => {
@@ -64,24 +80,17 @@ const newChar = (e: KeyboardEvent) => {
   if (letterToType === e.key.toLowerCase()) {
     // console.log('good')
 
-    currentLetterDOM.value.classList.add('text-green')
-    currentLetterDOM.value = currentLetterDOM.value.nextSibling
+    // WebGL.world.croix.invertTimeScale()
+
+    currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-green')
+    // currentLetterDOM.value = currentLetterDOM.value.nextSibling
     AudioManager.play('success')
 
     wordProgressIndex++
     letterToType = lettersToType[wordProgressIndex]
     // console.log('new letter', letterToType)
 
-    if (!letterToType) {
-      // console.log('undefined, next word')
-      wordProgressIndex = 0
-      index++
-      wordToType = textToWriteSplit[index]
-      lettersToType = wordToType.split('')
-      letterToType = lettersToType[wordProgressIndex]
-
-      // console.log(wordProgressIndex, index, wordToType, lettersToType, letterToType)
-    }
+    if (!letterToType) wordCompleted()
   } else {
     // console.log('wrong letter!')
   }
