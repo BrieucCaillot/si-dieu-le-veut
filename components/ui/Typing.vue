@@ -8,7 +8,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import AudioManager from '@/class/three/utils/AudioManager'
-import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
 
 const inputRef = ref<HTMLInputElement>()
@@ -18,7 +17,11 @@ const textToWrite = ref(
 
 onMounted(() => {
   inputRef.value.focus()
-  console.log(Blocks)
+
+  watch(useStore().resourcesLoaded, () => {
+    const ordalie = Blocks.getBlockInstance(2)
+    console.log(ordalie)
+  })
 })
 
 const currentWordDOM = ref(null)

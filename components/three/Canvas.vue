@@ -4,13 +4,10 @@
 
 <script setup lang="ts">
 import WebGL from '@/class/three/WebGL'
-import Blocks from '@/class/three/World/Blocks'
 
 const canvas = ref(null)
 
 onMounted(() => {
   WebGL.setup(canvas.value)
-
-  console.log(Blocks)
 })
 </script>

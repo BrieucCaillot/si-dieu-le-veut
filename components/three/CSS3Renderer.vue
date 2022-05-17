@@ -13,8 +13,6 @@ import RendererCSS from '@/class/three/RendererCSS'
 const root = ref(null)
 
 onMounted(() => {
-  console.log('mounted')
-
   RendererCSS.setup(root.value)
 })
 </script>

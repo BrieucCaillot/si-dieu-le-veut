@@ -7,7 +7,6 @@ import Resources from '@/class/three/utils/Resources'
 import Camera from '@/class/three/Camera'
 import Raycaster from '@/class/three/Raycaster'
 import Renderer from '@/class/three/Renderer'
-import CSSRenderer from '@/class/three/CSSRenderer'
 import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
 import RendererCSS from '@/class/three/RendererCSS'
@@ -22,7 +21,6 @@ class WebGL {
   camera: Camera
   raycaster: Raycaster
   renderer: Renderer
-  cssrenderer: CSSRenderer
   world: World
   debug: Debug
 

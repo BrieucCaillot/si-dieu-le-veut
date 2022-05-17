@@ -19,9 +19,9 @@ class RendererCSS {
     this.container = _container
     this.container.appendChild(this.instance.domElement)
 
-    setTimeout(() => {
-      this.createText()
-    }, 1000)
+    // setTimeout(() => {
+    //   this.createText()
+    // }, 1000)
   }
 
   createText() {
@@ -45,7 +45,7 @@ class RendererCSS {
     // console.log(Blocks.getBlockPlaneText(0))
     // console.log(Blocks.getBlockPlaneText(0).geometry.computeBoundingBox())
     console.log(object)
-    this.scene.add(object)
+    // this.scene.add(object)
   }
 
   onUpdate() {
