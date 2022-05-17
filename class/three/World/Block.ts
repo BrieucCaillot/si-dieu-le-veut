@@ -14,6 +14,7 @@ class Block extends THREE.EventDispatcher {
   model: GLTF
   object: THREE.Object3D
   textMesh: THREE.Mesh
+
   private position: THREE.Vector3 = new THREE.Vector3()
   // Box3
   private modelBox: THREE.Box3

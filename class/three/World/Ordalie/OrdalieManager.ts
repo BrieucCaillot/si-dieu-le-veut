@@ -3,6 +3,7 @@ import ORDALIES from '@/constants/ORDALIES'
 
 class OrdalieManager {
   ordalies: Ordalie[] = []
+  activeOrdalie: Ordalie
 
   constructor() {}
 
