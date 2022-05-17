@@ -13,9 +13,11 @@ class Block extends THREE.EventDispatcher {
   // Model
   model: GLTF
   object: THREE.Object3D
+  textMesh: THREE.Mesh
   private position: THREE.Vector3 = new THREE.Vector3()
   // Box3
   private modelBox: THREE.Box3
+  private planeTextBox: THREE.Box3
   private box: THREE.BoxHelper
   private size: THREE.Vector3
 
@@ -47,16 +49,41 @@ class Block extends THREE.EventDispatcher {
     this.size = this.modelBox.getSize(new THREE.Vector3())
     this.object.scale.set(1, 1, 1)
     WebGL.scene.add(this.object)
+    this.getPlaneTextBox()
   }
 
+  /**
+   * Set position of model according to other blocks
+   */
   setPosition() {
     if (Blocks.getBlockInstances().length < 1) return
     this.object.position.setX(Blocks.getLastBlockInstance().position.x + this.size.x)
     this.position = this.object.position
   }
 
+  /**
+   * Get size of model
+   */
   getSize() {
     return this.size
+  }
+
+  /**
+   * Get plane text
+   */
+  getPlaneText() {
+    this.textMesh = this.model.scene.children.find((child) => child.name === 'text') as THREE.Mesh
+    this.textMesh.material.wireframe = true
+    return this.textMesh
+  }
+
+  getPlaneTextBox() {
+    this.planeTextBox = new THREE.Box3()
+    if (!this.textMesh) return
+    const { geometry, matrixWorld } = this.textMesh
+    geometry.computeBoundingBox()
+    this.planeTextBox.copy(geometry.boundingBox).applyMatrix4(matrixWorld)
+    return this.planeTextBox
   }
 
   /**

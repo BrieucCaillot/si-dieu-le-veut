@@ -10,6 +10,7 @@ import Renderer from '@/class/three/Renderer'
 import CSSRenderer from '@/class/three/CSSRenderer'
 import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
+import RendererCSS from '@/class/three/RendererCSS'
 
 class WebGL {
   canvas: HTMLCanvasElement
@@ -37,7 +38,6 @@ class WebGL {
     this.raycaster = new Raycaster()
     this.renderer = new Renderer()
     this.world = new World()
-    this.cssrenderer = new CSSRenderer()
 
     // Listeners
     this.sizes.addEventListener('resize', this.resize)
@@ -65,6 +65,7 @@ class WebGL {
     this.world.onUpdate()
     this.raycaster.onUpdate()
     this.renderer.onUpdate()
+    RendererCSS.onUpdate()
   }
 
   destroy() {

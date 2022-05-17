@@ -1,4 +1,5 @@
 import Transition from '@/class/three/World/Transition/Transition'
+import Block from '@/class/three/World/Block'
 
 import TRANSITIONS from '@/constants/TRANSITIONS'
 
@@ -8,7 +9,7 @@ class TransitionManager {
   constructor() {}
 
   create(_type: TRANSITIONS) {
-    this.transitions.push(new Transition(_type))
+    this.transitions.push(new Block(_type))
   }
 
   onTransitionCreated() {

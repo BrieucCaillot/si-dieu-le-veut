@@ -38,10 +38,16 @@ class Blocks {
     return this.blocksInstances[this.blocksInstances.length - 1]
   }
 
+  public getBlockPlaneText(_index: number) {
+    return {
+      mesh: this.getBlockInstance(_index).getPlaneText(),
+      box: this.getBlockInstance(_index).getPlaneTextBox(),
+    }
+  }
+
   public onBlockCreated(block: Block) {
     this.blocksWidth += block.getSize().x
     this.blocksInstances.push(block)
-    console.log(this.blocksInstances)
   }
 }
 
