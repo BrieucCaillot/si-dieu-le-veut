@@ -1,9 +1,9 @@
 import ORDALIES from '@/constants/ORDALIES'
 import Block from '@/class/three/World/Block'
 
-class Ordalie extends Block {
+class Ordalie {
   constructor(_type: ORDALIES) {
-    super(_type)
+    new Block(_type)
   }
 }
 

@@ -1,9 +1,9 @@
 import TRANSITIONS from '@/constants/TRANSITIONS'
 import Block from '@/class/three/World/Block'
 
-class Transition extends Block {
+class Transition {
   constructor(_type: TRANSITIONS) {
-    super(_type)
+    new Block(_type)
   }
 }
 
