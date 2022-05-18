@@ -11,11 +11,13 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import Blocks from '@/class/three/World/Blocks'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
+import gsap from 'gsap'
 
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
   'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo aliquam fugit eligendi cum pariatur sint ducimus eum impedit nobis? Fuga doloremque ex delectus maxime maiores molestias ipsum incidunt ea esse necessitatibus quod harum magni.'
 )
+// const textToWrite = ref('Lorem ipsum dolor.')
 
 const ordalie = ref<OrdalieCroix>()
 
@@ -40,13 +42,12 @@ const vSplitText = {
       splittedWord.forEach((letter) => {
         const span = document.createElement('span')
         span.innerHTML = letter
+        span.setAttribute('class', 'inline-block')
         div.appendChild(span)
       })
     })
 
     currentWordDOM.value = el.querySelector('.word-item')
-    console.log(currentWordDOM.value)
-
     // currentLetterDOM.value = el.querySelector('span')
   },
 }
@@ -71,6 +72,12 @@ const wordCompleted = () => {
   wordProgressIndex = 0
   index++
   wordToType = textToWriteSplit[index]
+
+  if (!wordToType) {
+    console.log('end game')
+
+    return
+  }
   lettersToType = wordToType.split('')
   letterToType = lettersToType[wordProgressIndex]
 
@@ -80,18 +87,9 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  // if (e.key === 'Enter') return
-  // console.log('new char', e)
-
   if (letterToType === e.key.toLowerCase()) {
-    // console.log('good')
-
-    // WebGL.world.croix.invertTimeScale()
-
     ordalie.value.armsUp()
-
     currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-green')
-    // currentLetterDOM.value = currentLetterDOM.value.nextSibling
     AudioManager.play('success')
 
     wordProgressIndex++
@@ -100,7 +98,21 @@ const newChar = (e: KeyboardEvent) => {
 
     if (!letterToType) wordCompleted()
   } else {
-    // console.log('wrong letter!')
+    //wrong letter
+    console.log('expected letter is', letterToType)
+    const letter = currentWordDOM.value.children.item(wordProgressIndex)
+    console.log('associated dom is', letter)
+
+    gsap.to(letter, {
+      scale: 10,
+      duration: 0.1,
+    })
+
+    gsap.to(letter, {
+      scale: 1,
+      duration: 0.1,
+      delay: 0.1,
+    })
   }
 }
 </script>
