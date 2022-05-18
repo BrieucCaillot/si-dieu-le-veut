@@ -1,6 +1,7 @@
 enum ORDALIES {
   CROIX = 'CROIX',
-  ORDALIES_2 = 'Ordalies_2',
+  BBQ = 'BBQ',
+  CAULDRON = 'CAULDRON',
 }
 
 export default ORDALIES
