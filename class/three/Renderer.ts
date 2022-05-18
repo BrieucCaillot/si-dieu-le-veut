@@ -24,7 +24,7 @@ class Renderer extends THREE.EventDispatcher {
     this.instance.toneMappingExposure = 0.8
     this.instance.shadowMap.enabled = true
     this.instance.shadowMap.type = THREE.PCFSoftShadowMap
-    this.instance.setClearColor(0x222222, 1)
+    this.instance.setClearColor(0xecdfcb, 1)
     this.instance.setSize(WebGL.sizes.width, WebGL.sizes.height)
     this.instance.setPixelRatio(WebGL.sizes.pixelRatio)
   }

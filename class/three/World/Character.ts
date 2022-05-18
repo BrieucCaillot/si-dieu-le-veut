@@ -7,21 +7,24 @@ import WebGL from '@/class/three/WebGL'
 import CHARACTER from '@/constants/CHARACTER'
 
 class Character extends THREE.EventDispatcher {
-  debugFolder: { [key: string]: any } | undefined
   resource: GLTF
   baseTexture: THREE.Texture | undefined
   model!: THREE.Object3D
   animation!: { [key: string]: any }
+  forwardSpeed = 0.1
+  debugFolder: { [key: string]: any } | undefined
 
   constructor() {
     super()
 
     // Debug
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('character')
+    if (WebGL.debug.active) {
+      this.debugFolder.add(this, 'forwardSpeed', 0.1, 1).step(0.1)
+    }
 
     // Resource
-    this.resource = WebGL.resources.itemsLoaded['characterModel'] as GLTF
-    this.baseTexture = WebGL.resources.itemsLoaded['characterTexture'] as THREE.Texture
+    this.resource = WebGL.resources.getItems(CHARACTER.ALL, 'model-rig') as GLTF
 
     this.setModel()
     this.setAnimation()
@@ -31,14 +34,9 @@ class Character extends THREE.EventDispatcher {
 
   setModel() {
     this.model = this.resource.scene
-    this.model.scale.set(1, 1, 1)
-    // this.model.rotateY(Math.PI / 2)
+    this.model.scale.set(0.35, 0.35, 0.35)
+    this.model.position.set(0, -0.4, 0.5)
     WebGL.scene.add(this.model)
-
-    this.model.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-      }
-    })
   }
 
   setAnimation() {
@@ -113,22 +111,25 @@ class Character extends THREE.EventDispatcher {
   }
 
   onKeyPressed = (e) => {
-    const forward = 0.3
     switch (e.key) {
       case 'a':
         this.debugParams().animations.playWalkLeftRight()
         gsap.to(this.model.position, {
-          x: this.model.position.x + forward,
+          x: this.model.position.x + this.forwardSpeed,
         })
         break
 
       case 'd':
         this.debugParams().animations.playWalkRightLeft()
         gsap.to(this.model.position, {
-          x: this.model.position.x + forward,
+          x: this.model.position.x + this.forwardSpeed,
         })
         break
     }
+  }
+
+  getPosition() {
+    return this.model.position
   }
 
   update() {

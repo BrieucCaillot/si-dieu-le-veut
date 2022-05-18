@@ -28,6 +28,7 @@ class World extends THREE.EventDispatcher {
   onResourcesLoaded() {
     console.log('All Resources loaded')
     this.environment = new Environment()
+    this.character = new Character()
 
     Blocks.createBlock(OTHERS.INTRO)
     Blocks.createBlock(OTHERS.DIDACTICIEL)
@@ -38,8 +39,7 @@ class World extends THREE.EventDispatcher {
 
   onUpdate() {
     if (!useStore().resourcesLoaded.value) return
-
-    // this.character.update()
+    this.character.update()
   }
 }
 

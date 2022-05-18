@@ -89,9 +89,11 @@ class Camera extends THREE.EventDispatcher {
     this.currentPosX += 0.02 * directionCoef
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
-    this.parent.position.x = this.currentPosX
-    this.target.x = this.currentPosX
+    this.setPositionX(this.currentPosX)
+    this.setTargetPositionX(this.currentPosX)
   }
+
+  followCharacter() {}
 
   onResize() {
     this.instance!.aspect = WebGL.sizes.width / WebGL.sizes.height
@@ -101,6 +103,20 @@ class Camera extends THREE.EventDispatcher {
 
   onUpdate() {
     this.setSmooth()
+    this.setPositionX(WebGL.world.character.getPosition().x)
+    this.setTargetPositionX(WebGL.world.character.getPosition().x)
+  }
+
+  setPositionX(x: number) {
+    this.parent.position.x = x
+  }
+
+  setTargetPositionX(x: number) {
+    this.target.x = x
+  }
+
+  setLookAtCharacter() {
+    this.instance.lookAt(WebGL.world.character.getPosition())
   }
 
   setSmooth() {

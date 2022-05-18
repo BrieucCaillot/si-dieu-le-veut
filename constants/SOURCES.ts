@@ -74,6 +74,11 @@ const CHARACTER_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Character/test_croix.glb',
     },
+    {
+      name: 'model-rig',
+      type: SourceType.gltfModel,
+      path: 'models/Character/test_rig.glb',
+    },
   ],
 }
 
