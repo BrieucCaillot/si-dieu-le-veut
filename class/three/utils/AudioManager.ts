@@ -4,11 +4,7 @@ import audio from '@/public/sounds/typing-feedback.mp3'
 const SOUNDS = [
   {
     name: 'success',
-    path: '/sounds/typing-feedback.mp3',
-  },
-  {
-    name: 'success',
-    path: '/sounds/typing-feedback.mp3',
+    path: '/sounds/type_2.mp3',
   },
 ]
 

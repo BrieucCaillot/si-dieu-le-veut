@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="text-white" id="typing" v-SplitText></div>
-    <input type="text" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
+    <div class="text-white fixed w-1/2 top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" id="typing" v-SplitText></div>
+    <input type="text" id="input-typing" class="fixed bottom-0 left-0" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
   </div>
 </template>
 
@@ -11,16 +11,19 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import Blocks from '@/class/three/World/Blocks'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
+import gsap from 'gsap'
 
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
-  'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo aliquam fugit eligendi cum pariatur sint ducimus eum impedit nobis? Fuga doloremque ex delectus maxime maiores molestias ipsum incidunt ea esse necessitatibus quod harum magni.'
+  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de cherité, de pitié et de perdon."
 )
 
 const ordalie = ref<OrdalieCroix>()
 
 onMounted(() => {
   inputRef.value.focus()
+
+  console.log('on mounted boys')
 
   watch(useStore().resourcesLoaded, () => {
     ordalie.value = OrdalieManager.ordalies[0].ordalie
@@ -34,19 +37,18 @@ const vSplitText = {
     textToWriteSplit.forEach((word) => {
       const splittedWord = word.split('')
       const div = document.createElement('div')
-      div.setAttribute('class', 'word-item inline mr-[5px]')
+      div.setAttribute('class', 'word-item inline mr-[5px] whitespace-nowrap')
       el.append(div)
 
       splittedWord.forEach((letter) => {
         const span = document.createElement('span')
         span.innerHTML = letter
+        span.setAttribute('class', 'inline-block')
         div.appendChild(span)
       })
     })
 
     currentWordDOM.value = el.querySelector('.word-item')
-    console.log(currentWordDOM.value)
-
     // currentLetterDOM.value = el.querySelector('span')
   },
 }
@@ -71,6 +73,12 @@ const wordCompleted = () => {
   wordProgressIndex = 0
   index++
   wordToType = textToWriteSplit[index]
+
+  if (!wordToType) {
+    console.log('end game')
+
+    return
+  }
   lettersToType = wordToType.split('')
   letterToType = lettersToType[wordProgressIndex]
 
@@ -80,18 +88,9 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  // if (e.key === 'Enter') return
-  // console.log('new char', e)
-
   if (letterToType === e.key.toLowerCase()) {
-    // console.log('good')
-
-    // WebGL.world.croix.invertTimeScale()
-
     ordalie.value.armsUp()
-
     currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-green')
-    // currentLetterDOM.value = currentLetterDOM.value.nextSibling
     AudioManager.play('success')
 
     wordProgressIndex++
@@ -100,7 +99,19 @@ const newChar = (e: KeyboardEvent) => {
 
     if (!letterToType) wordCompleted()
   } else {
-    // console.log('wrong letter!')
+    //wrong letter
+    const letter = currentWordDOM.value.children.item(wordProgressIndex)
+
+    gsap.to(letter, {
+      scale: 10,
+      duration: 0.1,
+    })
+
+    gsap.to(letter, {
+      scale: 1,
+      duration: 0.1,
+      delay: 0.1,
+    })
   }
 }
 </script>

@@ -1,6 +1,6 @@
 enum DIFFICULTY {
   EASY = 'EASY',
-  MEDIUM = 'HARD',
+  MEDIUM = 'MEDIUM',
   HARD = 'HARD',
   VERY_HARD = 'VERY_HARD',
   INSANE = 'INSANE',
