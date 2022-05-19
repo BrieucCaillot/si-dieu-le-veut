@@ -1,36 +1,43 @@
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
-import WebGL from '@/class/three/WebGL'
 
 import { remap } from '@/class/three/utils/Maths'
+import ORDALIES from '@/constants/ORDALIES'
+import WebGL from '@/class/three/WebGL'
+import Block from '@/class/three/World/Block'
 
-class OrdalieCroix extends THREE.EventDispatcher {
-  debugFolder: { [key: string]: any } | undefined
-  resource: GLTF
-  baseTexture: THREE.Texture | undefined
-  model!: GLTF
+class OrdalieCroix {
+  block: Block
+  model: GLTF
+  character: THREE.Mesh
   gameRolling: boolean
   animation!: { [key: string]: any }
-  ambientLight: THREE.AmbientLight
+  debugFolder: { [key: string]: any } | undefined
 
-  constructor({ model }) {
-    super()
+  constructor() {
+    this.block = new Block(ORDALIES.CROIX)
+    this.model = this.block.getModel()
+    this.character = this.block.getCharacterModel()
+
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
-    this.model = model
-
-    console.log(model)
 
     this.gameRolling = true
 
-    this.model.scene.position.y = -0.4
-    this.model.scene.scale.multiplyScalar(0.5)
+    // this.model.scene.position.y = -0.4
+    // this.model.scene.scale.multiplyScalar(0.5)
 
+    this.setCharacterAnimations()
     this.setAnimation()
+  }
+
+  setCharacterAnimations() {
+    this.character.animations = this.model.animations
   }
 
   setAnimation() {
     this.animation = {}
 
+    console.log(this.character.animations)
     this.animation.mixer = new THREE.AnimationMixer(this.model.scene)
 
     this.animation.mixer.addEventListener('finished', (e) => {
@@ -66,6 +73,7 @@ class OrdalieCroix extends THREE.EventDispatcher {
         armsUp: () => this.armsUp(),
         startGame: () => {
           this.animation.actions['Croix_Descend'].play()
+          console.log('play ' + this.animation.actions['Croix_Descend'])
         },
       },
     }
@@ -87,7 +95,7 @@ class OrdalieCroix extends THREE.EventDispatcher {
     const { deltaTime } = WebGL.time
 
     // console.log(this.animation.actions.Croix_Descend.time)
-    // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.model.animations[0].duration, 1, 0)
+    // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.character.animations[0].duration, 1, 0)
 
     // if (remapped > 0) return
 

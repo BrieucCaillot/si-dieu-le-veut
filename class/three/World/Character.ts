@@ -6,17 +6,15 @@ import WebGL from '@/class/three/WebGL'
 
 import CHARACTER from '@/constants/CHARACTER'
 
-class Character extends THREE.EventDispatcher {
+class Character {
   resource: GLTF
   baseTexture: THREE.Texture | undefined
-  model!: THREE.Object3D
+  model: THREE.Object3D
   animation!: { [key: string]: any }
   forwardSpeed = 0.1
   debugFolder: { [key: string]: any } | undefined
 
-  constructor() {
-    super()
-
+  setup() {
     // Debug
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('character')
     if (WebGL.debug.active) {
@@ -32,9 +30,13 @@ class Character extends THREE.EventDispatcher {
     window.addEventListener('keydown', this.onKeyPressed)
   }
 
+  isLoaded() {
+    return this.model !== undefined
+  }
+
   setModel() {
     this.model = this.resource.scene
-    this.model.scale.set(0.35, 0.35, 0.35)
+    this.model.scale.set(0.25, 0.25, 0.25)
     this.model.position.set(0, -0.4, 0.5)
     WebGL.scene.add(this.model)
   }
@@ -138,4 +140,4 @@ class Character extends THREE.EventDispatcher {
   }
 }
 
-export default Character
+export default new Character()

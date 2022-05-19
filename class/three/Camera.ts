@@ -2,9 +2,11 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import gsap from 'gsap'
 
-import WebGL from '@/class/three/WebGL'
-import Blocks from './World/Blocks'
 import { clamp } from '@/class/three/utils/Maths'
+
+import WebGL from '@/class/three/WebGL'
+import Blocks from '@/class/three/World/Blocks'
+import Character from '@/class/three/World/Character'
 
 class Camera extends THREE.EventDispatcher {
   parent: THREE.Group
@@ -89,8 +91,10 @@ class Camera extends THREE.EventDispatcher {
     this.currentPosX += 0.02 * directionCoef
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
-    this.setPositionX(this.currentPosX)
-    this.setTargetPositionX(this.currentPosX)
+    if (Character.isLoaded()) {
+      this.setPositionX(this.currentPosX)
+      this.setTargetPositionX(this.currentPosX)
+    }
   }
 
   followCharacter() {}
@@ -103,8 +107,10 @@ class Camera extends THREE.EventDispatcher {
 
   onUpdate() {
     this.setSmooth()
-    this.setPositionX(WebGL.world.character.getPosition().x)
-    this.setTargetPositionX(WebGL.world.character.getPosition().x)
+    if (Character.isLoaded()) {
+      this.setPositionX(Character.getPosition().x)
+      this.setTargetPositionX(Character.getPosition().x)
+    }
   }
 
   setPositionX(x: number) {
@@ -116,7 +122,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   setLookAtCharacter() {
-    this.instance.lookAt(WebGL.world.character.getPosition())
+    this.instance.lookAt(Character.getPosition())
   }
 
   setSmooth() {

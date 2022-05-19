@@ -9,12 +9,9 @@ class Ordalie {
   updateId: () => void
 
   constructor(_type: ORDALIES) {
-    this.block = new Block(_type)
-
     switch (_type) {
       case ORDALIES.CROIX:
-        this.ordalie = new OrdalieCroix({ model: this.block.model })
-
+        this.ordalie = new OrdalieCroix()
         break
 
       default:
@@ -34,7 +31,7 @@ class Ordalie {
   }
 
   update = () => {
-    this.ordalie.update()
+    this.ordalie && this.ordalie.update()
   }
 }
 

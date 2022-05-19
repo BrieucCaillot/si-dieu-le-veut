@@ -21,14 +21,28 @@ const OTHER_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie-small.glb',
+      path: 'models/Others/intro.glb',
     },
   ],
-  [OTHERS.DIDACTICIEL]: [
+  [OTHERS.INTRO_CONTEXT]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Others/didacticiel.glb',
+      path: 'models/Others/intro-context.glb',
+    },
+  ],
+  [OTHERS.TUTORIAL]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/tutorial.glb',
+    },
+  ],
+  [OTHERS.END]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/end.glb',
     },
   ],
 }
@@ -55,14 +69,14 @@ const ORDALIE_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Character/test_croix.glb',
+      path: 'models/Ordalies/ordalie_croix.glb',
     },
   ],
-  [ORDALIES.ORDALIES_2]: [
+  [ORDALIES.BBQ]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_1.glb',
+      path: 'models/Ordalies/ordalie_bbq.glb',
     },
   ],
 }
