@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="text-white" id="typing" v-SplitText></div>
-    <input type="text" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
+    <div class="text-white fixed w-1/2 top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" id="typing" v-SplitText></div>
+    <input type="text" id="input-typing" class="fixed bottom-0 left-0" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
   </div>
 </template>
 
@@ -15,14 +15,15 @@ import gsap from 'gsap'
 
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
-  'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo aliquam fugit eligendi cum pariatur sint ducimus eum impedit nobis? Fuga doloremque ex delectus maxime maiores molestias ipsum incidunt ea esse necessitatibus quod harum magni.'
+  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de cherité, de pitié et de perdon."
 )
-// const textToWrite = ref('Lorem ipsum dolor.')
 
 const ordalie = ref<OrdalieCroix>()
 
 onMounted(() => {
   inputRef.value.focus()
+
+  console.log('on mounted boys')
 
   watch(useStore().resourcesLoaded, () => {
     ordalie.value = OrdalieManager.ordalies[0].ordalie
@@ -36,7 +37,7 @@ const vSplitText = {
     textToWriteSplit.forEach((word) => {
       const splittedWord = word.split('')
       const div = document.createElement('div')
-      div.setAttribute('class', 'word-item inline mr-[5px]')
+      div.setAttribute('class', 'word-item inline mr-[5px] whitespace-nowrap')
       el.append(div)
 
       splittedWord.forEach((letter) => {
@@ -99,9 +100,7 @@ const newChar = (e: KeyboardEvent) => {
     if (!letterToType) wordCompleted()
   } else {
     //wrong letter
-    console.log('expected letter is', letterToType)
     const letter = currentWordDOM.value.children.item(wordProgressIndex)
-    console.log('associated dom is', letter)
 
     gsap.to(letter, {
       scale: 10,

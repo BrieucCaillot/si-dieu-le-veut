@@ -3,6 +3,11 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import WebGL from '@/class/three/WebGL'
 
 import { remap } from '@/class/three/utils/Maths'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import DIFFICULTY from '@/constants/DIFFICULTY'
+import ORDALIES from '@/constants/ORDALIES'
+import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
+import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 
 class OrdalieCroix extends THREE.EventDispatcher {
   debugFolder: { [key: string]: any } | undefined
@@ -15,10 +20,14 @@ class OrdalieCroix extends THREE.EventDispatcher {
   debugObject: any
   timeScaleController: any
 
+  gameplayParams: CroixInterface
+
   constructor({ model }) {
     super()
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
     this.model = model
+
+    this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
 
     this.setTransform()
     this.setAnimation()
@@ -38,6 +47,8 @@ class OrdalieCroix extends THREE.EventDispatcher {
       console.log(e)
       //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
       if (e.direction === -1) {
+        this.animation.actions['Croix_Descend'].stop()
+        this.animation.actions['Croix_Descend'].play()
       } else {
         //fin de l'anim classique, le mec a perdu
       }
@@ -53,17 +64,17 @@ class OrdalieCroix extends THREE.EventDispatcher {
 
     this.animation.actions.Croix_Descend.clampWhenFinished = true
     this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
-    this.animation.actions.Croix_Descend.timeScale = 0.5
+    this.animation.actions.Croix_Descend.timeScale = this.gameplayParams.fallingSpeedArm
 
     if (WebGL.debug.active) this.debug()
   }
 
   armsUp() {
-    this.animation.actions['Croix_Descend'].timeScale = -1
+    this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.upSpeedArm
 
     setTimeout(() => {
-      this.animation.actions['Croix_Descend'].timeScale = 0.5
-    }, 100)
+      this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.fallingSpeedArm
+    }, this.gameplayParams.upDurationArm)
   }
 
   play(animationName: string) {
@@ -79,6 +90,7 @@ class OrdalieCroix extends THREE.EventDispatcher {
         armsUp: () => this.armsUp(),
         startGame: () => {
           this.animation.actions['Croix_Descend'].play()
+          document.getElementById('input-typing').focus()
         },
       },
     }
