@@ -3,6 +3,11 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import WebGL from '@/class/three/WebGL'
 
 import { remap } from '@/class/three/utils/Maths'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import DIFFICULTY from '@/constants/DIFFICULTY'
+import ORDALIES from '@/constants/ORDALIES'
+import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
+import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 
 class OrdalieCroix extends THREE.EventDispatcher {
   debugFolder: { [key: string]: any } | undefined
@@ -12,20 +17,25 @@ class OrdalieCroix extends THREE.EventDispatcher {
   gameRolling: boolean
   animation!: { [key: string]: any }
   ambientLight: THREE.AmbientLight
+  debugObject: any
+  timeScaleController: any
+
+  gameplayParams: CroixInterface
 
   constructor({ model }) {
     super()
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
     this.model = model
 
-    console.log(model)
+    this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
 
-    this.gameRolling = true
+    this.setTransform()
+    this.setAnimation()
+  }
 
+  setTransform() {
     this.model.scene.position.y = -0.4
     this.model.scene.scale.multiplyScalar(0.5)
-
-    this.setAnimation()
   }
 
   setAnimation() {
@@ -35,8 +45,12 @@ class OrdalieCroix extends THREE.EventDispatcher {
 
     this.animation.mixer.addEventListener('finished', (e) => {
       console.log(e)
-
+      //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
       if (e.direction === -1) {
+        this.animation.actions['Croix_Descend'].stop()
+        this.animation.actions['Croix_Descend'].play()
+      } else {
+        //fin de l'anim classique, le mec a perdu
       }
 
       // this.animation.actions['Croix_Descend'].timeScale = 1
@@ -50,37 +64,46 @@ class OrdalieCroix extends THREE.EventDispatcher {
 
     this.animation.actions.Croix_Descend.clampWhenFinished = true
     this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
-    this.animation.actions.Croix_Descend.timeScale = 0.5
+    this.animation.actions.Croix_Descend.timeScale = this.gameplayParams.fallingSpeedArm
 
-    console.log(this.animation.actions.Croix_Descend)
-
-    if (WebGL.debug.active) {
-      this.debugFolder!.add(this.debugParams().animations, 'armsUp')
-      this.debugFolder!.add(this.debugParams().animations, 'startGame')
-    }
-  }
-
-  debugParams() {
-    return {
-      animations: {
-        armsUp: () => this.armsUp(),
-        startGame: () => {
-          this.animation.actions['Croix_Descend'].play()
-        },
-      },
-    }
+    if (WebGL.debug.active) this.debug()
   }
 
   armsUp() {
-    this.animation.actions['Croix_Descend'].timeScale = -1
+    this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.upSpeedArm
 
     setTimeout(() => {
-      this.animation.actions['Croix_Descend'].timeScale = 0.5
-    }, 100)
+      this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.fallingSpeedArm
+    }, this.gameplayParams.upDurationArm)
   }
 
   play(animationName: string) {
     this.animation.actions[animationName].play()
+  }
+
+  debug() {
+    this.debugObject = {
+      timeScale: this.animation.actions['Croix_Descend'].timeScale,
+      time: this.animation.actions['Croix_Descend'].time,
+
+      animations: {
+        armsUp: () => this.armsUp(),
+        startGame: () => {
+          this.animation.actions['Croix_Descend'].play()
+          document.getElementById('input-typing').focus()
+        },
+      },
+    }
+    this.debugFolder.add(this.debugObject, 'timeScale').listen().disable()
+    this.debugFolder.add(this.debugObject, 'time').step(0.01).listen().disable()
+    this.debugFolder.add(this.debugObject.animations, 'armsUp')
+    this.debugFolder.add(this.debugObject.animations, 'startGame')
+  }
+
+  debugParams() {
+    return {
+      animations: {},
+    }
   }
 
   update() {
@@ -90,6 +113,11 @@ class OrdalieCroix extends THREE.EventDispatcher {
     // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.model.animations[0].duration, 1, 0)
 
     // if (remapped > 0) return
+
+    // this.timeScaleController.updateDispla
+
+    this.debugObject.timeScale = this.animation.actions['Croix_Descend'].timeScale
+    this.debugObject.time = this.animation.actions['Croix_Descend'].time
 
     this.animation.mixer.update(deltaTime * 0.001)
     // console.log(remapped)
