@@ -22,12 +22,7 @@ const ordalie = ref<OrdalieCroix>()
 
 onMounted(() => {
   inputRef.value.focus()
-
-  console.log('on mounted boys')
-
-  watch(useStore().resourcesLoaded, () => {
-    ordalie.value = OrdalieManager.ordalies[0].ordalie
-  })
+  ordalie.value = OrdalieManager.ordalies[0].ordalie
 })
 
 const currentWordDOM = ref(null)

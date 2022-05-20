@@ -113,6 +113,8 @@ class Character {
   }
 
   onKeyPressed = (e) => {
+    if (useStore().ordalieCroix.value) return
+
     switch (e.key) {
       case 'a':
         this.debugParams().animations.playWalkLeftRight()

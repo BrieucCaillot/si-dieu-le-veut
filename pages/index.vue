@@ -12,6 +12,12 @@ import OrdalieBBQ from '@/components/ui/Typing/OrdalieBBQ.vue'
 import OrdalieCauldron from '@/components/ui/Typing/OrdalieCauldron.vue'
 
 const croix = ref(false)
-const bbq = ref(true)
+const bbq = ref(false)
 const cauldron = ref(false)
+
+onMounted(() => {
+  watch(useStore().ordalieCroix, (value) => {
+    if (value) croix.value = true
+  })
+})
 </script>

@@ -9,6 +9,8 @@ import DIFFICULTY from '@/constants/DIFFICULTY'
 import ORDALIES from '@/constants/ORDALIES'
 import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
+import Character from '../Character'
+import useStore from '~~/composables/useStore'
 
 class OrdalieCroix {
   block: Block
@@ -122,12 +124,10 @@ class OrdalieCroix {
   update() {
     const { deltaTime } = WebGL.time
 
-    // console.log(this.animation.actions.Croix_Descend.time)
-    // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.character.animations[0].duration, 1, 0)
-
-    // if (remapped > 0) return
-
-    // this.timeScaleController.updateDispla
+    if (Character.getPosition().x > 3.5 && !useStore().ordalieCroix.value) {
+      useStore().ordalieCroix.value = true
+      this.animation.actions['Croix_Descend'].play()
+    }
 
     this.debugObject.timeScale = this.animation.actions['Croix_Descend'].timeScale
     this.debugObject.time = this.animation.actions['Croix_Descend'].time
