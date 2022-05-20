@@ -1,46 +1,49 @@
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
-import WebGL from '@/class/three/WebGL'
 
 import { remap } from '@/class/three/utils/Maths'
+import WebGL from '@/class/three/WebGL'
+import Block from '@/class/three/World/Block'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import DIFFICULTY from '@/constants/DIFFICULTY'
 import ORDALIES from '@/constants/ORDALIES'
 import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 
-class OrdalieCroix extends THREE.EventDispatcher {
-  debugFolder: { [key: string]: any } | undefined
-  resource: GLTF
-  baseTexture: THREE.Texture | undefined
-  model!: GLTF
-  gameRolling: boolean
+class OrdalieCroix {
+  block: Block
+  // Model
+  model: GLTF
+  character: THREE.Mesh
   animation!: { [key: string]: any }
-  ambientLight: THREE.AmbientLight
+
+  // Gameplay
   debugObject: any
   timeScaleController: any
-
   gameplayParams: CroixInterface
 
-  constructor({ model }) {
-    super()
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
-    this.model = model
+  debugFolder: { [key: string]: any } | undefined
 
+  constructor() {
+    this.block = new Block(ORDALIES.CROIX)
+    this.model = this.block.getModel()
+    this.character = this.block.getCharacterModel()
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
 
-    this.setTransform()
+    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
+
+    this.setCharacterAnimations()
     this.setAnimation()
   }
 
-  setTransform() {
-    this.model.scene.position.y = -0.4
-    this.model.scene.scale.multiplyScalar(0.5)
+  setCharacterAnimations() {
+    this.character.animations = this.model.animations
   }
 
   setAnimation() {
     this.animation = {}
 
+    console.log(this.character.animations)
     this.animation.mixer = new THREE.AnimationMixer(this.model.scene)
 
     this.animation.mixer.addEventListener('finished', (e) => {
@@ -66,7 +69,23 @@ class OrdalieCroix extends THREE.EventDispatcher {
     this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
     this.animation.actions.Croix_Descend.timeScale = this.gameplayParams.fallingSpeedArm
 
-    if (WebGL.debug.active) this.debug()
+    if (WebGL.debug.active) {
+      this.debugFolder!.add(this.debugParams().animations, 'armsUp')
+      this.debugFolder!.add(this.debugParams().animations, 'startGame')
+      this.debug()
+    }
+  }
+
+  debugParams() {
+    return {
+      animations: {
+        armsUp: () => this.armsUp(),
+        startGame: () => {
+          this.animation.actions['Croix_Descend'].play()
+          console.log('play ' + this.animation.actions['Croix_Descend'])
+        },
+      },
+    }
   }
 
   armsUp() {
@@ -100,17 +119,11 @@ class OrdalieCroix extends THREE.EventDispatcher {
     this.debugFolder.add(this.debugObject.animations, 'startGame')
   }
 
-  debugParams() {
-    return {
-      animations: {},
-    }
-  }
-
   update() {
     const { deltaTime } = WebGL.time
 
     // console.log(this.animation.actions.Croix_Descend.time)
-    // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.model.animations[0].duration, 1, 0)
+    // const remapped = remap(this.animation.actions.Croix_Descend.time, 0, this.character.animations[0].duration, 1, 0)
 
     // if (remapped > 0) return
 

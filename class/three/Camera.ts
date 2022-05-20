@@ -2,17 +2,20 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import gsap from 'gsap'
 
+import { clamp } from '@/class/three/utils/Maths'
+
 import WebGL from '@/class/three/WebGL'
-import Blocks from './World/Blocks'
+import Blocks from '@/class/three/World/Blocks'
+import Character from '@/class/three/World/Character'
 
 class Camera extends THREE.EventDispatcher {
   parent: THREE.Group
   instance: THREE.PerspectiveCamera
-  target: THREE.Vector3 = new THREE.Vector3(0, 0, 0)
-  controls: OrbitControls
-  isGoingBack: boolean = false
-  debugFolder: { [key: string]: any }
-  debugParams: { [key: string]: any }
+  private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0)
+  private controls: OrbitControls
+  private currentPosX = 0
+  private debugFolder: { [key: string]: any }
+  private debugParams: { [key: string]: any }
 
   constructor() {
     super()
@@ -72,53 +75,29 @@ class Camera extends THREE.EventDispatcher {
     this.instance!.updateProjectionMatrix()
   }
 
-  moveOnX(direction: 'left' | 'right') {
-    if (!this.instance || this.isGoingBack) return
-    const isRight = direction === 'right'
-    const isOverlappingBlocksStart = this.parent.position.x <= 0 - 0.01 * 2
-    const isOverlappingBlocksEnd = this.parent.position.x >= Blocks.getBlocksMaxWidth() * 2
-    const targets = [this.parent.position, this.target]
-
-    const x = this.debugParams.moveXSpeed
-    const directionCoef = isRight ? -1 : 1
-
-    if (isOverlappingBlocksStart) {
-      gsap.to(targets, {
-        x: '+=' + 0.1,
-        ease: 'power2.easeInOut',
-        duration: 1.5,
-        onStart: () => (this.isGoingBack = true),
-        onComplete: () => (this.isGoingBack = false),
-      })
-
-      console.log('overlapping blocks end')
-      return
-    }
-
-    if (isOverlappingBlocksEnd) {
-      gsap.to(targets, {
-        x: '-=' + 0.1,
-        ease: 'power2.easeInOut',
-        duration: 1.5,
-        onStart: () => (this.isGoingBack = true),
-        onComplete: () => (this.isGoingBack = false),
-      })
-
-      console.log('overlapping blocks end')
-      return
-    }
-
-    gsap.to(targets, {
-      x: '+=' + x * directionCoef,
-      ease: 'power2.easeInOut',
-    })
-
-    if (isOverlappingBlocksStart) {
-      console.log('overlapping blocks start')
-    }
-
-    if (isOverlappingBlocksStart && isOverlappingBlocksEnd) return
+  getPosition() {
+    return this.parent.position
   }
+
+  getTargetPosition() {
+    return this.target
+  }
+
+  moveOnX(direction: 'left' | 'right') {
+    if (!this.instance) return
+
+    const maxBlocksX = Blocks.getLastBlockInstance().getPosition().x
+    const directionCoef = direction === 'right' ? -1 : 1
+    this.currentPosX += 0.02 * directionCoef
+    this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
+
+    if (Character.isLoaded()) {
+      this.setPositionX(this.currentPosX)
+      this.setTargetPositionX(this.currentPosX)
+    }
+  }
+
+  followCharacter() {}
 
   onResize() {
     this.instance!.aspect = WebGL.sizes.width / WebGL.sizes.height
@@ -128,6 +107,22 @@ class Camera extends THREE.EventDispatcher {
 
   onUpdate() {
     this.setSmooth()
+    if (Character.isLoaded()) {
+      this.setPositionX(Character.getPosition().x)
+      this.setTargetPositionX(Character.getPosition().x)
+    }
+  }
+
+  setPositionX(x: number) {
+    this.parent.position.x = x
+  }
+
+  setTargetPositionX(x: number) {
+    this.target.x = x
+  }
+
+  setLookAtCharacter() {
+    this.instance.lookAt(Character.getPosition())
   }
 
   setSmooth() {

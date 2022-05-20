@@ -14,7 +14,6 @@ import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import AudioManager from '../utils/AudioManager'
 
 class World extends THREE.EventDispatcher {
-  character: Character
   environment: Environment
 
   constructor() {
@@ -28,18 +27,21 @@ class World extends THREE.EventDispatcher {
   onResourcesLoaded() {
     console.log('All Resources loaded')
     this.environment = new Environment()
+    Character.setup()
 
     Blocks.createBlock(OTHERS.INTRO)
-    Blocks.createBlock(OTHERS.DIDACTICIEL)
+    Blocks.createBlock(OTHERS.INTRO_CONTEXT)
+    Blocks.createBlock(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
     TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    OrdalieManager.create(ORDALIES.BBQ)
+    Blocks.createBlock(OTHERS.END)
   }
 
   onUpdate() {
     if (!useStore().resourcesLoaded.value) return
-
-    // this.character.update()
+    Character.update()
   }
 }
 

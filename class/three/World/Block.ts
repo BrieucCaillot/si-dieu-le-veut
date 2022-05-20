@@ -12,6 +12,8 @@ class Block extends THREE.EventDispatcher {
   type: OTHERS | ORDALIES | TRANSITIONS
   // Model
   model: GLTF
+  character: THREE.Mesh
+  characterAnimations: THREE.AnimationClip[]
   object: THREE.Object3D
   textMesh: THREE.Mesh
 
@@ -28,7 +30,8 @@ class Block extends THREE.EventDispatcher {
     console.log('Init Block ' + _type)
 
     this.type = _type
-    this.getModel()
+    this.setModel()
+    this.setCharacterModel()
     this.add()
     this.setPosition()
     // this.setBoxHelper()
@@ -36,10 +39,31 @@ class Block extends THREE.EventDispatcher {
   }
 
   /**
-   * Get model from type
+   * Set model from type
+   */
+  setModel() {
+    this.model = WebGL.resources.getItems(this.type, 'model') as GLTF
+  }
+
+  /**
+   * Get model
    */
   getModel() {
-    this.model = WebGL.resources.getItems(this.type, 'model')
+    return this.model
+  }
+
+  /**
+   * Set character from model
+   */
+  setCharacterModel() {
+    this.character = this.model.scene.children.find((child) => child.name === 'character') as THREE.Mesh
+  }
+
+  /**
+   * Get character model
+   */
+  getCharacterModel() {
+    return this.character
   }
 
   /**

@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 import useStore from '@/composables/useStore'
-import { Howl } from 'howler'
 import { Source, ALL_SOURCES } from '@/constants/SOURCES'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
