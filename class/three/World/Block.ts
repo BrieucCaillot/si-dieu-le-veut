@@ -14,8 +14,8 @@ class Block extends THREE.EventDispatcher {
   model: GLTF
   character: THREE.Mesh
   characterAnimations: THREE.AnimationClip[]
-  object: THREE.Object3D
   textMesh: THREE.Mesh
+  object: THREE.Object3D
 
   private position: THREE.Vector3 = new THREE.Vector3()
   // Box3
@@ -31,6 +31,7 @@ class Block extends THREE.EventDispatcher {
 
     this.type = _type
     this.setModel()
+    this.setTextMesh()
     this.setCharacterModel()
     this.add()
     this.setPosition()
@@ -67,6 +68,23 @@ class Block extends THREE.EventDispatcher {
   }
 
   /**
+   * Set text region
+   */
+  setTextMesh() {
+    this.textMesh = this.model.scene.children.find((child) => child.name === 'text') as THREE.Mesh
+    this.getTextMeshBox()
+  }
+
+  getTextMeshBox() {
+    this.planeTextBox = new THREE.Box3()
+    if (!this.textMesh) return
+    const { geometry, matrixWorld } = this.textMesh
+    geometry.computeBoundingBox()
+    this.planeTextBox.copy(geometry.boundingBox).applyMatrix4(matrixWorld)
+    return this.planeTextBox
+  }
+
+  /**
    * Add model to scene
    */
   add() {
@@ -75,7 +93,6 @@ class Block extends THREE.EventDispatcher {
     this.size = this.modelBox.getSize(new THREE.Vector3())
     this.object.scale.set(1, 1, 1)
     WebGL.scene.add(this.object)
-    this.getPlaneTextBox()
   }
 
   /**
@@ -102,24 +119,6 @@ class Block extends THREE.EventDispatcher {
    */
   getSize() {
     return this.size
-  }
-
-  /**
-   * Get plane text
-   */
-  getPlaneText() {
-    this.textMesh = this.model.scene.children.find((child) => child.name === 'text') as THREE.Mesh
-    this.textMesh.material.wireframe = true
-    return this.textMesh
-  }
-
-  getPlaneTextBox() {
-    this.planeTextBox = new THREE.Box3()
-    if (!this.textMesh) return
-    const { geometry, matrixWorld } = this.textMesh
-    geometry.computeBoundingBox()
-    this.planeTextBox.copy(geometry.boundingBox).applyMatrix4(matrixWorld)
-    return this.planeTextBox
   }
 
   /**

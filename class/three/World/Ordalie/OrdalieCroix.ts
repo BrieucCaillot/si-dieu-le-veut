@@ -16,6 +16,7 @@ class OrdalieCroix {
   block: Block
   // Model
   model: GLTF
+  textMesh: THREE.Mesh
   character: THREE.Mesh
   animation!: { [key: string]: any }
 
@@ -28,9 +29,13 @@ class OrdalieCroix {
 
   constructor() {
     this.block = new Block(ORDALIES.CROIX)
-    this.model = this.block.getModel()
-    this.character = this.block.getCharacterModel()
+    const { model, character, textMesh } = this.block
+    this.model = model
+    this.character = character
+    this.textMesh = textMesh
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
+
+    console.log(this.textMesh)
 
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
 
@@ -45,7 +50,6 @@ class OrdalieCroix {
   setAnimation() {
     this.animation = {}
 
-    console.log(this.character.animations)
     this.animation.mixer = new THREE.AnimationMixer(this.model.scene)
 
     this.animation.mixer.addEventListener('finished', (e) => {

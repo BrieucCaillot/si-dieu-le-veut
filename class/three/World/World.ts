@@ -29,14 +29,14 @@ class World extends THREE.EventDispatcher {
     this.environment = new Environment()
     Character.setup()
 
-    Blocks.createBlock(OTHERS.INTRO)
-    Blocks.createBlock(OTHERS.INTRO_CONTEXT)
-    Blocks.createBlock(OTHERS.TUTORIAL)
+    // Blocks.createBlock(OTHERS.INTRO)
+    // Blocks.createBlock(OTHERS.INTRO_CONTEXT)
+    // Blocks.createBlock(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
-    TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    OrdalieManager.create(ORDALIES.BBQ)
-    Blocks.createBlock(OTHERS.END)
+    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    // OrdalieManager.create(ORDALIES.BBQ)
+    // Blocks.createBlock(OTHERS.END)
   }
 
   onUpdate() {
