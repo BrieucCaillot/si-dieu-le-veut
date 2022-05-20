@@ -12,6 +12,9 @@ module.exports = {
       colors: {
         green: '#00FF00',
         red: '#FF0000',
+        typingDoneColor: '#2D2923',
+        typingActiveLetter: '#A3411F',
+        typingBaseColor: '#ffffff',
       },
     },
     fontFamily: {

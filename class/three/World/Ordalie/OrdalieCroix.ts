@@ -40,7 +40,7 @@ class OrdalieCroix {
     this.setAnimation()
   }
 
-  setHTML(container: HTMLDivElement) {
+  setHTMLPosition(container: HTMLDivElement) {
     //récupérer la taille de ce plane
     const planeSize = new THREE.Box3().setFromObject(this.textMesh)
 

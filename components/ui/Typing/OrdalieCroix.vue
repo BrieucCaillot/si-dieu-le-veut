@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-white fixed top-0 left-0" id="typing" ref="containerRef" v-SplitText></div>
+    <div class="fixed top-0 left-0 text-typingBaseColor" id="typing" ref="containerRef" v-SplitText></div>
     <input type="text" id="input-typing" class="fixed bottom-0 left-0" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
   </div>
 </template>
@@ -8,11 +8,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import AudioManager from '@/class/three/utils/AudioManager'
-import Blocks from '@/class/three/World/Blocks'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
 import gsap from 'gsap'
 
+const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
@@ -24,10 +24,8 @@ const ordalie = ref<OrdalieCroix>()
 onMounted(() => {
   inputRef.value.focus()
   ordalie.value = OrdalieManager.ordalies[0].ordalie
-  ordalie.value.setHTML(containerRef.value)
+  ordalie.value.setHTMLPosition(containerRef.value)
 })
-
-const currentWordDOM = ref(null)
 
 const vSplitText = {
   beforeMount: (el: HTMLDivElement) => {
@@ -46,6 +44,7 @@ const vSplitText = {
     })
 
     currentWordDOM.value = el.querySelector('.word-item')
+    currentWordDOM.value.children.item(0).classList.add('text-typingActiveLetter')
     // currentLetterDOM.value = el.querySelector('span')
   },
 }
@@ -53,7 +52,7 @@ const vSplitText = {
 //progress in the array
 let index = 0
 //reference array with all the words
-const textToWriteSplit = textToWrite.value.toLowerCase().split(' ')
+const textToWriteSplit = textToWrite.value.split(' ')
 //word to type
 let wordToType = textToWriteSplit[index]
 //progress in the word
@@ -73,34 +72,36 @@ const wordCompleted = () => {
 
   if (!wordToType) {
     console.log('end game')
-
     return
   }
   lettersToType = wordToType.split('')
   letterToType = lettersToType[wordProgressIndex]
 
   currentWordDOM.value = currentWordDOM.value.nextSibling
-
-  // console.log(wordProgressIndex, index, wordToType, lettersToType, letterToType)
+  currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-typingActiveLetter')
 }
 
 const newChar = (e: KeyboardEvent) => {
-  if (letterToType === e.key.toLowerCase()) {
+  if (letterToType.toLowerCase() === e.key.toLowerCase() && wordToType) {
     ordalie.value.armsUp()
-    currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-green')
+    currentWordDOM.value.children.item(wordProgressIndex).classList.remove('text-typingActiveLetter')
+    currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-typingDoneColor')
     AudioManager.play('success')
 
     wordProgressIndex++
     letterToType = lettersToType[wordProgressIndex]
     // console.log('new letter', letterToType)
-
-    if (!letterToType) wordCompleted()
+    if (letterToType) {
+      currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-typingActiveLetter')
+    } else {
+      wordCompleted()
+    }
   } else {
     //wrong letter
     const letter = currentWordDOM.value.children.item(wordProgressIndex)
 
     gsap.to(letter, {
-      scale: 10,
+      scale: 2,
       duration: 0.1,
     })
 
