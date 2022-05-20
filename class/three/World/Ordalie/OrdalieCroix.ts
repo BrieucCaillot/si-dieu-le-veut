@@ -31,6 +31,7 @@ class OrdalieCroix {
     this.model = model
     this.character = character
     this.textMesh = textMesh
+
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
 
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')

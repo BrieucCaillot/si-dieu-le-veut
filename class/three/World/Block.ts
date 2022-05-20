@@ -71,7 +71,7 @@ class Block extends THREE.EventDispatcher {
    * Set text region
    */
   setTextMesh() {
-    this.textMesh = this.model.scene.children.find((child) => child.name === 'text') as THREE.Mesh
+    this.textMesh = this.model.scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
     this.getTextMeshBox()
   }
 
