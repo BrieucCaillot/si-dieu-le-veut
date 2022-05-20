@@ -1,7 +1,5 @@
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
-
-import { remap } from '@/class/three/utils/Maths'
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
@@ -35,12 +33,31 @@ class OrdalieCroix {
     this.textMesh = textMesh
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
 
-    console.log(this.textMesh)
-
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
 
     this.setCharacterAnimations()
     this.setAnimation()
+  }
+
+  setHTML(container: HTMLDivElement) {
+    //récupérer la taille de ce plane
+    const planeSize = new THREE.Box3().setFromObject(this.textMesh)
+
+    const topLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.max.y, planeSize.max.z)
+    const topRightCorner3D = new THREE.Vector3(planeSize.max.x, planeSize.max.y, planeSize.max.z)
+
+    //récupérer la position dans l'espace 2D de ce point en haut à gauche
+    topLeftCorner3D.project(WebGL.camera.instance)
+    const x1 = (topLeftCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
+    const y = (topLeftCorner3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
+
+    topRightCorner3D.project(WebGL.camera.instance)
+    const x2 = (topRightCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
+
+    container.style.transform = `translate(${x1}px,${y}px)`
+
+    const width = Math.abs(x1 - x2)
+    container.style.width = width + 'px'
   }
 
   setCharacterAnimations() {

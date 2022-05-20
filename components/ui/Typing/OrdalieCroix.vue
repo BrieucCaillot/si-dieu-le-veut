@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-white fixed w-1/2 top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" id="typing" v-SplitText></div>
+    <div class="text-white fixed top-0 left-0" id="typing" ref="containerRef" v-SplitText></div>
     <input type="text" id="input-typing" class="fixed bottom-0 left-0" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
   </div>
 </template>
@@ -13,6 +13,7 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
 import gsap from 'gsap'
 
+const containerRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
   "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de cherité, de pitié et de perdon."
@@ -23,6 +24,7 @@ const ordalie = ref<OrdalieCroix>()
 onMounted(() => {
   inputRef.value.focus()
   ordalie.value = OrdalieManager.ordalies[0].ordalie
+  ordalie.value.setHTML(containerRef.value)
 })
 
 const currentWordDOM = ref(null)

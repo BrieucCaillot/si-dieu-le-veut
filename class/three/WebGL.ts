@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-
 import Sizes from '@/class/three/utils/Sizes'
 import Mouse from '@/class/three/Mouse'
 import Time from '@/class/three/Time'
@@ -9,7 +8,6 @@ import Raycaster from '@/class/three/Raycaster'
 import Renderer from '@/class/three/Renderer'
 import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
-import RendererCSS from '@/class/three/RendererCSS'
 
 class WebGL {
   canvas: HTMLCanvasElement
@@ -63,7 +61,6 @@ class WebGL {
     this.world.onUpdate()
     this.raycaster.onUpdate()
     this.renderer.onUpdate()
-    RendererCSS.onUpdate()
   }
 
   destroy() {
