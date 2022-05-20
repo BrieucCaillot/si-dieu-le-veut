@@ -21,6 +21,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 
 const BASE_SIZE = 20
 const MAX_SIZE = 40
+const MAX_DISPLAY_TIME = 10
 
 const inputRef = ref<HTMLInputElement>()
 
@@ -83,7 +84,7 @@ const pickWord = (index) => {
   displayedWords.push({
     word: selectedWord,
     displayTime: 0,
-    maxDisplayTime: 10,
+    maxDisplayTime: MAX_DISPLAY_TIME,
     index: index,
   })
 
