@@ -1,23 +1,22 @@
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 
-import { remap } from '@/class/three/utils/Maths'
-import WebGL from '@/class/three/WebGL'
-import Block from '@/class/three/World/Block'
-import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import DIFFICULTY from '@/constants/DIFFICULTY'
 import ORDALIES from '@/constants/ORDALIES'
-import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
-import Character from '../Character'
-import useStore from '~~/composables/useStore'
+import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
+
+import WebGL from '@/class/three/WebGL'
+import { remap } from '@/class/three/utils/Maths'
+import Block from '@/class/three/World/Block'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import Ordalie from '@/class/three/World/Ordalie/Ordalie'
+import Character from '@/class/three/World/Character'
+import useStore from '@/composables/useStore'
 
 class OrdalieCroix {
+  ordalie: Ordalie
   block: Block
-  // Model
-  model: GLTF
-  textMesh: THREE.Mesh
-  character: THREE.Mesh
   animation!: { [key: string]: any }
 
   // Gameplay
@@ -27,30 +26,19 @@ class OrdalieCroix {
 
   debugFolder: { [key: string]: any } | undefined
 
-  constructor() {
-    this.block = new Block(ORDALIES.CROIX)
-    const { model, character, textMesh } = this.block
-    this.model = model
-    this.character = character
-    this.textMesh = textMesh
-    this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.difficulty].CROIX
-
-    console.log(this.textMesh)
+  constructor(_ordalie: Ordalie) {
+    this.ordalie = _ordalie
+    this.block = _ordalie.block
+    this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
 
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
-
-    this.setCharacterAnimations()
     this.setAnimation()
-  }
-
-  setCharacterAnimations() {
-    this.character.animations = this.model.animations
   }
 
   setAnimation() {
     this.animation = {}
 
-    this.animation.mixer = new THREE.AnimationMixer(this.model.scene)
+    this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
 
     this.animation.mixer.addEventListener('finished', (e) => {
       console.log(e)
@@ -67,8 +55,8 @@ class OrdalieCroix {
     })
 
     this.animation.actions = {
-      Croix_Descend: this.animation.mixer.clipAction(this.model.animations[0]),
-      Croix_idle: this.animation.mixer.clipAction(this.model.animations[1]),
+      Croix_Descend: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
+      Croix_idle: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
     }
 
     this.animation.actions.Croix_Descend.clampWhenFinished = true

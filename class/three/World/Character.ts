@@ -11,7 +11,7 @@ class Character {
   baseTexture: THREE.Texture | undefined
   model: THREE.Object3D
   animation!: { [key: string]: any }
-  forwardSpeed = 0.1
+  forwardSpeed = 0.3
   debugFolder: { [key: string]: any } | undefined
 
   setup() {
@@ -113,7 +113,7 @@ class Character {
   }
 
   onKeyPressed = (e) => {
-    if (useStore().ordalieCroix.value) return
+    // if (useStore().ordalieCroix.value) return
 
     switch (e.key) {
       case 'a':
