@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import cloneSkinnedMesh from '@/class/three/utils/CloneSkinnedMesh'
 
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
@@ -84,7 +85,6 @@ class Block {
    */
   private setTextMesh() {
     this.textMesh = this.model.scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
-    // console.log(this.textMesh)
     this.getTextMeshBox()
   }
 
@@ -101,7 +101,8 @@ class Block {
    * Add model to scene
    */
   private add() {
-    this.object = this.model.scene.clone()
+    const clonedGLTF = cloneSkinnedMesh(this.model)
+    this.object = clonedGLTF.scene
     this.modelBox = new THREE.Box3().setFromObject(this.object)
     this.size = this.modelBox.getSize(new THREE.Vector3())
     this.object.scale.set(1, 1, 1)

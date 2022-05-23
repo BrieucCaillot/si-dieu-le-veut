@@ -25,14 +25,13 @@ class Blocks {
     this.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
-    TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
       this.debugFolder.add(this.debugParams(), 'createOrdalieCroix').name('Create Ordalie Croix')
+      this.debugFolder.add(this.debugParams(), 'createOrdalieBBQ').name('Create Ordalie BBQ')
     }
   }
 
@@ -104,6 +103,9 @@ class Blocks {
       },
       createOrdalieCroix: () => {
         OrdalieManager.create(ORDALIES.CROIX)
+      },
+      createOrdalieBBQ: () => {
+        OrdalieManager.create(ORDALIES.BBQ)
       },
       createNext: () => this.createNext(),
     }

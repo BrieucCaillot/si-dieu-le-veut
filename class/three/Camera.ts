@@ -88,13 +88,13 @@ class Camera extends THREE.EventDispatcher {
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1
-    this.currentPosX += 0.02 * directionCoef
+    this.currentPosX += 0.09 * directionCoef
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
-    if (Character.isLoaded()) {
-      this.setPositionX(this.currentPosX)
-      this.setTargetPositionX(this.currentPosX)
-    }
+    // if (Character.isLoaded()) {
+    this.setPositionX(this.currentPosX)
+    this.setTargetPositionX(this.currentPosX)
+    // }
   }
 
   followCharacter() {}
@@ -107,10 +107,10 @@ class Camera extends THREE.EventDispatcher {
 
   onUpdate() {
     this.setSmooth()
-    if (Character.isLoaded()) {
-      this.setPositionX(Character.getPosition().x)
-      this.setTargetPositionX(Character.getPosition().x)
-    }
+    // if (Character.isLoaded()) {
+    //   this.setPositionX(Character.getPosition().x)
+    //   this.setTargetPositionX(Character.getPosition().x)
+    // }
   }
 
   setPositionX(x: number) {

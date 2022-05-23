@@ -17,7 +17,7 @@ class Debug {
     this.active = true
     this.gui.hide()
     if (!this.active) return
-    // this.gui.show()
+    this.gui.show()
   }
 
   setStats() {
