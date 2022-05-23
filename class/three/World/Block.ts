@@ -72,6 +72,9 @@ class Block {
     return this.character
   }
 
+  /**
+   * Get text mesh
+   */
   getTextMesh() {
     return this.textMesh
   }
@@ -98,7 +101,7 @@ class Block {
    * Add model to scene
    */
   private add() {
-    this.object = this.model.scene
+    this.object = this.model.scene.clone()
     this.modelBox = new THREE.Box3().setFromObject(this.object)
     this.size = this.modelBox.getSize(new THREE.Vector3())
     this.object.scale.set(1, 1, 1)

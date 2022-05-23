@@ -21,15 +21,18 @@ class Blocks {
    */
   setup() {
     this.create(OTHERS.INTRO)
-    // this.create(OTHERS.INTRO_CONTEXT)
-    // this.create(OTHERS.TUTORIAL)
+    this.create(OTHERS.INTRO_CONTEXT)
+    this.create(OTHERS.TUTORIAL)
 
+    OrdalieManager.create(ORDALIES.CROIX)
+    TransitionManager.create(TRANSITIONS.TRANSITION_1)
     OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
+      this.debugFolder.add(this.debugParams(), 'createOrdalieCroix').name('Create Ordalie Croix')
     }
   }
 
@@ -98,6 +101,9 @@ class Blocks {
       getAll: () => {
         console.log(this.getAll())
         console.log(this.getAll().map((block) => block.getType()))
+      },
+      createOrdalieCroix: () => {
+        OrdalieManager.create(ORDALIES.CROIX)
       },
       createNext: () => this.createNext(),
     }
