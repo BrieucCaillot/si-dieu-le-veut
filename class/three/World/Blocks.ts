@@ -25,7 +25,7 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
-    this.setCurrent(this.instances[1])
+    // this.setCurrent(this.instances[1])
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
@@ -114,9 +114,9 @@ class Blocks {
    */
   update() {
     if (!this.instances.length) return
-    if (WebGL.camera.getPosition().x >= this.currentInstance.getCenter().x) {
-      // console.log(this.currentInstance.getType())
-    }
+    // if (WebGL.camera.getPosition().x >= this.currentInstance.getCenter().x) {
+    // console.log(this.currentInstance.getType())
+    // }
   }
 
   /**
