@@ -19,6 +19,7 @@ class Block {
   private object: THREE.Object3D
 
   private position: THREE.Vector3 = new THREE.Vector3()
+  private center: THREE.Vector3 = new THREE.Vector3()
   // Box3
   private modelBox: THREE.Box3
   private planeTextBox: THREE.Box3
@@ -34,6 +35,7 @@ class Block {
     this.setCharacterModel()
     this.add()
     this.setPosition()
+    this.setCenter()
     // this.setBoxHelper()
     Blocks.onCreated(this)
   }
@@ -85,16 +87,18 @@ class Block {
    */
   private setTextMesh() {
     this.textMesh = this.model.scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
-    this.getTextMeshBox()
+    this.setTextMeshBox()
   }
 
-  getTextMeshBox() {
+  /**
+   * Set text mesh box
+   */
+  private setTextMeshBox() {
     this.planeTextBox = new THREE.Box3()
     if (!this.textMesh) return
     const { geometry, matrixWorld } = this.textMesh
     geometry.computeBoundingBox()
     this.planeTextBox.copy(geometry.boundingBox).applyMatrix4(matrixWorld)
-    return this.planeTextBox
   }
 
   /**
@@ -120,6 +124,20 @@ class Block {
     this.position = this.object.position
   }
 
+  private setCenter() {
+    this.center = this.object.getWorldPosition(new THREE.Vector3())
+    // this.setCenterDebug()
+  }
+
+  private setCenterDebug() {
+    const geometry = new THREE.BoxGeometry(1, 1, 1)
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.scale.multiplyScalar(0.1)
+    mesh.position.set(this.center.x, 0, 1)
+    WebGL.scene.add(mesh)
+  }
+
   /**
    * Get position
    */
@@ -132,6 +150,13 @@ class Block {
    */
   getSize() {
     return this.size
+  }
+
+  /**
+   * Get center of model
+   */
+  getCenter() {
+    return this.center
   }
 
   /**
