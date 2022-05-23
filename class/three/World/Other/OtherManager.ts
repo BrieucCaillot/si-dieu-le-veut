@@ -1,36 +1,70 @@
 import OTHERS from '@/constants/OTHERS'
 
+import Blocks from '@/class/three/World/Blocks'
+import Block from '@/class/three/World/Block'
 import Other from '@/class/three/World/Other/Other'
 
 class OtherManager {
-  private others: any[] = []
+  private instances: Other[] = []
+  private currentIndex = 0
 
   /**
    * Create other from type
    */
   create = (_type: OTHERS) => {
-    this.others.push(new Other(_type))
+    const other = new Other(_type)
+    this.instances.push(other)
   }
 
   /**
-   * Get all others
+   * Get all others instances
    */
   getAll() {
-    return this.others
+    return this.instances
   }
 
   /**
-   * When other created
+   * Get other by index
    */
-  onOtherCreated() {
-    console.log('Transition created')
+  getByIndex(index: number) {
+    return this.instances[index]
   }
 
   /**
-   * When other finished
+   * Get other by index
    */
-  onOtherFinished() {
-    console.log('Transition finished')
+  getCurrent() {
+    return this.instances[this.currentIndex]
+  }
+
+  startFirst() {
+    this.getByIndex(0).start()
+  }
+
+  /**
+   * Start next other
+   */
+  startNext() {
+    console.log('✨ START NEXT')
+    this.currentIndex++
+    console.log('STARTING THIS SHIT : ' + this.getCurrent().block.getType())
+    this.getCurrent().start()
+  }
+
+  /**
+   * On Other started
+   */
+  onStarted() {
+    console.log('✨ STARTED ' + this.getCurrent().block.getType())
+    Blocks.onStarted()
+  }
+
+  /**
+   * On Other ended
+   */
+  onEnded() {
+    console.log('✨ ENDED ' + this.getCurrent().block.getType())
+    Blocks.onEnded()
   }
 }
 

@@ -12,7 +12,7 @@ import Character from '@/class/three/World/Character'
 class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
   instance: THREE.PerspectiveCamera
-  private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0)
+  private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0.1)
   private targetDebugMesh: THREE.Mesh
   private controls: OrbitControls
   private currentPosX = 0
@@ -24,7 +24,7 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('camera')
 
     this.setInstance()
-    // this.setTargetDebug()
+    this.setTargetDebug()
     // this.setControls()
     this.setFov()
 
@@ -76,10 +76,6 @@ class Camera extends THREE.EventDispatcher {
     return this.parent.position
   }
 
-  getTargetPosition() {
-    return this.target
-  }
-
   moveOnX(direction: 'left' | 'right') {
     if (!this.instance) return
 
@@ -105,12 +101,14 @@ class Camera extends THREE.EventDispatcher {
     this.targetDebugMesh?.position.copy(this.target)
   }
 
-  setPositionX(x: number) {
-    this.parent.position.x = x
-  }
-
-  setTargetPositionX(x: number) {
-    this.target.x = x
+  setPositionX(x: number, cb: Function = () => {}) {
+    console.log('📷 MOVING..')
+    gsap.to([this.parent.position, this.target], {
+      x,
+      duration: 5,
+      ease: 'power.easeOut',
+      onComplete: () => cb(),
+    })
   }
 
   setLookAtCharacter() {

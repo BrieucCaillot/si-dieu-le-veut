@@ -13,7 +13,7 @@ import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 class Blocks {
   private instances: Block[] = []
   private width: number = 0
-  private currentInstance: Block
+  private currentIndex = 0
   private debugFolder: GUI
 
   /**
@@ -25,15 +25,25 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
-    // this.setCurrent(this.instances[1])
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
+      this.debugFolder.add(this.debugParams(), 'getCurrentIndex').name('Current index')
+      this.debugFolder.add(this.debugParams(), 'start').name('Start')
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
       this.debugFolder.add(this.debugParams(), 'createOrdalieCroix').name('Create Ordalie Croix')
       this.debugFolder.add(this.debugParams(), 'createOrdalieBBQ').name('Create Ordalie BBQ')
+      this.debugFolder.add(this.debugParams(), 'goToNext').name('Go To Next')
     }
+  }
+
+  /**
+   * Start blocks system
+   */
+  start() {
+    // this.goToNext()
+    OtherManager.startFirst()
   }
 
   /**
@@ -53,8 +63,22 @@ class Blocks {
   /**
    * Get block from index
    */
-  getFromIndex(index: number) {
+  getByIndex(index: number) {
     return this.instances[index]
+  }
+
+  /**
+   * Get current block instance in view
+   */
+  getCurrent() {
+    return this.instances[this.currentIndex]
+  }
+
+  /**
+   * Get next block to show
+   */
+  getNext() {
+    return this.instances[this.currentIndex + 1]
   }
 
   /**
@@ -72,20 +96,6 @@ class Blocks {
   }
 
   /**
-   * Get Set current instance in view
-   */
-  getCurrent() {
-    return this.currentInstance
-  }
-
-  /**
-   * Set current instance in view
-   */
-  setCurrent(block: Block) {
-    this.currentInstance = block
-  }
-
-  /**
    * On Block created
    */
   onCreated(block: Block) {
@@ -94,29 +104,77 @@ class Blocks {
   }
 
   /**
+   * On Block Started
+   */
+  onStarted() {
+    console.log('🏠 ON STARTED')
+  }
+
+  /**
+   * On Block Ended
+   */
+  onEnded() {
+    console.log('🏠 ON ENDED')
+    this.goToNext()
+    this.currentIndex++
+  }
+
+  /**
    * Create block from latest block created
    */
-  createNext() {
+  private createNext() {
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION
-    if (Object.values(ORDALIES).includes(this.getLast().getType() as ORDALIES)) {
+    if (this.isOrdalie(this.getLast())) {
       return TransitionManager.createNext()
     }
     // IF PREVIOUS BLOCK IS TRANSITION, CREATE ORDALIE
-    if (Object.values(TRANSITIONS).includes(this.getLast().getType() as TRANSITIONS)) {
+    if (this.isTransition(this.getLast())) {
       return OrdalieManager.createNext()
     }
   }
 
-  goToNext() {}
+  /**
+   * Go to next block
+   */
+  private goToNext() {
+    console.log('➡️ -- GO TO NEXT')
+
+    if (this.getCurrent().getType() === OTHERS.INTRO) return OtherManager.startNext()
+    if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
+
+    const nextPosX = this.getNext().getCenter().x
+
+    WebGL.camera.setPositionX(nextPosX, () => {
+      // IF NEXT BLOCK IS ORDALIE,
+      // START FROM ORDALIE MANAGER
+      // if (this.isOrdalie(this.getNext())) {
+      //   console.log('--- TODO ---')
+      //   console.log('--- GO TO ORDALIE MANAGER ---')
+      //   return
+      //   // return OrdalieManager.startNext()
+      // } else
+      if (this.isOther(this.getCurrent())) {
+        return OtherManager.startNext()
+      }
+
+      // // IF PREVIOUS BLOCK IS ORDALIE, GO TO TRANSITION
+      // if (this.isOrdalie(this.getNext())) {
+      //   console.log('-- Go to next transition')
+      //   // return TransitionManager.goToNext()
+      // }
+      // // IF PREVIOUS BLOCK IS TRANSITION, CREATE ORDALIE
+      // if (this.isTransition(this.getNext())) {
+      //   console.log('-- Go to next ordalie')
+      //   // return OrdalieManager.goToNext()
+      // }
+    })
+  }
 
   /**
    * Update
    */
   update() {
     if (!this.instances.length) return
-    // if (WebGL.camera.getPosition().x >= this.currentInstance.getCenter().x) {
-    // console.log(this.currentInstance.getType())
-    // }
   }
 
   /**
@@ -124,9 +182,12 @@ class Blocks {
    */
   private debugParams() {
     return {
+      getCurrentIndex: () => console.log(this.currentIndex),
+      start: () => this.start(),
       getAll: () => {
         console.log(this.getAll())
         console.log(this.getAll().map((block) => block.getType()))
+        console.log('Others ' + console.log(OtherManager.getAll()))
       },
       createOrdalieCroix: () => {
         OrdalieManager.create(ORDALIES.CROIX)
@@ -135,7 +196,20 @@ class Blocks {
         OrdalieManager.create(ORDALIES.BBQ)
       },
       createNext: () => this.createNext(),
+      goToNext: () => this.goToNext(),
     }
+  }
+
+  private isOther(block: Block) {
+    return Object.values(OTHERS).includes(block.getType() as OTHERS)
+  }
+
+  private isOrdalie(block: Block) {
+    return Object.values(ORDALIES).includes(block.getType() as ORDALIES)
+  }
+
+  private isTransition(block: Block) {
+    return Object.values(TRANSITIONS).includes(block.getType() as TRANSITIONS)
   }
 }
 

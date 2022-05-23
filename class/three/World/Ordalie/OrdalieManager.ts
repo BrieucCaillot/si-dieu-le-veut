@@ -55,6 +55,9 @@ class OrdalieManager {
     return this.active
   }
 
+  /**
+   * Get ordalie by index
+   */
   getByIndex(index: number) {
     return this.ordalies[index]
   }
