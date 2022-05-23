@@ -1,8 +1,13 @@
 // Vendor
 import * as THREE from 'three'
 
+export interface InterfaceCloneSkinnedMesh {
+  animations: THREE.AnimationClip[]
+  scene: THREE.Scene
+}
+
 export default function cloneSkinnedMesh(gltf) {
-  const clone = {
+  const clone: InterfaceCloneSkinnedMesh = {
     animations: gltf.animations,
     scene: gltf.scene.clone(true),
   }

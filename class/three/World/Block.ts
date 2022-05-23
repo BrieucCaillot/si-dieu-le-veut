@@ -12,11 +12,11 @@ import Blocks from '@/class/three/World/Blocks'
 class Block {
   private type: OTHERS | ORDALIES | TRANSITIONS
   // Model
-  private model: GLTF
+  private defaultModel: GLTF
+  private model: any
   private character: THREE.Mesh
   private characterAnimations: THREE.AnimationClip[]
   private textMesh: THREE.Mesh
-  private object: THREE.Object3D
 
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
@@ -48,10 +48,12 @@ class Block {
   }
 
   /**
-   * Set model from type
+   * Set default model from type
    */
   private setModel() {
-    this.model = WebGL.resources.getItems(this.type, 'model') as GLTF
+    this.defaultModel = WebGL.resources.getItems(this.type, 'model') as GLTF
+    const clonedGLTF = cloneSkinnedMesh(this.defaultModel)
+    this.model = clonedGLTF
   }
 
   /**
@@ -105,12 +107,10 @@ class Block {
    * Add model to scene
    */
   private add() {
-    const clonedGLTF = cloneSkinnedMesh(this.model)
-    this.object = clonedGLTF.scene
-    this.modelBox = new THREE.Box3().setFromObject(this.object)
+    this.modelBox = new THREE.Box3().setFromObject(this.model.scene)
     this.size = this.modelBox.getSize(new THREE.Vector3())
-    this.object.scale.set(1, 1, 1)
-    WebGL.scene.add(this.object)
+    this.model.scene.scale.set(1, 1, 1)
+    WebGL.scene.add(this.model.scene)
   }
 
   /**
@@ -120,12 +120,13 @@ class Block {
     if (Blocks.getAll().length < 1) return
     const lastBlockPositionX = Blocks.getLast().getPosition().x
     const lastBlockSizeX = Blocks.getLast().getSize().x
-    this.object.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
-    this.position = this.object.position
+    this.model.scene.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
+    this.position = this.model.scene.position
   }
 
   private setCenter() {
-    this.center = this.object.getWorldPosition(new THREE.Vector3())
+    this.center = this.model.scene.getWorldPosition(new THREE.Vector3())
+    // console.log(this.center.x)
     // this.setCenterDebug()
   }
 
@@ -163,7 +164,7 @@ class Block {
    * Add box helper to model
    */
   private setBoxHelper() {
-    this.box = new THREE.BoxHelper(this.object, 0xffff00)
+    this.box = new THREE.BoxHelper(this.model.scene, 0xffff00)
     WebGL.scene.add(this.box)
   }
 }

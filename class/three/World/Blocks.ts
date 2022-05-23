@@ -6,25 +6,26 @@ import TRANSITIONS from '@/constants/TRANSITIONS'
 
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
-import Ordalie from '@/class/three/World/Ordalie/Ordalie'
+import OtherManager from '@/class/three/World/Other/OtherManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
-import Transition from '@/class/three/World/Transition/Transition'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 
 class Blocks {
-  private blocksInstances: Block[] = []
-  private blocksWidth: number = 0
+  private instances: Block[] = []
+  private width: number = 0
+  private currentInstance: Block
   private debugFolder: GUI
 
   /**
    * Create default blocks
    */
   setup() {
-    this.create(OTHERS.INTRO)
-    this.create(OTHERS.INTRO_CONTEXT)
-    this.create(OTHERS.TUTORIAL)
+    OtherManager.create(OTHERS.INTRO)
+    OtherManager.create(OTHERS.INTRO_CONTEXT)
+    OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
+    this.setCurrent(this.instances[1])
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
@@ -46,36 +47,50 @@ class Blocks {
    * Get all blocks
    */
   getAll() {
-    return this.blocksInstances
+    return this.instances
   }
 
   /**
    * Get block from index
    */
   getFromIndex(index: number) {
-    return this.blocksInstances[index]
+    return this.instances[index]
   }
 
   /**
    * Get last block
    */
   getLast() {
-    return this.blocksInstances[this.blocksInstances.length - 1]
+    return this.instances[this.instances.length - 1]
   }
 
   /**
    * Get width witl all blocks
    */
   getWidth() {
-    return this.blocksWidth
+    return this.width
+  }
+
+  /**
+   * Get Set current instance in view
+   */
+  getCurrent() {
+    return this.currentInstance
+  }
+
+  /**
+   * Set current instance in view
+   */
+  setCurrent(block: Block) {
+    this.currentInstance = block
   }
 
   /**
    * On Block created
    */
   onCreated(block: Block) {
-    this.blocksWidth += block.getSize().x
-    this.blocksInstances.push(block)
+    this.width += block.getSize().x
+    this.instances.push(block)
   }
 
   /**
@@ -89,6 +104,18 @@ class Blocks {
     // IF PREVIOUS BLOCK IS TRANSITION, CREATE ORDALIE
     if (Object.values(TRANSITIONS).includes(this.getLast().getType() as TRANSITIONS)) {
       return OrdalieManager.createNext()
+    }
+  }
+
+  goToNext() {}
+
+  /**
+   * Update
+   */
+  update() {
+    if (!this.instances.length) return
+    if (WebGL.camera.getPosition().x >= this.currentInstance.getCenter().x) {
+      console.log(this.currentInstance.getType())
     }
   }
 

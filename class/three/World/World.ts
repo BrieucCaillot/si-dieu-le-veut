@@ -24,12 +24,11 @@ class World extends THREE.EventDispatcher {
 
     AudioManager.setup()
     Blocks.setup()
-    // Character.setup()
   }
 
   onUpdate() {
     if (!useStore().resourcesLoaded.value) return
-    // Character.update()
+    Blocks.update()
   }
 }
 

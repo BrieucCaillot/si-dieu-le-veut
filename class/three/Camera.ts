@@ -13,53 +13,49 @@ class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
   instance: THREE.PerspectiveCamera
   private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0)
+  private targetDebugMesh: THREE.Mesh
   private controls: OrbitControls
   private currentPosX = 0
   private debugFolder: GUI
-  private debugParams: { [key: string]: any }
 
   constructor() {
     super()
 
     if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('camera')
 
-    this.debugParams = {
-      parallaxFactor: 0.18,
-      moveXSpeed: 0.3,
-    }
-
     this.setInstance()
+    // this.setTargetDebug()
     // this.setControls()
     this.setFov()
-  }
-
-  setInstance() {
-    this.parent = new THREE.Group()
-    this.parent.position.set(0, 0, 16)
-    this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
-    this.instance.position.set(0, 0, 0)
-    this.parent.add(this.instance)
-
-    this.setFov()
-    WebGL.scene.add(this.parent)
 
     if (WebGL.debug.active) {
-      this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 1.9).step(0.1)
-      this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 2).step(0.1)
+      this.debugFolder.add(this.debugParams(), 'parallaxFactor', 0, 1.9).step(0.1)
+      this.debugFolder.add(this.debugParams(), 'moveXSpeed', 0.0001, 2).step(0.1)
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
     }
   }
 
-  setPlane() {
-    const geometry = new THREE.PlaneGeometry(20, 20)
-    geometry.rotateX(-Math.PI / 2)
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+  private setInstance() {
+    this.parent = new THREE.Group()
+    this.parent.position.set(0, 0, 16)
+    this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
+    this.instance.position.set(0, 0, 0)
+    this.parent.add(this.instance)
+    this.setFov()
+    WebGL.scene.add(this.parent)
+  }
+
+  private setTargetDebug() {
+    const geometry = new THREE.BoxGeometry(1, 1, 1)
+    const material = new THREE.MeshBasicMaterial({ color: 0x345678 })
     const mesh = new THREE.Mesh(geometry, material)
+    mesh.scale.multiplyScalar(0.1)
+    this.targetDebugMesh = mesh
     WebGL.scene.add(mesh)
   }
 
-  setControls() {
+  private setControls() {
     this.controls = new OrbitControls(this.instance!, WebGL.canvas)
     this.controls.enableDamping = true
     this.controls.enabled = false
@@ -69,7 +65,7 @@ class Camera extends THREE.EventDispatcher {
     }
   }
 
-  setFov() {
+  private setFov() {
     const dist = this.parent.position.z - 0 // plane position z
     const height = (WebGL.sizes.height / WebGL.sizes.width) * 2 // plane height
     this.instance.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
@@ -98,8 +94,6 @@ class Camera extends THREE.EventDispatcher {
     })
   }
 
-  followCharacter() {}
-
   onResize() {
     this.instance!.aspect = WebGL.sizes.width / WebGL.sizes.height
     this.setFov()
@@ -108,10 +102,7 @@ class Camera extends THREE.EventDispatcher {
 
   onUpdate() {
     this.setSmooth()
-    // if (Character.isLoaded()) {
-    //   this.setPositionX(Character.getPosition().x)
-    //   this.setTargetPositionX(Character.getPosition().x)
-    // }
+    this.targetDebugMesh?.position.copy(this.target)
   }
 
   setPositionX(x: number) {
@@ -126,14 +117,21 @@ class Camera extends THREE.EventDispatcher {
     this.instance.lookAt(Character.getPosition())
   }
 
-  setSmooth() {
-    this.instance.position.x += (WebGL.mouse.screenPosition.x - this.instance.position.x) * this.debugParams.parallaxFactor
-    this.instance.position.y += (WebGL.mouse.screenPosition.y - this.instance.position.y) * this.debugParams.parallaxFactor
+  private setSmooth() {
+    this.instance.position.x += (WebGL.mouse.screenPosition.x - this.instance.position.x) * this.debugParams().parallaxFactor
+    this.instance.position.y += (WebGL.mouse.screenPosition.y - this.instance.position.y) * this.debugParams().parallaxFactor
     this.instance.lookAt(this.target)
   }
 
   destroy() {
     this.controls!.dispose()
+  }
+
+  private debugParams() {
+    return {
+      parallaxFactor: 0.18,
+      moveXSpeed: 0.3,
+    }
   }
 }
 

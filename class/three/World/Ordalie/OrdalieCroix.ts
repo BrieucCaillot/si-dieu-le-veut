@@ -40,12 +40,12 @@ class OrdalieCroix {
     //récupérer la taille de ce plane
     const planeSize = new THREE.Box3().setFromObject(this.block.getTextMesh())
 
-    console.log('plane size', planeSize)
+    // console.log('plane size', planeSize)
 
     const topLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.max.y, planeSize.max.z)
     const topRightCorner3D = new THREE.Vector3(planeSize.max.x, planeSize.max.y, planeSize.max.z)
-    console.log('top left corner', topLeftCorner3D)
-    console.log('top right corner', topRightCorner3D)
+    // console.log('top left corner', topLeftCorner3D)
+    // console.log('top right corner', topRightCorner3D)
 
     //récupérer la position dans l'espace 2D de ce point en haut à gauche
     topLeftCorner3D.project(WebGL.camera.instance)
