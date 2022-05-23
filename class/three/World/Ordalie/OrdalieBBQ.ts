@@ -12,7 +12,8 @@ class OrdalieBBQ {
   texts: THREE.Object3D[]
   animation: { [key: string]: any }
   debugFolder: GUI
-  forwardSpeed = 0.3
+  forwardSpeed = 0.12
+  modulo = 0
 
   constructor(_ordalie: Ordalie) {
     this.ordalie = _ordalie
@@ -109,8 +110,6 @@ class OrdalieBBQ {
           this.animation.play('idleRight')
         },
         playWalkLeftRight: () => {
-          console.log('allo')
-
           this.animation.play('walkLeftRight')
         },
         playWalkRightLeft: () => {
@@ -121,19 +120,36 @@ class OrdalieBBQ {
   }
 
   makeAStep() {
-    console.log('current position is', this.block.getCharacterModel().position.x)
-    this.debugParams().animations.playWalkLeftRight()
-    gsap.to(this.block.getCharacterModel().position, {
-      x: this.block.getCharacterModel().position.x + this.forwardSpeed,
-      onComplete: () => {
-        console.log('new position is', this.block.getCharacterModel().position.x)
-      },
-    })
+    if (this.modulo % 2 === 0) {
+      console.log('left')
+
+      this.debugParams().animations.playWalkLeftRight()
+
+      gsap.to(this.block.getCharacterModel().position, {
+        x: this.block.getCharacterModel().position.x + this.forwardSpeed,
+        duration: 1,
+        onComplete: () => {
+          console.log('new position is', this.block.getCharacterModel().position.x)
+        },
+      })
+    } else {
+      console.log('right')
+      this.debugParams().animations.playWalkRightLeft()
+
+      gsap.to(this.block.getCharacterModel().position, {
+        x: this.block.getCharacterModel().position.x + this.forwardSpeed,
+        duration: 1,
+        onComplete: () => {
+          console.log('new position is', this.block.getCharacterModel().position.x)
+        },
+      })
+    }
+
+    this.modulo += 1
   }
 
   update() {
     const { deltaTime } = WebGL.time
-
     this.animation.mixer.update(deltaTime * 0.001)
   }
 }

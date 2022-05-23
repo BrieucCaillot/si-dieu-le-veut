@@ -20,12 +20,12 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    OtherManager.create(OTHERS.INTRO)
-    OtherManager.create(OTHERS.INTRO_CONTEXT)
-    OtherManager.create(OTHERS.TUTORIAL)
+    // OtherManager.create(OTHERS.INTRO)
+    // OtherManager.create(OTHERS.INTRO_CONTEXT)
+    // OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.CROIX)
-    this.setCurrent(this.instances[1])
+    OrdalieManager.create(ORDALIES.BBQ)
+    this.setCurrent(this.instances[0])
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
