@@ -43,13 +43,12 @@ class Character {
 
   setAnimation() {
     this.animation = {}
+    this.animation.actions = {}
 
     // Mixer
     this.animation.mixer = new THREE.AnimationMixer(this.model)
 
     // Actions
-    this.animation.actions = {}
-
     this.animation.actions.idleLeft = this.animation.mixer.clipAction(this.resource.animations[0])
     this.animation.actions.idleRight = this.animation.mixer.clipAction(this.resource.animations[1])
     this.animation.actions.walkLeftRight = this.animation.mixer.clipAction(this.resource.animations[2])

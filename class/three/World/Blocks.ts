@@ -115,7 +115,7 @@ class Blocks {
   update() {
     if (!this.instances.length) return
     if (WebGL.camera.getPosition().x >= this.currentInstance.getCenter().x) {
-      console.log(this.currentInstance.getType())
+      // console.log(this.currentInstance.getType())
     }
   }
 
