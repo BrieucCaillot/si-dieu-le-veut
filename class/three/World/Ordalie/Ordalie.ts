@@ -24,8 +24,6 @@ class Ordalie {
       case ORDALIES.CAULDRON:
         this.ordalie = new OrdalieCauldron(this)
         break
-      default:
-        break
     }
     this.updateId = this.update
     this.start()

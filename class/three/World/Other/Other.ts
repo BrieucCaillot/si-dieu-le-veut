@@ -17,6 +17,9 @@ class Other {
       case OTHERS.INTRO_CONTEXT:
         this.other = new OtherIntroContext(this)
         break
+      case OTHERS.TUTORIAL:
+        // this.other = new OtherIntroContext(this)
+        break
     }
   }
 }
