@@ -1,3 +1,4 @@
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import gsap from 'gsap'
@@ -9,12 +10,12 @@ import Blocks from '@/class/three/World/Blocks'
 import Character from '@/class/three/World/Character'
 
 class Camera extends THREE.EventDispatcher {
-  parent: THREE.Group
+  private parent: THREE.Group
   instance: THREE.PerspectiveCamera
   private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0)
   private controls: OrbitControls
   private currentPosX = 0
-  private debugFolder: { [key: string]: any }
+  private debugFolder: GUI
   private debugParams: { [key: string]: any }
 
   constructor() {

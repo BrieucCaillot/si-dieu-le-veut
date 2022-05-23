@@ -1,10 +1,10 @@
+import CHARACTER from '@/constants/CHARACTER'
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import gsap from 'gsap'
 
 import WebGL from '@/class/three/WebGL'
-
-import CHARACTER from '@/constants/CHARACTER'
 
 class Character {
   resource: GLTF
@@ -12,7 +12,7 @@ class Character {
   model: THREE.Object3D
   animation!: { [key: string]: any }
   forwardSpeed = 0.3
-  debugFolder: { [key: string]: any } | undefined
+  debugFolder: GUI
 
   setup() {
     // Debug

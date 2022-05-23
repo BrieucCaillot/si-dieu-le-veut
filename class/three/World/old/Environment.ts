@@ -1,11 +1,12 @@
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
 
 class Environment extends THREE.EventDispatcher {
-  debugFolder!: { [key: string]: any }
   ambiantLight: THREE.AmbientLight
   environmentMap: { [key: string]: any } = {}
+  debugFolder: GUI
 
   constructor() {
     super()

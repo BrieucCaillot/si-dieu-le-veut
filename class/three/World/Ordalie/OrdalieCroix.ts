@@ -1,3 +1,4 @@
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import DIFFICULTY from '@/constants/DIFFICULTY'
@@ -23,7 +24,7 @@ class OrdalieCroix {
   timeScaleController: any
   gameplayParams: CroixInterface
 
-  debugFolder: { [key: string]: any } | undefined
+  debugFolder: GUI
 
   constructor(_ordalie: Ordalie) {
     this.ordalie = _ordalie
