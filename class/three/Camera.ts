@@ -91,10 +91,10 @@ class Camera extends THREE.EventDispatcher {
     this.currentPosX += 0.09 * directionCoef
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
-    // if (Character.isLoaded()) {
-    this.setPositionX(this.currentPosX)
-    this.setTargetPositionX(this.currentPosX)
-    // }
+    gsap.to([this.parent.position, this.target], {
+      x: this.currentPosX,
+      duration: 0.5,
+    })
   }
 
   followCharacter() {}
