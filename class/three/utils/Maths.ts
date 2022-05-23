@@ -3,3 +3,7 @@ export const remap = (value, low1, high1, low2, high2) => {
 }
 
 export const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+
+export const random = (min, max) => {
+  return Math.random() * (max - min) + min
+}

@@ -19,11 +19,13 @@ const textToWrite = ref(
   "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de cherité, de pitié et de perdon."
 )
 
-const ordalie = ref<OrdalieCroix>()
+const ordalie = ref()
 
 onMounted(() => {
   inputRef.value.focus()
-  ordalie.value = OrdalieManager.ordalies[0].ordalie
+  ordalie.value = OrdalieManager.getByIndex(0).ordalie
+  console.log(ordalie.value)
+
   ordalie.value.setHTMLPosition(containerRef.value)
 })
 

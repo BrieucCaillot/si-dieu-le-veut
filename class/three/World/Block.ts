@@ -8,14 +8,14 @@ import TRANSITIONS from '@/constants/TRANSITIONS'
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
 
-class Block extends THREE.EventDispatcher {
-  type: OTHERS | ORDALIES | TRANSITIONS
+class Block {
+  private type: OTHERS | ORDALIES | TRANSITIONS
   // Model
-  model: GLTF
-  character: THREE.Mesh
-  characterAnimations: THREE.AnimationClip[]
-  textMesh: THREE.Mesh
-  object: THREE.Object3D
+  private model: GLTF
+  private character: THREE.Mesh
+  private characterAnimations: THREE.AnimationClip[]
+  private textMesh: THREE.Mesh
+  private object: THREE.Object3D
 
   private position: THREE.Vector3 = new THREE.Vector3()
   // Box3
@@ -25,9 +25,7 @@ class Block extends THREE.EventDispatcher {
   private size: THREE.Vector3
 
   constructor(_type: OTHERS | ORDALIES | TRANSITIONS) {
-    super()
-
-    console.log('Init Block ' + _type)
+    console.log('-- CREATED BLOCK ' + _type)
 
     this.type = _type
     this.setModel()
@@ -36,13 +34,20 @@ class Block extends THREE.EventDispatcher {
     this.add()
     this.setPosition()
     // this.setBoxHelper()
-    Blocks.onBlockCreated(this)
+    Blocks.onCreated(this)
+  }
+
+  /**
+   * Get block type
+   */
+  getType() {
+    return this.type
   }
 
   /**
    * Set model from type
    */
-  setModel() {
+  private setModel() {
     this.model = WebGL.resources.getItems(this.type, 'model') as GLTF
   }
 
@@ -56,7 +61,7 @@ class Block extends THREE.EventDispatcher {
   /**
    * Set character from model
    */
-  setCharacterModel() {
+  private setCharacterModel() {
     this.character = this.model.scene.children.find((child) => child.name === 'character') as THREE.Mesh
   }
 
@@ -67,11 +72,16 @@ class Block extends THREE.EventDispatcher {
     return this.character
   }
 
+  getTextMesh() {
+    return this.textMesh
+  }
+
   /**
    * Set text region
    */
-  setTextMesh() {
+  private setTextMesh() {
     this.textMesh = this.model.scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
+    // console.log(this.textMesh)
     this.getTextMeshBox()
   }
 
@@ -87,7 +97,7 @@ class Block extends THREE.EventDispatcher {
   /**
    * Add model to scene
    */
-  add() {
+  private add() {
     this.object = this.model.scene
     this.modelBox = new THREE.Box3().setFromObject(this.object)
     this.size = this.modelBox.getSize(new THREE.Vector3())
@@ -98,11 +108,10 @@ class Block extends THREE.EventDispatcher {
   /**
    * Set position of model according to other blocks
    */
-  setPosition() {
-    if (Blocks.getBlockInstances().length < 1) return
-    const lastBlockPositionX = Blocks.getLastBlockInstance().getPosition().x
-    const lastBlockSizeX = Blocks.getLastBlockInstance().getSize().x
-    const x = lastBlockSizeX + this.size.x
+  private setPosition() {
+    if (Blocks.getAll().length < 1) return
+    const lastBlockPositionX = Blocks.getLast().getPosition().x
+    const lastBlockSizeX = Blocks.getLast().getSize().x
     this.object.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
     this.position = this.object.position
   }
@@ -124,7 +133,7 @@ class Block extends THREE.EventDispatcher {
   /**
    * Add box helper to model
    */
-  setBoxHelper() {
+  private setBoxHelper() {
     this.box = new THREE.BoxHelper(this.object, 0xffff00)
     WebGL.scene.add(this.box)
   }
