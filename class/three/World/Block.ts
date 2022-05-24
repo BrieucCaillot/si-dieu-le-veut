@@ -77,9 +77,8 @@ class Block {
    * Add model to scene
    */
   private add() {
-    this.modelBox = new THREE.Box3().setFromObject(this.model.scene)
-    this.size = this.modelBox.getSize(new THREE.Vector3())
-    this.model.scene.scale.set(1, 1, 1)
+    const bg = this.model.scene.children.find((child) => child.name === 'background')
+    this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
   }
 
