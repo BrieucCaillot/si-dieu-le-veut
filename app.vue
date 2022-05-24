@@ -1,13 +1,13 @@
 <template>
-	<div>
-		<Head lang="en> 50 ? 'en-GB' : 'en-US'">
-			<Title>Nuxt3 ThreeJS Starter</Title>
-			<Meta name="description" content="Nuxt3 ThreeJS Starter" />
-		</Head>
-		<NuxtLayout name="default">
-			<NuxtPage />
-		</NuxtLayout>
-	</div>
+  <div>
+    <Head lang="en> 50 ? 'en-GB' : 'en-US'">
+      <Title>Si Dieu le veut</Title>
+      <Meta name="description" content="Si Dieu le veut" />
+    </Head>
+    <NuxtLayout name="default">
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +17,6 @@ import '@/assets/sass/styles.scss'
 
 <style lang="scss">
 body {
-	@apply font-sans;
+  @apply font-sans;
 }
 </style>

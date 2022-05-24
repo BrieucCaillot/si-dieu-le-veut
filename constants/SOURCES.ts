@@ -85,6 +85,16 @@ const ORDALIE_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Ordalies/ordalie_bbq.glb',
     },
+    {
+      name: 'noise',
+      type: SourceType.texture,
+      path: 'textures/noise.jpg',
+    },
+    {
+      name: 'gradient',
+      type: SourceType.texture,
+      path: 'textures/gradient.png',
+    },
   ],
 }
 
