@@ -5,22 +5,24 @@ import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
 import Other from '@/class/three/World/Other/Other'
 
-class OtherIntro {
+class OtherSplashscreen {
   instance: Other
   animation!: { [key: string]: any }
   debugFolder: GUI
+  character: THREE.Mesh
   isFollowingCharacter = false
 
   constructor(_other: Other) {
     this.instance = _other
 
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro')
 
     this.setAnimation()
+    this.setCharacter()
   }
 
   start() {
-    this.animation.play('Character_Enter')
+    this.animation.play('Intro_Cuisinier')
   }
 
   end() {
@@ -32,10 +34,10 @@ class OtherIntro {
 
     this.animation.mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
     this.animation.actions = {
-      Character_Enter: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
+      Intro_Cuisinier: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
     }
-    this.animation.actions.Character_Enter.clampWhenFinished = true
-    this.animation.actions.Character_Enter.loop = THREE.LoopOnce
+    this.animation.actions['Intro_Cuisinier'].clampWhenFinished = true
+    this.animation.actions['Intro_Cuisinier'].loop = THREE.LoopOnce
 
     // Play the action
     this.animation.play = (name: string) => {
@@ -45,9 +47,14 @@ class OtherIntro {
     this.animation.mixer.addEventListener('finished', (e) => this.end())
 
     // Debug
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
     }
+  }
+
+  private setCharacter() {
+    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
+    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   update() {
@@ -55,10 +62,10 @@ class OtherIntro {
 
     this.animation.mixer.update(deltaTime * 0.001)
 
-    console.log('🔁 OtherIntro')
+    console.log('🔁 OtherSplashscreen')
 
     if (this.isFollowingCharacter) return
-    const characterPosition = this.instance.block.getCharacterModel().getWorldPosition(new THREE.Vector3())
+    const characterPosition = this.character.getWorldPosition(new THREE.Vector3())
 
     // MOVE CAMERA TO NEXT BLOCK
     // WHEN CHARACTER IN THE MIDDLE OF THE SCREEN
@@ -71,10 +78,10 @@ class OtherIntro {
   private debugParams() {
     return {
       animations: {
-        playCharacterEnter: () => this.animation.play('Character_Enter'),
+        playCharacterEnter: () => this.animation.play('Intro_Cuisinier'),
       },
     }
   }
 }
 
-export default OtherIntro
+export default OtherSplashscreen

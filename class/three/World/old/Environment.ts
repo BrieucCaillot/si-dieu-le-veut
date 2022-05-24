@@ -12,13 +12,13 @@ class Environment extends THREE.EventDispatcher {
     super()
 
     // Debug
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.addFolder('environment')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('environment')
 
     this.setAmbiantLight()
   }
 
   setAmbiantLight() {
-    this.ambiantLight = new THREE.AmbientLight(0xffffff, 2)
+    this.ambiantLight = new THREE.AmbientLight(0xffffff, 3)
     WebGL.scene.add(this.ambiantLight)
   }
 }

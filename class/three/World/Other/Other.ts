@@ -3,24 +3,24 @@ import gsap from 'gsap'
 import OTHERS from '@/constants/OTHERS'
 
 import Block from '@/class/three/World/Block'
-import OtherIntro from '@/class/three/World/Other/OtherIntro'
-import OtherIntroContext from '@/class/three/World/Other/OtherIntroContext'
+import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
+import OtherCinematic from '@/class/three/World/Other/OtherCinematic'
 import OtherTutorial from '@/class/three/World/Other/OtherTutorial'
 import OtherManager from './OtherManager'
 
 class Other {
   block: Block
-  instance: OtherIntro | OtherIntroContext | OtherTutorial
+  instance: OtherSplashscreen | OtherCinematic | OtherTutorial
   updateId: () => void
 
   constructor(_type: OTHERS) {
     this.block = new Block(_type)
     switch (_type) {
-      case OTHERS.INTRO:
-        this.instance = new OtherIntro(this)
+      case OTHERS.SPLASHSCREEN:
+        this.instance = new OtherSplashscreen(this)
         break
-      case OTHERS.INTRO_CONTEXT:
-        this.instance = new OtherIntroContext(this)
+      case OTHERS.CINEMATIC:
+        this.instance = new OtherCinematic(this)
         break
       case OTHERS.TUTORIAL:
         this.instance = new OtherTutorial(this)

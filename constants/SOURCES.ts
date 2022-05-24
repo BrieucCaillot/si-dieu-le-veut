@@ -17,18 +17,18 @@ interface Source {
 }
 
 const OTHER_SOURCES = {
-  [OTHERS.INTRO]: [
+  [OTHERS.SPLASHSCREEN]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Others/intro.glb',
+      path: 'models/Others/splashscreen.glb',
     },
   ],
-  [OTHERS.INTRO_CONTEXT]: [
+  [OTHERS.CINEMATIC]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Others/intro-context.glb',
+      path: 'models/Others/cinematic.glb',
     },
   ],
   [OTHERS.TUTORIAL]: [
@@ -52,14 +52,14 @@ const TRANSITION_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Transitions/transition_1.glb',
+      path: 'models/Transitions/transition1.glb',
     },
   ],
   [TRANSITIONS.TRANSITION_2]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Transitions/transition_2.glb',
+      path: 'models/Transitions/transition2.glb',
     },
   ],
 }

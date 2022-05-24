@@ -16,8 +16,8 @@ class Character {
 
   setup() {
     // Debug
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('character')
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('character')
+    if (WebGL.debug.isActive()) {
       this.debugFolder.add(this, 'forwardSpeed', 0.1, 1).step(0.1)
     }
 
@@ -84,7 +84,7 @@ class Character {
     })
 
     // Debug
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       // this.debugFolder!.add(this.debugParams().animations, 'playIdleLeft')
       // this.debugFolder!.add(this.debugParams().animations, 'playIdleRight')
       this.debugFolder!.add(this.debugParams().animations, 'playWalkLeftRight')
@@ -112,8 +112,6 @@ class Character {
   }
 
   onKeyPressed = (e) => {
-    // if (useStore().ordalieCroix.value) return
-
     switch (e.key) {
       case 'a':
         this.debugParams().animations.playWalkLeftRight()

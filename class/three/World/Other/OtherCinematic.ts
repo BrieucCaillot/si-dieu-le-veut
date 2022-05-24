@@ -5,14 +5,14 @@ import WebGL from '@/class/three/WebGL'
 import Other from '@/class/three/World/Other/Other'
 import Block from '@/class/three/World/Block'
 
-class OtherIntroContext {
+class OtherCinematic {
   instance: Other
   debugFolder: GUI
 
   constructor(_other: Other) {
     this.instance = _other
 
-    // if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro Context')
+    // if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro Context')
   }
 
   start() {
@@ -32,8 +32,8 @@ class OtherIntroContext {
   }
 
   update() {
-    console.log('🔁 OtherIntroContext')
+    console.log('🔁 OtherCinematic')
   }
 }
 
-export default OtherIntroContext
+export default OtherCinematic

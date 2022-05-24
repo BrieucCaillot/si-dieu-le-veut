@@ -17,20 +17,24 @@ class Camera extends THREE.EventDispatcher {
   private controls: OrbitControls
   private currentPosX = 0
   private debugFolder: GUI
+  private debugParams = {
+    parallaxFactor: 0.18,
+    moveXSpeed: 0.03,
+  }
 
   constructor() {
     super()
 
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('camera')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('camera')
 
     this.setInstance()
-    this.setTargetDebug()
+    // this.setTargetDebug()
     // this.setControls()
     this.setFov()
 
-    if (WebGL.debug.active) {
-      this.debugFolder.add(this.debugParams(), 'parallaxFactor', 0, 1.9).step(0.1)
-      this.debugFolder.add(this.debugParams(), 'moveXSpeed', 0.0001, 2).step(0.1)
+    if (WebGL.debug.isActive()) {
+      this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.1).step(0.01)
+      this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
     }
@@ -60,7 +64,7 @@ class Camera extends THREE.EventDispatcher {
     this.controls.enableDamping = true
     this.controls.enabled = false
 
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.controls, 'enabled')
     }
   }
@@ -81,7 +85,7 @@ class Camera extends THREE.EventDispatcher {
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1
-    this.currentPosX += 0.09 * directionCoef
+    this.currentPosX += this.debugParams.moveXSpeed * directionCoef
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
     gsap.to([this.parent.position, this.target], {
@@ -116,20 +120,13 @@ class Camera extends THREE.EventDispatcher {
   }
 
   private setSmooth() {
-    this.instance.position.x += (WebGL.mouse.screenPosition.x - this.instance.position.x) * this.debugParams().parallaxFactor
-    this.instance.position.y += (WebGL.mouse.screenPosition.y - this.instance.position.y) * this.debugParams().parallaxFactor
+    this.instance.position.x += (WebGL.mouse.screenPosition.x - this.instance.position.x) * this.debugParams.parallaxFactor
+    this.instance.position.y += (WebGL.mouse.screenPosition.y - this.instance.position.y) * this.debugParams.parallaxFactor
     this.instance.lookAt(this.target)
   }
 
   destroy() {
     this.controls!.dispose()
-  }
-
-  private debugParams() {
-    return {
-      parallaxFactor: 0.18,
-      moveXSpeed: 0.3,
-    }
   }
 }
 

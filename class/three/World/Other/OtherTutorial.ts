@@ -13,7 +13,7 @@ class OtherTutorial {
   constructor(_other: Other) {
     this.instance = _other
 
-    // if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Other Transition')
+    // if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Other Transition')
 
     this.setAnimation()
   }
@@ -50,7 +50,7 @@ class OtherTutorial {
     // this.animation.mixer.addEventListener('finished', (e) => this.end())
 
     // Debug
-    // if (WebGL.debug.active) {
+    // if (WebGL.debug.isActive()) {
     //   this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
     // }
   }

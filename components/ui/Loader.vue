@@ -26,6 +26,7 @@ onMounted(() => {
       duration: 0.8,
       autoAlpha: 0,
       ease: 'power3.inOut',
+      // delay: 2,
       onComplete: () => {
         useStore().isLoaderHidden.value = true
         rotateAnim.kill()

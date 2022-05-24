@@ -3,15 +3,16 @@ import TRANSITIONS from '@/constants/TRANSITIONS'
 import Transition from '@/class/three/World/Transition/Transition'
 
 class TransitionManager {
-  private transitions: any[] = []
+  private instances: Transition[] = []
+  private currentIndex = -1
   private lastType: TRANSITIONS
-  private active: Transition
 
   /**
    * Create transition from type
    */
   create = (_type: TRANSITIONS) => {
-    this.transitions.push(new Transition(_type))
+    const transition = new Transition(_type)
+    this.instances.push(transition)
     this.lastType = _type
   }
 
@@ -37,28 +38,37 @@ class TransitionManager {
    * Get all transitions
    */
   getAll() {
-    return this.transitions
+    return this.instances
   }
 
   /**
    * Get active transition
    */
-  getActive() {
-    return this.active
+  getCurrent() {
+    return this.instances[this.currentIndex]
   }
 
   /**
-   * When transition created
+   * Start next transition
    */
-  onTransitionCreated() {
-    console.log('Transition created')
+  startNext() {
+    console.log('🏴‍☠️ START NEXT')
+    this.currentIndex++
+    this.getCurrent().start()
   }
 
   /**
-   * When transition finished
+   * On Transition started
    */
-  onTransitionFinished() {
-    console.log('Transition finished')
+  onStarted() {
+    console.log('🏴‍☠️ STARTED')
+  }
+
+  /**
+   * On Transition ended
+   */
+  onEnded() {
+    console.log('🏴‍☠️ ENDED')
   }
 }
 

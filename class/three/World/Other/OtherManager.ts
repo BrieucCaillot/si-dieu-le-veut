@@ -37,6 +37,9 @@ class OtherManager {
     return this.instances[this.currentIndex]
   }
 
+  /**
+   * Start Splashscreen
+   */
   startFirst() {
     this.getByIndex(0).start()
   }

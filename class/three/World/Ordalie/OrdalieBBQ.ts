@@ -25,7 +25,7 @@ class OrdalieBBQ {
     this.ordalie = _ordalie
     this.block = _ordalie.block
     this.texts = []
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('character')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('character')
 
     this.ordalie.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('text')) {
