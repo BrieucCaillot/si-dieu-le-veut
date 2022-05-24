@@ -15,14 +15,11 @@ class Block {
   private defaultModel: GLTF
   private model: any
   private character: THREE.Mesh
-  private characterAnimations: THREE.AnimationClip[]
-  private textMesh: THREE.Mesh
 
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
   // Box3
   private modelBox: THREE.Box3
-  private planeTextBox: THREE.Box3
   private box: THREE.BoxHelper
   private size: THREE.Vector3
 
@@ -31,7 +28,6 @@ class Block {
 
     this.type = _type
     this.setModel()
-    this.setTextMesh()
     this.setCharacterModel()
     this.add()
     this.setPosition()
@@ -75,32 +71,6 @@ class Block {
    */
   getCharacterModel() {
     return this.character
-  }
-
-  /**
-   * Get text mesh
-   */
-  getTextMesh() {
-    return this.textMesh
-  }
-
-  /**
-   * Set text region
-   */
-  private setTextMesh() {
-    this.textMesh = this.model.scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
-    this.setTextMeshBox()
-  }
-
-  /**
-   * Set text mesh box
-   */
-  private setTextMeshBox() {
-    this.planeTextBox = new THREE.Box3()
-    if (!this.textMesh) return
-    const { geometry, matrixWorld } = this.textMesh
-    geometry.computeBoundingBox()
-    this.planeTextBox.copy(geometry.boundingBox).applyMatrix4(matrixWorld)
   }
 
   /**

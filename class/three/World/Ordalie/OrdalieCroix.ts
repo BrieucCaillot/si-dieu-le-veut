@@ -38,7 +38,8 @@ class OrdalieCroix {
 
   setHTMLPosition(container: HTMLDivElement) {
     //récupérer la taille de ce plane
-    const planeSize = new THREE.Box3().setFromObject(this.block.getTextMesh())
+    const plane = this.ordalie.block.getModel().scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
+    const planeSize = new THREE.Box3().setFromObject(plane)
 
     // console.log('plane size', planeSize)
 
