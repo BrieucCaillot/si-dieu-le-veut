@@ -25,6 +25,8 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
+    TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    TransitionManager.create(TRANSITIONS.TRANSITION_2)
 
     if (WebGL.debug.active) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
@@ -42,7 +44,6 @@ class Blocks {
    * Start blocks system
    */
   start() {
-    // this.goToNext()
     OtherManager.startFirst()
   }
 
