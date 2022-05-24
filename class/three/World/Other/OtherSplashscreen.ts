@@ -5,7 +5,7 @@ import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
 import Other from '@/class/three/World/Other/Other'
 
-class OtherIntro {
+class OtherSplashscreen {
   instance: Other
   animation!: { [key: string]: any }
   debugFolder: GUI
@@ -55,7 +55,7 @@ class OtherIntro {
 
     this.animation.mixer.update(deltaTime * 0.001)
 
-    console.log('🔁 OtherIntro')
+    console.log('🔁 OtherSplashscreen')
 
     if (this.isFollowingCharacter) return
     const characterPosition = this.instance.block.getCharacterModel().getWorldPosition(new THREE.Vector3())
@@ -77,4 +77,4 @@ class OtherIntro {
   }
 }
 
-export default OtherIntro
+export default OtherSplashscreen

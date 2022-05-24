@@ -20,8 +20,8 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    OtherManager.create(OTHERS.INTRO)
-    OtherManager.create(OTHERS.INTRO_CONTEXT)
+    OtherManager.create(OTHERS.SPLASHSCREEN)
+    OtherManager.create(OTHERS.CINEMATIC)
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
@@ -139,7 +139,7 @@ class Blocks {
   private goToNext() {
     console.log('➡️ -- GO TO NEXT')
 
-    if (this.getCurrent().getType() === OTHERS.INTRO) return OtherManager.startNext()
+    if (this.getCurrent().getType() === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
     if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
 
     const nextPosX = this.getNext().getCenter().x

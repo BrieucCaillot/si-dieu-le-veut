@@ -5,7 +5,7 @@ import WebGL from '@/class/three/WebGL'
 import Other from '@/class/three/World/Other/Other'
 import Block from '@/class/three/World/Block'
 
-class OtherIntroContext {
+class OtherCinematic {
   instance: Other
   debugFolder: GUI
 
@@ -32,8 +32,8 @@ class OtherIntroContext {
   }
 
   update() {
-    console.log('🔁 OtherIntroContext')
+    console.log('🔁 OtherCinematic')
   }
 }
 
-export default OtherIntroContext
+export default OtherCinematic
