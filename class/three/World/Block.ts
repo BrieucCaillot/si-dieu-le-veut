@@ -27,7 +27,7 @@ class Block {
   private size: THREE.Vector3
 
   constructor(_type: OTHERS | ORDALIES | TRANSITIONS) {
-    console.log('-- CREATED BLOCK ' + _type)
+    console.log('🧱 CREATED ' + _type)
 
     this.type = _type
     this.setModel()
@@ -126,7 +126,6 @@ class Block {
 
   private setCenter() {
     this.center = this.model.scene.getWorldPosition(new THREE.Vector3())
-    // console.log(this.center.x)
     // this.setCenterDebug()
   }
 
