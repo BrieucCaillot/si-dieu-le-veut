@@ -25,14 +25,14 @@ class Camera extends THREE.EventDispatcher {
   constructor() {
     super()
 
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('camera')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('camera')
 
     this.setInstance()
     // this.setTargetDebug()
     // this.setControls()
     this.setFov()
 
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.1).step(0.01)
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
       this.debugFolder.add(this.parent.position, 'x')
@@ -64,7 +64,7 @@ class Camera extends THREE.EventDispatcher {
     this.controls.enableDamping = true
     this.controls.enabled = false
 
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.controls, 'enabled')
     }
   }

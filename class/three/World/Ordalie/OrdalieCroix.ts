@@ -30,9 +30,8 @@ class OrdalieCroix {
     this.ordalie = _ordalie
     this.block = _ordalie.block
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
-    useStore().ordalieCroix.value = true
 
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
     this.setAnimation()
   }
 
@@ -90,7 +89,7 @@ class OrdalieCroix {
     this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
     this.animation.actions.Croix_Descend.timeScale = this.gameplayParams.fallingSpeedArm
 
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder!.add(this.debugParams().animations, 'armsUp')
       this.debugFolder!.add(this.debugParams().animations, 'startGame')
       this.debug()
@@ -143,13 +142,10 @@ class OrdalieCroix {
   update() {
     const { deltaTime } = WebGL.time
 
-    // if (Character.getPosition().x > 3.5 && !useStore().ordalieCroix.value) {
-    //   useStore().ordalieCroix.value = true
-    //   this.animation.actions['Croix_Descend'].play()
-    // }
-
-    this.debugObject.timeScale = this.animation.actions['Croix_Descend'].timeScale
-    this.debugObject.time = this.animation.actions['Croix_Descend'].time
+    if (WebGL.debug.isActive()) {
+      this.debugObject.timeScale = this.animation.actions['Croix_Descend'].timeScale
+      this.debugObject.time = this.animation.actions['Croix_Descend'].time
+    }
 
     this.animation.mixer.update(deltaTime * 0.001)
     // console.log(remapped)

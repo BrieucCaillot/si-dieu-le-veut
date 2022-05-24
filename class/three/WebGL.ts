@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+
 import Sizes from '@/class/three/utils/Sizes'
 import Mouse from '@/class/three/Mouse'
 import Time from '@/class/three/Time'

@@ -1,11 +1,11 @@
 const isLoaderHidden = ref(false)
 const resourcesLoaded = ref(false)
-const ordalieCroix = ref(false)
+const isDebug = ref(false)
 
 export default () => {
   return {
     isLoaderHidden,
     resourcesLoaded,
-    ordalieCroix,
+    isDebug,
   }
 }

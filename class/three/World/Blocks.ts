@@ -25,10 +25,8 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.CROIX)
-    TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    TransitionManager.create(TRANSITIONS.TRANSITION_2)
 
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
       this.debugFolder.add(this.debugParams(), 'getCurrentIndex').name('Current index')
       this.debugFolder.add(this.debugParams(), 'start').name('Start')

@@ -15,7 +15,7 @@ class OtherSplashscreen {
   constructor(_other: Other) {
     this.instance = _other
 
-    if (WebGL.debug.active) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro')
 
     this.setAnimation()
     this.setCharacter()
@@ -47,7 +47,7 @@ class OtherSplashscreen {
     this.animation.mixer.addEventListener('finished', (e) => this.end())
 
     // Debug
-    if (WebGL.debug.active) {
+    if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
     }
   }
