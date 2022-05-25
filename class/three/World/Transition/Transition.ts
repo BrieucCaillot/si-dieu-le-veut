@@ -18,6 +18,11 @@ class Transition {
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
     this.updateId = this.update
+
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
+
+    this.setAnimation()
+    this.start()
   }
 
   start() {
@@ -28,9 +33,6 @@ class Transition {
 
   onStart() {
     console.log('🏴‍☠️ STARTED ' + this.block.getType())
-
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Transition')
-    this.setAnimation()
   }
 
   end() {
