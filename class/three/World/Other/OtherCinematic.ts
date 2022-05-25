@@ -26,7 +26,8 @@ class OtherCinematic {
     setTimeout(() => {
       console.log('📹 VIDEO PLAYED')
       this.end()
-    }, 5000)
+      // }, 5000)
+    }, 20)
   }
 
   update() {

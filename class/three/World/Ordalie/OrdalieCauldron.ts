@@ -2,12 +2,20 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import Block from '@/class/three/World/Block'
 
 class OrdalieCauldron {
-  ordalie: Ordalie
+  instance: Ordalie
   block: Block
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
     this.block = _ordalie.block
+  }
+
+  start() {
+    // TODO START
+  }
+
+  end() {
+    this.instance.end()
   }
 
   update() {

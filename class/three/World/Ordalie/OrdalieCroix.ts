@@ -28,6 +28,14 @@ class OrdalieCroix {
     this.setAnimation()
   }
 
+  start() {
+    // TODO START
+  }
+
+  end() {
+    this.instance.end()
+  }
+
   setHTMLPosition(container: HTMLDivElement) {
     //récupérer la taille de ce plane
     const plane = this.instance.block.getModel().scene.children.find((child) => child.name === 'Plane') as THREE.Mesh

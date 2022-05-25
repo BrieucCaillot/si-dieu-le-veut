@@ -38,6 +38,7 @@ class OtherSplashscreen {
     }
     this.animation.actions['Intro_Cuisinier'].clampWhenFinished = true
     this.animation.actions['Intro_Cuisinier'].loop = THREE.LoopOnce
+    this.animation.actions['Intro_Cuisinier'].timeScale = 3
 
     // Play the action
     this.animation.play = (name: string) => {
@@ -47,9 +48,7 @@ class OtherSplashscreen {
     this.animation.mixer.addEventListener('finished', (e) => this.end())
 
     // Debug
-    if (WebGL.debug.isActive()) {
-      this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
-    }
+    this.debugFolder?.add(this.debugParams().animations, 'playCharacterEnter')
   }
 
   private setCharacter() {

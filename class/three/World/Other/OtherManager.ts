@@ -50,7 +50,6 @@ class OtherManager {
   startNext() {
     console.log('✨ START NEXT')
     this.currentIndex++
-    console.log('STARTING THIS SHIT : ' + this.getCurrent().block.getType())
     this.getCurrent().start()
   }
 

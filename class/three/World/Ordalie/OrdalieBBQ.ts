@@ -26,7 +26,6 @@ class OrdalieBBQ {
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
-    this.block = _ordalie.block
     this.texts = []
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
 
@@ -36,10 +35,9 @@ class OrdalieBBQ {
       }
     })
 
-    const texture = this.texts[0].material.map as THREE.Texture
-
-    const noise = WebGL.resources.getItems(this.block.getType(), 'noise') as THREE.Texture
-    const gradient = WebGL.resources.getItems(this.block.getType(), 'gradient') as THREE.Texture
+    const texture = this.texts[0].material.map
+    const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise') as THREE.Texture
+    const gradient = WebGL.resources.getItems(this.instance.block.getType(), 'gradient') as THREE.Texture
 
     this.setCharacter()
     this.setAnimation()
@@ -69,37 +67,26 @@ class OrdalieBBQ {
     }
   }
 
-  start() {
-    useStore().currentOrdalie.value = ORDALIES.BBQ
-  }
+  start() {}
 
   end() {
-    useStore().currentOrdalie.value = null
-    //todo, call the manager to go to the next block
+    this.instance.end()
   }
 
   private setCharacter() {
-    const rig = this.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
+    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
     this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
-
-    // console.log()
-    // this.block.getModel().scene.traverse((mesh) => {
-    // console.log(mesh.material)
-    // if (mesh.material.name === 'cuisinier') {
-    //   console.log(mesh)
-    // }
-    // })
   }
 
   private setAnimation() {
     this.animation = {}
 
-    this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
+    this.animation.mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
 
     this.animation.actions = {
-      Braises_Cuisinier_Avance: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
-      Braises_Cuisinier_Idle: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
-      Braises_Cuisinier_Mort_V2: this.animation.mixer.clipAction(this.block.getModel().animations[2]),
+      Braises_Cuisinier_Avance: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
+      Braises_Cuisinier_Idle: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
+      Braises_Cuisinier_Mort_V2: this.animation.mixer.clipAction(this.instance.block.getModel().animations[2]),
     }
 
     this.animation.actions['Braises_Cuisinier_Avance'].clampWhenFinished = true

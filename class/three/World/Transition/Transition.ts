@@ -70,9 +70,7 @@ class Transition {
     })
 
     // Debug
-    if (WebGL.debug.isActive()) {
-      this.debugFolder.add(this.debugParams().animations, 'playGroupAnim')
-    }
+    this.debugFolder?.add(this.debugParams().animations, 'playGroupAnim')
   }
 
   update = () => {

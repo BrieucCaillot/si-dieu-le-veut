@@ -29,7 +29,6 @@ class OrdalieManager {
   createNext() {
     const random = Math.floor(Math.random() * 2)
 
-    // @TODO Define logic
     switch (this.lastCreated) {
       case ORDALIES.CROIX:
         this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.BBQ)
@@ -79,6 +78,18 @@ class OrdalieManager {
   }
 
   /**
+   * Start next other
+   */
+  startNext() {
+    console.log('🎲 START NEXT')
+    this.currentIndex++
+    console.log(this.getCurrent())
+    useStore().currentOrdalie.value = this.getCurrent().block.getType()
+
+    // this.getCurrent().start()
+  }
+
+  /**
    * On Other started
    */
   onStarted() {
@@ -91,6 +102,7 @@ class OrdalieManager {
    */
   onEnded() {
     console.log('🎲 ENDED ' + this.getCurrent().block.getType())
+    useStore().currentOrdalie.value = null
     Blocks.onEnded()
   }
 }

@@ -25,6 +25,8 @@ class Blocks {
     // OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.BBQ)
+    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    // OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -147,7 +149,6 @@ class Blocks {
     console.log('➡️ -- GO TO NEXT')
 
     if (this.getCurrent().getType() === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
-    // if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
 
     const nextPosX = this.getNext().getCenter().x
 
@@ -164,16 +165,16 @@ class Blocks {
         return OtherManager.startNext()
       }
 
-      // // IF PREVIOUS BLOCK IS ORDALIE, GO TO TRANSITION
-      // if (this.isOrdalie(this.getNext())) {
-      //   console.log('-- Go to next transition')
-      //   // return TransitionManager.goToNext()
-      // }
-      // // IF PREVIOUS BLOCK IS TRANSITION, CREATE ORDALIE
-      // if (this.isTransition(this.getNext())) {
-      //   console.log('-- Go to next ordalie')
-      //   // return OrdalieManager.goToNext()
-      // }
+      // // IF NEXT BLOCK IS AN ORDALIE
+      // START NEXT ORDALIE
+      if (this.isOrdalie(this.getCurrent())) {
+        return OrdalieManager.startNext()
+      }
+      // // IF NEXT BLOCK IS A TRANSITION
+      // START NEXT TRANSITION
+      if (this.isTransition(this.getCurrent())) {
+        return TransitionManager.startNext()
+      }
     })
   }
 

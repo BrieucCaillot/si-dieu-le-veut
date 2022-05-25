@@ -3,10 +3,10 @@ import gsap from 'gsap'
 import OTHERS from '@/constants/OTHERS'
 
 import Block from '@/class/three/World/Block'
+import OtherManager from '@/class/three/World/Other/OtherManager'
 import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
 import OtherCinematic from '@/class/three/World/Other/OtherCinematic'
 import OtherTutorial from '@/class/three/World/Other/OtherTutorial'
-import OtherManager from './OtherManager'
 
 class Other {
   block: Block

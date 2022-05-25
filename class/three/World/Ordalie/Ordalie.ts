@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import ORDALIES from '@/constants/ORDALIES'
 
 import Block from '@/class/three/World/Block'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
 import OrdalieBBQ from '@/class/three/World/Ordalie/OrdalieBBQ'
 import OrdalieCauldron from '@/class/three/World/Ordalie/OrdalieCauldron'
@@ -26,15 +27,17 @@ class Ordalie {
         break
     }
     this.updateId = this.update
-    this.start()
   }
 
   start() {
+    this.instance.start()
     gsap.ticker.add(this.updateId)
+    OrdalieManager.onStarted()
   }
 
   end() {
     gsap.ticker.remove(this.updateId)
+    OrdalieManager.onEnded()
   }
 
   update = () => {

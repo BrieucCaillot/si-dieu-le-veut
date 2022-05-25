@@ -61,14 +61,14 @@ class TransitionManager {
    * On Transition started
    */
   onStarted() {
-    console.log('🏴‍☠️ STARTED')
+    console.log('🏴‍☠️ STARTED ' + this.getCurrent().block.getType())
   }
 
   /**
    * On Transition ended
    */
   onEnded() {
-    console.log('🏴‍☠️ ENDED')
+    console.log('🏴‍☠️ ENDED' + this.getCurrent().block.getType())
   }
 }
 
