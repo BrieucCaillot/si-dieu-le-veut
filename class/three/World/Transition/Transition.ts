@@ -18,6 +18,7 @@ class Transition {
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
     this.updateId = this.update
+    this.setAnimation()
   }
 
   start() {
@@ -29,8 +30,8 @@ class Transition {
   onStart() {
     console.log('🏴‍☠️ STARTED ' + this.block.getType())
 
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Transition')
-    this.setAnimation()
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
+    this.debugParams().animations.playGroupAnim()
   }
 
   end() {
@@ -76,7 +77,6 @@ class Transition {
 
   update = () => {
     const { deltaTime } = WebGL.time
-
     this.animation.mixer.update(deltaTime * 0.001)
   }
 

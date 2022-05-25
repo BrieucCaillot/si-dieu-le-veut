@@ -20,14 +20,14 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    // OtherManager.create(OTHERS.SPLASHSCREEN)
-    // OtherManager.create(OTHERS.CINEMATIC)
-    // OtherManager.create(OTHERS.TUTORIAL)
+    OtherManager.create(OTHERS.SPLASHSCREEN)
+    OtherManager.create(OTHERS.CINEMATIC)
+    OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.BBQ)
+    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
-      this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
+      this.debugFolder = WebGL.debug.addFolder('Blocks')
       this.debugFolder.add(this.debugParams(), 'getCurrentIndex').name('Current index')
       this.debugFolder.add(this.debugParams(), 'start').name('Start')
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
@@ -36,6 +36,14 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'createOrdalieBBQ').name('Create Ordalie BBQ')
       this.debugFolder.add(this.debugParams(), 'goToNext').name('Go To Next')
     }
+
+    // window.addEventListener('')
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        // Do your thing
+        this.start()
+      }
+    })
   }
 
   /**
@@ -139,7 +147,7 @@ class Blocks {
     console.log('➡️ -- GO TO NEXT')
 
     if (this.getCurrent().getType() === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
-    if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
+    // if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
 
     const nextPosX = this.getNext().getCenter().x
 

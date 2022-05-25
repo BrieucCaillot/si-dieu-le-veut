@@ -12,7 +12,7 @@ class OtherCinematic {
   constructor(_other: Other) {
     this.instance = _other
 
-    // if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('Other Intro Context')
+    // if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Other Intro Context')
   }
 
   start() {

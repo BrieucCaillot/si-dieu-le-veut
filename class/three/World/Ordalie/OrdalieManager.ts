@@ -1,12 +1,13 @@
 import ORDALIES from '@/constants/ORDALIES'
 import DIFFICULTY from '@/constants/DIFFICULTY'
 
+import Blocks from '@/class/three/World/Blocks'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 
 class OrdalieManager {
-  private ordalies: Ordalie[] = []
-  private lastType: ORDALIES
-  private active: Ordalie
+  private instances: Ordalie[] = []
+  private currentIndex = 0
+  private lastCreated: ORDALIES
   private difficulty: DIFFICULTY
 
   constructor() {
@@ -17,8 +18,9 @@ class OrdalieManager {
    * Create ordalie from type
    */
   create(_type: ORDALIES) {
-    this.ordalies.push(new Ordalie(_type))
-    this.lastType = _type
+    const ordalie = new Ordalie(_type)
+    this.instances.push(ordalie)
+    this.lastCreated = _type
   }
 
   /**
@@ -28,15 +30,15 @@ class OrdalieManager {
     const random = Math.floor(Math.random() * 2)
 
     // @TODO Define logic
-    switch (this.lastType) {
+    switch (this.lastCreated) {
       case ORDALIES.CROIX:
-        this.create(random === 0 ? ORDALIES.CAULDRON : ORDALIES.BBQ)
+        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.BBQ)
         break
       case ORDALIES.BBQ:
-        this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.CAULDRON)
+        this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.FOOD)
         break
-      case ORDALIES.CAULDRON:
-        this.create(random === 0 ? ORDALIES.BBQ : ORDALIES.CROIX)
+      case ORDALIES.FOOD:
+        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.CROIX)
         break
     }
   }
@@ -45,21 +47,21 @@ class OrdalieManager {
    * Get all ordalies
    */
   getAll() {
-    return this.ordalies
-  }
-
-  /**
-   * Get active ordalie
-   */
-  getActive() {
-    return this.active
+    return this.instances
   }
 
   /**
    * Get ordalie by index
    */
   getByIndex(index: number) {
-    return this.ordalies[index]
+    return this.instances[index]
+  }
+
+  /**
+   * Get current ordalie
+   */
+  getCurrent() {
+    return this.instances[this.currentIndex]
   }
 
   /**
@@ -76,12 +78,20 @@ class OrdalieManager {
     return this.difficulty
   }
 
-  onOrdalieCreated() {
-    console.log('Ordalie created')
+  /**
+   * On Other started
+   */
+  onStarted() {
+    console.log('🎲 STARTED ' + this.getCurrent().block.getType())
+    Blocks.onStarted()
   }
 
-  onOrdalieFinished() {
-    console.log('Ordalie finished')
+  /**
+   * On Other ended
+   */
+  onEnded() {
+    console.log('🎲 ENDED ' + this.getCurrent().block.getType())
+    Blocks.onEnded()
   }
 }
 

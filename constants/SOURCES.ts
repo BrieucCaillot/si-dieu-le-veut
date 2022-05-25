@@ -71,6 +71,13 @@ const ORDALIE_SOURCES = {
       path: 'models/Ordalies/ordalie_croix.glb',
     },
   ],
+  [ORDALIES.FOOD]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Ordalies/ordalie_food.glb',
+    },
+  ],
   [ORDALIES.CAULDRON]: [
     {
       name: 'model',
