@@ -6,7 +6,6 @@ import useStore from '@/composables/useStore'
 import Environment from '@/class/three/World/old/Environment'
 import Blocks from '@/class/three/World/Blocks'
 import AudioManager from '@/class/three/utils/AudioManager'
-import Character from '@/class/three/World/Character'
 
 class World extends THREE.EventDispatcher {
   environment: Environment

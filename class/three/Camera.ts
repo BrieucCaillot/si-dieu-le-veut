@@ -7,7 +7,6 @@ import { clamp } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
-import Character from '@/class/three/World/Character'
 
 class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
@@ -113,10 +112,6 @@ class Camera extends THREE.EventDispatcher {
       ease: 'power.easeOut',
       onComplete: () => cb(),
     })
-  }
-
-  setLookAtCharacter() {
-    this.instance.lookAt(Character.getPosition())
   }
 
   private setSmooth() {

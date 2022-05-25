@@ -14,7 +14,6 @@ class Block {
   // Model
   private defaultModel: GLTF
   private model: any
-  private character: THREE.Mesh
 
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
@@ -28,7 +27,6 @@ class Block {
 
     this.type = _type
     this.setModel()
-    this.setCharacterModel()
     this.add()
     this.setPosition()
     this.setCenter()
@@ -57,20 +55,6 @@ class Block {
    */
   getModel() {
     return this.model
-  }
-
-  /**
-   * Set character from model
-   */
-  private setCharacterModel() {
-    this.character = this.model.scene.children.find((child) => child.name === 'character') as THREE.Mesh
-  }
-
-  /**
-   * Get character model
-   */
-  getCharacterModel() {
-    return this.character
   }
 
   /**

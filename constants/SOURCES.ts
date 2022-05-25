@@ -1,7 +1,6 @@
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
-import CHARACTER from '@/constants/CHARACTER'
 import SOUNDS from '@/constants/SOUNDS'
 
 enum SourceType {
@@ -98,21 +97,6 @@ const ORDALIE_SOURCES = {
   ],
 }
 
-const CHARACTER_SOURCES = {
-  [CHARACTER.ALL]: [
-    {
-      name: 'model',
-      type: SourceType.gltfModel,
-      path: 'models/Character/test_croix.glb',
-    },
-    {
-      name: 'model-rig',
-      type: SourceType.gltfModel,
-      path: 'models/Character/test_rig.glb',
-    },
-  ],
-}
-
-const ALL_SOURCES = { ...OTHER_SOURCES, ...ORDALIE_SOURCES, ...TRANSITION_SOURCES, ...CHARACTER_SOURCES }
+const ALL_SOURCES = { ...OTHER_SOURCES, ...ORDALIE_SOURCES, ...TRANSITION_SOURCES }
 
 export { SourceType, Source, ALL_SOURCES }

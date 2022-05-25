@@ -11,8 +11,6 @@ import { remap } from '@/class/three/utils/Maths'
 import Block from '@/class/three/World/Block'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import Character from '@/class/three/World/Character'
-import useStore from '@/composables/useStore'
 
 class OrdalieCroix {
   ordalie: Ordalie
