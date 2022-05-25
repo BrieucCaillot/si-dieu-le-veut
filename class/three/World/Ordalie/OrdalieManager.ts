@@ -30,13 +30,13 @@ class OrdalieManager {
     // @TODO Define logic
     switch (this.lastType) {
       case ORDALIES.CROIX:
-        this.create(random === 0 ? ORDALIES.CAULDRON : ORDALIES.BBQ)
+        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.BBQ)
         break
       case ORDALIES.BBQ:
-        this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.CAULDRON)
+        this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.FOOD)
         break
-      case ORDALIES.CAULDRON:
-        this.create(random === 0 ? ORDALIES.BBQ : ORDALIES.CROIX)
+      case ORDALIES.FOOD:
+        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.CROIX)
         break
     }
   }
