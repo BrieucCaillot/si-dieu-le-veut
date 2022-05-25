@@ -59,12 +59,14 @@ class OrdalieBBQ {
         transparent: true,
       })
 
-      this.debugFolder
-        .add(this.texts[i].material.uniforms.uDissolve, 'value', -0.1, 1.1)
-        .step(0.01)
-        .onChange((value) => {
-          this.texts[i].material.uniforms.uDissolve.value = value
-        })
+      if (this.debugFolder) {
+        this.debugFolder
+          .add(this.texts[i].material.uniforms.uDissolve, 'value', -0.1, 1.1)
+          .step(0.01)
+          .onChange((value) => {
+            this.texts[i].material.uniforms.uDissolve.value = value
+          })
+      }
     }
   }
 

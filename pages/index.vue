@@ -12,6 +12,6 @@ import OrdalieBBQ from '@/components/ui/Typing/OrdalieBBQ.vue'
 import OrdalieCauldron from '@/components/ui/Typing/OrdalieCauldron.vue'
 
 const croix = ref(false)
-const bbq = ref(false)
+const bbq = ref(true)
 const cauldron = ref(false)
 </script>
