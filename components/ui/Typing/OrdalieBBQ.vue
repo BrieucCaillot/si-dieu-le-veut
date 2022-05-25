@@ -29,8 +29,8 @@ import { random } from '@/class/three/utils/Maths'
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
 const MAX_DISPLAY_TIME = {
-  MIN: 8,
-  MAX: 10,
+  MIN: 7,
+  MAX: 9,
 }
 const BASE_BURNING = 0
 const MAX_BURNING = 0.3
@@ -274,7 +274,7 @@ const incrementChrono = (time, deltaTime, frame) => {
 
     displayedWords[i].displayTime += deltaTime * 0.001
 
-    chronometer.value.children.item(i).innerHTML = displayedWords[i].maxDisplayTime + displayedWords[i].word + Math.round(displayedWords[i].displayTime)
+    // chronometer.value.children.item(i).innerHTML = displayedWords[i].maxDisplayTime + displayedWords[i].word + Math.round(displayedWords[i].displayTime)
 
     const r = BASE_COLOR.r + (TARGET_COLOR.r - BASE_COLOR.r) * (timeProgress * 2)
     const g = BASE_COLOR.g + (TARGET_COLOR.g - BASE_COLOR.g) * (timeProgress * 2)
