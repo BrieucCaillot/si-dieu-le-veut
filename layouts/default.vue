@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <Loader v-if="showLoader" />
-    <Header />
+    <!-- <Header /> -->
     <main id="main" class="page">
       <Canvas />
       <slot v-if="!showLoader" />

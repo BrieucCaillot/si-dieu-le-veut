@@ -65,7 +65,6 @@ class OrdalieCroix {
     this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
 
     this.animation.mixer.addEventListener('finished', (e) => {
-      console.log(e)
       //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
       if (e.direction === -1) {
         this.animation.actions['Croix_Descend'].stop()
@@ -127,7 +126,7 @@ class OrdalieCroix {
         armsUp: () => this.armsUp(),
         startGame: () => {
           this.animation.actions['Croix_Descend'].play()
-          document.getElementById('input-typing').focus()
+          // document.getElementById('input-typing').focus()
         },
       },
     }

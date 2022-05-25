@@ -1,11 +1,11 @@
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import Block from '@/class/three/World/Block'
 import WebGL from '@/class/three/WebGL'
+import ORDALIES from '@/constants/ORDALIES'
+import useStore from '@/composables/useStore'
 
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
-
-// import { UniformsUtils } from 'three'
 
 import * as THREE from 'three'
 import GUI from 'lil-gui'
@@ -17,7 +17,7 @@ class OrdalieBBQ {
   texts: THREE.Mesh[]
   animation: { [key: string]: any }
   debugFolder: GUI
-  forwardSpeed = 0.12
+  forwardSpeed = 0.1
   modulo = 0
   uniforms: any
   character: THREE.Mesh
@@ -26,12 +26,11 @@ class OrdalieBBQ {
     this.ordalie = _ordalie
     this.block = _ordalie.block
     this.texts = []
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('character')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
 
     this.ordalie.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('text')) {
         this.texts.push(mesh)
-        console.log(mesh.name)
       }
     })
 
@@ -46,7 +45,6 @@ class OrdalieBBQ {
       uTexture: { value: texture },
       uNoise: { value: noise },
       uGradient: { value: gradient },
-      // uDissolve: { value: 0 },
     }
 
     for (let i = 0; i < this.texts.length; i++) {
@@ -78,18 +76,20 @@ class OrdalieBBQ {
 
     this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
 
-    console.log(this.block.getModel())
-
     this.animation.actions = {
       Braises_Cuisinier_Avance: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
       Braises_Cuisinier_Idle: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
+      Braises_Cuisinier_Mort_V2: this.animation.mixer.clipAction(this.block.getModel().animations[2]),
     }
+
     this.animation.actions['Braises_Cuisinier_Avance'].clampWhenFinished = true
     this.animation.actions['Braises_Cuisinier_Avance'].loop = THREE.LoopOnce
 
     this.animation.actions['Braises_Cuisinier_Idle'].timeScale = 1.2
     // this.animation.actions['Braises_Cuisinier_Idle'].clampWhenFinished = true
     // this.animation.actions['Braises_Cuisinier_Idle'].loop = THREE.LoopOnce
+    this.animation.actions['Braises_Cuisinier_Mort_V2'].clampWhenFinished = true
+    this.animation.actions['Braises_Cuisinier_Mort_V2'].loop = THREE.LoopOnce
 
     // Play the action
     this.animation.play = (name: string) => {
@@ -99,7 +99,6 @@ class OrdalieBBQ {
     this.animation.play('Braises_Cuisinier_Idle')
 
     this.animation.mixer.addEventListener('finished', (e) => {
-      console.log(e)
       if (e.action._clip.name === 'Braises_Cuisinier_Avance') {
         this.animation.actions['Braises_Cuisinier_Avance'].stop()
         this.animation.actions['Braises_Cuisinier_Idle'].reset()
@@ -114,27 +113,22 @@ class OrdalieBBQ {
   }
 
   makeAStep() {
-    // this.debugParams().animations.playWalkLeftRight()
-
-    // console.log(this.character.position.x)
-
     this.animation.actions['Braises_Cuisinier_Avance'].stop()
     this.animation.play('Braises_Cuisinier_Avance')
 
     this.animation.actions['Braises_Cuisinier_Idle'].crossFadeTo(this.animation.actions['Braises_Cuisinier_Avance'], 0.16)
 
-    // this.character.position.x += this.forwardSpeed
-
     gsap.to(this.character.position, {
       x: this.character.position.x + this.forwardSpeed,
       duration: 1,
-      onComplete: () => {
-        console.log('new pos', this.character.position.x)
-      },
     })
   }
 
   gameOver() {
+    this.animation.play('Braises_Cuisinier_Mort_V2')
+    this.animation.actions['Braises_Cuisinier_Idle'].crossFadeTo(this.animation.actions['Braises_Cuisinier_Mort_V2'], 0.16)
+    // this.animation.actions['Braises_Cuisinier_Mort_V2'].crossFadeFrom(this.animation.actions['Braises_Cuisinier_Idle'], 0.16)
+
     for (let i = 0; i < this.texts.length; i++) {
       const uDissolve = this.texts[i].material.uniforms.uDissolve
 
@@ -163,79 +157,13 @@ class OrdalieBBQ {
     container.style.transform = `translate(${x1}px,${y1}px)`
   }
 
-  // setAnimation() {
-  //   this.animation = {}
-
-  //   // Mixer
-  //   this.animation.mixer = new THREE.AnimationMixer(this.ordalie.block.getModel().scene)
-
-  //   // Actions
-  //   this.animation.actions = {}
-
-  //   this.animation.actions.idleLeft = this.animation.mixer.clipAction(this.block.getModel().animations[0])
-  //   this.animation.actions.idleRight = this.animation.mixer.clipAction(this.block.getModel().animations[1])
-  //   this.animation.actions.walkLeftRight = this.animation.mixer.clipAction(this.block.getModel().animations[2])
-  //   this.animation.actions.walkRightLeft = this.animation.mixer.clipAction(this.block.getModel().animations[3])
-
-  //   this.animation.actions.current = this.animation.actions.idleRight
-  //   this.animation.actions.current.play()
-
-  //   // Play the action
-  //   this.animation.play = (name: string) => {
-  //     const newAction = this.animation.actions[name]
-  //     if (name === 'walkLeftRight' || name === 'walkRightLeft') {
-  //       newAction.setLoop(THREE.LoopOnce)
-  //       newAction.clampWhenFinished = false
-  //     }
-  //     const oldAction = this.animation.actions.current
-  //     oldAction.stop()
-  //     newAction.play()
-
-  //     this.animation.actions.current = newAction
-  //   }
-
-  //   this.animation.mixer.addEventListener('finished', (e) => {
-  //     switch (e.action._clip.name) {
-  //       case 'Walk_Left-Right':
-  //         this.animation.play('idleRight')
-  //         break
-  //       case 'Walk_Right-Left':
-  //         this.animation.play('idleLeft')
-  //         break
-  //     }
-  //   })
-
-  //   // Debug
-  //   if (WebGL.debug.active) {
-  //     // this.debugFolder.add(this.debugParams().animations, 'playWalkLeftRight')
-  //     // this.debugFolder.add(this.debugParams().animations, 'playWalkRightLeft')
-  //   }
-  // }
-
-  // debugParams() {
-  //   return {
-  //     animations: {
-  //       playIdleLeft: () => {
-  //         this.animation.play('idleLeft')
-  //       },
-  //       playIdleRight: () => {
-  //         this.animation.play('idleRight')
-  //       },
-  //       playWalkLeftRight: () => {
-  //         this.animation.play('walkLeftRight')
-  //       },
-  //       playWalkRightLeft: () => {
-  //         this.animation.play('walkRightLeft')
-  //       },
-  //     },
-  //   }
-  // }
-
   onGameEnded() {}
 
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
+
+    // console.log('update')
   }
 }
 
