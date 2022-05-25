@@ -20,11 +20,11 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    // OtherManager.create(OTHERS.SPLASHSCREEN)
-    // OtherManager.create(OTHERS.CINEMATIC)
-    // OtherManager.create(OTHERS.TUTORIAL)
+    OtherManager.create(OTHERS.SPLASHSCREEN)
+    OtherManager.create(OTHERS.CINEMATIC)
+    OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.BBQ)
+    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
@@ -36,6 +36,14 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'createOrdalieBBQ').name('Create Ordalie BBQ')
       this.debugFolder.add(this.debugParams(), 'goToNext').name('Go To Next')
     }
+
+    // window.addEventListener('')
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        // Do your thing
+        this.start()
+      }
+    })
   }
 
   /**
