@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
 
+import ORDALIES from '@/constants/ORDALIES'
+
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import Block from '@/class/three/World/Block'
 import WebGL from '@/class/three/WebGL'
@@ -34,7 +36,8 @@ class OrdalieBBQ {
       }
     })
 
-    const texture = this.texts[0].material.map
+    const texture = this.texts[0].material.map as THREE.Texture
+
     const noise = WebGL.resources.getItems(this.block.getType(), 'noise') as THREE.Texture
     const gradient = WebGL.resources.getItems(this.block.getType(), 'gradient') as THREE.Texture
 
@@ -66,9 +69,26 @@ class OrdalieBBQ {
     }
   }
 
+  start() {
+    useStore().currentOrdalie.value = ORDALIES.BBQ
+  }
+
+  end() {
+    useStore().currentOrdalie.value = null
+    //todo, call the manager to go to the next block
+  }
+
   private setCharacter() {
     const rig = this.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
     this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
+
+    // console.log()
+    // this.block.getModel().scene.traverse((mesh) => {
+    // console.log(mesh.material)
+    // if (mesh.material.name === 'cuisinier') {
+    //   console.log(mesh)
+    // }
+    // })
   }
 
   private setAnimation() {
@@ -103,6 +123,10 @@ class OrdalieBBQ {
         this.animation.actions['Braises_Cuisinier_Avance'].stop()
         this.animation.actions['Braises_Cuisinier_Idle'].reset()
         this.animation.play('Braises_Cuisinier_Idle')
+      }
+
+      if (e.action._clip.name === 'Braises_Cuisinier_Mort_V2') {
+        this.end()
       }
     })
 
@@ -156,8 +180,6 @@ class OrdalieBBQ {
 
     container.style.transform = `translate(${x1}px,${y1}px)`
   }
-
-  onGameEnded() {}
 
   update() {
     const { deltaTime } = WebGL.time

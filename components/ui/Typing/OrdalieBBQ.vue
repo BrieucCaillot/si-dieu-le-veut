@@ -15,8 +15,6 @@
       <span></span>
       <span></span>
     </div>
-
-    <!-- <input type="text" id="input-typing" class="fixed bottom-0 left-0" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" /> -->
   </div>
 </template>
 
@@ -43,7 +41,6 @@ const TARGET_COLOR = { r: 197, g: 0, b: 0 }
 let COUNTER = 0
 let GAME_RUNNING = false
 
-// const inputRef = ref<HTMLInputElement>()
 const chronometer = ref<HTMLDivElement>()
 
 const parent1 = ref<HTMLDivElement>()

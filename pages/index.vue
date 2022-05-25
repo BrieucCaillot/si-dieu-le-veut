@@ -44,6 +44,11 @@ const displayOrdalie = (value) => {
       cauldron.value = true
       break
 
+    case null:
+      croix.value = false
+      bbq.value = false
+      cauldron.value = false
+
     default:
       break
   }
