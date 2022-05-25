@@ -20,6 +20,7 @@ class OrdalieBBQ {
   forwardSpeed = 0.12
   modulo = 0
   uniforms: any
+  character: THREE.Mesh
 
   constructor(_ordalie: Ordalie) {
     this.ordalie = _ordalie
@@ -34,15 +35,12 @@ class OrdalieBBQ {
       }
     })
 
-    console.log(this.texts)
-
-    this.setAnimation()
-
     const texture = this.texts[0].material.map
     const noise = WebGL.resources.getItems(this.block.getType(), 'noise') as THREE.Texture
     const gradient = WebGL.resources.getItems(this.block.getType(), 'gradient') as THREE.Texture
 
-    console.log(THREE.UniformsUtils)
+    this.setCharacter()
+    this.setAnimation()
 
     this.uniforms = {
       uTexture: { value: texture },
@@ -59,15 +57,81 @@ class OrdalieBBQ {
         transparent: true,
       })
 
-      if (this.debugFolder) {
-        this.debugFolder
-          .add(this.texts[i].material.uniforms.uDissolve, 'value', -0.1, 1.1)
-          .step(0.01)
-          .onChange((value) => {
-            this.texts[i].material.uniforms.uDissolve.value = value
-          })
-      }
+      // if (this.debugFolder) {
+      //   this.debugFolder
+      //     .add(this.texts[i].material.uniforms.uDissolve, 'value', -0.1, 1.1)
+      //     .step(0.01)
+      //     .onChange((value) => {
+      //       this.texts[i].material.uniforms.uDissolve.value = value
+      //     })
+      // }
     }
+  }
+
+  private setCharacter() {
+    const rig = this.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
+    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
+  }
+
+  private setAnimation() {
+    this.animation = {}
+
+    this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
+
+    console.log(this.block.getModel())
+
+    this.animation.actions = {
+      Braises_Cuisinier_Avance: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
+      Braises_Cuisinier_Idle: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
+    }
+    this.animation.actions['Braises_Cuisinier_Avance'].clampWhenFinished = true
+    this.animation.actions['Braises_Cuisinier_Avance'].loop = THREE.LoopOnce
+
+    this.animation.actions['Braises_Cuisinier_Idle'].timeScale = 1.2
+    // this.animation.actions['Braises_Cuisinier_Idle'].clampWhenFinished = true
+    // this.animation.actions['Braises_Cuisinier_Idle'].loop = THREE.LoopOnce
+
+    // Play the action
+    this.animation.play = (name: string) => {
+      this.animation.actions[name].play()
+    }
+
+    this.animation.play('Braises_Cuisinier_Idle')
+
+    this.animation.mixer.addEventListener('finished', (e) => {
+      console.log(e)
+      if (e.action._clip.name === 'Braises_Cuisinier_Avance') {
+        this.animation.actions['Braises_Cuisinier_Avance'].stop()
+        this.animation.actions['Braises_Cuisinier_Idle'].reset()
+        this.animation.play('Braises_Cuisinier_Idle')
+      }
+    })
+
+    // Debug
+    // if (WebGL.debug.isActive()) {
+    //   this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
+    // }
+  }
+
+  makeAStep() {
+    // this.debugParams().animations.playWalkLeftRight()
+
+    // console.log(this.character.position.x)
+
+    this.animation.actions['Braises_Cuisinier_Avance'].stop()
+    this.animation.play('Braises_Cuisinier_Avance')
+
+    this.animation.actions['Braises_Cuisinier_Idle'].crossFadeTo(this.animation.actions['Braises_Cuisinier_Avance'], 0.16)
+
+    // this.character.position.x += this.forwardSpeed
+
+    gsap.to(this.character.position, {
+      x: this.character.position.x + this.forwardSpeed,
+      duration: 1,
+      onComplete: () => {
+        console.log('new pos', this.character.position.x)
+      },
+    })
   }
 
   gameOver() {
@@ -99,93 +163,73 @@ class OrdalieBBQ {
     container.style.transform = `translate(${x1}px,${y1}px)`
   }
 
-  setAnimation() {
-    this.animation = {}
+  // setAnimation() {
+  //   this.animation = {}
 
-    // Mixer
-    this.animation.mixer = new THREE.AnimationMixer(this.ordalie.block.getModel().scene)
+  //   // Mixer
+  //   this.animation.mixer = new THREE.AnimationMixer(this.ordalie.block.getModel().scene)
 
-    // Actions
-    this.animation.actions = {}
+  //   // Actions
+  //   this.animation.actions = {}
 
-    this.animation.actions.idleLeft = this.animation.mixer.clipAction(this.block.getModel().animations[0])
-    this.animation.actions.idleRight = this.animation.mixer.clipAction(this.block.getModel().animations[1])
-    this.animation.actions.walkLeftRight = this.animation.mixer.clipAction(this.block.getModel().animations[2])
-    this.animation.actions.walkRightLeft = this.animation.mixer.clipAction(this.block.getModel().animations[3])
+  //   this.animation.actions.idleLeft = this.animation.mixer.clipAction(this.block.getModel().animations[0])
+  //   this.animation.actions.idleRight = this.animation.mixer.clipAction(this.block.getModel().animations[1])
+  //   this.animation.actions.walkLeftRight = this.animation.mixer.clipAction(this.block.getModel().animations[2])
+  //   this.animation.actions.walkRightLeft = this.animation.mixer.clipAction(this.block.getModel().animations[3])
 
-    this.animation.actions.current = this.animation.actions.idleRight
-    this.animation.actions.current.play()
+  //   this.animation.actions.current = this.animation.actions.idleRight
+  //   this.animation.actions.current.play()
 
-    // Play the action
-    this.animation.play = (name: string) => {
-      const newAction = this.animation.actions[name]
-      if (name === 'walkLeftRight' || name === 'walkRightLeft') {
-        newAction.setLoop(THREE.LoopOnce)
-        newAction.clampWhenFinished = false
-      }
-      const oldAction = this.animation.actions.current
-      oldAction.stop()
-      newAction.play()
+  //   // Play the action
+  //   this.animation.play = (name: string) => {
+  //     const newAction = this.animation.actions[name]
+  //     if (name === 'walkLeftRight' || name === 'walkRightLeft') {
+  //       newAction.setLoop(THREE.LoopOnce)
+  //       newAction.clampWhenFinished = false
+  //     }
+  //     const oldAction = this.animation.actions.current
+  //     oldAction.stop()
+  //     newAction.play()
 
-      this.animation.actions.current = newAction
-    }
+  //     this.animation.actions.current = newAction
+  //   }
 
-    this.animation.mixer.addEventListener('finished', (e) => {
-      switch (e.action._clip.name) {
-        case 'Walk_Left-Right':
-          this.animation.play('idleRight')
-          break
-        case 'Walk_Right-Left':
-          this.animation.play('idleLeft')
-          break
-      }
-    })
+  //   this.animation.mixer.addEventListener('finished', (e) => {
+  //     switch (e.action._clip.name) {
+  //       case 'Walk_Left-Right':
+  //         this.animation.play('idleRight')
+  //         break
+  //       case 'Walk_Right-Left':
+  //         this.animation.play('idleLeft')
+  //         break
+  //     }
+  //   })
 
-    // Debug
-    if (WebGL.debug.active) {
-      // this.debugFolder.add(this.debugParams().animations, 'playWalkLeftRight')
-      // this.debugFolder.add(this.debugParams().animations, 'playWalkRightLeft')
-    }
-  }
+  //   // Debug
+  //   if (WebGL.debug.active) {
+  //     // this.debugFolder.add(this.debugParams().animations, 'playWalkLeftRight')
+  //     // this.debugFolder.add(this.debugParams().animations, 'playWalkRightLeft')
+  //   }
+  // }
 
-  debugParams() {
-    return {
-      animations: {
-        playIdleLeft: () => {
-          this.animation.play('idleLeft')
-        },
-        playIdleRight: () => {
-          this.animation.play('idleRight')
-        },
-        playWalkLeftRight: () => {
-          this.animation.play('walkLeftRight')
-        },
-        playWalkRightLeft: () => {
-          this.animation.play('walkRightLeft')
-        },
-      },
-    }
-  }
-
-  makeAStep() {
-    if (this.modulo % 2 === 0) {
-      this.debugParams().animations.playWalkLeftRight()
-
-      gsap.to(this.block.getCharacterModel().position, {
-        x: this.block.getCharacterModel().position.x + this.forwardSpeed,
-        duration: 1,
-      })
-    } else {
-      this.debugParams().animations.playWalkRightLeft()
-
-      gsap.to(this.block.getCharacterModel().position, {
-        x: this.block.getCharacterModel().position.x + this.forwardSpeed,
-        duration: 1,
-      })
-    }
-
-    this.modulo += 1
-  }
+  // debugParams() {
+  //   return {
+  //     animations: {
+  //       playIdleLeft: () => {
+  //         this.animation.play('idleLeft')
+  //       },
+  //       playIdleRight: () => {
+  //         this.animation.play('idleRight')
+  //       },
+  //       playWalkLeftRight: () => {
+  //         this.animation.play('walkLeftRight')
+  //       },
+  //       playWalkRightLeft: () => {
+  //         this.animation.play('walkRightLeft')
+  //       },
+  //     },
+  //   }
+  // }
 
   onGameEnded() {}
 
