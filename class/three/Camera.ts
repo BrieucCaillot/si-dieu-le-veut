@@ -24,7 +24,7 @@ class Camera extends THREE.EventDispatcher {
   constructor() {
     super()
 
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('camera')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('camera')
 
     this.setInstance()
     // this.setTargetDebug()

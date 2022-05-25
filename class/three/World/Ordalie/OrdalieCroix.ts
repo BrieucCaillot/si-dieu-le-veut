@@ -29,7 +29,7 @@ class OrdalieCroix {
     this.block = _ordalie.block
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
 
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.gui.addFolder('OrdalieCroixGame')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroixGame')
     this.setAnimation()
   }
 

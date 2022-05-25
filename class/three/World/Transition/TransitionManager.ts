@@ -10,7 +10,7 @@ class TransitionManager {
   /**
    * Create transition from type
    */
-  create = (_type: TRANSITIONS) => {
+  create(_type: TRANSITIONS) {
     const transition = new Transition(_type)
     this.instances.push(transition)
     this.lastType = _type

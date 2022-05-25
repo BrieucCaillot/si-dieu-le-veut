@@ -11,7 +11,7 @@ class OtherManager {
   /**
    * Create other from type
    */
-  create = (_type: OTHERS) => {
+  create(_type: OTHERS) {
     const other = new Other(_type)
     this.instances.push(other)
   }

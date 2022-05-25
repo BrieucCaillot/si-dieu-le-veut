@@ -27,7 +27,7 @@ class Blocks {
     OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
-      this.debugFolder = WebGL.debug.gui.addFolder('Blocks')
+      this.debugFolder = WebGL.debug.addFolder('Blocks')
       this.debugFolder.add(this.debugParams(), 'getCurrentIndex').name('Current index')
       this.debugFolder.add(this.debugParams(), 'start').name('Start')
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
@@ -147,7 +147,7 @@ class Blocks {
     console.log('➡️ -- GO TO NEXT')
 
     if (this.getCurrent().getType() === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
-    if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
+    // if (this.getNext().getType() === ORDALIES.CROIX) return console.log('⭕ TODO FOR ORDALIES')
 
     const nextPosX = this.getNext().getCenter().x
 
