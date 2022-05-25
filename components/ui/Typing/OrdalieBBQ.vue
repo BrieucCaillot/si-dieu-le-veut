@@ -22,9 +22,10 @@
 
 <script setup lang="ts">
 import gsap from 'gsap'
+
+import { random } from '@/class/three/utils/Maths'
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
-import { random } from '@/class/three/utils/Maths'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
@@ -115,7 +116,7 @@ const getTranslate = (el: HTMLDivElement, index: number) => {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  ordalie.value = OrdalieManager.getByIndex(0).ordalie
+  ordalie.value = OrdalieManager.getByIndex(0).instance
   refArray.push(placeholder1, placeholder2, placeholder3)
   parentArray.push(parent1, parent2, parent3)
 
@@ -127,8 +128,6 @@ const initialization = () => {
 
   GAME_RUNNING = true
   gsap.ticker.add(update)
-
-  // console.log(ordalie.value.texts)
 }
 
 //when one word is completed, replace it and check if the game is complete

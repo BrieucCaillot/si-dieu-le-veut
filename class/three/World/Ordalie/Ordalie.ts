@@ -9,20 +9,20 @@ import OrdalieCauldron from '@/class/three/World/Ordalie/OrdalieCauldron'
 
 class Ordalie {
   block: Block
-  ordalie: OrdalieCroix | OrdalieBBQ
+  instance: OrdalieCroix | OrdalieBBQ | OrdalieCauldron
   updateId: () => void
 
   constructor(_type: ORDALIES) {
     this.block = new Block(_type)
     switch (_type) {
       case ORDALIES.CROIX:
-        this.ordalie = new OrdalieCroix(this)
+        this.instance = new OrdalieCroix(this)
         break
       case ORDALIES.BBQ:
-        this.ordalie = new OrdalieBBQ(this)
+        this.instance = new OrdalieBBQ(this)
         break
       case ORDALIES.CAULDRON:
-        this.ordalie = new OrdalieCauldron(this)
+        this.instance = new OrdalieCauldron(this)
         break
     }
     this.updateId = this.update
@@ -38,7 +38,7 @@ class Ordalie {
   }
 
   update = () => {
-    this.ordalie && this.ordalie.update()
+    this.instance && this.instance.update()
   }
 }
 

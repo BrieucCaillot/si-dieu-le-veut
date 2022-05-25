@@ -1,34 +1,34 @@
-import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import Block from '@/class/three/World/Block'
-import WebGL from '@/class/three/WebGL'
-import ORDALIES from '@/constants/ORDALIES'
-import useStore from '@/composables/useStore'
-
-import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
-import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
-
 import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
 
+import Ordalie from '@/class/three/World/Ordalie/Ordalie'
+import Block from '@/class/three/World/Block'
+import WebGL from '@/class/three/WebGL'
+
+import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
+import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
+
 class OrdalieBBQ {
-  ordalie: Ordalie
+  instance: Ordalie
   block: Block
+  character: THREE.Mesh
   texts: THREE.Mesh[]
+
   animation: { [key: string]: any }
-  debugFolder: GUI
   forwardSpeed = 0.1
   modulo = 0
   uniforms: any
-  character: THREE.Mesh
+
+  debugFolder: GUI
 
   constructor(_ordalie: Ordalie) {
-    this.ordalie = _ordalie
+    this.instance = _ordalie
     this.block = _ordalie.block
     this.texts = []
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
 
-    this.ordalie.block.getModel().scene.traverse((mesh) => {
+    this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('text')) {
         this.texts.push(mesh)
       }
@@ -162,8 +162,6 @@ class OrdalieBBQ {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
-
-    // console.log('update')
   }
 }
 

@@ -6,11 +6,11 @@
 </template>
 
 <script setup lang="ts">
+import gsap from 'gsap'
 import { ref, onMounted } from 'vue'
+
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
-import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
-import gsap from 'gsap'
 
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
@@ -23,7 +23,7 @@ const ordalie = ref()
 
 onMounted(() => {
   inputRef.value.focus()
-  ordalie.value = OrdalieManager.getByIndex(0).ordalie
+  ordalie.value = OrdalieManager.getByIndex(0).instance
   console.log(ordalie.value)
 
   ordalie.value.setHTMLPosition(containerRef.value)

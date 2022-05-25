@@ -6,7 +6,7 @@ class OrdalieCauldron {
   block: Block
 
   constructor(_ordalie: Ordalie) {
-    this.ordalie = _ordalie
+    this.instance = _ordalie
     this.block = _ordalie.block
   }
 

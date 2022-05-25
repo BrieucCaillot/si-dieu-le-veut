@@ -1,10 +1,7 @@
 import GUI from 'lil-gui'
 import * as THREE from 'three'
-import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
-import DIFFICULTY from '@/constants/DIFFICULTY'
-import ORDALIES from '@/constants/ORDALIES'
 import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
-import DATAS, { CroixInterface } from '@/constants/DIFFICULTY_DATA'
+import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
 import { remap } from '@/class/three/utils/Maths'
@@ -13,8 +10,7 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 
 class OrdalieCroix {
-  ordalie: Ordalie
-  block: Block
+  instance: Ordalie
   animation!: { [key: string]: any }
 
   // Gameplay
@@ -25,8 +21,7 @@ class OrdalieCroix {
   debugFolder: GUI
 
   constructor(_ordalie: Ordalie) {
-    this.ordalie = _ordalie
-    this.block = _ordalie.block
+    this.instance = _ordalie
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
 
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroixGame')
@@ -35,7 +30,7 @@ class OrdalieCroix {
 
   setHTMLPosition(container: HTMLDivElement) {
     //récupérer la taille de ce plane
-    const plane = this.ordalie.block.getModel().scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
+    const plane = this.instance.block.getModel().scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
     const planeSize = new THREE.Box3().setFromObject(plane)
 
     // console.log('plane size', planeSize)
@@ -62,7 +57,7 @@ class OrdalieCroix {
   setAnimation() {
     this.animation = {}
 
-    this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
+    this.animation.mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
 
     this.animation.mixer.addEventListener('finished', (e) => {
       //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
@@ -78,8 +73,8 @@ class OrdalieCroix {
     })
 
     this.animation.actions = {
-      Croix_Descend: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
-      Croix_idle: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
+      Croix_Descend: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
+      Croix_idle: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
     }
 
     this.animation.actions.Croix_Descend.clampWhenFinished = true
