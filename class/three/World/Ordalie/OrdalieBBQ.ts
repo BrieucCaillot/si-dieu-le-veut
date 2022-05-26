@@ -2,10 +2,8 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
 
-import ORDALIES from '@/constants/ORDALIES'
-
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import Block from '@/class/three/World/Block'
 import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
@@ -13,7 +11,6 @@ import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
 class OrdalieBBQ {
   instance: Ordalie
-  block: Block
   character: THREE.Mesh
   texts: THREE.Mesh[]
 
@@ -27,7 +24,6 @@ class OrdalieBBQ {
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
     this.texts = []
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('text')) {
@@ -46,11 +42,12 @@ class OrdalieBBQ {
       uTexture: { value: texture },
       uNoise: { value: noise },
       uGradient: { value: gradient },
+      uDissolve: { value: 0 },
     }
 
     for (let i = 0; i < this.texts.length; i++) {
       this.texts[i].material = new THREE.ShaderMaterial({
-        uniforms: { ...this.uniforms, uDissolve: { value: 0 } },
+        uniforms: { ...this.uniforms },
         fragmentShader: fragmentShader,
         vertexShader: vertexShader,
         transparent: true,
@@ -67,9 +64,13 @@ class OrdalieBBQ {
     }
   }
 
-  start() {}
+  start() {
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
+    this.animation.play('Braises_Cuisinier_Idle')
+  }
 
   end() {
+    if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
   }
 
@@ -103,8 +104,6 @@ class OrdalieBBQ {
       this.animation.actions[name].play()
     }
 
-    this.animation.play('Braises_Cuisinier_Idle')
-
     this.animation.mixer.addEventListener('finished', (e) => {
       if (e.action._clip.name === 'Braises_Cuisinier_Avance') {
         this.animation.actions['Braises_Cuisinier_Avance'].stop()
@@ -136,6 +135,7 @@ class OrdalieBBQ {
   }
 
   gameOver() {
+    OrdalieManager.setIsDead(true)
     this.animation.play('Braises_Cuisinier_Mort_V2')
     this.animation.actions['Braises_Cuisinier_Idle'].crossFadeTo(this.animation.actions['Braises_Cuisinier_Mort_V2'], 0.16)
     // this.animation.actions['Braises_Cuisinier_Mort_V2'].crossFadeFrom(this.animation.actions['Braises_Cuisinier_Idle'], 0.16)
@@ -171,6 +171,7 @@ class OrdalieBBQ {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
+    console.log('🔁 OrdalieBBQ')
   }
 }
 

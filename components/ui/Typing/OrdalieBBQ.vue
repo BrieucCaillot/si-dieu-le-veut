@@ -144,11 +144,7 @@ const replaceWord = () => {
 
   COUNTER++
 
-  if (COUNTER === NB_WORDS_TO_WRITE) {
-    console.log('game win')
-
-    gameWin()
-  }
+  if (COUNTER === NB_WORDS_TO_WRITE) gameWin()
 
   if (words.length === 0) {
     refArray[wordIndex].value.textContent = ''
@@ -257,8 +253,8 @@ const newChar = (e: KeyboardEvent) => {
 }
 
 const gameWin = () => {
-  console.log('game win')
   GAME_RUNNING = false
+  ordalie.value.end()
   gsap.ticker.remove(update)
 }
 

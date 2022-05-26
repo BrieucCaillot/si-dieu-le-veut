@@ -1,5 +1,6 @@
 import TRANSITIONS from '@/constants/TRANSITIONS'
 
+import Blocks from '@/class/three/World/Blocks'
 import Transition from '@/class/three/World/Transition/Transition'
 
 class TransitionManager {
@@ -62,13 +63,15 @@ class TransitionManager {
    */
   onStarted() {
     console.log('🏴‍☠️ STARTED ' + this.getCurrent().block.getType())
+    Blocks.onStarted()
   }
 
   /**
    * On Transition ended
    */
   onEnded() {
-    console.log('🏴‍☠️ ENDED' + this.getCurrent().block.getType())
+    console.log('🏴‍☠️ ENDED ' + this.getCurrent().block.getType())
+    Blocks.onEnded()
   }
 }
 

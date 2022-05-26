@@ -8,6 +8,7 @@ class OrdalieManager {
   private instances: Ordalie[] = []
   private currentIndex = 0
   private lastCreated: ORDALIES
+  private isDead = false
   private difficulty: DIFFICULTY
 
   constructor() {
@@ -37,7 +38,7 @@ class OrdalieManager {
         this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.FOOD)
         break
       case ORDALIES.FOOD:
-        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.CROIX)
+        this.create(random === 0 ? ORDALIES.BBQ : ORDALIES.CROIX)
         break
     }
   }
@@ -78,27 +79,43 @@ class OrdalieManager {
   }
 
   /**
-   * Start next other
+   * Set isDead
+   */
+  setIsDead(_value: boolean) {
+    this.isDead = _value
+  }
+
+  get isPlayerDead() {
+    return this.isDead
+  }
+
+  /**
+   * Start first ordalie
+   */
+  startFirst() {
+    this.getByIndex(0).start()
+  }
+
+  /**
+   * Start next ordalie
    */
   startNext() {
     console.log('🎲 START NEXT')
     this.currentIndex++
-    console.log(this.getCurrent())
-    useStore().currentOrdalie.value = this.getCurrent().block.getType()
-
-    // this.getCurrent().start()
+    this.getCurrent().start()
   }
 
   /**
-   * On Other started
+   * On Ordalie started
    */
   onStarted() {
     console.log('🎲 STARTED ' + this.getCurrent().block.getType())
+    useStore().currentOrdalie.value = this.getCurrent().block.getType()
     Blocks.onStarted()
   }
 
   /**
-   * On Other ended
+   * On Ordalie ended
    */
   onEnded() {
     console.log('🎲 ENDED ' + this.getCurrent().block.getType())

@@ -4,8 +4,6 @@ import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
-import { remap } from '@/class/three/utils/Maths'
-import Block from '@/class/three/World/Block'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 
@@ -24,15 +22,16 @@ class OrdalieCroix {
     this.instance = _ordalie
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
 
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroixGame')
     this.setAnimation()
   }
 
   start() {
-    // TODO START
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroix')
+    this.animation.play('Croix_Descend')
   }
 
   end() {
+    if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
   }
 
@@ -73,6 +72,7 @@ class OrdalieCroix {
         this.animation.actions['Croix_Descend'].stop()
         this.animation.actions['Croix_Descend'].play()
       } else {
+        this.end()
         //fin de l'anim classique, le mec a perdu
       }
 
@@ -85,13 +85,18 @@ class OrdalieCroix {
       Croix_idle: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
     }
 
-    this.animation.actions.Croix_Descend.clampWhenFinished = true
-    this.animation.actions.Croix_Descend.loop = THREE.LoopOnce
-    this.animation.actions.Croix_Descend.timeScale = this.gameplayParams.fallingSpeedArm
+    this.animation.actions['Croix_Descend'].clampWhenFinished = true
+    this.animation.actions['Croix_Descend'].loop = THREE.LoopOnce
+    this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.fallingSpeedArm
 
-    if (WebGL.debug.isActive()) {
-      this.debugFolder!.add(this.debugParams().animations, 'armsUp')
-      this.debugFolder!.add(this.debugParams().animations, 'startGame')
+    // Play the action
+    this.animation.play = (name: string) => {
+      this.animation.actions[name].play()
+    }
+
+    if (this.debugFolder) {
+      this.debugFolder.add(this.debugParams().animations, 'armsUp')
+      this.debugFolder.add(this.debugParams().animations, 'startGame')
       this.debug()
     }
   }
@@ -100,10 +105,7 @@ class OrdalieCroix {
     return {
       animations: {
         armsUp: () => this.armsUp(),
-        startGame: () => {
-          this.animation.actions['Croix_Descend'].play()
-          console.log('play ' + this.animation.actions['Croix_Descend'])
-        },
+        startGame: () => this.animation.actions['Croix_Descend'].play(),
       },
     }
   }
@@ -133,10 +135,12 @@ class OrdalieCroix {
         },
       },
     }
-    this.debugFolder.add(this.debugObject, 'timeScale').listen().disable()
-    this.debugFolder.add(this.debugObject, 'time').step(0.01).listen().disable()
-    this.debugFolder.add(this.debugObject.animations, 'armsUp')
-    this.debugFolder.add(this.debugObject.animations, 'startGame')
+    if (this.debug) {
+      this.debugFolder.add(this.debugObject, 'timeScale').listen().disable()
+      this.debugFolder.add(this.debugObject, 'time').step(0.01).listen().disable()
+      this.debugFolder.add(this.debugObject.animations, 'armsUp')
+      this.debugFolder.add(this.debugObject.animations, 'startGame')
+    }
   }
 
   update() {
@@ -148,7 +152,8 @@ class OrdalieCroix {
     }
 
     this.animation.mixer.update(deltaTime * 0.001)
-    // console.log(remapped)
+
+    console.log('🔁 OrdalieCroix')
   }
 }
 
