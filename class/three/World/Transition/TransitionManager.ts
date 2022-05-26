@@ -53,7 +53,7 @@ class TransitionManager {
    * Start next transition
    */
   startNext() {
-    console.log('🏴‍☠️ START NEXT')
+    // console.log('🏴‍☠️ START NEXT')
     this.currentIndex++
     this.getCurrent().start()
   }

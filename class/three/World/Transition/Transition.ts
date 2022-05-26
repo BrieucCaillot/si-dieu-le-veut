@@ -34,6 +34,7 @@ class Transition {
 
   end() {
     this.onEnd()
+    gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
   }
 
@@ -74,6 +75,7 @@ class Transition {
   update = () => {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
+    console.log(`🔁 ${this.block.getType()}`)
   }
 
   private debugParams() {
