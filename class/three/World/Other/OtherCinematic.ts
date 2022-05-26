@@ -1,9 +1,6 @@
 import GUI from 'lil-gui'
-import * as THREE from 'three'
 
-import WebGL from '@/class/three/WebGL'
 import Other from '@/class/three/World/Other/Other'
-import Block from '@/class/three/World/Block'
 
 class OtherCinematic {
   instance: Other

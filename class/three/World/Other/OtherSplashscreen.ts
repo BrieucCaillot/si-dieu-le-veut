@@ -8,14 +8,11 @@ import Other from '@/class/three/World/Other/Other'
 class OtherSplashscreen {
   instance: Other
   animation!: { [key: string]: any }
-  debugFolder: GUI
   character: THREE.Mesh
   isFollowingCharacter = false
 
   constructor(_other: Other) {
     this.instance = _other
-
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Other Intro')
 
     this.setAnimation()
     this.setCharacter()
@@ -46,9 +43,6 @@ class OtherSplashscreen {
     }
 
     this.animation.mixer.addEventListener('finished', (e) => this.end())
-
-    // Debug
-    this.debugFolder?.add(this.debugParams().animations, 'playCharacterEnter')
   }
 
   private setCharacter() {

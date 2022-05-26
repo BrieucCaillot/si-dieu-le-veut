@@ -28,8 +28,6 @@ class Transition {
   }
 
   onStart() {
-    console.log('🏴‍☠️ STARTED ' + this.block.getType())
-
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
     this.debugParams().animations.playGroupAnim()
   }
@@ -40,7 +38,7 @@ class Transition {
   }
 
   onEnd() {
-    console.log('🏴‍☠️ ENDED ' + this.block.getType())
+    if (this.debugFolder) this.debugFolder.destroy()
   }
 
   setAnimation() {

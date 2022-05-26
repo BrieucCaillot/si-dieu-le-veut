@@ -1,7 +1,6 @@
 import OTHERS from '@/constants/OTHERS'
 
 import Blocks from '@/class/three/World/Blocks'
-import Block from '@/class/three/World/Block'
 import Other from '@/class/three/World/Other/Other'
 
 class OtherManager {
