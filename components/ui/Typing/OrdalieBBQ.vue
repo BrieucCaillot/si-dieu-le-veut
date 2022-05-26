@@ -113,7 +113,7 @@ const getTranslate = (el: HTMLDivElement, index: number) => {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  ordalie.value = OrdalieManager.getByIndex(0).instance
+  ordalie.value = OrdalieManager.getCurrent().instance
   refArray.push(placeholder1, placeholder2, placeholder3)
   parentArray.push(parent1, parent2, parent3)
 
@@ -144,7 +144,7 @@ const replaceWord = () => {
 
   COUNTER++
 
-  if (COUNTER === NB_WORDS_TO_WRITE) gameWin()
+  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
 
   if (words.length === 0) {
     refArray[wordIndex].value.textContent = ''
@@ -252,9 +252,9 @@ const newChar = (e: KeyboardEvent) => {
   }
 }
 
-const gameWin = () => {
+const gameWon = () => {
   GAME_RUNNING = false
-  ordalie.value.end()
+  ordalie.value.gameWon()
   gsap.ticker.remove(update)
 }
 

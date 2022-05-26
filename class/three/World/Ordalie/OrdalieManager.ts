@@ -6,7 +6,7 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 
 class OrdalieManager {
   private instances: Ordalie[] = []
-  private currentIndex = 0
+  private currentIndex = -1
   private lastCreated: ORDALIES
   private isDead = false
   private difficulty: DIFFICULTY
@@ -100,7 +100,7 @@ class OrdalieManager {
    * Start next ordalie
    */
   startNext() {
-    console.log('🎲 START NEXT')
+    // console.log('🎲 START NEXT')
     this.currentIndex++
     this.getCurrent().start()
   }
