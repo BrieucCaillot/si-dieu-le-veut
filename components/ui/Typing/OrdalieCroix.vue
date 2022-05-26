@@ -23,9 +23,7 @@ const ordalie = ref()
 
 onMounted(() => {
   inputRef.value.focus()
-  ordalie.value = OrdalieManager.getByIndex(0).instance
-  console.log(ordalie.value)
-
+  ordalie.value = OrdalieManager.getCurrent().instance
   ordalie.value.setHTMLPosition(containerRef.value)
 })
 
@@ -65,6 +63,9 @@ let lettersToType = wordToType.split('')
 let letterToType = lettersToType[wordProgressIndex]
 
 // console.log('word to type is', wordToType)
+const gameWon = () => {
+  ordalie.value.gameWon()
+}
 
 const wordCompleted = () => {
   // console.log('undefined, next word')
@@ -73,7 +74,7 @@ const wordCompleted = () => {
   wordToType = textToWriteSplit[index]
 
   if (!wordToType) {
-    console.log('end game')
+    gameWon()
     return
   }
   lettersToType = wordToType.split('')
