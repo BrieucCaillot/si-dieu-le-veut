@@ -18,7 +18,7 @@ class Camera extends THREE.EventDispatcher {
   private debugFolder: GUI
   private debugParams = {
     parallaxFactor: 0.18,
-    moveXSpeed: 0.03,
+    moveXSpeed: 0.1,
   }
 
   constructor() {
@@ -53,7 +53,7 @@ class Camera extends THREE.EventDispatcher {
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshBasicMaterial({ color: 0x345678 })
     const mesh = new THREE.Mesh(geometry, material)
-    mesh.scale.multiplyScalar(0.1)
+    mesh.scale.multiplyScalar(0.05)
     this.targetDebugMesh = mesh
     WebGL.scene.add(mesh)
   }

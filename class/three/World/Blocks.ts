@@ -25,8 +25,6 @@ class Blocks {
     // OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.BBQ)
-    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    // OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -52,7 +50,12 @@ class Blocks {
    * Start blocks system
    */
   start() {
-    OtherManager.startFirst()
+    if (this.isOther(this.getCurrent())) {
+      return OtherManager.startFirst()
+    }
+    if (this.isOrdalie(this.getCurrent())) {
+      return OrdalieManager.startFirst()
+    }
   }
 
   /**
@@ -132,6 +135,7 @@ class Blocks {
    * Create block from latest block created
    */
   private createNext() {
+    console.log('➡️ -- CREATED NEXT')
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION
     if (this.isOrdalie(this.getLast())) {
       return TransitionManager.createNext()
@@ -148,23 +152,19 @@ class Blocks {
   private goToNext() {
     console.log('➡️ -- GO TO NEXT')
 
+    console.log('☠️ Player is dead ' + OrdalieManager.isPlayerDead)
+
     if (this.getCurrent().getType() === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
+    if (this.getNext() === undefined) return console.log('🤡 No next block')
 
     const nextPosX = this.getNext().getCenter().x
 
     WebGL.camera.setPositionX(nextPosX, () => {
-      // IF NEXT BLOCK IS ORDALIE,
-      // START FROM ORDALIE MANAGER
-      // if (this.isOrdalie(this.getNext())) {
-      //   console.log('--- TODO ---')
-      //   console.log('--- GO TO ORDALIE MANAGER ---')
-      //   return
-      //   // return OrdalieManager.startNext()
-      // } else
+      // // IF NEXT BLOCK IS AN OTHER
+      // START NEXT OTHER
       if (this.isOther(this.getCurrent())) {
         return OtherManager.startNext()
       }
-
       // // IF NEXT BLOCK IS AN ORDALIE
       // START NEXT ORDALIE
       if (this.isOrdalie(this.getCurrent())) {
@@ -176,6 +176,8 @@ class Blocks {
         return TransitionManager.startNext()
       }
     })
+
+    this.createNext()
   }
 
   /**
