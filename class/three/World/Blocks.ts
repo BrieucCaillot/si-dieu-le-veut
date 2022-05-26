@@ -15,16 +15,17 @@ class Blocks {
   private width: number = 0
   private currentIndex = 0
   private debugFolder: GUI
+  private isStarted = false
 
   /**
    * Create default blocks
    */
   setup() {
-    // OtherManager.create(OTHERS.SPLASHSCREEN)
-    // OtherManager.create(OTHERS.CINEMATIC)
-    // OtherManager.create(OTHERS.TUTORIAL)
+    OtherManager.create(OTHERS.SPLASHSCREEN)
+    OtherManager.create(OTHERS.CINEMATIC)
+    OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.BBQ)
+    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -37,19 +38,17 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'goToNext').name('Go To Next')
     }
 
-    // window.addEventListener('')
-    document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        // Do your thing
-        this.start()
-      }
-    })
+    document.addEventListener('keydown', (e) => e.code === 'Space' && this.start())
   }
 
   /**
    * Start blocks system
    */
   start() {
+    if (this.isStarted) return
+
+    this.isStarted = true
+
     if (this.isOther(this.getCurrent())) {
       return OtherManager.startFirst()
     }
