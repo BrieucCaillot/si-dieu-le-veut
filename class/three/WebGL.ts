@@ -25,12 +25,12 @@ class WebGL {
 
   setup(_canvas: HTMLCanvasElement) {
     this.canvas = _canvas
+    this.debug = new Debug()
     this.sizes = new Sizes()
     this.mouse = new Mouse()
     this.time = new Time()
     this.scene = new THREE.Scene()
     this.resources = new Resources()
-    this.debug = new Debug()
     this.camera = new Camera()
     this.raycaster = new Raycaster()
     this.renderer = new Renderer()
