@@ -56,9 +56,7 @@ class OtherTutorial {
     // }
   }
 
-  update() {
-    console.log('🔁 OtherTutorial')
-  }
+  update() {}
 }
 
 export default OtherTutorial

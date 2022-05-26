@@ -47,7 +47,7 @@ class OtherManager {
    * Start next other
    */
   startNext() {
-    console.log('✨ START NEXT')
+    // console.log('✨ START NEXT')
     this.currentIndex++
     this.getCurrent().start()
   }

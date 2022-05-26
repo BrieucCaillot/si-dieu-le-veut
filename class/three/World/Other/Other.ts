@@ -42,6 +42,7 @@ class Other {
 
   update = () => {
     this.instance && this.instance.update()
+    console.log(`🔁 ${this.block.getType()}`)
   }
 }
 

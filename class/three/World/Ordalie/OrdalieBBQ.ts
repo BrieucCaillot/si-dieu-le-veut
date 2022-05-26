@@ -134,6 +134,10 @@ class OrdalieBBQ {
     })
   }
 
+  gameWon() {
+    this.end()
+  }
+
   gameOver() {
     OrdalieManager.setIsDead(true)
     this.animation.play('Braises_Cuisinier_Mort_V2')
@@ -171,7 +175,6 @@ class OrdalieBBQ {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
-    console.log('🔁 OrdalieBBQ')
   }
 }
 

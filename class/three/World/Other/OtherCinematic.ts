@@ -27,9 +27,7 @@ class OtherCinematic {
     }, 20)
   }
 
-  update() {
-    console.log('🔁 OtherCinematic')
-  }
+  update() {}
 }
 
 export default OtherCinematic

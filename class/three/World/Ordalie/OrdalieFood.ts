@@ -1,8 +1,6 @@
 import * as THREE from 'three'
 import GUI from 'lil-gui'
-import gsap from 'gsap'
 
-import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
 
@@ -60,8 +58,6 @@ class OrdalieFood {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
-
-    console.log('🔁 OrdalieFood')
   }
 }
 

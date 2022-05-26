@@ -55,8 +55,6 @@ class OtherSplashscreen {
 
     this.animation.mixer.update(deltaTime * 0.001)
 
-    console.log('🔁 OtherSplashscreen')
-
     if (this.isFollowingCharacter) return
     const characterPosition = this.character.getWorldPosition(new THREE.Vector3())
 
