@@ -42,12 +42,11 @@ class OrdalieBBQ {
       uTexture: { value: texture },
       uNoise: { value: noise },
       uGradient: { value: gradient },
-      uDissolve: { value: 0 },
     }
 
     for (let i = 0; i < this.texts.length; i++) {
       this.texts[i].material = new THREE.ShaderMaterial({
-        uniforms: { ...this.uniforms },
+        uniforms: { ...this.uniforms, uDissolve: { value: 0 } },
         fragmentShader: fragmentShader,
         vertexShader: vertexShader,
         transparent: true,
