@@ -9,6 +9,9 @@ import WebGL from '@/class/three/WebGL'
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
+import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
+import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
+
 class OrdalieBBQ {
   instance: Ordalie
   character: THREE.Mesh
@@ -31,6 +34,8 @@ class OrdalieBBQ {
       }
     })
 
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
+
     const texture = this.texts[0].material.map
     const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise') as THREE.Texture
     const gradient = WebGL.resources.getItems(this.instance.block.getType(), 'gradient') as THREE.Texture
@@ -39,14 +44,13 @@ class OrdalieBBQ {
     this.setAnimation()
 
     this.uniforms = {
-      uTexture: { value: texture },
       uNoise: { value: noise },
       uGradient: { value: gradient },
     }
 
     for (let i = 0; i < this.texts.length; i++) {
       this.texts[i].material = new THREE.ShaderMaterial({
-        uniforms: { ...this.uniforms, uDissolve: { value: 0 } },
+        uniforms: { ...this.uniforms, uTexture: { value: texture }, uDissolve: { value: 0 } },
         fragmentShader: fragmentShader,
         vertexShader: vertexShader,
         transparent: true,
@@ -61,10 +65,13 @@ class OrdalieBBQ {
       //     })
       // }
     }
+
+    this.start()
   }
 
   start() {
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
+    gsap.ticker.add(() => this.update())
+
     this.animation.play('Braises_Cuisinier_Idle')
   }
 
@@ -76,6 +83,38 @@ class OrdalieBBQ {
   private setCharacter() {
     const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
     this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
+    this.character
+    console.log(this.character)
+
+    this.instance.block.getModel().scene.traverse((mesh) => {
+      if (mesh.material) {
+        console.log(mesh)
+        if (mesh.name === 'SIDE_Cuisinier') {
+          console.log(mesh.material)
+          // const texture = mesh.material.map
+
+          // // console.log(mesh.material)
+          // mesh.renderOrder = 100
+
+          // mesh.material = new THREE.ShaderMaterial({
+          //   uniforms: { ...this.uniforms, uTexture: { value: texture }, uDissolve: { value: 0 } },
+          //   fragmentShader: characterBurningFrag,
+          //   vertexShader: characterBurningVert,
+          //   transparent: true,
+          // })
+
+          // if (this.debugFolder) {
+          //   this.debugFolder
+          //     .add(mesh.material.uniforms.uDissolve, 'value', -0.1, 1.1)
+          //     .step(0.01)
+          //     .onChange((value) => {
+          //       mesh.material.uniforms.uDissolve.value = value
+          //       console.log(mesh.material.uniforms.uDissolve)
+          //     })
+          // }
+        }
+      }
+    })
   }
 
   private setAnimation() {

@@ -1,12 +1,12 @@
 <template>
-  <div class="">
-    <div ref="parent1" class="fixed top-0 left-0">
+  <div class="text-[25px]">
+    <div ref="parent1" class="fixed top-0 left-4">
       <div class="text-[#BCA8A2]" ref="placeholder1"></div>
     </div>
-    <div ref="parent2" class="fixed top-0 left-0">
+    <div ref="parent2" class="fixed top-0 left-4">
       <div class="text-[#BCA8A2]" ref="placeholder2"></div>
     </div>
-    <div ref="parent3" class="fixed top-0 left-0">
+    <div ref="parent3" class="fixed top-0 left-4">
       <div class="text-[#BCA8A2]" ref="placeholder3"></div>
     </div>
 
@@ -113,7 +113,8 @@ const getTranslate = (el: HTMLDivElement, index: number) => {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  ordalie.value = OrdalieManager.getCurrent().instance
+  ordalie.value = OrdalieManager.getByIndex(0).instance
+
   refArray.push(placeholder1, placeholder2, placeholder3)
   parentArray.push(parent1, parent2, parent3)
 
@@ -154,6 +155,10 @@ const replaceWord = () => {
 
   if (COUNTER > NB_WORDS_TO_WRITE - 3) {
     refArray[wordIndex].value.textContent = ''
+    gsap.to(ordalie.value.texts[wordIndex].material.uniforms.uDissolve, {
+      value: 1.1,
+      duration: 1,
+    })
     return
   }
 

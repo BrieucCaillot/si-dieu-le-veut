@@ -18,7 +18,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['US Blaak', 'sans-serif'],
+      primary: ['Mordova', 'sans-serif'],
+      secondary: ['PirataOne', 'sans-serif'],
     },
   },
   plugins: [],

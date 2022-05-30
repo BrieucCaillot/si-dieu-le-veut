@@ -4,16 +4,16 @@
 @import 'components/typing.scss';
 
 @font-face {
-  font-family: 'US Blaak';
-  src: url('../fonts/USBlaak-Bold.woff2') format('woff2'), url('../fonts/USBlaak-Bold.woff') format('woff');
-  font-weight: bold;
+  font-family: 'Mordova';
+  src: url('../fonts/MordovaRegular.woff2') format('woff2'), url('../fonts/MordovaRegular.woff') format('woff');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'US Blaak';
-  src: url('../fonts/USBlaak-Black.woff2') format('woff2'), url('../fonts/USBlaak-Black.woff') format('woff');
+  font-family: 'PirataOne';
+  src: url('../fonts/PirataOne-Regular.woff2') format('woff2'), url('../fonts/PirataOne-Regular.woff') format('woff');
   font-weight: 900;
   font-style: normal;
   font-display: swap;

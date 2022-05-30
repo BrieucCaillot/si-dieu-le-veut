@@ -17,6 +17,6 @@ import '@/assets/sass/styles.scss'
 
 <style lang="scss">
 body {
-  @apply font-sans;
+  @apply font-secondary;
 }
 </style>

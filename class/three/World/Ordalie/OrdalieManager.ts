@@ -61,6 +61,8 @@ class OrdalieManager {
    * Get current ordalie
    */
   getCurrent() {
+    // console.log(this.instances)
+
     return this.instances[this.currentIndex]
   }
 
@@ -118,9 +120,9 @@ class OrdalieManager {
    * On Ordalie ended
    */
   onEnded() {
-    console.log('🎲 ENDED ' + this.getCurrent().block.getType())
-    useStore().currentOrdalie.value = null
-    Blocks.onEnded()
+    // console.log('🎲 ENDED ' + this.getCurrent().block.getType())
+    // useStore().currentOrdalie.value = null
+    // Blocks.onEnded()
   }
 }
 
