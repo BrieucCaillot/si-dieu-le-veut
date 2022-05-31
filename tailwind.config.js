@@ -15,6 +15,10 @@ module.exports = {
         typingDoneColor: '#2D2923',
         typingActiveLetter: '#A3411F',
         typingBaseColor: '#ffffff',
+        black: {
+          full: '#000000',
+          primary: '#2D2923',
+        },
       },
     },
     fontFamily: {

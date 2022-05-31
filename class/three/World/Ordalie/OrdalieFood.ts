@@ -5,17 +5,7 @@ import gsap from 'gsap'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
 
-const PATH = [
-  [-0.3289377689361572, 0.0, 0.040099889039993286],
-  [-0.15812578797340393, -0.0011454608757048845, 0.04631344601511955],
-  [-0.01618696004152298, -0.0063365548849105835, 0.06104547902941704],
-  [0.1036330908536911, -0.01338682696223259, 0.07843302190303802],
-  [0.2080887258052826, -0.02010982669889927, 0.09261313080787659],
-  [0.3039342761039734, -0.02431909739971161, 0.09772282838821411],
-  [0.39792418479919434, -0.023828186094760895, 0.08789919316768646],
-  [0.49681273102760315, -0.016450639814138412, 0.05727923661470413],
-  [0.6073542833328247, 0.0, 0.0],
-]
+import PATHS from '@/constants/PATHS'
 
 class OrdalieFood {
   instance: Ordalie
@@ -25,26 +15,32 @@ class OrdalieFood {
   mesh: THREE.Mesh
   debug: {
     progress: number
+    displayTime: number
+    maxDisplayTime: number
   }
+  paths: THREE.CatmullRomCurve3[]
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
     this.debug = {
       progress: 0,
+      displayTime: 0,
+      maxDisplayTime: 5,
     }
+
+    this.paths = []
 
     this.setAnimation()
 
     this.setPath()
-
-    this.start()
-    gsap.ticker.add(() => this.update())
 
     this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: 0xff0000 }))
     WebGL.scene.add(this.mesh)
   }
 
   start() {
+    gsap.ticker.add(() => this.update())
+
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieFood')
       this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
@@ -61,24 +57,42 @@ class OrdalieFood {
     this.instance.end()
   }
 
+  setHTMLPosition(container: HTMLDivElement) {
+    const objectSize = new THREE.Box3().setFromObject(this.mesh)
+    const topLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.max.y, objectSize.max.z)
+    const topRightCorner3D = new THREE.Vector3(objectSize.max.x, objectSize.max.y, objectSize.max.z)
+    const bottomLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.min.y, objectSize.max.z)
+
+    const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, bottomLeftCorner3D.y, objectSize.max.z)
+
+    //récupérer la position dans l'espace 2D de ce point en haut à gauche
+    center3D.project(WebGL.camera.instance)
+    const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
+    const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
+
+    container.style.transform = `translate(${x1 - container.offsetWidth / 2}px,${y1}px)`
+  }
+
   private setPath() {
-    for (let i = 0; i < PATH.length; i++) {
-      const x = PATH[i][0]
-      const y = PATH[i][1]
-      const z = PATH[i][2]
-      PATH[i] = new THREE.Vector3(x, z, -y)
+    for (let i = 0; i < PATHS.length; i++) {
+      for (let j = 0; j < PATHS[i].length; j++) {
+        const x = PATHS[i][j][0]
+        const y = PATHS[i][j][1]
+        const z = PATHS[i][j][2]
+        PATHS[i][j] = new THREE.Vector3(x, z, -y)
+      }
+
+      this.paths.push(new THREE.CatmullRomCurve3(PATHS[i]))
+
+      // const radius = 0.01
+      // const geometry = new THREE.TubeGeometry(this.paths[i], 20, radius, 20, false)
+      // const material = new THREE.MeshNormalMaterial({
+      //   side: THREE.DoubleSide,
+      //   wireframe: true,
+      // })
+      // const tube = new THREE.Mesh(geometry, material)
+      // WebGL.scene.add(tube)
     }
-
-    this.path = new THREE.CatmullRomCurve3(PATH)
-
-    const radius = 0.01
-    const geometry = new THREE.TubeGeometry(this.path, 20, radius, 20, false)
-    const material = new THREE.MeshNormalMaterial({
-      side: THREE.DoubleSide,
-      wireframe: true,
-    })
-    const tube = new THREE.Mesh(geometry, material)
-    WebGL.scene.add(tube)
   }
 
   private setAnimation() {
@@ -99,9 +113,13 @@ class OrdalieFood {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
+    this.debug.displayTime += deltaTime * 0.001
+    this.debug.progress = this.debug.displayTime / this.debug.maxDisplayTime
 
-    const point = this.path.getPointAt(this.debug.progress)
-    this.mesh.position.set(point.x, point.y, point.z)
+    if (this.debug.displayTime <= this.debug.maxDisplayTime) {
+      const point = this.paths[0].getPointAt(1 - this.debug.progress)
+      this.mesh.position.set(point.x, point.y, point.z)
+    }
   }
 }
 
