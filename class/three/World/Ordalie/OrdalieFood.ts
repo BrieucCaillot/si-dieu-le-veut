@@ -19,7 +19,7 @@ class OrdalieFood {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieFood')
     setTimeout(() => {
       this.end()
-    }, 3000)
+    }, 300)
     // this.animation.play('Braises_Cuisinier_Idle')
   }
 

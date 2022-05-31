@@ -105,7 +105,7 @@ class OrdalieCroix {
         },
       },
     }
-    if (this.debug) {
+    if (this.debugObject) {
       this.debugFolder.add(this.debugObject, 'timeScale').listen().disable()
       this.debugFolder.add(this.debugObject, 'time').step(0.01).listen().disable()
       this.debugFolder.add(this.debugObject.animations, 'armsUp')
