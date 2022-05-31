@@ -74,6 +74,7 @@ class Block {
     const lastBlockPositionX = Blocks.getLast().getPosition().x
     const lastBlockSizeX = Blocks.getLast().getSize().x
     this.model.scene.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
+    // this.model.scene.scale.multiplyScalar(WebGL.camera.perspective)
     this.position = this.model.scene.position
   }
 

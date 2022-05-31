@@ -104,13 +104,14 @@ class Camera extends THREE.EventDispatcher {
     this.targetDebugMesh?.position.copy(this.target)
   }
 
-  setPositionX(x: number, cb: Function = () => {}) {
+  setPositionX({ x, onStart, onComplete }: { x: number; onStart?: () => void; onComplete?: () => void }) {
     console.log('📷 MOVING..')
     gsap.to([this.parent.position, this.target], {
       x,
       duration: 5,
       ease: 'power.easeOut',
-      onComplete: () => cb(),
+      onStart: onStart,
+      onComplete: onComplete,
     })
   }
 

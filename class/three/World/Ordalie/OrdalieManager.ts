@@ -7,9 +7,11 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 class OrdalieManager {
   private instances: Ordalie[] = []
   private currentIndex = -1
-  private lastCreated: ORDALIES
+  private nbPerDifficulty = 3
   private isDead = false
   private difficulty: DIFFICULTY
+  private lastCreated: ORDALIES
+  private currentDifficultyOrdalie = 0
 
   constructor() {
     this.setDifficulty(DIFFICULTY.EASY)
@@ -21,7 +23,12 @@ class OrdalieManager {
   create(_type: ORDALIES) {
     const ordalie = new Ordalie(_type)
     this.instances.push(ordalie)
+    // this.addCurrentDifficultyOrdalies(_type)
     this.lastCreated = _type
+  }
+
+  shouldIncreaseDifficulty() {
+    return this.currentDifficultyOrdalie % 3 === 0
   }
 
   /**
@@ -74,6 +81,17 @@ class OrdalieManager {
   }
 
   /**
+   * Increase difficulty
+   */
+  increaseDifficulty() {
+    const difficulties = Object.keys(DIFFICULTY)
+    const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
+    if (currentDifficultyIndex === difficulties.length - 1) return
+    this.setDifficulty(difficulties[currentDifficultyIndex + 1] as DIFFICULTY)
+    console.log('🎲 ++  INCREASED DIFFICULTY ')
+  }
+
+  /**
    * Get ordalies difficulty
    */
   getDifficulty() {
@@ -116,13 +134,23 @@ class OrdalieManager {
     Blocks.onStarted()
   }
 
+  onPlayed() {
+    this.currentDifficultyOrdalie++
+
+    if (this.shouldIncreaseDifficulty()) {
+      this.increaseDifficulty()
+      this.currentDifficultyOrdalie = 0
+    }
+  }
+
   /**
    * On Ordalie ended
    */
   onEnded() {
-    // console.log('🎲 ENDED ' + this.getCurrent().block.getType())
-    // useStore().currentOrdalie.value = null
-    // Blocks.onEnded()
+    console.log('🎲 ENDED ' + this.getCurrent().block.getType())
+    useStore().currentOrdalie.value = null
+    this.onPlayed()
+    Blocks.onEnded()
   }
 }
 
