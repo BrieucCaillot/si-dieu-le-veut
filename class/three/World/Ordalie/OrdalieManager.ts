@@ -6,7 +6,7 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 
 class OrdalieManager {
   private instances: Ordalie[] = []
-  private currentIndex = -1
+  private currentIndex = 0
   private nbPerDifficulty = 3
   private isDead = false
   private difficulty: DIFFICULTY

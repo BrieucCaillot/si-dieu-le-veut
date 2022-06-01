@@ -9,7 +9,6 @@ import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
-import Ordalie from './Ordalie/Ordalie'
 
 class Blocks {
   private instances: Block[] = []
@@ -22,13 +21,13 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    OtherManager.create(OTHERS.SPLASHSCREEN)
-    OtherManager.create(OTHERS.CINEMATIC)
-    OtherManager.create(OTHERS.TUTORIAL)
+    // OtherManager.create(OTHERS.SPLASHSCREEN)
+    // OtherManager.create(OTHERS.CINEMATIC)
+    // OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.BBQ)
-    TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    OrdalieManager.create(ORDALIES.CROIX)
+    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    // OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')

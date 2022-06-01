@@ -136,6 +136,10 @@ const replaceWord = () => {
     duration: 1,
   })
 
+  COUNTER++
+
+  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
+
   displayedWords = displayedWords.filter((displayedWord) => displayedWord.word !== wordToType)
   ordalie.value.makeAStep()
 
@@ -143,10 +147,6 @@ const replaceWord = () => {
   lettersToType = null
   wordToTypeIndex = 0
   letterToType = null
-
-  COUNTER++
-
-  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
 
   if (words.length === 0) {
     refArray[wordIndex].value.textContent = ''
