@@ -27,6 +27,8 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.BBQ)
+    TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -180,9 +182,10 @@ class Blocks {
           return OtherManager.startNext()
         }
 
-        if (OrdalieManager.isPlayerDead) {
-          this.end()
-        }
+        // if (OrdalieManager.isPlayerDead) {
+        //   console.log('Player is dead')
+        //   this.end()
+        // }
 
         // // IF NEXT BLOCK IS AN ORDALIE
         // START NEXT ORDALIE

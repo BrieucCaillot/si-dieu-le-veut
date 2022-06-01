@@ -17,17 +17,16 @@ const itemRefs = ref([])
 const words = ref(['truc', 'allo'])
 
 onMounted(() => {
-  console.log('onMounted OrdalieFood')
+  // console.log(itemRefs)
 
-  console.log(itemRefs)
+  // ordalie.value = OrdalieManager.getByIndex(0).instance
+  ordalie.value = OrdalieManager.getCurrent().instance
 
-  ordalie.value = OrdalieManager.getByIndex(0).instance
+  // setTimeout(() => {
+  //   words.value.push('ouais')
 
-  setTimeout(() => {
-    words.value.push('ouais')
-
-    console.log(itemRefs)
-  }, 2000)
+  //   console.log(itemRefs)
+  // }, 2000)
 
   // ordalie.value.setHTMLPosition(test.value)
   // gsap.ticker.add(update)

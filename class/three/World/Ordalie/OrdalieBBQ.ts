@@ -70,8 +70,6 @@ class OrdalieBBQ {
   }
 
   start() {
-    // gsap.ticker.add(() => this.update())
-
     this.animation.play('Braises_Cuisinier_Idle')
   }
 

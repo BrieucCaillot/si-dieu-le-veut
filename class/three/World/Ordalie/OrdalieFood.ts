@@ -39,17 +39,14 @@ class OrdalieFood {
   }
 
   start() {
-    gsap.ticker.add(() => this.update())
-
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieFood')
       this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
     }
-    console.log('start')
 
-    // setTimeout(() => {
-    //   this.end()
-    // }, 3000)
+    setTimeout(() => {
+      this.end()
+    }, 3000)
   }
 
   end() {

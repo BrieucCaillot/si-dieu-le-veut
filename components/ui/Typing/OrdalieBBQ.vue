@@ -113,7 +113,8 @@ const getTranslate = (el: HTMLDivElement, index: number) => {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  ordalie.value = OrdalieManager.getByIndex(0).instance
+  // ordalie.value = OrdalieManager.getByIndex(0).instance
+  ordalie.value = OrdalieManager.getCurrent().instance
 
   refArray.push(placeholder1, placeholder2, placeholder3)
   parentArray.push(parent1, parent2, parent3)

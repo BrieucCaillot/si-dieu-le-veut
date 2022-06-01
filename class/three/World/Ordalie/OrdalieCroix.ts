@@ -1,13 +1,13 @@
+import gsap from 'gsap'
 import GUI from 'lil-gui'
 import * as THREE from 'three'
+
 import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-
-import gsap from 'gsap'
 
 class OrdalieCroix {
   instance: Ordalie
@@ -25,8 +25,6 @@ class OrdalieCroix {
     this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
 
     this.setAnimation()
-    gsap.ticker.add(() => this.update())
-    this.start()
   }
 
   start() {
@@ -35,9 +33,6 @@ class OrdalieCroix {
   }
 
   end() {
-    this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
-    this.animation.actions['Croix_CuisinierFRONT_Mort'].play()
-
     if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
   }
@@ -49,12 +44,16 @@ class OrdalieCroix {
 
     this.animation.mixer.addEventListener('finished', (e) => {
       //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
-      if (e.direction === -1) {
+      if (e.direction === -1 && e.action._clip.name === 'Croix_CuisinierFRONT_Bras') {
         this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
         this.animation.actions['Croix_CuisinierFRONT_Bras'].play()
       } else {
-        this.end()
+        this.gameOver()
         //fin de l'anim classique, le mec a perdu
+      }
+
+      if (e.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+        this.end()
       }
 
       // this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = 1
@@ -130,7 +129,8 @@ class OrdalieCroix {
 
   gameOver() {
     OrdalieManager.setIsDead(true)
-    console.log('gameover')
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
+    this.animation.actions['Croix_CuisinierFRONT_Mort'].play()
   }
 
   setHTMLPosition(container: HTMLDivElement) {
@@ -157,6 +157,11 @@ class OrdalieCroix {
 
     const width = Math.abs(x1 - x2)
     container.style.width = width + 'px'
+  }
+
+  solo() {
+    gsap.ticker.add(() => this.update())
+    this.start()
   }
 
   update() {
