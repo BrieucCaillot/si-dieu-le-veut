@@ -167,7 +167,7 @@ const replaceWord = () => {
   wordIndex = null
 }
 
-const pickWord = (index) => {
+const pickWord = (index: number) => {
   const selectedWord = words[Math.floor(Math.random() * words.length)]
   const matchingLetter = displayedWords.filter((displayedWord) => displayedWord.word.charAt(0) === selectedWord.charAt(0))
 
@@ -277,7 +277,7 @@ const gameOver = () => {
   gsap.ticker.remove(update)
 }
 
-const update = (time, deltaTime, frame) => {
+const update = (time: any, deltaTime: number, frame: any) => {
   for (let i = 0; i < displayedWords.length; i++) {
     //increment display time of each word
     displayedWords[i].displayTime += deltaTime * 0.001

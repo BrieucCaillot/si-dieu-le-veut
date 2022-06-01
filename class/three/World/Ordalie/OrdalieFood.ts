@@ -31,11 +31,35 @@ class OrdalieFood {
     this.paths = []
 
     this.setAnimation()
-
     this.setPath()
 
     this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: 0xff0000 }))
-    WebGL.scene.add(this.mesh)
+    // WebGL.scene.add(this.mesh)
+  }
+
+  getRandomPath() {
+    return this.paths[Math.floor(Math.random() * this.paths.length)]
+  }
+
+  createInstance(path: THREE.CatmullRomCurve3, i: number) {
+    const clone = this.mesh.clone()
+    clone.name = 'clone_' + i
+    const point = path.getPointAt(1)
+    clone.position.set(point.x, point.y, point.z)
+    WebGL.scene.add(clone)
+
+    return clone
+  }
+
+  disposeInstance(name: string) {
+    let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh
+    WebGL.scene.remove(mesh)
+
+    mesh.geometry.dispose()
+    mesh.material.dispose()
+    if (mesh.material.map) mesh.material.map.dispose()
+
+    mesh = null
   }
 
   start() {
@@ -44,9 +68,9 @@ class OrdalieFood {
       this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
     }
 
-    setTimeout(() => {
-      this.end()
-    }, 3000)
+    // setTimeout(() => {
+    //   this.end()
+    // }, 3000)
   }
 
   end() {
@@ -54,15 +78,17 @@ class OrdalieFood {
     this.instance.end()
   }
 
-  setHTMLPosition(container: HTMLDivElement) {
-    const objectSize = new THREE.Box3().setFromObject(this.mesh)
+  setHTMLPosition(container: HTMLSpanElement, mesh: THREE.Mesh) {
+    const objectSize = new THREE.Box3().setFromObject(mesh)
+
     const topLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.max.y, objectSize.max.z)
     const topRightCorner3D = new THREE.Vector3(objectSize.max.x, objectSize.max.y, objectSize.max.z)
     const bottomLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.min.y, objectSize.max.z)
 
     const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, bottomLeftCorner3D.y, objectSize.max.z)
 
-    //récupérer la position dans l'espace 2D de ce point en haut à gauche
+    // console.log(center3D)
+
     center3D.project(WebGL.camera.instance)
     const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
     const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
@@ -107,16 +133,22 @@ class OrdalieFood {
     this.animation.mixer.addEventListener('finished', (e) => {})
   }
 
+  updateMesh(mesh: THREE.Mesh, path: THREE.CatmullRomCurve3, progress: number) {
+    const point = path.getPointAt(1 - progress)
+    mesh.position.set(point.x, point.y, point.z)
+    mesh.updateMatrix()
+  }
+
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
-    this.debug.displayTime += deltaTime * 0.001
-    this.debug.progress = this.debug.displayTime / this.debug.maxDisplayTime
+    // this.debug.displayTime += deltaTime * 0.001
+    // this.debug.progress = this.debug.displayTime / this.debug.maxDisplayTime
 
-    if (this.debug.displayTime <= this.debug.maxDisplayTime) {
-      const point = this.paths[0].getPointAt(1 - this.debug.progress)
-      this.mesh.position.set(point.x, point.y, point.z)
-    }
+    // if (this.debug.displayTime <= this.debug.maxDisplayTime) {
+    //   const point = this.paths[0].getPointAt(1 - this.debug.progress)
+    //   this.mesh.position.set(point.x, point.y, point.z)
+    // }
   }
 }
 
