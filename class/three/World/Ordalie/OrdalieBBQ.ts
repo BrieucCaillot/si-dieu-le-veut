@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
 
+import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
+
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
@@ -19,16 +21,19 @@ class OrdalieBBQ {
   characterPosSortieStart = new THREE.Vector3(0)
   texts: THREE.Mesh[]
 
+  // Gameplay
   animation: { [key: string]: any }
   forwardSpeed = 0.11
   modulo = 0
   uniforms: any
   isGameWon = false
+  difficultyData: BBQInterface
 
   debugFolder: GUI
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
+    this.difficultyData = this.instance.block.getDifficultyData() as BBQInterface
     this.texts = []
 
     this.instance.block.getModel().scene.traverse((mesh) => {
@@ -198,7 +203,6 @@ class OrdalieBBQ {
   }
 
   gameOver() {
-    console.log('game over bro')
     OrdalieManager.setIsDead(true)
     // this.animation.actions['Braises_Cuisinier_Entree'].fadeOut(0)
     this.animation.actions['Braises_Cuisinier_Idle'].stop()

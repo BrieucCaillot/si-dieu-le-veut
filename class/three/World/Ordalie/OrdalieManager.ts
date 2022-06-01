@@ -9,13 +9,11 @@ class OrdalieManager {
   private currentIndex = -1
   private nbPerDifficulty = 3
   private isDead = false
-  private difficulty: DIFFICULTY
+  private difficulty: DIFFICULTY = DIFFICULTY.EASY
   private lastCreated: ORDALIES
   private currentDifficultyOrdalie = 0
 
-  constructor() {
-    this.setDifficulty(DIFFICULTY.EASY)
-  }
+  constructor() {}
 
   /**
    * Create ordalie from type
@@ -28,7 +26,7 @@ class OrdalieManager {
   }
 
   shouldIncreaseDifficulty() {
-    return this.currentDifficultyOrdalie % 3 === 0
+    return this.currentDifficultyOrdalie % this.nbPerDifficulty === 0
   }
 
   /**
@@ -68,8 +66,6 @@ class OrdalieManager {
    * Get current ordalie
    */
   getCurrent() {
-    // console.log(this.instances)
-
     return this.instances[this.currentIndex]
   }
 
@@ -88,7 +84,18 @@ class OrdalieManager {
     const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
     if (currentDifficultyIndex === difficulties.length - 1) return
     this.setDifficulty(difficulties[currentDifficultyIndex + 1] as DIFFICULTY)
-    console.log('🎲 ++  INCREASED DIFFICULTY ')
+    // console.log('🎲 ++ INCREASED DIFFICULTY ')
+  }
+
+  /**
+   * Decrease difficulty
+   */
+  decreaseDifficulty() {
+    const difficulties = Object.keys(DIFFICULTY)
+    const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
+    if (currentDifficultyIndex === 0) return
+    this.setDifficulty(difficulties[currentDifficultyIndex - 1] as DIFFICULTY)
+    // console.log('🎲 -- DECREASED DIFFICULTY ')
   }
 
   /**

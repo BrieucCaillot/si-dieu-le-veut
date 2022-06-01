@@ -3,10 +3,12 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import gsap from 'gsap'
 
+import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import { clamp } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
@@ -63,9 +65,7 @@ class Camera extends THREE.EventDispatcher {
     this.controls.enableDamping = true
     this.controls.enabled = false
 
-    if (WebGL.debug.isActive()) {
-      this.debugFolder.add(this.controls, 'enabled')
-    }
+    if (WebGL.debug.isActive()) this.debugFolder.add(this.controls, 'enabled')
   }
 
   private setFov() {
@@ -106,9 +106,11 @@ class Camera extends THREE.EventDispatcher {
 
   setPositionX({ x, onStart, onComplete }: { x: number; onStart?: () => void; onComplete?: () => void }) {
     console.log('📷 MOVING..')
+    const duration = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]?.['CAMERA']?.moveDuration ?? 0.5
+
     gsap.to([this.parent.position, this.target], {
       x,
-      duration: 5,
+      duration,
       ease: 'power.easeOut',
       onStart: onStart,
       onComplete: onComplete,

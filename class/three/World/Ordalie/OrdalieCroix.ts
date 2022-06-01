@@ -2,7 +2,6 @@ import gsap from 'gsap'
 import GUI from 'lil-gui'
 import * as THREE from 'three'
 
-import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
@@ -16,13 +15,13 @@ class OrdalieCroix {
   // Gameplay
   debugObject: any
   timeScaleController: any
-  gameplayParams: CroixInterface
+  difficultyData: CroixInterface
 
   debugFolder: GUI
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
-    this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
+    this.difficultyData = this.instance.block.getDifficultyData() as CroixInterface
 
     this.setAnimation()
   }
@@ -67,7 +66,7 @@ class OrdalieCroix {
 
     this.animation.actions['Croix_CuisinierFRONT_Bras'].clampWhenFinished = true
     this.animation.actions['Croix_CuisinierFRONT_Bras'].loop = THREE.LoopOnce
-    this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.gameplayParams.fallingSpeedArm
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.fallingSpeedArm
     // this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = 1.5
 
     this.animation.actions['Croix_CuisinierFRONT_Mort'].clampWhenFinished = true
@@ -95,11 +94,11 @@ class OrdalieCroix {
   }
 
   private armsUp() {
-    this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.gameplayParams.upSpeedArm
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.upSpeedArm
 
     setTimeout(() => {
-      this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.gameplayParams.fallingSpeedArm
-    }, this.gameplayParams.upDurationArm)
+      this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.fallingSpeedArm
+    }, this.difficultyData.upDurationArm)
   }
 
   debug() {
