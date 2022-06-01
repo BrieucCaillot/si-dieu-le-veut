@@ -115,7 +115,7 @@ class OrdalieCroix {
         },
       },
     }
-    if (this.debugObject) {
+    if (this.debugFolder) {
       this.debugFolder.add(this.debugObject, 'timeScale').listen().disable()
       this.debugFolder.add(this.debugObject, 'time').step(0.01).listen().disable()
       this.debugFolder.add(this.debugObject.animations, 'armsUp')
@@ -167,7 +167,7 @@ class OrdalieCroix {
   update() {
     const { deltaTime } = WebGL.time
 
-    if (WebGL.debug.isActive()) {
+    if (this.debugObject) {
       this.debugObject.timeScale = this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale
       this.debugObject.time = this.animation.actions['Croix_CuisinierFRONT_Bras'].time
     }
