@@ -144,7 +144,6 @@ class OrdalieBBQ {
 
     // Play the action
     this.animation.play = (name: string) => {
-      console.log('play', name)
       this.animation.actions[name].play()
     }
 
