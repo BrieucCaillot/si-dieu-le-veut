@@ -6,7 +6,7 @@
     </p>
     <p>
       Difficulté actuelle :
-      <span>{{ difficulty }}</span>
+      <span>{{ difficulty.split('_').join(' ') }}</span>
     </p>
   </div>
 </template>

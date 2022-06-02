@@ -84,11 +84,12 @@ class Camera extends THREE.EventDispatcher {
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1
-    this.currentPosX += this.debugParams.moveXSpeed * directionCoef
+    this.currentPosX += directionCoef * this.debugParams.moveXSpeed
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
     gsap.to([this.parent.position, this.target], {
       x: this.currentPosX,
+      onUpdate: this.onPositionChange,
       duration: 0.5,
     })
   }
@@ -104,6 +105,10 @@ class Camera extends THREE.EventDispatcher {
     this.targetDebugMesh?.position.copy(this.target)
   }
 
+  onPositionChange() {
+    WebGL.postProcessing.onCameraMove()
+  }
+
   setPositionX({ x, onStart, onComplete }: { x: number; onStart?: () => void; onComplete?: () => void }) {
     console.log('📷 MOVING..')
     const duration = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]?.['CAMERA']?.moveDuration ?? 0.5
@@ -113,6 +118,7 @@ class Camera extends THREE.EventDispatcher {
       duration,
       ease: 'power.easeOut',
       onStart: onStart,
+      onUpdate: this.onPositionChange,
       onComplete: onComplete,
     })
   }

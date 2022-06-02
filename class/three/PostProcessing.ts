@@ -7,13 +7,11 @@ import { watch } from 'vue'
 import WebGL from '@/class/three/WebGL'
 
 class PostProcessing {
-  renderScene: RenderPass
-  bloomPass: EffectPass
-  bloomEffect: SelectiveBloomEffect
-  composer: EffectComposer
-  textureEffect: TextureEffect
-  debugFolder: GUI
-  debugParams: { [key: string]: any }
+  private renderScene: RenderPass
+  private composer: EffectComposer
+  private textureEffect: TextureEffect
+  private debugFolder: GUI
+  private debugParams: { [key: string]: any }
 
   constructor() {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('PostProcessing')
@@ -22,18 +20,19 @@ class PostProcessing {
     this.createTextureEffect()
   }
 
-  createRenderScene() {
+  private createRenderScene() {
     this.renderScene = new RenderPass(WebGL.scene, WebGL.camera.instance!)
     this.composer = new EffectComposer(WebGL.renderer.instance)
     this.composer.addPass(this.renderScene)
   }
 
-  createTextureEffect() {
+  private createTextureEffect() {
     this.textureEffect = new TextureEffect({
       blendFunction: BlendFunction.MULTIPLY,
-      // texture: WebGL.resources.getItems('COMMON', 'dust') as THREE.Texture,
-      texture: WebGL.resources.getItems('COMMON', 'fabric_1') as THREE.Texture,
+      texture: WebGL.resources.getItems('COMMON', 'fabric_2') as THREE.Texture,
     })
+
+    this.textureEffect.blendMode.opacity.value = 0.705
 
     const effectPass = new EffectPass(WebGL.camera.instance, this.textureEffect)
     this.composer.addPass(effectPass)
@@ -95,6 +94,10 @@ class PostProcessing {
         this.textureEffect.texture.center.y = value
       })
     }
+  }
+
+  onCameraMove() {
+    this.textureEffect.texture.offset.x = WebGL.camera.getPosition().x / 2
   }
 
   onUpdate() {

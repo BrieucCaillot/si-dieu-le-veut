@@ -40,7 +40,7 @@ const COMMON_SOURCES = {
     {
       name: 'fabric_2',
       type: SourceType.texture,
-      path: 'textures/post/fabric_2.jpg',
+      path: 'textures/post/fabric_2.webp',
     },
     {
       name: 'fabric_3',
