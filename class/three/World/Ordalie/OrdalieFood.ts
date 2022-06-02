@@ -34,7 +34,6 @@ class OrdalieFood {
     this.setPath()
 
     this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: 0xff0000 }))
-    // WebGL.scene.add(this.mesh)
   }
 
   getRandomPath() {
@@ -53,6 +52,7 @@ class OrdalieFood {
 
   disposeInstance(name: string) {
     let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh
+
     WebGL.scene.remove(mesh)
 
     mesh.geometry.dispose()
@@ -142,13 +142,6 @@ class OrdalieFood {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
-    // this.debug.displayTime += deltaTime * 0.001
-    // this.debug.progress = this.debug.displayTime / this.debug.maxDisplayTime
-
-    // if (this.debug.displayTime <= this.debug.maxDisplayTime) {
-    //   const point = this.paths[0].getPointAt(1 - this.debug.progress)
-    //   this.mesh.position.set(point.x, point.y, point.z)
-    // }
   }
 }
 
