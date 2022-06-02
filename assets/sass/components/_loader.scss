@@ -1,8 +1,8 @@
 #loader {
-  @apply absolute top-0 left-0 z-20 bg-[#ecdfcb] h-screen w-screen flex flex-col justify-center items-center;
+  @apply relative z-10 bg-background h-screen w-screen flex flex-col justify-center items-center;
 
   .loader-img {
-    @apply absolute top-0 left-0 bg-no-repeat bg-center bg-contain w-full h-full;
+    @apply bg-no-repeat bg-center bg-contain w-full h-full;
     background-image: url('/images/loader.png');
   }
 }

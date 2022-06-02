@@ -15,7 +15,7 @@ onMounted(() => {
       duration: 0.8,
       autoAlpha: 0,
       ease: 'power3.inOut',
-      // delay: 2,
+      delay: 1,
       onComplete: () => {
         useStore().showLoader.value = false
       },
