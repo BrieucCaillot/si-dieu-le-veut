@@ -27,9 +27,9 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
-const MAX_DISPLAY_TIME = {
-  MIN: 7,
-  MAX: 9,
+let MAX_DISPLAY_TIME = {
+  MIN: 13,
+  MAX: 15,
 }
 const NB_WORDS_TO_WRITE = 10
 const BASE_BURNING = 0
@@ -115,6 +115,8 @@ const initialization = () => {
 
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value = OrdalieManager.getCurrent().instance
+  MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
+  MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
 
   refArray.push(placeholder1, placeholder2, placeholder3)
   parentArray.push(parent1, parent2, parent3)
@@ -136,6 +138,10 @@ const replaceWord = () => {
     duration: 1,
   })
 
+  COUNTER++
+
+  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
+
   displayedWords = displayedWords.filter((displayedWord) => displayedWord.word !== wordToType)
   ordalie.value.makeAStep()
 
@@ -143,10 +149,6 @@ const replaceWord = () => {
   lettersToType = null
   wordToTypeIndex = 0
   letterToType = null
-
-  COUNTER++
-
-  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
 
   if (words.length === 0) {
     refArray[wordIndex].value.textContent = ''
