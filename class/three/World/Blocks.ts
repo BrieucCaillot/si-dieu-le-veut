@@ -36,7 +36,6 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'increaseDifficulty').name('🎲 Increase Difficulty')
       this.debugFolder.add(this.debugParams(), 'decreaseDifficulty').name('🎲 Increase Difficulty')
       this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
-      this.debugFolder.add(this.debugParams(), 'goToNext').name('Go To Next')
     }
 
     document.addEventListener('keydown', (e) => e.code === 'Space' && this.start())
@@ -144,6 +143,8 @@ class Blocks {
    * Create block from latest block created
    */
   private createNext() {
+    if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
+
     console.log('➡️ -- CREATED NEXT')
 
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION

@@ -11,7 +11,7 @@ class OrdalieManager {
   private isDead = false
   private difficulty: DIFFICULTY = DIFFICULTY.EASY
   private lastCreated: ORDALIES
-  private currentDifficultyOrdalie = 0
+  private alreadyPlayed: ORDALIES[] = []
 
   constructor() {}
 
@@ -21,31 +21,26 @@ class OrdalieManager {
   create(_type: ORDALIES) {
     const ordalie = new Ordalie(_type)
     this.instances.push(ordalie)
-    // this.addCurrentDifficultyOrdalies(_type)
     this.lastCreated = _type
   }
 
   shouldIncreaseDifficulty() {
-    return this.currentDifficultyOrdalie % this.nbPerDifficulty === 0
+    return this.alreadyPlayed.length % this.nbPerDifficulty === 0
   }
 
   /**
    * Create next ordalie
    */
   createNext() {
-    const random = Math.floor(Math.random() * 2)
+    const randomIndex = Math.floor(Math.random() * Object.values(ORDALIES).length)
+    const randomOrdalie = Object.values(ORDALIES)[randomIndex]
 
-    switch (this.lastCreated) {
-      case ORDALIES.CROIX:
-        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.BBQ)
-        break
-      case ORDALIES.BBQ:
-        this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.FOOD)
-        break
-      case ORDALIES.FOOD:
-        this.create(random === 0 ? ORDALIES.BBQ : ORDALIES.CROIX)
-        break
-    }
+    // Recall the function if the random ordalie picked is already played
+    if (this.alreadyPlayed.includes(randomOrdalie)) return this.createNext()
+    // Recall the function if the previous ordalie played is the same as the random ordalie picked
+    if (this.lastCreated === randomOrdalie) return this.createNext()
+
+    this.create(randomOrdalie)
   }
 
   /**
@@ -84,7 +79,7 @@ class OrdalieManager {
     const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
     if (currentDifficultyIndex === difficulties.length - 1) return
     this.setDifficulty(difficulties[currentDifficultyIndex + 1] as DIFFICULTY)
-    // console.log('🎲 ++ INCREASED DIFFICULTY ')
+    console.log('🎲 ++ INCREASED DIFFICULTY ')
   }
 
   /**
@@ -95,7 +90,7 @@ class OrdalieManager {
     const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
     if (currentDifficultyIndex === 0) return
     this.setDifficulty(difficulties[currentDifficultyIndex - 1] as DIFFICULTY)
-    // console.log('🎲 -- DECREASED DIFFICULTY ')
+    console.log('🎲 -- DECREASED DIFFICULTY ')
   }
 
   /**
@@ -142,11 +137,12 @@ class OrdalieManager {
   }
 
   onPlayed() {
-    this.currentDifficultyOrdalie++
+    // Add ordalie type to already played
+    this.alreadyPlayed.push(this.getCurrent().block.getType() as ORDALIES)
 
     if (this.shouldIncreaseDifficulty()) {
       this.increaseDifficulty()
-      this.currentDifficultyOrdalie = 0
+      this.alreadyPlayed = []
     }
   }
 
