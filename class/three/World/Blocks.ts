@@ -25,7 +25,7 @@ class Blocks {
     OtherManager.create(OTHERS.CINEMATIC)
     OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.FOOD)
+    OrdalieManager.create(ORDALIES.BBQ)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')

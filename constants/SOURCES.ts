@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
@@ -13,6 +15,8 @@ interface Source {
   name: string
   type: SourceType
   path: string | string[]
+  encoding?: THREE.TextureEncoding
+  wrap?: THREE.Wrapping
 }
 
 const COMMON_SOURCES = {
@@ -21,41 +25,57 @@ const COMMON_SOURCES = {
       name: 'dust',
       type: SourceType.texture,
       path: 'textures/post/dust.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'normal',
       type: SourceType.texture,
       path: 'textures/post/tapisserie_normal.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'scratches',
       type: SourceType.texture,
       path: 'textures/post/scratches.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'fabric_1',
       type: SourceType.texture,
       path: 'textures/post/fabric_1.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'fabric_2',
       type: SourceType.texture,
       path: 'textures/post/fabric_2.webp',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'fabric_3',
       type: SourceType.texture,
       path: 'textures/post/fabric_3.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'textile_1',
       type: SourceType.texture,
       path: 'textures/post/textile_1.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
     {
       name: 'textile_2',
       type: SourceType.texture,
       path: 'textures/post/textile_2.jpg',
+      encoding: THREE.sRGBEncoding,
+      wrap: THREE.RepeatWrapping,
     },
   ],
 }
@@ -123,13 +143,13 @@ const ORDALIE_SOURCES = {
       path: 'models/Ordalies/ordalie_food.glb',
     },
   ],
-  [ORDALIES.CAULDRON]: [
-    {
-      name: 'model',
-      type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_cauldron.glb',
-    },
-  ],
+  // [ORDALIES.CAULDRON]: [
+  //   {
+  //     name: 'model',
+  //     type: SourceType.gltfModel,
+  //     path: 'models/Ordalies/ordalie_cauldron.glb',
+  //   },
+  // ],
   [ORDALIES.BBQ]: [
     {
       name: 'model',

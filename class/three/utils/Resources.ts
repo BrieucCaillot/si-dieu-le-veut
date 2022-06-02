@@ -55,11 +55,9 @@ class Resources extends THREE.EventDispatcher {
       // Load each source
       for (const source of sources) {
         this.loaders[source.type].load(source.path as string, (file) => {
-          if (source.type === SourceType.texture) {
-            file.encoding = THREE.sRGBEncoding
-            file.wrapS = file.wrapT = THREE.RepeatWrapping
-          }
-          // if (source.type === )
+          if (source.encoding) file.encoding = source.encoding
+          if (source.wrap) file.wrapS = file.wrapT = THREE.RepeatWrapping
+
           itemsLoaded.assets.push({
             name: source.name,
             file,
