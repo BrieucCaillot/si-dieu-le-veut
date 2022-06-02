@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   meta: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }],
   },
+  target: 'static',
   build: {
     postcss: {
       postcssOptions: require('./postcss.config'),

@@ -1,6 +1,10 @@
 // PAGES
 @import 'pages/_home.scss';
+@import 'pages/_404.scss';
+
+// COMPONENTS
 @import 'components/loader.scss';
+@import 'components/_mobile.scss';
 @import 'components/typing.scss';
 @import 'components/hud.scss';
 
@@ -22,8 +26,7 @@
 
 // COMMON
 body {
-  background-color: skyblue;
-  overflow: hidden;
+  @apply bg-background overflow-hidden;
 }
 
 main {
