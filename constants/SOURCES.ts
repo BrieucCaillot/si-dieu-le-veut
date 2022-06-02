@@ -15,6 +15,51 @@ interface Source {
   path: string | string[]
 }
 
+const COMMON_SOURCES = {
+  ['COMMON']: [
+    {
+      name: 'dust',
+      type: SourceType.texture,
+      path: 'textures/post/dust.jpg',
+    },
+    {
+      name: 'normal',
+      type: SourceType.texture,
+      path: 'textures/post/tapisserie_normal.jpg',
+    },
+    {
+      name: 'scratches',
+      type: SourceType.texture,
+      path: 'textures/post/scratches.jpg',
+    },
+    {
+      name: 'fabric_1',
+      type: SourceType.texture,
+      path: 'textures/post/fabric_1.jpg',
+    },
+    {
+      name: 'fabric_2',
+      type: SourceType.texture,
+      path: 'textures/post/fabric_2.jpg',
+    },
+    {
+      name: 'fabric_3',
+      type: SourceType.texture,
+      path: 'textures/post/fabric_2.jpg',
+    },
+    {
+      name: 'textile_1',
+      type: SourceType.texture,
+      path: 'textures/post/textile_1.jpg',
+    },
+    {
+      name: 'textile_2',
+      type: SourceType.texture,
+      path: 'textures/post/textile_2.jpg',
+    },
+  ],
+}
+
 const OTHER_SOURCES = {
   [OTHERS.SPLASHSCREEN]: [
     {
@@ -104,6 +149,6 @@ const ORDALIE_SOURCES = {
   ],
 }
 
-const ALL_SOURCES = { ...OTHER_SOURCES, ...ORDALIE_SOURCES, ...TRANSITION_SOURCES }
+const ALL_SOURCES = { ...COMMON_SOURCES, ...OTHER_SOURCES, ...ORDALIE_SOURCES, ...TRANSITION_SOURCES }
 
 export { SourceType, Source, ALL_SOURCES }

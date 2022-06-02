@@ -7,11 +7,13 @@ import Resources from '@/class/three/utils/Resources'
 import Camera from '@/class/three/Camera'
 import Raycaster from '@/class/three/Raycaster'
 import Renderer from '@/class/three/Renderer'
+import PostProcessing from '@/class/three/PostProcessing'
 import World from '@/class/three/World/World'
 import Debug from '@/class/three/Debug'
 
 class WebGL {
   canvas: HTMLCanvasElement
+  debug: Debug
   sizes: Sizes
   mouse: Mouse
   time: Time
@@ -20,8 +22,8 @@ class WebGL {
   camera: Camera
   raycaster: Raycaster
   renderer: Renderer
+  postProcessing: PostProcessing
   world: World
-  debug: Debug
 
   setup(_canvas: HTMLCanvasElement) {
     this.canvas = _canvas
@@ -34,18 +36,25 @@ class WebGL {
     this.camera = new Camera()
     this.raycaster = new Raycaster()
     this.renderer = new Renderer()
-    this.world = new World()
 
     // Listeners
     this.sizes.addEventListener('resize', this.resize)
     this.mouse.addEventListener('mousemove', this.mouseMove)
 
+    // Wait for resources
+    watch(useStore().resourcesLoaded, (value) => {
+      this.postProcessing = new PostProcessing()
+      this.world = new World()
+      this.time.addUpdate(this.update)
+    })
+
     // Update
-    this.time.addUpdate(this.update)
 
     // Dispose WebGL
     // setTimeout(() => this.destroy(), 3000)
   }
+
+  onResourcesLoaded() {}
 
   resize = () => {
     this.camera.onResize()
@@ -61,7 +70,8 @@ class WebGL {
     this.camera.onUpdate()
     this.world.onUpdate()
     this.raycaster.onUpdate()
-    this.renderer.onUpdate()
+    // this.renderer.onUpdate()
+    this.postProcessing.onUpdate()
   }
 
   destroy() {
