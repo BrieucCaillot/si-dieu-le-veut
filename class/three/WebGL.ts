@@ -48,10 +48,6 @@ class WebGL {
       this.time.addUpdate(this.update)
     })
 
-    console.log('WebGL setup')
-
-    // Update
-
     // Dispose WebGL
     // setTimeout(() => this.destroy(), 3000)
   }

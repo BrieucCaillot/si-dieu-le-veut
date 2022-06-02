@@ -1,30 +1,70 @@
+import * as THREE from 'three'
 import GUI from 'lil-gui'
+
+import OTHERS from '@/constants/OTHERS'
 
 import Other from '@/class/three/World/Other/Other'
 
 class OtherCinematic {
-  instance: Other
-  debugFolder: GUI
+  private instance: Other
+  private type: OTHERS
+  private videoMesh
+  private debugFolder: GUI
+
+  private cinematicVideo?: HTMLVideoElement
 
   constructor(_other: Other) {
     this.instance = _other
+    this.type = this.instance.block.getType() as OTHERS
+
+    this.type === OTHERS.CINEMATIC_2 && this.setVideo()
   }
 
   start() {
-    this.playVideo()
+    switch (this.type) {
+      case OTHERS.CINEMATIC_1:
+        this.spacePressed()
+        break
+      case OTHERS.CINEMATIC_2:
+        this.playVideo()
+        break
+      case OTHERS.CINEMATIC_3:
+        this.spacePressed()
+        break
+    }
   }
 
   end() {
     this.instance.end()
   }
 
-  private playVideo() {
-    // TODO: Play video
+  private spacePressed() {
+    // TODO
     setTimeout(() => {
-      console.log('📹 VIDEO PLAYED')
       this.end()
-      // }, 5000)
     }, 20)
+  }
+
+  private setVideo() {
+    this.cinematicVideo = document.querySelector('#cinematic-video') as HTMLVideoElement
+
+    const videoTexture = new THREE.VideoTexture(this.cinematicVideo)
+    videoTexture.needsUpdate = true
+    videoTexture.flipY = false
+
+    this.videoMesh = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'video') as THREE.Mesh
+    this.videoMesh.material = new THREE.MeshBasicMaterial({ map: videoTexture })
+  }
+
+  private playVideo() {
+    // cinematicVideo.style.display = 'block'
+    this.cinematicVideo.play()
+    this.cinematicVideo.addEventListener('ended', () => this.onVideoPlayed())
+  }
+
+  private onVideoPlayed() {
+    this.end()
+    console.log('📹 VIDEO PLAYED')
   }
 
   update() {}
