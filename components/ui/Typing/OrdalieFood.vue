@@ -75,13 +75,10 @@ const vSplitText = {
 }
 
 const initialization = () => {
-  console.log('OnMounted Food')
   document.addEventListener('keydown', newChar)
 
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value = OrdalieManager.getCurrent().instance
-
-  // wordList.value.push('new word')
 
   gsap.ticker.add(update)
 }
@@ -190,11 +187,14 @@ const replaceWord = () => {
 }
 
 const gameWon = () => {
+  console.log('game won')
   gsap.ticker.remove(update)
   ordalie.value.end()
 }
 
 const gameOver = () => {
+  console.log('game over')
+
   gsap.ticker.remove(update)
   ordalie.value.end()
 }
@@ -204,7 +204,6 @@ const update = (time, deltaTime, frame) => {
 
   if (CURRENT_TIME_BEFORE_NEW_WORD < 0) {
     pickWord()
-
     CURRENT_TIME_BEFORE_NEW_WORD = TIME_BEFORE_NEW_WORD
   }
 

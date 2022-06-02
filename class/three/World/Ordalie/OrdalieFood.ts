@@ -87,8 +87,6 @@ class OrdalieFood {
 
     const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, bottomLeftCorner3D.y, objectSize.max.z)
 
-    // console.log(center3D)
-
     center3D.project(WebGL.camera.instance)
     const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
     const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
@@ -102,11 +100,13 @@ class OrdalieFood {
         const x = PATHS[i][j][0]
         const y = PATHS[i][j][1]
         const z = PATHS[i][j][2]
-        PATHS[i][j] = new THREE.Vector3(x, z, -y)
+        PATHS[i][j] = new THREE.Vector3(x + this.instance.block.getPosition().x, z, -y)
       }
 
       this.paths.push(new THREE.CatmullRomCurve3(PATHS[i]))
 
+      // this.instance.block.getModel().scene.attach(this.paths[i])
+      // console.log(this.instance.block.getModel())
       // const radius = 0.01
       // const geometry = new THREE.TubeGeometry(this.paths[i], 20, radius, 20, false)
       // const material = new THREE.MeshNormalMaterial({
