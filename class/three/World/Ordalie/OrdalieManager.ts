@@ -1,3 +1,5 @@
+import useHUD from '@/composables/useHUD'
+
 import ORDALIES from '@/constants/ORDALIES'
 import DIFFICULTY from '@/constants/DIFFICULTY'
 
@@ -7,8 +9,9 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 class OrdalieManager {
   private instances: Ordalie[] = []
   private currentIndex = -1
-  private nbPerDifficulty = 3
   private isDead = false
+  private score = 0
+  private nbPerDifficulty = 3
   private difficulty: DIFFICULTY = DIFFICULTY.EASY
   private lastCreated: ORDALIES
   private alreadyPlayed: ORDALIES[] = []
@@ -79,6 +82,7 @@ class OrdalieManager {
     const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
     if (currentDifficultyIndex === difficulties.length - 1) return
     this.setDifficulty(difficulties[currentDifficultyIndex + 1] as DIFFICULTY)
+    useHUD().difficulty.value = this.getDifficulty()
     console.log('🎲 ++ INCREASED DIFFICULTY ')
   }
 
@@ -139,6 +143,10 @@ class OrdalieManager {
   onPlayed() {
     // Add ordalie type to already played
     this.alreadyPlayed.push(this.getCurrent().block.getType() as ORDALIES)
+
+    // Increment score
+    this.score++
+    useHUD().score.value = this.score
 
     if (this.shouldIncreaseDifficulty()) {
       this.increaseDifficulty()

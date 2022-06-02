@@ -4,6 +4,7 @@
     <!-- <Header /> -->
     <main id="main" class="page">
       <Canvas />
+      <HUD />
       <slot v-if="!showLoader" />
     </main>
   </div>
@@ -11,9 +12,10 @@
 
 <script setup lang="ts">
 import WebGL from '@/class/three/WebGL'
-import Header from '@/components/ui/Header.vue'
 import Canvas from '@/components/three/Canvas.vue'
 
+import Header from '@/components/ui/Header.vue'
+import HUD from '@/components/ui/HUD.vue'
 import Loader from '@/components/ui/Loader.vue'
 
 const showLoader = ref(true)
