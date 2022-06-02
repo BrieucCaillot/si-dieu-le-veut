@@ -34,7 +34,7 @@ class Blocks {
       this.debugFolder.add(OrdalieManager, 'difficulty').name('Difficulty').listen().disable()
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'increaseDifficulty').name('🎲 Increase Difficulty')
-      this.debugFolder.add(this.debugParams(), 'decreaseDifficulty').name('🎲 Increase Difficulty')
+      this.debugFolder.add(this.debugParams(), 'decreaseDifficulty').name('🎲 Decrease Difficulty')
       this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
     }
 
