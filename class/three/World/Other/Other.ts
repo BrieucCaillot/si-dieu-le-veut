@@ -20,7 +20,13 @@ class Other {
       case OTHERS.SPLASHSCREEN:
         this.instance = new OtherSplashscreen(this)
         break
-      case OTHERS.CINEMATIC:
+      case OTHERS.CINEMATIC_1:
+        this.instance = new OtherCinematic(this)
+        break
+      case OTHERS.CINEMATIC_2:
+        this.instance = new OtherCinematic(this)
+        break
+      case OTHERS.CINEMATIC_3:
         this.instance = new OtherCinematic(this)
         break
       case OTHERS.TUTORIAL:

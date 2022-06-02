@@ -88,11 +88,25 @@ const OTHER_SOURCES = {
       path: 'models/Others/splashscreen.glb',
     },
   ],
-  [OTHERS.CINEMATIC]: [
+  [OTHERS.CINEMATIC_1]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Others/cinematic.glb',
+      path: 'models/Others/cinematic_1.glb',
+    },
+  ],
+  [OTHERS.CINEMATIC_2]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/cinematic_2.glb',
+    },
+  ],
+  [OTHERS.CINEMATIC_3]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/cinematic_3.glb',
     },
   ],
   [OTHERS.TUTORIAL]: [

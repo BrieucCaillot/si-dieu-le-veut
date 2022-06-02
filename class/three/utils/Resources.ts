@@ -72,7 +72,6 @@ class Resources extends THREE.EventDispatcher {
   }
 
   getItems(type: OTHERS | ORDALIES | TRANSITIONS | 'COMMON', name: string) {
-    // console.log(this.itemsLoaded['COMMON'].filter((item) => item.name === 'dust').map((item) => item.file))
     return this.itemsLoaded[type].filter((item) => item.name === name).map((item) => item.file)[0]
   }
 }
