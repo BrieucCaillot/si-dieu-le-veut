@@ -1,13 +1,13 @@
 import ORDALIES from '@/constants/ORDALIES'
 
-const isLoaderHidden = ref(false)
+const showLoader = ref(true)
 const resourcesLoaded = ref(false)
 const isDebug = ref(false)
 const currentOrdalie = ref(null)
 
 export default () => {
   return {
-    isLoaderHidden,
+    showLoader,
     resourcesLoaded,
     isDebug,
     currentOrdalie,
