@@ -22,10 +22,12 @@ class Blocks {
    */
   setup() {
     OtherManager.create(OTHERS.SPLASHSCREEN)
-    OtherManager.create(OTHERS.CINEMATIC)
+    OtherManager.create(OTHERS.CINEMATIC_1)
+    OtherManager.create(OTHERS.CINEMATIC_2)
+    OtherManager.create(OTHERS.CINEMATIC_3)
     OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.CROIX)
+    OrdalieManager.create(ORDALIES.BBQ)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')

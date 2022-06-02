@@ -1,14 +1,8 @@
 #loader {
   @apply absolute top-0 left-0 z-20 bg-[#ecdfcb] h-screen w-screen flex flex-col justify-center items-center;
-  .character {
-    @apply relative h-[800px] w-[600px] py-36;
-    &-body {
-      @apply absolute top-0 left-0 bg-no-repeat bg-center bg-contain w-full h-full;
-      background-image: url('/images/body.png');
-    }
-    &-arms {
-      @apply absolute top-[60px] bg-no-repeat bg-center bg-contain w-full h-60;
-      background-image: url('/images/arms.png');
-    }
+
+  .loader-img {
+    @apply absolute top-0 left-0 bg-no-repeat bg-center bg-contain w-full h-full;
+    background-image: url('/images/loader.png');
   }
 }

@@ -18,16 +18,18 @@ import Header from '@/components/ui/Header.vue'
 import HUD from '@/components/ui/HUD.vue'
 import Loader from '@/components/ui/Loader.vue'
 
-const showLoader = ref(true)
 const route = useRoute()
 
-useStore().isDebug.value = route.name === 'debug'
+const { showLoader, isDebug } = useStore()
+isDebug.value = route.name === 'debug'
 
-onMounted(() => {
-  watch(useStore().isLoaderHidden, () => {
-    showLoader.value = false
-  })
-})
+// const update = () => {
+//   console.log(showLoader.value)
+// }
+
+// setInterval(() => {
+//   update()
+// }, 100)
 
 console.log('SETUP DEFAULT LAYOUT')
 </script>
