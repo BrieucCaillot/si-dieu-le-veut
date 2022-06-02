@@ -14,17 +14,6 @@ class World extends THREE.EventDispatcher {
     super()
 
     this.environment = new Environment()
-
-    AudioManager.setup()
-    Blocks.setup()
-    // Wait for resources
-    // watch(useStore().resourcesLoaded, (value) => this.onResourcesLoaded())
-  }
-
-  onResourcesLoaded() {
-    console.log('All Resources loaded')
-    this.environment = new Environment()
-
     AudioManager.setup()
     Blocks.setup()
   }

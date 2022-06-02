@@ -5,6 +5,7 @@
     <main id="main" class="page">
       <template v-if="startWebGL">
         <Loader />
+        <Video />
         <Canvas />
         <HUD />
       </template>
@@ -18,8 +19,9 @@ import WebGL from '@/class/three/WebGL'
 import Canvas from '@/components/three/Canvas.vue'
 
 import Header from '@/components/ui/Header.vue'
-import HUD from '@/components/ui/HUD.vue'
 import Loader from '@/components/ui/Loader.vue'
+import Video from '@/components/ui/Video.vue'
+import HUD from '@/components/ui/HUD.vue'
 import Mobile from '@/components/ui/Mobile.vue'
 
 const route = useRoute()
