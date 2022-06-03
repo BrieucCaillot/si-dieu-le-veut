@@ -70,8 +70,8 @@ class WebGL {
     this.camera.onUpdate()
     this.world.onUpdate()
     this.raycaster.onUpdate()
-    // this.renderer.onUpdate()
-    this.postProcessing.onUpdate()
+    this.renderer.onUpdate()
+    // this.postProcessing.onUpdate()
   }
 
   destroy() {

@@ -1,12 +1,12 @@
 <template>
   <div class="text-[25px]">
-    <div ref="parent1" class="fixed top-0 left-4">
+    <div ref="parent1" class="fixed top-0">
       <div class="text-[#BCA8A2]" ref="placeholder1"></div>
     </div>
-    <div ref="parent2" class="fixed top-0 left-4">
+    <div ref="parent2" class="fixed top-0">
       <div class="text-[#BCA8A2]" ref="placeholder2"></div>
     </div>
-    <div ref="parent3" class="fixed top-0 left-4">
+    <div ref="parent3" class="fixed top-0">
       <div class="text-[#BCA8A2]" ref="placeholder3"></div>
     </div>
 

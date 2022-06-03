@@ -122,6 +122,21 @@ const ORDALIE_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Ordalies/ordalie_food.glb',
     },
+    {
+      name: 'bread',
+      type: SourceType.texture,
+      path: 'textures/bread.png',
+    },
+    {
+      name: 'cheese',
+      type: SourceType.texture,
+      path: 'textures/cheese.png',
+    },
+    {
+      name: 'cake',
+      type: SourceType.texture,
+      path: 'textures/cake.png',
+    },
   ],
   [ORDALIES.CAULDRON]: [
     {

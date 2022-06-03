@@ -19,6 +19,9 @@ class OrdalieFood {
     maxDisplayTime: number
   }
   paths: THREE.CatmullRomCurve3[]
+  geometry: THREE.PlaneGeometry
+  material: THREE.MeshBasicMaterial
+  textures: THREE.Texture[]
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
@@ -33,7 +36,18 @@ class OrdalieFood {
     this.setAnimation()
     this.setPath()
 
-    this.mesh = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: 0xff0000 }))
+    this.textures = [
+      WebGL.resources.getItems(this.instance.block.getType(), 'bread') as THREE.Texture,
+      WebGL.resources.getItems(this.instance.block.getType(), 'cheese') as THREE.Texture,
+      WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
+    ]
+
+    this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
+    this.material = new THREE.MeshBasicMaterial({
+      transparent: true,
+    })
+
+    this.mesh = new THREE.Mesh(this.geometry, this.material)
   }
 
   getRandomPath() {
@@ -42,6 +56,11 @@ class OrdalieFood {
 
   createInstance(path: THREE.CatmullRomCurve3, i: number) {
     const clone = this.mesh.clone()
+    const material = this.material.clone()
+    material.map = this.textures[Math.floor(Math.random() * this.textures.length)]
+
+    clone.material = material
+
     clone.name = 'clone_' + i
     const point = path.getPointAt(1)
     clone.position.set(point.x, point.y, point.z)
