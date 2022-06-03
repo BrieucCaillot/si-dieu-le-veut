@@ -126,24 +126,11 @@ class Camera extends THREE.EventDispatcher {
   private setFov() {
     let dist = this.parent.position.z - 0
     let height = 1 // desired height to fit
-    let width = this.planeWidth // desired width to fit
-    const vFOV = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
-    const hFOV = 2 * Math.atan(Math.tan(vFOV / 2) * this.instance.aspect)
-    // console.log({ vFOV })
-    // console.log({ hFOV })
-    // console.log({ width })
-    // console.log({ 'aspect ': WebGL.sizes.aspect })
 
     if (WebGL.sizes.aspect < this.planeWidth) {
-      console.log('accroché sur les bords')
-      height = 2 * Math.tan(vFOV / 2) * dist
-      width = 2 * Math.tan(hFOV / 2) * dist
-      // this.fov = 2 * Math.atan(height / (2 * dist))
-
-      this.fov = vFOV && 2 * width
+      this.fov = 2 * Math.atan(this.planeWidth / (2 * dist) / this.instance.aspect) * (180 / Math.PI)
     } else {
-      console.log('accroché en haut')
-      this.fov = vFOV
+      this.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
     }
 
     this.instance.fov = this.fov
