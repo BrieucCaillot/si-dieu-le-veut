@@ -31,8 +31,6 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('camera')
 
     this.setInstance()
-    // this.setTargetDebug()
-    // this.setControls()
 
     if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.5).step(0.01)
@@ -69,6 +67,7 @@ class Camera extends THREE.EventDispatcher {
 
     if (WebGL.debug.isActive()) this.debugFolder.add(this.controls, 'enabled')
   }
+
   getXFOV() {
     // Convert angle to radiant
     const FOV = this.instance.fov
@@ -79,6 +78,7 @@ class Camera extends THREE.EventDispatcher {
     let xFovAngle = (xFovRadiant * 180) / Math.PI
     return xFovAngle
   }
+
   /**
    * Convert vertical field of view to horizontal field of view, given an aspect
    * ratio. See https://arstechnica.com/civis/viewtopic.php?f=6&t=37447
@@ -138,7 +138,9 @@ class Camera extends THREE.EventDispatcher {
       console.log('accroché sur les bords')
       height = 2 * Math.tan(vFOV / 2) * dist
       width = 2 * Math.tan(hFOV / 2) * dist
-      this.fov = 2 * Math.atan(height / (2 * dist))
+      // this.fov = 2 * Math.atan(height / (2 * dist))
+
+      this.fov = vFOV && 2 * width
     } else {
       console.log('accroché en haut')
       this.fov = vFOV
