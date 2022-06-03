@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 import useStore from '@/composables/useStore'
-import { Source, ALL_SOURCES } from '@/constants/SOURCES'
+import { Source, ALL_SOURCES, SourceType } from '@/constants/SOURCES'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
@@ -55,6 +55,9 @@ class Resources extends THREE.EventDispatcher {
       // Load each source
       for (const source of sources) {
         this.loaders[source.type].load(source.path as string, (file) => {
+          if (source.encoding) file.encoding = source.encoding
+          if (source.wrap) file.wrapS = file.wrapT = THREE.RepeatWrapping
+
           itemsLoaded.assets.push({
             name: source.name,
             file,
@@ -68,7 +71,7 @@ class Resources extends THREE.EventDispatcher {
     })
   }
 
-  getItems(type: OTHERS | ORDALIES | TRANSITIONS, name: string) {
+  getItems(type: OTHERS | ORDALIES | TRANSITIONS | 'COMMON', name: string) {
     return this.itemsLoaded[type].filter((item) => item.name === name).map((item) => item.file)[0]
   }
 }

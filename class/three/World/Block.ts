@@ -2,18 +2,21 @@ import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import cloneSkinnedMesh from '@/class/three/utils/CloneSkinnedMesh'
 
+import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 class Block {
   private type: OTHERS | ORDALIES | TRANSITIONS
   // Model
   private defaultModel: GLTF
   private model: any
+  private difficultyData: { [key: string]: any }
 
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
@@ -30,6 +33,7 @@ class Block {
     this.add()
     this.setPosition()
     this.setCenter()
+    this.setDifficultyData()
     // this.setBoxHelper()
     Blocks.onCreated(this)
   }
@@ -74,6 +78,7 @@ class Block {
     const lastBlockPositionX = Blocks.getLast().getPosition().x
     const lastBlockSizeX = Blocks.getLast().getSize().x
     this.model.scene.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
+    // this.model.scene.scale.multiplyScalar(WebGL.camera.perspective)
     this.position = this.model.scene.position
   }
 
@@ -91,8 +96,25 @@ class Block {
     WebGL.scene.add(mesh)
   }
 
+  private setDifficultyData() {
+    const difficulty = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]
+
+    if (Blocks.isOrdalie(this.type as ORDALIES)) {
+      this.difficultyData = difficulty[this.type as ORDALIES]
+    }
+    if (Blocks.isTransition(this.type as TRANSITIONS)) {
+      this.difficultyData = difficulty['TRANSITIONS']
+    }
+  }
   /**
-   * Get position
+   * Get speed coef of model animations
+   */
+  getDifficultyData() {
+    return this.difficultyData
+  }
+
+  /**
+   * Get position of model
    */
   getPosition() {
     return this.position

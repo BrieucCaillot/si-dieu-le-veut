@@ -1,19 +1,25 @@
 // PAGES
 @import 'pages/_home.scss';
+@import 'pages/_404.scss';
+
+// COMPONENTS
 @import 'components/loader.scss';
+@import 'components/_mobile.scss';
+@import 'components/_video.scss';
 @import 'components/typing.scss';
+@import 'components/hud.scss';
 
 @font-face {
-  font-family: 'US Blaak';
-  src: url('../fonts/USBlaak-Bold.woff2') format('woff2'), url('../fonts/USBlaak-Bold.woff') format('woff');
-  font-weight: bold;
+  font-family: 'Mordova';
+  src: url('../fonts/MordovaRegular.woff2') format('woff2'), url('../fonts/MordovaRegular.woff') format('woff');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'US Blaak';
-  src: url('../fonts/USBlaak-Black.woff2') format('woff2'), url('../fonts/USBlaak-Black.woff') format('woff');
+  font-family: 'PirataOne';
+  src: url('../fonts/PirataOne-Regular.woff2') format('woff2'), url('../fonts/PirataOne-Regular.woff') format('woff');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -21,8 +27,7 @@
 
 // COMMON
 body {
-  background-color: skyblue;
-  overflow: hidden;
+  @apply bg-background overflow-hidden;
 }
 
 main {

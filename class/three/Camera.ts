@@ -3,10 +3,12 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import gsap from 'gsap'
 
+import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import { clamp } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
@@ -65,9 +67,7 @@ class Camera extends THREE.EventDispatcher {
     this.controls.enableDamping = true
     this.controls.enabled = false
 
-    if (WebGL.debug.isActive()) {
-      this.debugFolder.add(this.controls, 'enabled')
-    }
+    if (WebGL.debug.isActive()) this.debugFolder.add(this.controls, 'enabled')
   }
   getXFOV() {
     // Convert angle to radiant
@@ -157,11 +157,12 @@ class Camera extends THREE.EventDispatcher {
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1
-    this.currentPosX += this.debugParams.moveXSpeed * directionCoef
+    this.currentPosX += directionCoef * this.debugParams.moveXSpeed
     this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
 
     gsap.to([this.parent.position, this.target], {
       x: this.currentPosX,
+      onUpdate: this.onPositionChange,
       duration: 0.5,
     })
   }
@@ -176,13 +177,21 @@ class Camera extends THREE.EventDispatcher {
     this.targetDebugMesh?.position.copy(this.target)
   }
 
-  setPositionX(x: number, cb: Function = () => {}) {
+  onPositionChange() {
+    WebGL.postProcessing.onCameraMove()
+  }
+
+  setPositionX({ x, onStart, onComplete }: { x: number; onStart?: () => void; onComplete?: () => void }) {
     console.log('📷 MOVING..')
+    const duration = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]?.['CAMERA']?.moveDuration ?? 0.5
+
     gsap.to([this.parent.position, this.target], {
       x,
-      duration: 5,
+      duration,
       ease: 'power.easeOut',
-      onComplete: () => cb(),
+      onStart: onStart,
+      onUpdate: this.onPositionChange,
+      onComplete: onComplete,
     })
   }
 

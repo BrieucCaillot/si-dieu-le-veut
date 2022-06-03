@@ -10,15 +10,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        background: '#ecdfcb',
         green: '#00FF00',
         red: '#FF0000',
         typingDoneColor: '#2D2923',
         typingActiveLetter: '#A3411F',
         typingBaseColor: '#ffffff',
+        black: {
+          full: '#000000',
+          primary: '#2D2923',
+        },
       },
     },
     fontFamily: {
-      sans: ['US Blaak', 'sans-serif'],
+      primary: ['Mordova', 'sans-serif'],
+      secondary: ['PirataOne', 'sans-serif'],
     },
   },
   plugins: [],

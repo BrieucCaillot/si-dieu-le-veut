@@ -1,3 +1,5 @@
+import useHUD from '@/composables/useHUD'
+
 import ORDALIES from '@/constants/ORDALIES'
 import DIFFICULTY from '@/constants/DIFFICULTY'
 
@@ -7,13 +9,14 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 class OrdalieManager {
   private instances: Ordalie[] = []
   private currentIndex = -1
-  private lastCreated: ORDALIES
   private isDead = false
-  private difficulty: DIFFICULTY
+  private score = 0
+  private nbPerDifficulty = 3
+  private difficulty: DIFFICULTY = DIFFICULTY.EASY
+  private lastCreated: ORDALIES
+  private alreadyPlayed: ORDALIES[] = []
 
-  constructor() {
-    this.setDifficulty(DIFFICULTY.EASY)
-  }
+  constructor() {}
 
   /**
    * Create ordalie from type
@@ -24,23 +27,23 @@ class OrdalieManager {
     this.lastCreated = _type
   }
 
+  shouldIncreaseDifficulty() {
+    return this.alreadyPlayed.length % this.nbPerDifficulty === 0
+  }
+
   /**
    * Create next ordalie
    */
   createNext() {
-    const random = Math.floor(Math.random() * 2)
+    const randomIndex = Math.floor(Math.random() * Object.values(ORDALIES).length)
+    const randomOrdalie = Object.values(ORDALIES)[randomIndex]
 
-    switch (this.lastCreated) {
-      case ORDALIES.CROIX:
-        this.create(random === 0 ? ORDALIES.FOOD : ORDALIES.BBQ)
-        break
-      case ORDALIES.BBQ:
-        this.create(random === 0 ? ORDALIES.CROIX : ORDALIES.FOOD)
-        break
-      case ORDALIES.FOOD:
-        this.create(random === 0 ? ORDALIES.BBQ : ORDALIES.CROIX)
-        break
-    }
+    // Recall the function if the random ordalie picked is already played
+    if (this.alreadyPlayed.includes(randomOrdalie)) return this.createNext()
+    // Recall the function if the previous ordalie played is the same as the random ordalie picked
+    if (this.lastCreated === randomOrdalie) return this.createNext()
+
+    this.create(randomOrdalie)
   }
 
   /**
@@ -69,6 +72,29 @@ class OrdalieManager {
    */
   setDifficulty(_difficulty: DIFFICULTY) {
     this.difficulty = _difficulty
+  }
+
+  /**
+   * Increase difficulty
+   */
+  increaseDifficulty() {
+    const difficulties = Object.keys(DIFFICULTY)
+    const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
+    if (currentDifficultyIndex === difficulties.length - 1) return
+    this.setDifficulty(difficulties[currentDifficultyIndex + 1] as DIFFICULTY)
+    useHUD().difficulty.value = this.getDifficulty()
+    console.log('🎲 ++ INCREASED DIFFICULTY ')
+  }
+
+  /**
+   * Decrease difficulty
+   */
+  decreaseDifficulty() {
+    const difficulties = Object.keys(DIFFICULTY)
+    const currentDifficultyIndex = difficulties.indexOf(this.difficulty)
+    if (currentDifficultyIndex === 0) return
+    this.setDifficulty(difficulties[currentDifficultyIndex - 1] as DIFFICULTY)
+    console.log('🎲 -- DECREASED DIFFICULTY ')
   }
 
   /**
@@ -114,12 +140,27 @@ class OrdalieManager {
     Blocks.onStarted()
   }
 
+  onPlayed() {
+    // Add ordalie type to already played
+    this.alreadyPlayed.push(this.getCurrent().block.getType() as ORDALIES)
+
+    // Increment score
+    this.score++
+    useHUD().score.value = this.score
+
+    if (this.shouldIncreaseDifficulty()) {
+      this.increaseDifficulty()
+      this.alreadyPlayed = []
+    }
+  }
+
   /**
    * On Ordalie ended
    */
   onEnded() {
     console.log('🎲 ENDED ' + this.getCurrent().block.getType())
     useStore().currentOrdalie.value = null
+    this.onPlayed()
     Blocks.onEnded()
   }
 }

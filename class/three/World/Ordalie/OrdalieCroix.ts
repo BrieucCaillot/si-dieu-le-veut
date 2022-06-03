@@ -1,6 +1,7 @@
+import gsap from 'gsap'
 import GUI from 'lil-gui'
 import * as THREE from 'three'
-import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
+
 import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
@@ -14,20 +15,20 @@ class OrdalieCroix {
   // Gameplay
   debugObject: any
   timeScaleController: any
-  gameplayParams: CroixInterface
+  difficultyData: CroixInterface
 
   debugFolder: GUI
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
-    this.gameplayParams = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()].CROIX
+    this.difficultyData = this.instance.block.getDifficultyData() as CroixInterface
 
     this.setAnimation()
   }
 
   start() {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroix')
-    this.animation.play('Croix_Descend')
+    this.animation.play('Croix_CuisinierFRONT_Bras')
   }
 
   end() {
@@ -42,26 +43,34 @@ class OrdalieCroix {
 
     this.animation.mixer.addEventListener('finished', (e) => {
       //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
-      if (e.direction === -1) {
-        this.animation.actions['Croix_Descend'].stop()
-        this.animation.actions['Croix_Descend'].play()
+      if (e.direction === -1 && e.action._clip.name === 'Croix_CuisinierFRONT_Bras') {
+        this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
+        this.animation.actions['Croix_CuisinierFRONT_Bras'].play()
       } else {
-        this.end()
+        this.gameOver()
         //fin de l'anim classique, le mec a perdu
       }
 
-      // this.animation.actions['Croix_Descend'].timeScale = 1
-      // this.animation.actions['Croix_Descend'].play()
+      if (e.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+        this.end()
+      }
+
+      // this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = 1
+      // this.animation.actions['Croix_CuisinierFRONT_Bras'].play()
     })
 
     this.animation.actions = {
-      Croix_Descend: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
-      Croix_idle: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
+      Croix_CuisinierFRONT_Bras: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
+      Croix_CuisinierFRONT_Mort: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
     }
 
-    this.animation.actions['Croix_Descend'].clampWhenFinished = true
-    this.animation.actions['Croix_Descend'].loop = THREE.LoopOnce
-    this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.fallingSpeedArm
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].clampWhenFinished = true
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].loop = THREE.LoopOnce
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.fallingSpeedArm
+    // this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = 1.5
+
+    this.animation.actions['Croix_CuisinierFRONT_Mort'].clampWhenFinished = true
+    this.animation.actions['Croix_CuisinierFRONT_Mort'].loop = THREE.LoopOnce
 
     // Play the action
     this.animation.play = (name: string) => {
@@ -79,33 +88,33 @@ class OrdalieCroix {
     return {
       animations: {
         armsUp: () => this.armsUp(),
-        startGame: () => this.animation.actions['Croix_Descend'].play(),
+        startGame: () => this.animation.actions['Croix_CuisinierFRONT_Bras'].play(),
       },
     }
   }
 
   private armsUp() {
-    this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.upSpeedArm
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.upSpeedArm
 
     setTimeout(() => {
-      this.animation.actions['Croix_Descend'].timeScale = this.gameplayParams.fallingSpeedArm
-    }, this.gameplayParams.upDurationArm)
+      this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.fallingSpeedArm
+    }, this.difficultyData.upDurationArm)
   }
 
   debug() {
     this.debugObject = {
-      timeScale: this.animation.actions['Croix_Descend'].timeScale,
-      time: this.animation.actions['Croix_Descend'].time,
+      timeScale: this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale,
+      time: this.animation.actions['Croix_CuisinierFRONT_Bras'].time,
 
       animations: {
         armsUp: () => this.armsUp(),
         startGame: () => {
-          this.animation.actions['Croix_Descend'].play()
+          this.animation.actions['Croix_CuisinierFRONT_Bras'].play()
           // document.getElementById('input-typing').focus()
         },
       },
     }
-    if (this.debug) {
+    if (this.debugFolder) {
       this.debugFolder.add(this.debugObject, 'timeScale').listen().disable()
       this.debugFolder.add(this.debugObject, 'time').step(0.01).listen().disable()
       this.debugFolder.add(this.debugObject.animations, 'armsUp')
@@ -119,12 +128,13 @@ class OrdalieCroix {
 
   gameOver() {
     OrdalieManager.setIsDead(true)
-    console.log('gameover')
+    this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
+    this.animation.actions['Croix_CuisinierFRONT_Mort'].play()
   }
 
   setHTMLPosition(container: HTMLDivElement) {
     //récupérer la taille de ce plane
-    const plane = this.instance.block.getModel().scene.children.find((child) => child.name === 'Plane') as THREE.Mesh
+    const plane = this.instance.block.getModel().scene.children.find((child) => child.name === 'text') as THREE.Mesh
     const planeSize = new THREE.Box3().setFromObject(plane)
 
     // console.log('plane size', planeSize)
@@ -148,12 +158,17 @@ class OrdalieCroix {
     container.style.width = width + 'px'
   }
 
+  solo() {
+    gsap.ticker.add(() => this.update())
+    this.start()
+  }
+
   update() {
     const { deltaTime } = WebGL.time
 
-    if (WebGL.debug.isActive()) {
-      this.debugObject.timeScale = this.animation.actions['Croix_Descend'].timeScale
-      this.debugObject.time = this.animation.actions['Croix_Descend'].time
+    if (this.debugObject) {
+      this.debugObject.timeScale = this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale
+      this.debugObject.time = this.animation.actions['Croix_CuisinierFRONT_Bras'].time
     }
 
     this.animation.mixer.update(deltaTime * 0.001)

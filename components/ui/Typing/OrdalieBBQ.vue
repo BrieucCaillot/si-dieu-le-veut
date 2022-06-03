@@ -1,12 +1,12 @@
 <template>
-  <div class="">
-    <div ref="parent1" class="fixed top-0 left-0">
+  <div class="text-[25px]">
+    <div ref="parent1" class="fixed top-0 left-4">
       <div class="text-[#BCA8A2]" ref="placeholder1"></div>
     </div>
-    <div ref="parent2" class="fixed top-0 left-0">
+    <div ref="parent2" class="fixed top-0 left-4">
       <div class="text-[#BCA8A2]" ref="placeholder2"></div>
     </div>
-    <div ref="parent3" class="fixed top-0 left-0">
+    <div ref="parent3" class="fixed top-0 left-4">
       <div class="text-[#BCA8A2]" ref="placeholder3"></div>
     </div>
 
@@ -27,9 +27,9 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
-const MAX_DISPLAY_TIME = {
-  MIN: 7,
-  MAX: 9,
+let MAX_DISPLAY_TIME = {
+  MIN: 13,
+  MAX: 15,
 }
 const NB_WORDS_TO_WRITE = 10
 const BASE_BURNING = 0
@@ -113,7 +113,11 @@ const getTranslate = (el: HTMLDivElement, index: number) => {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
+  // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value = OrdalieManager.getCurrent().instance
+  MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
+  MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
+
   refArray.push(placeholder1, placeholder2, placeholder3)
   parentArray.push(parent1, parent2, parent3)
 
@@ -134,6 +138,10 @@ const replaceWord = () => {
     duration: 1,
   })
 
+  COUNTER++
+
+  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
+
   displayedWords = displayedWords.filter((displayedWord) => displayedWord.word !== wordToType)
   ordalie.value.makeAStep()
 
@@ -141,10 +149,6 @@ const replaceWord = () => {
   lettersToType = null
   wordToTypeIndex = 0
   letterToType = null
-
-  COUNTER++
-
-  if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
 
   if (words.length === 0) {
     refArray[wordIndex].value.textContent = ''
@@ -154,6 +158,10 @@ const replaceWord = () => {
 
   if (COUNTER > NB_WORDS_TO_WRITE - 3) {
     refArray[wordIndex].value.textContent = ''
+    gsap.to(ordalie.value.texts[wordIndex].material.uniforms.uDissolve, {
+      value: 1.1,
+      duration: 1,
+    })
     return
   }
 
@@ -161,7 +169,7 @@ const replaceWord = () => {
   wordIndex = null
 }
 
-const pickWord = (index) => {
+const pickWord = (index: number) => {
   const selectedWord = words[Math.floor(Math.random() * words.length)]
   const matchingLetter = displayedWords.filter((displayedWord) => displayedWord.word.charAt(0) === selectedWord.charAt(0))
 
@@ -271,7 +279,7 @@ const gameOver = () => {
   gsap.ticker.remove(update)
 }
 
-const update = (time, deltaTime, frame) => {
+const update = (time: any, deltaTime: number, frame: any) => {
   for (let i = 0; i < displayedWords.length; i++) {
     //increment display time of each word
     displayedWords[i].displayTime += deltaTime * 0.001

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="fixed top-0 left-0 text-typingBaseColor" id="typing" ref="containerRef" v-SplitText></div>
-    <input type="text" id="input-typing" class="fixed bottom-0 left-0" :ref="(el: any) => (inputRef = el)" v-on:keydown="newChar" />
+    <div class="fixed top-0 left-0 text-typingBaseColor text-[17px] leading-tight" id="typing" ref="containerRef" v-SplitText></div>
   </div>
 </template>
 
@@ -14,7 +13,6 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
-const inputRef = ref<HTMLInputElement>()
 const textToWrite = ref(
   "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de cherité, de pitié et de perdon."
 )
@@ -22,9 +20,14 @@ const textToWrite = ref(
 const ordalie = ref()
 
 onMounted(() => {
-  inputRef.value.focus()
+  document.addEventListener('keydown', newChar)
   ordalie.value = OrdalieManager.getCurrent().instance
+  // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value.setHTMLPosition(containerRef.value)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', newChar)
 })
 
 const vSplitText = {

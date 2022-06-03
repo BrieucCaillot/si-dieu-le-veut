@@ -7,10 +7,11 @@ import OtherManager from '@/class/three/World/Other/OtherManager'
 import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
 import OtherCinematic from '@/class/three/World/Other/OtherCinematic'
 import OtherTutorial from '@/class/three/World/Other/OtherTutorial'
+import OtherEnd from '@/class/three/World/Other/OtherEnd'
 
 class Other {
   block: Block
-  instance: OtherSplashscreen | OtherCinematic | OtherTutorial
+  instance: OtherSplashscreen | OtherCinematic | OtherTutorial | OtherEnd
   updateId: () => void
 
   constructor(_type: OTHERS) {
@@ -19,11 +20,20 @@ class Other {
       case OTHERS.SPLASHSCREEN:
         this.instance = new OtherSplashscreen(this)
         break
-      case OTHERS.CINEMATIC:
+      case OTHERS.CINEMATIC_1:
+        this.instance = new OtherCinematic(this)
+        break
+      case OTHERS.CINEMATIC_2:
+        this.instance = new OtherCinematic(this)
+        break
+      case OTHERS.CINEMATIC_3:
         this.instance = new OtherCinematic(this)
         break
       case OTHERS.TUTORIAL:
         this.instance = new OtherTutorial(this)
+        break
+      case OTHERS.END:
+        this.instance = new OtherEnd(this)
         break
     }
     this.updateId = this.update

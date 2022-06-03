@@ -2,11 +2,13 @@ import gsap from 'gsap'
 import GUI from 'lil-gui'
 import * as THREE from 'three'
 
+import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
-import TransitionManager from './TransitionManager'
+import TransitionManager from '@/class/three/World/Transition/TransitionManager'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 class Transition {
   block: Block
@@ -74,7 +76,7 @@ class Transition {
 
   update = () => {
     const { deltaTime } = WebGL.time
-    this.animation.mixer.update(deltaTime * 0.001)
+    this.animation.mixer.update(deltaTime * 0.001 * this.block.getDifficultyData().speedCoef)
     console.log(`🔁 ${this.block.getType()}`)
   }
 

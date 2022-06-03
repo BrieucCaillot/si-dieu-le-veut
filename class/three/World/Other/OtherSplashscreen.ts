@@ -61,7 +61,9 @@ class OtherSplashscreen {
     // MOVE CAMERA TO NEXT BLOCK
     // WHEN CHARACTER IN THE MIDDLE OF THE SCREEN
     if (characterPosition.x >= 0) {
-      WebGL.camera.setPositionX(Blocks.getByIndex(1).getCenter().x)
+      WebGL.camera.setPositionX({
+        x: Blocks.getByIndex(1).getCenter().x,
+      })
       this.isFollowingCharacter = true
     }
   }
