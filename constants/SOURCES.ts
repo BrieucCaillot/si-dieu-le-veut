@@ -77,6 +77,11 @@ const COMMON_SOURCES = {
       encoding: THREE.sRGBEncoding,
       wrap: THREE.RepeatWrapping,
     },
+    {
+      name: 'gradient',
+      type: SourceType.texture,
+      path: 'textures/gradient.png',
+    },
   ],
 }
 
@@ -171,6 +176,11 @@ const ORDALIE_SOURCES = {
       type: SourceType.texture,
       path: 'textures/cake.png',
     },
+    {
+      name: 'miam',
+      type: SourceType.texture,
+      path: 'textures/miam.jpg',
+    },
   ],
   // [ORDALIES.CAULDRON]: [
   //   {
@@ -189,11 +199,6 @@ const ORDALIE_SOURCES = {
       name: 'noise',
       type: SourceType.texture,
       path: 'textures/noise.jpg',
-    },
-    {
-      name: 'gradient',
-      type: SourceType.texture,
-      path: 'textures/gradient.png',
     },
   ],
 }

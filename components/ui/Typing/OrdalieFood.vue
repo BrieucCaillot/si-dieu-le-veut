@@ -11,6 +11,7 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import AudioManager from '@/class/three/utils/AudioManager'
 
 import gsap from 'gsap'
+import { random } from '@/class/three/utils/Maths'
 
 const ordalie = ref()
 const wordList = ref([])
@@ -20,8 +21,12 @@ let COUNTER = 0
 const NB_WORDS_TO_WRITE = 10
 let CURRENT_TIME_BEFORE_NEW_WORD = 0
 const TIME_BEFORE_NEW_WORD = 2
-const MAX_WORDS = 10
+let COUNT_WORDS = 0
 let index = 0
+const MAX_DISPLAY_TIME = {
+  MIN: 13,
+  MAX: 15,
+}
 
 let wordToType = null
 let wordToTypeIndex = 0
@@ -80,6 +85,10 @@ const initialization = () => {
   ordalie.value = OrdalieManager.getByIndex(0).instance
   // ordalie.value = OrdalieManager.getCurrent().instance
 
+  // MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
+  // MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
+
+  ordalie.value.start()
   gsap.ticker.add(update)
 }
 
@@ -105,7 +114,7 @@ const pickWord = () => {
     path: selectedPath,
     mesh: ordalie.value.createInstance(selectedPath, index),
     displayTime: 0,
-    maxDisplayTime: 5,
+    maxDisplayTime: Math.round(random(MAX_DISPLAY_TIME.MIN, MAX_DISPLAY_TIME.MAX)),
     progress: 0,
     index: index,
     wordCompleted: false,
@@ -114,6 +123,8 @@ const pickWord = () => {
   displayedWords.push(selectedWord)
 
   index++
+
+  COUNT_WORDS++
 
   return selectedWord
 }
@@ -166,9 +177,12 @@ const selectWordToType = (e: KeyboardEvent) => {
   }
 }
 
-const replaceWord = () => {
+const replaceWord = async () => {
   const displayedToRemove = wordList.value.find((display) => display.word === wordToType)
+
+  await ordalie.value.startBiteTransition(displayedToRemove.mesh)
   ordalie.value.disposeInstance(displayedToRemove.mesh.name)
+
   displayedToRemove.el.parentNode.removeChild(displayedToRemove.el)
   // displayedToRemove.el = null
 
@@ -202,7 +216,7 @@ const gameOver = () => {
 const update = (time, deltaTime, frame) => {
   CURRENT_TIME_BEFORE_NEW_WORD -= deltaTime * 0.001
 
-  if (CURRENT_TIME_BEFORE_NEW_WORD < 0) {
+  if (CURRENT_TIME_BEFORE_NEW_WORD < 0 && COUNT_WORDS < NB_WORDS_TO_WRITE) {
     pickWord()
     CURRENT_TIME_BEFORE_NEW_WORD = TIME_BEFORE_NEW_WORD
   }
@@ -218,7 +232,7 @@ const update = (time, deltaTime, frame) => {
         current.progress = 0
         current.displayTime = 0
 
-        gameOver()
+        // gameOver()
       }
 
       ordalie.value.setHTMLPosition(current.el, current.mesh)

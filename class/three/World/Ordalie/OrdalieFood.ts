@@ -1,9 +1,12 @@
 import * as THREE from 'three'
 import GUI from 'lil-gui'
-import gsap from 'gsap'
+import gsap, { SteppedEase } from 'gsap'
 
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
+
+import fragmentShader from '@/class/three/shaders/bite/fragment.glsl'
+import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
 import PATHS from '@/constants/PATHS'
 
@@ -20,8 +23,9 @@ class OrdalieFood {
   }
   paths: THREE.CatmullRomCurve3[]
   geometry: THREE.PlaneGeometry
-  material: THREE.MeshBasicMaterial
+  material: THREE.ShaderMaterial
   textures: THREE.Texture[]
+  biteTexture: THREE.Texture
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
@@ -36,15 +40,23 @@ class OrdalieFood {
     this.setAnimation()
     this.setPath()
 
+    this.biteTexture = WebGL.resources.getItems(this.instance.block.getType(), 'miam') as THREE.Texture
+
     this.textures = [
       WebGL.resources.getItems(this.instance.block.getType(), 'bread') as THREE.Texture,
       WebGL.resources.getItems(this.instance.block.getType(), 'cheese') as THREE.Texture,
       WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
     ]
 
+    // for (let i = 0; i < this.textures.length; i++) {
+    //   this.textures[i].encoding = THREE.sRGBEncoding
+    // }
+
     this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
-    this.material = new THREE.MeshBasicMaterial({
+    this.material = new THREE.ShaderMaterial({
       transparent: true,
+      fragmentShader: fragmentShader,
+      vertexShader: vertexShader,
     })
 
     this.mesh = new THREE.Mesh(this.geometry, this.material)
@@ -56,8 +68,21 @@ class OrdalieFood {
 
   createInstance(path: THREE.CatmullRomCurve3, i: number) {
     const clone = this.mesh.clone()
-    const material = this.material.clone()
-    material.map = this.textures[Math.floor(Math.random() * this.textures.length)]
+    clone.scale.set(2, 2, 2)
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        uMap: { value: this.textures[Math.floor(Math.random() * this.textures.length)] },
+        uMask: { value: this.biteTexture },
+        uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient') as THREE.Texture },
+        uProgress: { value: 4 },
+        spriteSheetSize: { value: new THREE.Vector2(320, 64) },
+        spriteSize: { value: new THREE.Vector2(64, 64) },
+      },
+      fragmentShader: fragmentShader,
+      vertexShader: vertexShader,
+      depthTest: false,
+      transparent: true,
+    })
 
     clone.material = material
 
@@ -69,14 +94,31 @@ class OrdalieFood {
     return clone
   }
 
+  startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
+    console.log('start bite transition', mesh)
+    return new Promise<void>((resolve, reject) => {
+      const uniform = mesh.material.uniforms.uProgress
+      console.log('uniform is', uniform)
+
+      gsap.to(uniform, {
+        value: 0,
+        ease: SteppedEase.config(4),
+        duration: 0.5,
+        onComplete: () => {
+          resolve()
+        },
+      })
+    })
+    // let uniform
+  }
+
   disposeInstance(name: string) {
-    let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh
+    let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
 
     WebGL.scene.remove(mesh)
 
     mesh.geometry.dispose()
     mesh.material.dispose()
-    if (mesh.material.map) mesh.material.map.dispose()
 
     mesh = null
   }
@@ -84,7 +126,7 @@ class OrdalieFood {
   start() {
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieFood')
-      this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
+      // this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
     }
 
     // setTimeout(() => {
