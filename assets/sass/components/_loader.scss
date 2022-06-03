@@ -2,7 +2,19 @@
   @apply relative z-10 bg-background h-screen w-screen flex flex-col justify-center items-center;
 
   .loader-img {
-    @apply bg-no-repeat bg-center bg-contain w-full h-full;
-    background-image: url('/images/loader.png');
+    width: 656px;
+    height: 500px;
+    background-image: url('/images/loader_sprite.webp');
+    animation: loader-sprite 1.5s steps(5) infinite;
+    transform: scale(1);
+  }
+}
+
+@keyframes loader-sprite {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: -3282px;
   }
 }

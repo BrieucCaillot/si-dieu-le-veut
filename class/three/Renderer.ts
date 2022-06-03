@@ -15,15 +15,13 @@ class Renderer extends THREE.EventDispatcher {
   setInstance() {
     this.instance = new THREE.WebGLRenderer({
       canvas: WebGL.canvas,
-      antialias: true,
+      antialias: false,
     })
     this.instance.physicallyCorrectLights = true
     this.instance.outputEncoding = THREE.sRGBEncoding
     this.instance.toneMapping = THREE.ACESFilmicToneMapping
 
     this.instance.toneMappingExposure = 0.8
-    this.instance.shadowMap.enabled = true
-    this.instance.shadowMap.type = THREE.PCFSoftShadowMap
     this.instance.setClearColor(0xecdfcb, 1)
     this.instance.setSize(WebGL.sizes.width, WebGL.sizes.height)
     this.instance.setPixelRatio(WebGL.sizes.pixelRatio)

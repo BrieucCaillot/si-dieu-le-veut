@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
-import { SelectiveBloomEffect, EffectComposer, EffectPass, RenderPass, BlendFunction, SMAAEffect, TextureEffect } from 'postprocessing'
+import { SelectiveBloomEffect, EffectComposer, EffectPass, RenderPass, BlendFunction, SMAAEffect, TextureEffect, ClearPass } from 'postprocessing'
 import { watch } from 'vue'
 
 import WebGL from '@/class/three/WebGL'
@@ -22,7 +22,11 @@ class PostProcessing {
 
   private createRenderScene() {
     this.renderScene = new RenderPass(WebGL.scene, WebGL.camera.instance!)
+    this.renderScene.renderToScreen = false
+
+    // const clearPass = new ClearPass(true)
     this.composer = new EffectComposer(WebGL.renderer.instance)
+    // this.composer.addPass(clearPass)
     this.composer.addPass(this.renderScene)
   }
 
