@@ -1,6 +1,6 @@
 import ORDALIES from '@/constants/ORDALIES'
 
-const isMobile = ref(false)
+const isMobile = ref(null)
 const showLoader = ref(true)
 const resourcesLoaded = ref(false)
 const isDebug = ref(false)
