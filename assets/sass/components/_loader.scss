@@ -2,11 +2,25 @@
   @apply relative z-10 bg-background h-screen w-screen flex flex-col justify-center items-center;
 
   .loader-img {
+    @apply relative;
     width: 656px;
     height: 500px;
     background-image: url('/images/loader_sprite.webp');
     animation: loader-sprite 1.5s steps(5) infinite;
-    transform: scale(1);
+    transform: scale(1.2);
+  }
+
+  .loader-text {
+    @apply absolute bottom-[90px] left-1/2 transform -translate-x-1/2 text-3xl text-white;
+  }
+
+  .loader-text--start {
+    @apply relative text-xl z-20 bottom-12 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0;
+    background-image: url('/images/loader-start.webp');
+
+    span {
+      @apply block mb-3;
+    }
   }
 }
 

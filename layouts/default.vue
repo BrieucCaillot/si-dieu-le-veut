@@ -4,7 +4,7 @@
     <!-- <Header /> -->
     <main id="main" class="page">
       <template v-if="startWebGL">
-        <Loader />
+        <Loader v-if="showLoader" />
         <Video />
         <Canvas />
         <HUD />
