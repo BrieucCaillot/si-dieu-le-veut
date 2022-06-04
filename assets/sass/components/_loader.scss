@@ -6,7 +6,7 @@
     width: 656px;
     height: 500px;
     background-image: url('/images/loader_sprite.webp');
-    animation: loader-sprite 1.5s steps(5) infinite;
+    animation: loader-sprite 1.5s steps(4) infinite forwards;
     transform: scale(1.2);
   }
 
@@ -15,7 +15,7 @@
   }
 
   .loader-text--start {
-    @apply relative text-xl z-20 bottom-12 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0;
+    @apply relative text-xl z-20 bottom-12 bg-contain bg-no-repeat bg-center h-24 w-96 opacity-0;
     background-image: url('/images/loader-start.webp');
 
     span {
@@ -29,6 +29,6 @@
     background-position: 0px;
   }
   to {
-    background-position: -3282px;
+    background-position: -2625.6px; // 3282 - (3282 / 5)
   }
 }
