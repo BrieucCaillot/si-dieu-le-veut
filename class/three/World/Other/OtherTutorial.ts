@@ -43,7 +43,7 @@ class OtherTutorial {
       setTimeout(() => {
         console.log('👨‍💼 ANIM PLAYED')
         this.end()
-      }, 10)
+      }, 1000)
       // }, 5000)
       // this.animation.actions[name].play()
     }

@@ -23,6 +23,8 @@ class Blocks {
   setup() {
     OtherManager.create(OTHERS.SPLASHSCREEN)
     OtherManager.create(OTHERS.CINEMATIC_1)
+    OtherManager.create(OTHERS.CINEMATIC_2)
+    OtherManager.create(OTHERS.CINEMATIC_3)
     OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.BBQ)
@@ -39,7 +41,7 @@ class Blocks {
     }
 
     // Start
-    document.addEventListener('keydown', (e) => useStore().showLoader.value === false && e.code === 'Space' && this.start())
+    // document.addEventListener('keydown', (e) => useStore().showLoader.value === false && e.code === 'Space' && this.start())
   }
 
   /**
@@ -93,6 +95,14 @@ class Blocks {
    */
   getCurrent() {
     return this.instances[this.currentIndex]
+  }
+
+  /**
+   * Get current block instance in view
+   */
+  setCurrentIsFirstOrdalie() {
+    this.currentIndex = 4
+    return this.getCurrent()
   }
 
   /**

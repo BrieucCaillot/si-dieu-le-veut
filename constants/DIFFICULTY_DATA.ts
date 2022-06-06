@@ -29,7 +29,7 @@ interface CauldronInterface {
 const DIFFICULTY_DATAS = {
   [DIFFICULTY.EASY]: {
     ['CAMERA']: {
-      moveDuration: 5,
+      moveDuration: 4,
     },
     ['TRANSITIONS']: {
       speedCoef: 1,
@@ -49,13 +49,13 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 2,
       maxTimeBeforeNewWord: 2.2,
     },
-    [ORDALIES.CAULDRON]: {
-      speedCoef: 1,
-    },
+    // [ORDALIES.CAULDRON]: {
+    //   speedCoef: 1,
+    // },
   },
   [DIFFICULTY.MEDIUM]: {
     ['CAMERA']: {
-      moveDuration: 4,
+      moveDuration: 3.5,
     },
     ['TRANSITIONS']: {
       speedCoef: 1.5,
@@ -76,7 +76,7 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 1.8,
       maxTimeBeforeNewWord: 2,
     },
-    [ORDALIES.CAULDRON]: {},
+    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.HARD]: {
     ['CAMERA']: {
@@ -100,7 +100,7 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 1.6,
       maxTimeBeforeNewWord: 1.8,
     },
-    [ORDALIES.CAULDRON]: {},
+    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.VERY_HARD]: {
     ['CAMERA']: {
@@ -124,7 +124,7 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 1,
       maxTimeBeforeNewWord: 1.3,
     },
-    [ORDALIES.CAULDRON]: {},
+    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.INSANE]: {
     ['CAMERA']: {
@@ -148,7 +148,7 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 0.8,
       maxTimeBeforeNewWord: 1,
     },
-    [ORDALIES.CAULDRON]: {},
+    // [ORDALIES.CAULDRON]: {},
   },
 }
 

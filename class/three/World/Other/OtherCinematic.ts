@@ -23,13 +23,13 @@ class OtherCinematic {
   start() {
     switch (this.type) {
       case OTHERS.CINEMATIC_1:
-        this.spacePressed()
+        // this.delayEnd()
         break
       case OTHERS.CINEMATIC_2:
         this.playVideo()
         break
       case OTHERS.CINEMATIC_3:
-        this.spacePressed()
+        // this.delayEnd()
         break
     }
   }
@@ -38,11 +38,10 @@ class OtherCinematic {
     this.instance.end()
   }
 
-  private spacePressed() {
-    // TODO
+  private delayEnd() {
     setTimeout(() => {
       this.end()
-    }, 20)
+    }, 2000)
   }
 
   private setVideo() {
@@ -57,7 +56,6 @@ class OtherCinematic {
   }
 
   private playVideo() {
-    // cinematicVideo.style.display = 'block'
     this.cinematicVideo.play()
     this.cinematicVideo.addEventListener('ended', () => this.onVideoPlayed())
   }

@@ -122,7 +122,7 @@ class Camera extends THREE.EventDispatcher {
     gsap.to([this.parent.position, this.target], {
       x,
       duration,
-      ease: 'power.easeOut',
+      ease: 'power.inOut',
       onStart: onStart,
       onUpdate: this.onPositionChange,
       onComplete: onComplete,
