@@ -14,11 +14,11 @@
   }
 
   .loader-text {
-    @apply absolute bottom-[120px] left-1/2 transform -translate-x-1/2 text-3xl text-white;
+    @apply absolute bottom-[85px] left-1/2 transform -translate-x-1/2 text-3xl text-white;
   }
 
   .loader-text--start {
-    @apply relative text-xl z-20 bottom-24 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0;
+    @apply relative text-xl z-20 bottom-12 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0;
     background-image: url('/images/loader-start.webp');
 
     span {
