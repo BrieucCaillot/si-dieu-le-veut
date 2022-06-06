@@ -14,12 +14,14 @@ class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
   instance: THREE.PerspectiveCamera
   private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0.1)
+  private fov = 0
   private targetDebugMesh: THREE.Mesh
   private controls: OrbitControls
+  private planeWidth = 1.4072
   private currentPosX = 0
   private debugFolder: GUI
   private debugParams = {
-    parallaxFactor: 0.18,
+    parallaxFactor: 0.01,
     moveXSpeed: 0.1,
   }
 
@@ -29,12 +31,9 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('camera')
 
     this.setInstance()
-    // this.setTargetDebug()
-    // this.setControls()
-    this.setFov()
 
     if (WebGL.debug.isActive()) {
-      this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.1).step(0.01)
+      this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.5).step(0.01)
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
@@ -43,11 +42,12 @@ class Camera extends THREE.EventDispatcher {
 
   private setInstance() {
     this.parent = new THREE.Group()
+    // const fov = (180 * (2 * Math.atan(WebGL.sizes.height / (2 * this.perspective)))) / Math.PI
     this.parent.position.set(0, 0, 16)
     this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
     this.instance.position.set(0, 0, 0)
-    this.parent.add(this.instance)
     this.setFov()
+    this.parent.add(this.instance)
     WebGL.scene.add(this.parent)
   }
 
@@ -68,11 +68,73 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) this.debugFolder.add(this.controls, 'enabled')
   }
 
+  getXFOV() {
+    // Convert angle to radiant
+    const FOV = this.instance.fov
+    let yFovRadiant = (FOV * Math.PI) / 180
+    // Calculate X-FOV Radiant
+    let xFovRadiant = 2 * Math.atan(Math.tan(yFovRadiant / 2) * (window.innerWidth / window.innerHeight))
+    // Convert back to angle
+    let xFovAngle = (xFovRadiant * 180) / Math.PI
+    return xFovAngle
+  }
+
+  /**
+   * Convert vertical field of view to horizontal field of view, given an aspect
+   * ratio. See https://arstechnica.com/civis/viewtopic.php?f=6&t=37447
+   *
+   * @param vfov - The vertical field of view.
+   * @param aspect - The aspect ratio, which is generally width/height of the viewport.
+   * @returns - The horizontal field of view.
+   */
+  vfovToHfov(vfov: number, aspect: number): number {
+    const { tan, atan } = Math
+    return atan(aspect * tan(vfov / 2)) * 2
+  }
+
+  /**
+   * Get the distance from the camera to fit an object in view by either its
+   * horizontal or its vertical dimension.
+   *
+   * @param size - This should be the width or height of the object to fit.
+   * @param fov - If `size` is the object's width, `fov` should be the horizontal
+   * field of view of the view camera. If `size` is the object's height, then
+   * `fov` should be the view camera's vertical field of view.
+   * @returns - The distance from the camera so that the object will fit from
+   * edge to edge of the viewport.
+   */
+  _distanceToFitObjectInView(size: number, fov: number): number {
+    const { tan } = Math
+    return size / (2 * tan(fov / 2))
+  }
+
+  distanceToFitObjectToView(cameraAspect: number, cameraVFov: number, objWidth: number, objHeight: number): number {
+    const objAspect = objWidth / objHeight
+    const cameraHFov = this.vfovToHfov(cameraVFov, cameraAspect)
+
+    let distance: number = 0
+
+    if (objAspect > cameraAspect) {
+      distance = this._distanceToFitObjectInView(objHeight, cameraVFov)
+    } else if (objAspect <= cameraAspect) {
+      distance = this._distanceToFitObjectInView(objWidth, cameraHFov)
+    }
+
+    return distance
+  }
+
   private setFov() {
-    const dist = this.parent.position.z - 0 // plane position z
-    const height = (WebGL.sizes.height / WebGL.sizes.width) * 2 // plane height
-    this.instance.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
-    this.instance!.updateProjectionMatrix()
+    let dist = this.parent.position.z - 0
+    let height = 1 // desired height to fit
+
+    if (WebGL.sizes.aspect < this.planeWidth) {
+      this.fov = 2 * Math.atan(this.planeWidth / (2 * dist) / this.instance.aspect) * (180 / Math.PI)
+    } else {
+      this.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
+    }
+
+    this.instance.fov = this.fov
+    this.instance.updateProjectionMatrix()
   }
 
   getPosition() {
@@ -95,13 +157,12 @@ class Camera extends THREE.EventDispatcher {
   }
 
   onResize() {
-    this.instance!.aspect = WebGL.sizes.width / WebGL.sizes.height
+    this.instance.aspect = WebGL.sizes.width / WebGL.sizes.height
     this.setFov()
-    this.instance!.updateProjectionMatrix()
   }
 
   onUpdate() {
-    this.setSmooth()
+    // this.setSmooth()
     this.targetDebugMesh?.position.copy(this.target)
   }
 

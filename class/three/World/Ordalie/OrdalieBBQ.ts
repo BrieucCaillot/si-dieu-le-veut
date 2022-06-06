@@ -89,34 +89,19 @@ class OrdalieBBQ {
   private setCharacter() {
     const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
     this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
-    // console.log(this.character)
 
-    this.instance.block.getModel().scene.traverse((mesh) => {
-      if (mesh.material) {
-        // console.log(mesh)
-        if (mesh.name === 'SIDE_Cuisinier') {
-          // console.log(mesh.material)
-          // const texture = mesh.material.map
-          // // console.log(mesh.material)
-          // mesh.renderOrder = 100
-          // mesh.material = new THREE.ShaderMaterial({
-          //   uniforms: { ...this.uniforms, uTexture: { value: texture }, uDissolve: { value: 0 } },
-          //   fragmentShader: characterBurningFrag,
-          //   vertexShader: characterBurningVert,
-          //   transparent: true,
-          // })
-          // if (this.debugFolder) {
-          //   this.debugFolder
-          //     .add(mesh.material.uniforms.uDissolve, 'value', -0.1, 1.1)
-          //     .step(0.01)
-          //     .onChange((value) => {
-          //       mesh.material.uniforms.uDissolve.value = value
-          //       console.log(mesh.material.uniforms.uDissolve)
-          //     })
-          // }
-        }
-      }
-    })
+    // this.instance.block.getModel().scene.traverse((mesh) => {
+    //   if (mesh.material && mesh.material instanceof THREE.MeshStandardMaterial && mesh.name !== 'background') {
+    //     console.log(mesh.material)
+    //     const newMat = new THREE.MeshBasicMaterial({
+    //       map: mesh.material.map,
+    //       color: mesh.material.color,
+    //       transparent: true,
+    //     })
+    //     mesh.material = newMat
+    //     console.log(newMat)
+    //   }
+    // })
   }
 
   private setAnimation() {
