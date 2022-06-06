@@ -1,16 +1,19 @@
 <template>
   <div ref="root" id="loader">
-    <div ref="loaderImgEl" class="loader-img">
-      <span class="loader-text">{{ currentSentence }}</span>
+    <div id="loader-content">
+      <div ref="loaderImgEl" class="loader-img">
+        <span class="loader-text">{{ currentSentence }}</span>
+      </div>
+      <button ref="textStartEl" class="loader-text--start">
+        <span>{{ textStart }}</span>
+      </button>
     </div>
-    <button ref="textStartEl" class="loader-text--start">
-      <span>{{ textStart }}</span>
-    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import gsap from 'gsap'
+import Blocks from '@/class/three/World/Blocks'
 
 const root = ref<HTMLElement>(null)
 const currentIndex = ref(0)
@@ -25,7 +28,10 @@ const onClick = () => {
     duration: 0.8,
     autoAlpha: 0,
     ease: 'power3.inOut',
-    onComplete: () => (useStore().showLoader.value = false),
+    onComplete: () => {
+      useStore().showLoader.value = false
+      Blocks.start()
+    },
   })
 }
 
@@ -34,12 +40,12 @@ const showTextStart = () => {
     duration: 0.8,
     autoAlpha: 1,
     ease: 'power3.inOut',
-    onComplete: () => textStartEl.value.addEventListener('click', onClick),
+    onComplete: () => document.addEventListener('click', onClick),
   })
 }
 
 onBeforeUnmount(() => {
-  textStartEl.value.removeEventListener('click', onClick)
+  document.removeEventListener('click', onClick)
 })
 
 onMounted(() => {
@@ -55,7 +61,6 @@ onMounted(() => {
     currentSentence.value = ''
 
     showTextStart()
-    // }, 2000)
   })
 })
 </script>
