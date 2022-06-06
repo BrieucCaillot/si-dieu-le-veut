@@ -21,9 +21,9 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    // OtherManager.create(OTHERS.SPLASHSCREEN)
-    // OtherManager.create(OTHERS.CINEMATIC)
-    // OtherManager.create(OTHERS.TUTORIAL)
+    OtherManager.create(OTHERS.SPLASHSCREEN)
+    OtherManager.create(OTHERS.CINEMATIC_1)
+    OtherManager.create(OTHERS.TUTORIAL)
 
     OrdalieManager.create(ORDALIES.BBQ)
 

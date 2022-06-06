@@ -82,8 +82,8 @@ const vSplitText = {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  ordalie.value = OrdalieManager.getByIndex(0).instance
-  // ordalie.value = OrdalieManager.getCurrent().instance
+  // ordalie.value = OrdalieManager.getByIndex(0).instance
+  ordalie.value = OrdalieManager.getCurrent().instance
 
   // MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
   // MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
