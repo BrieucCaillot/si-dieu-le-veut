@@ -101,7 +101,7 @@ class PostProcessing {
   }
 
   onCameraMove() {
-    this.textureEffect.texture.offset.x = WebGL.camera.getPosition().x / 2
+    this.textureEffect.texture.offset.x = WebGL.camera.getPosition().x * 0.75
   }
 
   onUpdate() {
