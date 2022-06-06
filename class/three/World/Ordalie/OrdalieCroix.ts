@@ -37,7 +37,7 @@ class OrdalieCroix {
 
   end() {
     if (this.debugFolder) this.debugFolder.destroy()
-    // this.instance.end()
+    this.instance.end()
   }
 
   private setCharacter() {
@@ -64,7 +64,6 @@ class OrdalieCroix {
         this.character.position.set(characterPos.x, characterPos.y, characterPos.z)
         // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
         this.animation.actions['Croix_Cuisinier_FRONT_Entree'].stop()
-        // OrdalieCroixVue.start()
         this.animation.play('Croix_CuisinierFRONT_Bras')
       }
 
