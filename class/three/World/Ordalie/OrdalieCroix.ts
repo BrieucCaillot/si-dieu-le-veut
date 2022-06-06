@@ -11,11 +11,13 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 class OrdalieCroix {
   instance: Ordalie
   animation!: { [key: string]: any }
-
+  character: THREE.Mesh
   // Gameplay
   debugObject: any
   timeScaleController: any
   difficultyData: CroixInterface
+
+  delay: number
 
   debugFolder: GUI
 
@@ -23,17 +25,24 @@ class OrdalieCroix {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as CroixInterface
 
+    this.setCharacter()
     this.setAnimation()
   }
 
   start() {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroix')
-    this.animation.play('Croix_CuisinierFRONT_Bras')
+    this.animation.play('Croix_CuisinierSIDE_Entree')
+    this.animation.play('Croix_Cuisinier_FRONT_Entree')
   }
 
   end() {
     if (this.debugFolder) this.debugFolder.destroy()
-    this.instance.end()
+    // this.instance.end()
+  }
+
+  private setCharacter() {
+    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
+    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   private setAnimation() {
@@ -41,33 +50,61 @@ class OrdalieCroix {
 
     this.animation.mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
 
+    const characterPos = new THREE.Vector3()
+
     this.animation.mixer.addEventListener('finished', (e) => {
+      //fin de l'anim classique, le mec a perdu
+      if (e.direction === 1 && e.action._clip.name === 'Croix_CuisinierFRONT_Bras') {
+        this.gameOver()
+        return
+      }
+
+      if (e.action._clip.name === 'Croix_CuisinierSIDE_Entree') {
+        characterPos.set(this.character.position.x, this.character.position.y, this.character.position.z)
+        this.character.position.set(characterPos.x, characterPos.y, characterPos.z)
+        // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
+        this.animation.actions['Croix_Cuisinier_FRONT_Entree'].stop()
+        // OrdalieCroixVue.start()
+        this.animation.play('Croix_CuisinierFRONT_Bras')
+      }
+
       //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
       if (e.direction === -1 && e.action._clip.name === 'Croix_CuisinierFRONT_Bras') {
         this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
         this.animation.actions['Croix_CuisinierFRONT_Bras'].play()
-      } else {
-        this.gameOver()
-        //fin de l'anim classique, le mec a perdu
       }
 
-      if (e.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+      if (e.action._clip.name === 'Croix_CuisinierSIDE_Sortie' || e.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
         this.end()
       }
-
-      // this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = 1
-      // this.animation.actions['Croix_CuisinierFRONT_Bras'].play()
     })
 
     this.animation.actions = {
-      Croix_CuisinierFRONT_Bras: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
-      Croix_CuisinierFRONT_Mort: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
+      Croix_Cuisinier_FRONT_Entree: this.animation.mixer.clipAction(this.instance.block.getModel().animations[0]),
+      Croix_Cuisinier_FRONT_Sortie: this.animation.mixer.clipAction(this.instance.block.getModel().animations[1]),
+      Croix_CuisinierFRONT_Bras: this.animation.mixer.clipAction(this.instance.block.getModel().animations[2]),
+      Croix_CuisinierFRONT_Mort: this.animation.mixer.clipAction(this.instance.block.getModel().animations[3]),
+      Croix_CuisinierSIDE_Entree: this.animation.mixer.clipAction(this.instance.block.getModel().animations[4]),
+      Croix_CuisinierSIDE_Sortie: this.animation.mixer.clipAction(this.instance.block.getModel().animations[5]),
     }
+
+    this.delay = this.animation.actions.Croix_Cuisinier_FRONT_Entree._clip.duration
+
+    this.animation.actions['Croix_CuisinierSIDE_Entree'].clampWhenFinished = true
+    this.animation.actions['Croix_CuisinierSIDE_Entree'].loop = THREE.LoopOnce
+
+    this.animation.actions['Croix_Cuisinier_FRONT_Entree'].clampWhenFinished = true
+    this.animation.actions['Croix_Cuisinier_FRONT_Entree'].loop = THREE.LoopOnce
+
+    this.animation.actions['Croix_CuisinierSIDE_Sortie'].clampWhenFinished = true
+    this.animation.actions['Croix_CuisinierSIDE_Sortie'].loop = THREE.LoopOnce
+
+    this.animation.actions['Croix_Cuisinier_FRONT_Sortie'].clampWhenFinished = true
+    this.animation.actions['Croix_Cuisinier_FRONT_Sortie'].loop = THREE.LoopOnce
 
     this.animation.actions['Croix_CuisinierFRONT_Bras'].clampWhenFinished = true
     this.animation.actions['Croix_CuisinierFRONT_Bras'].loop = THREE.LoopOnce
     this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = this.difficultyData.fallingSpeedArm
-    // this.animation.actions['Croix_CuisinierFRONT_Bras'].timeScale = 1.5
 
     this.animation.actions['Croix_CuisinierFRONT_Mort'].clampWhenFinished = true
     this.animation.actions['Croix_CuisinierFRONT_Mort'].loop = THREE.LoopOnce
@@ -123,7 +160,10 @@ class OrdalieCroix {
   }
 
   gameWon() {
-    this.end()
+    this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
+    // this.animation.actions['Croix_CuisinierFRONT_Bras'].stop()
+    this.animation.play('Croix_CuisinierSIDE_Sortie')
+    this.animation.play('Croix_Cuisinier_FRONT_Sortie')
   }
 
   gameOver() {

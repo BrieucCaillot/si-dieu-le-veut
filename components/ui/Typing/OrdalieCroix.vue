@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed top-0 left-0 text-typingBaseColor text-[17px] leading-tight" id="typing" ref="containerRef" v-SplitText></div>
+    <div class="fixed top-0 left-0 text-typingBaseColor text-[17px] leading-tight hidden" id="typing" ref="containerRef" v-SplitText></div>
   </div>
 </template>
 
@@ -24,6 +24,10 @@ onMounted(() => {
   ordalie.value = OrdalieManager.getCurrent().instance
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value.setHTMLPosition(containerRef.value)
+
+  setTimeout(() => {
+    containerRef.value.classList.remove('hidden')
+  }, Math.round(ordalie.value.delay) * 1000)
 })
 
 onUnmounted(() => {
@@ -67,6 +71,8 @@ let letterToType = lettersToType[wordProgressIndex]
 
 // console.log('word to type is', wordToType)
 const gameWon = () => {
+  console.log('game won')
+
   ordalie.value.gameWon()
 }
 
