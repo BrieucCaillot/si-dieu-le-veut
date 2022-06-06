@@ -40,7 +40,8 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
     }
 
-    document.addEventListener('keydown', (e) => e.code === 'Space' && this.start())
+    // Start
+    // document.addEventListener('keydown', (e) => useStore().showLoader.value === false && e.code === 'Space' && this.start())
   }
 
   /**
@@ -94,6 +95,14 @@ class Blocks {
    */
   getCurrent() {
     return this.instances[this.currentIndex]
+  }
+
+  /**
+   * Get current block instance in view
+   */
+  setCurrentIsFirstOrdalie() {
+    this.currentIndex = 4
+    return this.getCurrent()
   }
 
   /**

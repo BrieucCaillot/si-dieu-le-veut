@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@types/gsap": "^3.0.0",
-    "@types/three": "^0.139.0",
+    "@types/three": "^0.141.0",
     "autoprefixer": "^10.4.4",
     "lil-gui": "^0.16.1",
     "nuxt": "3.0.0-rc.2",
@@ -19,10 +19,10 @@
     "vite-plugin-glsl": "^0.1.2"
   },
   "dependencies": {
-    "gsap": "^3.10.3",
+    "gsap": "^3.10.4",
     "howler": "^2.2.3",
     "normalize-wheel": "^1.0.1",
-    "postprocessing": "^6.26.4",
-    "three": "^0.136.0"
+    "postprocessing": "^6.27.0",
+    "three": "^0.141.0"
   }
 }

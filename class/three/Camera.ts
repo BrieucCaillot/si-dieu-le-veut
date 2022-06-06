@@ -14,12 +14,14 @@ class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
   instance: THREE.PerspectiveCamera
   private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0.1)
+  private fov = 0
   private targetDebugMesh: THREE.Mesh
   private controls: OrbitControls
+  private planeWidth = 1.4072
   private currentPosX = 0
   private debugFolder: GUI
   private debugParams = {
-    parallaxFactor: 0.18,
+    parallaxFactor: 0.01,
     moveXSpeed: 0.1,
   }
 
@@ -29,12 +31,9 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('camera')
 
     this.setInstance()
-    // this.setTargetDebug()
-    // this.setControls()
-    this.setFov()
 
     if (WebGL.debug.isActive()) {
-      this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.1).step(0.01)
+      this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.5).step(0.01)
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
@@ -43,11 +42,12 @@ class Camera extends THREE.EventDispatcher {
 
   private setInstance() {
     this.parent = new THREE.Group()
+    // const fov = (180 * (2 * Math.atan(WebGL.sizes.height / (2 * this.perspective)))) / Math.PI
     this.parent.position.set(0, 0, 16)
     this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
     this.instance.position.set(0, 0, 0)
-    this.parent.add(this.instance)
     this.setFov()
+    this.parent.add(this.instance)
     WebGL.scene.add(this.parent)
   }
 
@@ -69,10 +69,17 @@ class Camera extends THREE.EventDispatcher {
   }
 
   private setFov() {
-    const dist = this.parent.position.z - 0 // plane position z
-    const height = (WebGL.sizes.height / WebGL.sizes.width) * 2 // plane height
-    this.instance.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
-    this.instance!.updateProjectionMatrix()
+    let dist = this.parent.position.z - 0
+    let height = 1 // desired height to fit
+
+    if (WebGL.sizes.aspect < this.planeWidth) {
+      this.fov = 2 * Math.atan(this.planeWidth / (2 * dist) / this.instance.aspect) * (180 / Math.PI)
+    } else {
+      this.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
+    }
+
+    this.instance.fov = this.fov
+    this.instance.updateProjectionMatrix()
   }
 
   getPosition() {
@@ -95,13 +102,12 @@ class Camera extends THREE.EventDispatcher {
   }
 
   onResize() {
-    this.instance!.aspect = WebGL.sizes.width / WebGL.sizes.height
+    this.instance.aspect = WebGL.sizes.width / WebGL.sizes.height
     this.setFov()
-    this.instance!.updateProjectionMatrix()
   }
 
   onUpdate() {
-    this.setSmooth()
+    // this.setSmooth()
     this.targetDebugMesh?.position.copy(this.target)
   }
 
@@ -116,7 +122,7 @@ class Camera extends THREE.EventDispatcher {
     gsap.to([this.parent.position, this.target], {
       x,
       duration,
-      ease: 'power.easeOut',
+      ease: 'power.inOut',
       onStart: onStart,
       onUpdate: this.onPositionChange,
       onComplete: onComplete,

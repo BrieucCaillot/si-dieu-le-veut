@@ -11,6 +11,7 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import AudioManager from '@/class/three/utils/AudioManager'
 
 import gsap from 'gsap'
+import { random } from '@/class/three/utils/Maths'
 
 const ordalie = ref()
 const wordList = ref([])
@@ -19,9 +20,16 @@ let displayedWords = []
 let COUNTER = 0
 const NB_WORDS_TO_WRITE = 10
 let CURRENT_TIME_BEFORE_NEW_WORD = 0
-const TIME_BEFORE_NEW_WORD = 2
-const MAX_WORDS = 10
+const TIME_BEFORE_NEW_WORD = {
+  MIN: 1.8,
+  MAX: 2.2,
+}
+let COUNT_WORDS = 0
 let index = 0
+const MAX_DISPLAY_TIME = {
+  MIN: 13,
+  MAX: 15,
+}
 
 let wordToType = null
 let wordToTypeIndex = 0
@@ -80,6 +88,13 @@ const initialization = () => {
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value = OrdalieManager.getCurrent().instance
 
+  MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.minDisplayTime
+  MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.maxDisplayTime
+
+  TIME_BEFORE_NEW_WORD.MIN = ordalie.value.difficultyData.minTimeBeforeNewWord
+  TIME_BEFORE_NEW_WORD.MAX = ordalie.value.difficultyData.maxTimeBeforeNewWord
+
+  ordalie.value.start()
   gsap.ticker.add(update)
 }
 
@@ -105,15 +120,18 @@ const pickWord = () => {
     path: selectedPath,
     mesh: ordalie.value.createInstance(selectedPath, index),
     displayTime: 0,
-    maxDisplayTime: 5,
+    maxDisplayTime: Math.round(random(MAX_DISPLAY_TIME.MIN, MAX_DISPLAY_TIME.MAX)),
     progress: 0,
     index: index,
     wordCompleted: false,
+    scale: 1,
   })
 
   displayedWords.push(selectedWord)
 
   index++
+
+  COUNT_WORDS++
 
   return selectedWord
 }
@@ -166,15 +184,20 @@ const selectWordToType = (e: KeyboardEvent) => {
   }
 }
 
-const replaceWord = () => {
+const replaceWord = async () => {
   const displayedToRemove = wordList.value.find((display) => display.word === wordToType)
-  ordalie.value.disposeInstance(displayedToRemove.mesh.name)
-  displayedToRemove.el.parentNode.removeChild(displayedToRemove.el)
-  // displayedToRemove.el = null
-
-  wordList.value[displayedToRemove.index].wordCompleted = true
 
   displayedWords = displayedWords.filter((word) => word !== wordToType)
+
+  gsap.to(displayedToRemove, {
+    duration: 1,
+    scale: 0,
+  })
+
+  gsap.to(displayedToRemove.el.parentElement, {
+    duration: 1,
+    opacity: 0,
+  })
 
   wordToType = null
   lettersToType = null
@@ -182,6 +205,18 @@ const replaceWord = () => {
   letterToType = null
 
   COUNTER++
+
+  //shader transition
+  await ordalie.value.startBiteTransition(displayedToRemove.mesh)
+
+  //dispose 3d
+  ordalie.value.disposeInstance(displayedToRemove.mesh.name)
+
+  //remove from update
+  wordList.value[displayedToRemove.index].wordCompleted = true
+
+  //remove dom elem
+  displayedToRemove.el.parentNode.removeChild(displayedToRemove.el)
 
   if (COUNTER === NB_WORDS_TO_WRITE) gameWon()
 }
@@ -202,9 +237,9 @@ const gameOver = () => {
 const update = (time, deltaTime, frame) => {
   CURRENT_TIME_BEFORE_NEW_WORD -= deltaTime * 0.001
 
-  if (CURRENT_TIME_BEFORE_NEW_WORD < 0) {
+  if (CURRENT_TIME_BEFORE_NEW_WORD < 0 && COUNT_WORDS < NB_WORDS_TO_WRITE) {
     pickWord()
-    CURRENT_TIME_BEFORE_NEW_WORD = TIME_BEFORE_NEW_WORD
+    CURRENT_TIME_BEFORE_NEW_WORD = random(TIME_BEFORE_NEW_WORD.MIN, TIME_BEFORE_NEW_WORD.MAX)
   }
 
   for (let i = 0; i < wordList.value.length; i++) {
@@ -218,10 +253,10 @@ const update = (time, deltaTime, frame) => {
         current.progress = 0
         current.displayTime = 0
 
-        gameOver()
+        // gameOver()
       }
 
-      ordalie.value.setHTMLPosition(current.el, current.mesh)
+      ordalie.value.setHTMLPosition(current.el, current.mesh, current.scale)
       ordalie.value.updateMesh(current.mesh, current.path, current.progress)
     }
   }

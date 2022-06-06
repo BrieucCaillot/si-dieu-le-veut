@@ -12,6 +12,11 @@ interface BBQInterface {
   upSpeedArm: number
   upDurationArm: number
 }
+interface FoodInterface {
+  fallingSpeedArm: number
+  upSpeedArm: number
+  upDurationArm: number
+}
 
 interface CauldronInterface {
   fallingSpeedArm: number
@@ -24,7 +29,7 @@ interface CauldronInterface {
 const DIFFICULTY_DATAS = {
   [DIFFICULTY.EASY]: {
     ['CAMERA']: {
-      moveDuration: 5,
+      moveDuration: 4,
     },
     ['TRANSITIONS']: {
       speedCoef: 1,
@@ -38,13 +43,19 @@ const DIFFICULTY_DATAS = {
       min: 13,
       max: 15,
     },
-    [ORDALIES.CAULDRON]: {
-      speedCoef: 1,
+    [ORDALIES.FOOD]: {
+      minDisplayTime: 13,
+      maxDisplayTime: 15,
+      minTimeBeforeNewWord: 2,
+      maxTimeBeforeNewWord: 2.2,
     },
+    // [ORDALIES.CAULDRON]: {
+    //   speedCoef: 1,
+    // },
   },
   [DIFFICULTY.MEDIUM]: {
     ['CAMERA']: {
-      moveDuration: 4,
+      moveDuration: 3.5,
     },
     ['TRANSITIONS']: {
       speedCoef: 1.5,
@@ -59,7 +70,13 @@ const DIFFICULTY_DATAS = {
       min: 11,
       max: 13,
     },
-    [ORDALIES.CAULDRON]: {},
+    [ORDALIES.FOOD]: {
+      minDisplayTime: 10,
+      maxDisplayTime: 12,
+      minTimeBeforeNewWord: 1.8,
+      maxTimeBeforeNewWord: 2,
+    },
+    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.HARD]: {
     ['CAMERA']: {
@@ -77,7 +94,13 @@ const DIFFICULTY_DATAS = {
       min: 8,
       max: 11,
     },
-    [ORDALIES.CAULDRON]: {},
+    [ORDALIES.FOOD]: {
+      minDisplayTime: 8,
+      maxDisplayTime: 10,
+      minTimeBeforeNewWord: 1.6,
+      maxTimeBeforeNewWord: 1.8,
+    },
+    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.VERY_HARD]: {
     ['CAMERA']: {
@@ -95,7 +118,13 @@ const DIFFICULTY_DATAS = {
       min: 6,
       max: 8,
     },
-    [ORDALIES.CAULDRON]: {},
+    [ORDALIES.FOOD]: {
+      minDisplayTime: 6,
+      maxDisplayTime: 8,
+      minTimeBeforeNewWord: 1,
+      maxTimeBeforeNewWord: 1.3,
+    },
+    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.INSANE]: {
     ['CAMERA']: {
@@ -113,9 +142,15 @@ const DIFFICULTY_DATAS = {
       min: 4,
       max: 6,
     },
-    [ORDALIES.CAULDRON]: {},
+    [ORDALIES.FOOD]: {
+      minDisplayTime: 4,
+      maxDisplayTime: 6,
+      minTimeBeforeNewWord: 0.8,
+      maxTimeBeforeNewWord: 1,
+    },
+    // [ORDALIES.CAULDRON]: {},
   },
 }
 
-export { CroixInterface, BBQInterface, CauldronInterface }
+export { CroixInterface, BBQInterface, CauldronInterface, FoodInterface }
 export default DIFFICULTY_DATAS
