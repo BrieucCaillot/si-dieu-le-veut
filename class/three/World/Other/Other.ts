@@ -62,8 +62,6 @@ class Other {
   onSpacePressed = (e: KeyboardEvent) => {
     if (e.code !== 'Space') return
     if (Blocks.isOther(this.block.getType() as OTHERS)) Blocks.setCurrentIsFirstOrdalie()
-
-    console.log('__ SPACE PRESS ' + this.block.getType())
     this.end()
   }
 }

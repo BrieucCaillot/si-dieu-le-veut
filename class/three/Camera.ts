@@ -19,6 +19,7 @@ class Camera extends THREE.EventDispatcher {
   private controls: OrbitControls
   private planeWidth = 1.4072
   private currentPosX = 0
+  private isMoving = false
   private debugFolder: GUI
   private debugParams = {
     parallaxFactor: 0.01,
@@ -86,6 +87,10 @@ class Camera extends THREE.EventDispatcher {
     return this.parent.position
   }
 
+  getIsMoving() {
+    return this.isMoving
+  }
+
   moveOnX(direction: 'left' | 'right') {
     if (!this.instance) return
 
@@ -107,7 +112,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   onUpdate() {
-    // this.setSmooth()
+    this.setSmooth()
     this.targetDebugMesh?.position.copy(this.target)
   }
 
@@ -123,9 +128,15 @@ class Camera extends THREE.EventDispatcher {
       x,
       duration,
       ease: 'power.inOut',
-      onStart: onStart,
+      onStart: () => {
+        this.isMoving = true
+        onStart?.()
+      },
       onUpdate: this.onPositionChange,
-      onComplete: onComplete,
+      onComplete: () => {
+        this.isMoving = false
+        onComplete?.()
+      },
     })
   }
 
