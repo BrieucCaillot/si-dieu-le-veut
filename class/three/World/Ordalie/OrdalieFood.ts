@@ -9,6 +9,7 @@ import fragmentShader from '@/class/three/shaders/bite/fragment.glsl'
 import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
 import PATHS from '@/constants/PATHS'
+import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
 
 class OrdalieFood {
   instance: Ordalie
@@ -26,9 +27,13 @@ class OrdalieFood {
   material: THREE.ShaderMaterial
   textures: THREE.Texture[]
   biteTexture: THREE.Texture
+  difficultyData: FoodInterface
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
+    this.difficultyData = this.instance.block.getDifficultyData() as FoodInterface
+    console.log(this.difficultyData)
+
     this.debug = {
       progress: 0,
       displayTime: 0,
@@ -68,7 +73,7 @@ class OrdalieFood {
 
   createInstance(path: THREE.CatmullRomCurve3, i: number) {
     const clone = this.mesh.clone()
-    clone.scale.set(2, 2, 2)
+    // clone.scale.set(2, 2, 2)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uMap: { value: this.textures[Math.floor(Math.random() * this.textures.length)] },
@@ -139,7 +144,7 @@ class OrdalieFood {
     this.instance.end()
   }
 
-  setHTMLPosition(container: HTMLSpanElement, mesh: THREE.Mesh) {
+  setHTMLPosition(container: HTMLSpanElement, mesh: THREE.Mesh, scale: number) {
     const objectSize = new THREE.Box3().setFromObject(mesh)
 
     const topLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.max.y, objectSize.max.z)
@@ -152,7 +157,7 @@ class OrdalieFood {
     const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
     const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
 
-    container.style.transform = `translate(${x1 - container.offsetWidth / 2}px,${y1}px)`
+    container.style.transform = `translate3d(${x1 - container.offsetWidth / 2}px,${y1}px, 0) scale3d(${scale}, ${scale}, ${scale})`
   }
 
   private setPath() {
