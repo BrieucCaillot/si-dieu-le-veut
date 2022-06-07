@@ -9,6 +9,7 @@ import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
+import Other from '@/class/three/World/Other/Other'
 
 class Blocks {
   private instances: Block[] = []
@@ -16,6 +17,7 @@ class Blocks {
   private currentIndex = 0
   private debugFolder: GUI
   private isStarted = false
+  private showDeath = false
 
   /**
    * Create default blocks
@@ -27,7 +29,8 @@ class Blocks {
     OtherManager.create(OTHERS.CINEMATIC_3)
     OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.BBQ)
+    // OtherManager.create(OTHERS.DEAD)
+    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -65,7 +68,7 @@ class Blocks {
    * End blocks system
    */
   end() {
-    OtherManager.create(OTHERS.END)
+    // OtherManager.create(OTHERS.DEAD)
     console.log('☠️ Player is dead ' + OrdalieManager.isPlayerDead)
   }
 
@@ -162,6 +165,7 @@ class Blocks {
     if (this.isOrdalie(this.getLast().getType() as ORDALIES)) {
       return TransitionManager.createNext()
     }
+
     // IF PREVIOUS BLOCK IS TRANSITION, CREATE ORDALIE
     if (this.isTransition(this.getLast().getType() as TRANSITIONS)) {
       return OrdalieManager.createNext()
@@ -174,7 +178,8 @@ class Blocks {
   private goToNext() {
     console.log('➡️ -- GO TO NEXT')
 
-    if (OrdalieManager.isPlayerDead) return this.end()
+    // if (this.showDeath) return console.log('should show death ', this.showDeath)
+    // if (OrdalieManager.isPlayerDead && this.isTransition(this.getNext().getType() as TRANSITIONS)) this.showDeath = true
     if (this.getNext() === undefined) return console.log('🤡 No next block')
 
     const nextPosX = this.getNext().getCenter().x
@@ -187,20 +192,12 @@ class Blocks {
       onComplete: () => {
         const currentType = this.getCurrent().getType()
         if (currentType === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
-        // // IF NEXT BLOCK IS AN OTHER
-        // START NEXT OTHER
+
+        // // IF NEXT BLOCK IS AN OTHER, START NEXT OTHER
         if (this.isOther(currentType as OTHERS)) return OtherManager.startNext()
-
-        // if (OrdalieManager.isPlayerDead) {
-        //   console.log('Player is dead')
-        //   this.end()
-        // }
-
-        // // IF NEXT BLOCK IS AN ORDALIE
-        // START NEXT ORDALIE
+        // // IF NEXT BLOCK IS AN ORDALIE, START NEXT ORDALIE
         if (this.isOrdalie(currentType as ORDALIES)) return OrdalieManager.startNext()
-        // // IF NEXT BLOCK IS A TRANSITION
-        // START NEXT TRANSITION
+        // // IF NEXT BLOCK IS A TRANSITION, START NEXT TRANSITION
         if (this.isTransition(currentType as TRANSITIONS)) return TransitionManager.startNext()
       },
     })

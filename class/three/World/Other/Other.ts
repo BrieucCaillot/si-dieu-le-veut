@@ -2,11 +2,13 @@ import gsap from 'gsap'
 
 import OTHERS from '@/constants/OTHERS'
 
+import Blocks from '@/class/three/World/Blocks'
 import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
 import OtherCinematic from '@/class/three/World/Other/OtherCinematic'
 import OtherTutorial from '@/class/three/World/Other/OtherTutorial'
+import OtherDead from '@/class/three/World/Other/OtherDead'
 import OtherEnd from '@/class/three/World/Other/OtherEnd'
 
 class Other {
@@ -35,6 +37,9 @@ class Other {
         break
       case OTHERS.END:
         this.instance = new OtherEnd(this)
+        break
+      case OTHERS.DEAD:
+        this.instance = new OtherDead(this)
         break
     }
     this.updateId = this.update
