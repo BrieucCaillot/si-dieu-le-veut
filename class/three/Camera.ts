@@ -127,7 +127,7 @@ class Camera extends THREE.EventDispatcher {
     gsap.to([this.parent.position, this.target], {
       x,
       duration,
-      ease: 'power.inOut',
+      ease: 'power1.inOut',
       onStart: () => {
         this.isMoving = true
         onStart?.()

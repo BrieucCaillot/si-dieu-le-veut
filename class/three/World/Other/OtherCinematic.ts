@@ -28,7 +28,8 @@ class OtherCinematic {
         this.delayEnd()
         break
       case OTHERS.CINEMATIC_2:
-        this.playVideo()
+        // this.playVideo()
+        this.delayEnd()
         break
       case OTHERS.CINEMATIC_3:
         this.delayEnd()
@@ -45,7 +46,7 @@ class OtherCinematic {
       if (WebGL.camera.getIsMoving()) return
       console.log('CALLING EEEND')
       this.end()
-    }, 2000)
+    }, 6000)
   }
 
   private setVideo() {
