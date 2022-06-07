@@ -10,6 +10,7 @@ import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
 import PATHS from '@/constants/PATHS'
 import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
+import setHTMLPosition from '../../utils/setHTMLPosition'
 
 class OrdalieFood {
   instance: Ordalie
@@ -136,21 +137,9 @@ class OrdalieFood {
     this.instance.end()
   }
 
-  setHTMLPosition(container: HTMLSpanElement, mesh: THREE.Mesh, scale: number) {
-    const objectSize = new THREE.Box3().setFromObject(mesh)
-
-    const topLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.max.y, objectSize.max.z)
-    const topRightCorner3D = new THREE.Vector3(objectSize.max.x, objectSize.max.y, objectSize.max.z)
-    const bottomLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.min.y, objectSize.max.z)
-
-    const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, bottomLeftCorner3D.y, objectSize.max.z)
-
-    center3D.project(WebGL.camera.instance)
-    const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-    const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
-
-    container.style.transform = `translate3d(${x1 - container.offsetWidth / 2}px,${y1}px, 0) scale3d(${scale}, ${scale}, ${scale})`
-
+  updateHTML(container: HTMLElement, mesh: THREE.Mesh, scale: number) {
+    const positions = setHTMLPosition(mesh)
+    container.style.transform = `translate3d(${positions.center.x - container.offsetWidth / 2}px,${positions.center.y}px, 0) scale3d(${scale}, ${scale}, ${scale})`
     container.style.fontSize = WebGL.sizes.width / 57.6 + 'px'
   }
 

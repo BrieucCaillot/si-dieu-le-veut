@@ -12,9 +12,9 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const texts = [
-  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de charité, de pitié et de perdon.",
-  "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
-  "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
+  'Pr',
+  // "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
+  // "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
 ]
 
 const currentWordDOM = ref(null)
@@ -28,7 +28,7 @@ onMounted(() => {
   ordalie.value = OrdalieManager.getCurrent().instance
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value.setContainer(containerRef.value)
-  ordalie.value.setHTMLPosition()
+  ordalie.value.updateHTML()
 
   setTimeout(() => {
     containerRef.value.classList.remove('hidden')
@@ -74,8 +74,6 @@ let letterToType = lettersToType[wordProgressIndex]
 
 // console.log('word to type is', wordToType)
 const gameWon = () => {
-  console.log('game won')
-
   ordalie.value.gameWon()
 }
 
@@ -96,11 +94,7 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  console.log(e.code)
-
   if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) {
-    console.log('return')
-
     return
   }
 

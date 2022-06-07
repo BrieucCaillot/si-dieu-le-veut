@@ -127,7 +127,7 @@ const initialization = () => {
 
   for (let i = 0; i < 3; i++) {
     ordalie.value.setContainer(parentArray[i].value, i)
-    ordalie.value.setHTMLPosition(i)
+    ordalie.value.updateHTML(i)
     // getTranslate(parentArray[i].value, i)
     pickWord(i)
   }
