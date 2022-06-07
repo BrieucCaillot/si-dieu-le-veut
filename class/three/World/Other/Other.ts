@@ -8,12 +8,12 @@ import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
 import OtherCinematic from '@/class/three/World/Other/OtherCinematic'
 import OtherTutorial from '@/class/three/World/Other/OtherTutorial'
 import OtherEnd from '@/class/three/World/Other/OtherEnd'
-import Blocks from '../Blocks'
 
 class Other {
   block: Block
   instance: OtherSplashscreen | OtherCinematic | OtherTutorial | OtherEnd
   updateId: () => void
+  isEnded = false
 
   constructor(_type: OTHERS) {
     this.block = new Block(_type)
@@ -49,6 +49,8 @@ class Other {
   }
 
   end() {
+    if (this.isEnded) return
+    this.isEnded = true
     gsap.ticker.remove(this.updateId)
     OtherManager.onEnded()
     document.removeEventListener('keydown', this.onSpacePressed)
@@ -61,9 +63,7 @@ class Other {
 
   onSpacePressed = (e: KeyboardEvent) => {
     if (e.code !== 'Space') return
-    if (Blocks.isOther(this.block.getType() as OTHERS)) Blocks.setCurrentIsFirstOrdalie()
-
-    console.log('__ SPACE PRESS ' + this.block.getType())
+    // if (Blocks.isOther(this.block.getType() as OTHERS)) Blocks.setCurrentIsFirstOrdalie()
     this.end()
   }
 }

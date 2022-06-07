@@ -2,23 +2,23 @@
   @apply relative z-10 bg-background h-screen w-screen flex flex-col justify-center items-center;
 
   #loader-content {
-    transform: scale(0.8);
+    transform: scale(1);
   }
 
   .loader-img {
     @apply relative;
-    width: 819.2px;
-    height: 628px;
+    width: 600px;
+    height: 460px;
     background-image: url('/images/loader_sprite.webp');
     animation: loader-sprite 1.5s steps(4) infinite forwards;
   }
 
   .loader-text {
-    @apply absolute bottom-[120px] left-1/2 transform -translate-x-1/2 text-3xl text-white;
+    @apply absolute bottom-[85px] left-1/2 transform -translate-x-1/2 text-3xl text-white;
   }
 
   .loader-text--start {
-    @apply relative text-xl z-20 bottom-24 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0;
+    @apply relative text-xl z-20 bottom-12 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0;
     background-image: url('/images/loader-start.webp');
 
     span {
@@ -32,6 +32,6 @@
     background-position: 0px;
   }
   to {
-    background-position: -3276px; // 4096 - (4096 / 5)
+    background-position: -2400px; // 3000 - (3000 / 5)
   }
 }
