@@ -222,14 +222,11 @@ const replaceWord = async () => {
 }
 
 const gameWon = () => {
-  console.log('game won')
   gsap.ticker.remove(update)
   ordalie.value.end()
 }
 
 const gameOver = () => {
-  console.log('game over')
-
   gsap.ticker.remove(update)
   ordalie.value.end()
 }
@@ -253,7 +250,7 @@ const update = (time, deltaTime, frame) => {
         current.progress = 0
         current.displayTime = 0
 
-        // gameOver()
+        gameOver()
       }
 
       ordalie.value.setHTMLPosition(current.el, current.mesh, current.scale)

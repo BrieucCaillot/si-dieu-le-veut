@@ -11,8 +11,8 @@ import WebGL from '@/class/three/WebGL'
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
-import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
-import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
+// import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
+// import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
 
 class OrdalieBBQ {
   instance: Ordalie
@@ -20,12 +20,16 @@ class OrdalieBBQ {
   characterPosEntreeEnd = new THREE.Vector3(0)
   characterPosSortieStart = new THREE.Vector3(0)
   texts: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>[]
-
+  container: HTMLDivElement[]
   // Gameplay
   animation: { [key: string]: any }
   forwardSpeed = 0.11
   modulo = 0
-  uniforms: any
+  uniforms: {
+    uNoise: { value: THREE.Texture }
+    uGradient: { value: THREE.Texture }
+    uTexture: { value: THREE.Texture }
+  }
   isGameWon = false
   difficultyData: BBQInterface
 
@@ -35,6 +39,7 @@ class OrdalieBBQ {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as BBQInterface
     this.texts = []
+    this.container = []
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('text')) {
@@ -44,64 +49,56 @@ class OrdalieBBQ {
 
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
 
-    const texture = 'map' in this.texts[0].material ? this.texts[0].material.map : null
-    const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise') as THREE.Texture
-    const gradient = WebGL.resources.getItems('COMMON', 'gradient') as THREE.Texture
-
     this.setCharacter()
     this.setAnimation()
+    this.setTexts()
+  }
 
-    this.uniforms = {
-      uNoise: { value: noise },
-      uGradient: { value: gradient },
-    }
-
-    for (let i = 0; i < this.texts.length; i++) {
-      this.texts[i].material = new THREE.ShaderMaterial({
-        uniforms: { ...this.uniforms, uTexture: { value: texture }, uDissolve: { value: 0 } },
-        fragmentShader: fragmentShader,
-        vertexShader: vertexShader,
-        transparent: true,
-      })
-
-      // if (this.debugFolder) {
-      //   this.debugFolder
-      //     .add(this.texts[i].material.uniforms.uDissolve, 'value', -0.1, 1.1)
-      //     .step(0.01)
-      //     .onChange((value) => {
-      //       this.texts[i].material.uniforms.uDissolve.value = value
-      //     })
-      // }
-    }
-
-    // this.start()
+  setContainer(container: HTMLDivElement, i: number) {
+    this.container[i] = container
   }
 
   start() {
+    window.addEventListener('resize', this.onResize)
     this.animation.play('Braises_Cuisinier_Entree')
   }
 
   end() {
+    window.removeEventListener('resize', this.onResize)
     if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
+  }
+
+  onResize = () => {
+    for (let i = 0; i < this.container.length; i++) {
+      this.setHTMLPosition(i)
+    }
+  }
+
+  private setTexts() {
+    const texture = 'map' in this.texts[0].material ? this.texts[0].material.map : null
+    const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise')
+    const gradient = WebGL.resources.getItems('COMMON', 'gradient')
+
+    this.uniforms = {
+      uNoise: { value: noise },
+      uGradient: { value: gradient },
+      uTexture: { value: texture },
+    }
+
+    for (let i = 0; i < this.texts.length; i++) {
+      this.texts[i].material = new THREE.ShaderMaterial({
+        uniforms: { ...this.uniforms, uDissolve: { value: 0 } },
+        fragmentShader: fragmentShader,
+        vertexShader: vertexShader,
+        transparent: true,
+      })
+    }
   }
 
   private setCharacter() {
     const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
     this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
-
-    // this.instance.block.getModel().scene.traverse((mesh) => {
-    //   if (mesh.material && mesh.material instanceof THREE.MeshStandardMaterial && mesh.name !== 'background') {
-    //     console.log(mesh.material)
-    //     const newMat = new THREE.MeshBasicMaterial({
-    //       map: mesh.material.map,
-    //       color: mesh.material.color,
-    //       transparent: true,
-    //     })
-    //     mesh.material = newMat
-    //     console.log(newMat)
-    //   }
-    // })
   }
 
   private setAnimation() {
@@ -203,7 +200,7 @@ class OrdalieBBQ {
     }
   }
 
-  setHTMLPosition(container: HTMLDivElement, i: number) {
+  setHTMLPosition(i: number) {
     //récupérer la taille de ce plane
     const planeSize = new THREE.Box3().setFromObject(this.texts[i])
 
@@ -211,14 +208,25 @@ class OrdalieBBQ {
     const topRightCorner3D = new THREE.Vector3(planeSize.max.x, planeSize.max.y, planeSize.max.z)
     const bottomLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.min.y, planeSize.max.z)
 
-    const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, (topLeftCorner3D.y + bottomLeftCorner3D.y) / 2, planeSize.max.z)
+    // const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, (topLeftCorner3D.y + bottomLeftCorner3D.y) / 2, planeSize.max.z)
 
-    //récupérer la position dans l'espace 2D de ce point en haut à gauche
-    center3D.project(WebGL.camera.instance)
-    const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-    const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
+    topLeftCorner3D.project(WebGL.camera.instance)
+    const x1 = (topLeftCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
+    const y1 = (topLeftCorner3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
+    topRightCorner3D.project(WebGL.camera.instance)
+    const x2 = (topRightCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
 
-    container.style.transform = `translate(${x1}px,${y1}px)`
+    bottomLeftCorner3D.project(WebGL.camera.instance)
+    const y2 = (bottomLeftCorner3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
+
+    const width = Math.abs(x1 - x2)
+    const height = Math.abs(y1 - y2)
+
+    this.container[i].style.transform = `translate(${x1}px,${y1}px)`
+    this.container[i].style.width = width + 'px'
+    this.container[i].style.height = height + 'px'
+
+    this.container[i].style.fontSize = width / 11.28 + 'px'
   }
 
   update() {

@@ -32,7 +32,6 @@ class OrdalieFood {
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as FoodInterface
-    console.log(this.difficultyData)
 
     this.debug = {
       progress: 0,
@@ -53,10 +52,6 @@ class OrdalieFood {
       WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
     ]
 
-    // for (let i = 0; i < this.textures.length; i++) {
-    //   this.textures[i].encoding = THREE.sRGBEncoding
-    // }
-
     this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
     this.material = new THREE.ShaderMaterial({
       transparent: true,
@@ -73,7 +68,7 @@ class OrdalieFood {
 
   createInstance(path: THREE.CatmullRomCurve3, i: number) {
     const clone = this.mesh.clone()
-    // clone.scale.set(2, 2, 2)
+    clone.scale.set(1.5, 1.5, 1.5)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uMap: { value: this.textures[Math.floor(Math.random() * this.textures.length)] },
@@ -100,10 +95,8 @@ class OrdalieFood {
   }
 
   startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
-    console.log('start bite transition', mesh)
     return new Promise<void>((resolve, reject) => {
       const uniform = mesh.material.uniforms.uProgress
-      console.log('uniform is', uniform)
 
       gsap.to(uniform, {
         value: 0,
@@ -114,7 +107,6 @@ class OrdalieFood {
         },
       })
     })
-    // let uniform
   }
 
   disposeInstance(name: string) {
@@ -158,6 +150,8 @@ class OrdalieFood {
     const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
 
     container.style.transform = `translate3d(${x1 - container.offsetWidth / 2}px,${y1}px, 0) scale3d(${scale}, ${scale}, ${scale})`
+
+    container.style.fontSize = WebGL.sizes.width / 57.6 + 'px'
   }
 
   private setPath() {
@@ -172,7 +166,7 @@ class OrdalieFood {
       this.paths.push(new THREE.CatmullRomCurve3(PATHS[i]))
 
       // this.instance.block.getModel().scene.attach(this.paths[i])
-      // console.log(this.instance.block.getModel())
+
       // const radius = 0.01
       // const geometry = new THREE.TubeGeometry(this.paths[i], 20, radius, 20, false)
       // const material = new THREE.MeshNormalMaterial({
@@ -202,7 +196,6 @@ class OrdalieFood {
   updateMesh(mesh: THREE.Mesh, path: THREE.CatmullRomCurve3, progress: number) {
     const point = path.getPointAt(1 - progress)
     mesh.position.set(point.x, point.y, point.z)
-    mesh.updateMatrix()
   }
 
   update() {

@@ -37,8 +37,6 @@ class OrdalieCroix {
   }
 
   start() {
-    console.log('start')
-
     window.addEventListener('resize', this.onResize)
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroix')
     this.animation.play('Croix_CuisinierSIDE_Entree')
@@ -46,9 +44,9 @@ class OrdalieCroix {
   }
 
   end() {
-    // window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('resize', this.onResize)
     if (this.debugFolder) this.debugFolder.destroy()
-    // this.instance.end()
+    this.instance.end()
   }
 
   onResize = () => {

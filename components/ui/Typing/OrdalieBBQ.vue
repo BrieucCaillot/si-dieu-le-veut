@@ -1,20 +1,21 @@
 <template>
   <div class="text-[25px]">
-    <div ref="parent1" class="fixed top-0">
-      <div class="text-[#BCA8A2]" ref="placeholder1"></div>
+    <div ref="parent1" class="fixed top-0 flex justify-center items-center">
+      <div ref="placeholder1"></div>
     </div>
-    <div ref="parent2" class="fixed top-0">
-      <div class="text-[#BCA8A2]" ref="placeholder2"></div>
+    <div ref="parent2" class="fixed top-0 flex justify-center items-center">
+      <div ref="placeholder2"></div>
     </div>
-    <div ref="parent3" class="fixed top-0">
-      <div class="text-[#BCA8A2]" ref="placeholder3"></div>
+    <div ref="parent3" class="fixed top-0 flex justify-center items-center">
+      <div ref="placeholder3"></div>
     </div>
 
-    <div class="flex fixed flex-col top-32 text-black" ref="chronometer">
+    <!-- debug purposes -->
+    <!-- <div class="flex fixed flex-col top-32 text-black" ref="chronometer">
       <span></span>
       <span></span>
       <span></span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -35,8 +36,8 @@ const NB_WORDS_TO_WRITE = 10
 const BASE_BURNING = 0
 const MAX_BURNING = 0.3
 const START_BURNING_TIME = 2
-const BASE_COLOR = { r: 202, g: 191, b: 191 }
-const TARGET_COLOR = { r: 197, g: 0, b: 0 }
+const BASE_COLOR = { r: 186, g: 183, b: 176 }
+const TARGET_COLOR = { r: 195, g: 0, b: 0 }
 
 let COUNTER = 0
 let GAME_RUNNING = false
@@ -101,13 +102,15 @@ onUnmounted(() => {
   document.removeEventListener('keydown', newChar)
 })
 
-// get translate values of the words
-const getTranslate = (el: HTMLDivElement, index: number) => {
-  const style = window.getComputedStyle(el)
-  const matrix = new WebKitCSSMatrix(style.transform)
-  positions[index].x = matrix.m41
-  positions[index].y = matrix.m42
-}
+// // get translate values of the words
+// const getTranslate = (el: HTMLDivElement, index: number) => {
+//   const style = window.getComputedStyle(el)
+//   const matrix = new WebKitCSSMatrix(style.transform)
+//   console.log(matrix)
+
+//   positions[index].x = matrix.m41
+//   positions[index].y = matrix.m42
+// }
 
 //init function, executed once
 const initialization = () => {
@@ -115,6 +118,7 @@ const initialization = () => {
 
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value = OrdalieManager.getCurrent().instance
+
   MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
   MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
 
@@ -122,8 +126,9 @@ const initialization = () => {
   parentArray.push(parent1, parent2, parent3)
 
   for (let i = 0; i < 3; i++) {
-    ordalie.value.setHTMLPosition(parentArray[i].value, i)
-    getTranslate(parentArray[i].value, i)
+    ordalie.value.setContainer(parentArray[i].value, i)
+    ordalie.value.setHTMLPosition(i)
+    // getTranslate(parentArray[i].value, i)
     pickWord(i)
   }
 
@@ -200,10 +205,14 @@ const pickWord = (index: number) => {
     refArray[index].value.appendChild(span)
   })
 
-  parentArray[index].value.style.transform = `translate(
-    ${positions[index].x - parentArray[index].value.offsetWidth / 2}px,
-    ${positions[index].y - parentArray[index].value.offsetHeight / 2}px
-  )`
+  // parentArray[index].value.style.transform = `translate(
+  //   ${positions[index].x - parentArray[index].value.offsetWidth / 2}px,
+  //   ${positions[index].y - parentArray[index].value.offsetHeight / 2}px
+  // )`
+  // parentArray[index].value.style.transform = `translate(
+  //   ${positions[index].x}px,
+  //   ${positions[index].y}px
+  // )`
 
   return selectedWord
 }
@@ -213,8 +222,7 @@ const selectWordToType = (e: KeyboardEvent) => {
     if (e.key.toLowerCase() === displayedWords[i].word.charAt(0).toLowerCase()) {
       wordIndex = displayedWords[i].index
 
-      refArray[wordIndex].value.children.item(wordToTypeIndex).classList.remove('text-[#BCA8A2]')
-      refArray[wordIndex].value.children.item(wordToTypeIndex).classList.add('text-typingDoneColor')
+      refArray[wordIndex].value.children.item(wordToTypeIndex).classList.add('text-bbq-valid')
 
       wordToType = displayedWords[i].word
       lettersToType = wordToType.split('')
@@ -233,11 +241,7 @@ const newChar = (e: KeyboardEvent) => {
     selectWordToType(e)
   } else {
     if (letterToType.toLowerCase() === e.key.toLowerCase()) {
-      // console.log('good letter')
-      // console.log(refArray[wordIndex].value.children.item(wordToTypeIndex))
-      refArray[wordIndex].value.children.item(wordToTypeIndex).classList.remove('text-[#BCA8A2]')
-      refArray[wordIndex].value.children.item(wordToTypeIndex).classList.add('text-typingDoneColor')
-
+      refArray[wordIndex].value.children.item(wordToTypeIndex).classList.add('text-bbq-valid')
       AudioManager.play('success')
       wordToTypeIndex++
       letterToType = lettersToType[wordToTypeIndex]
