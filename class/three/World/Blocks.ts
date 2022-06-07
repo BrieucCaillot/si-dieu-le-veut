@@ -40,7 +40,7 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'increaseDifficulty').name('🎲 Increase Difficulty')
       this.debugFolder.add(this.debugParams(), 'decreaseDifficulty').name('🎲 Decrease Difficulty')
-      this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
+      this.debugFolder.add(OtherManager, 'currentIndex').name('Current Other Index').listen().disable()
     }
 
     // Start
@@ -68,8 +68,7 @@ class Blocks {
    * End blocks system
    */
   end() {
-    // OtherManager.create(OTHERS.DEAD)
-    console.log('☠️ Player is dead ' + OrdalieManager.isPlayerDead)
+    // console.log('☠️ Player is dead ' + OrdalieManager.isPlayerDead)
   }
 
   /**
@@ -105,6 +104,7 @@ class Blocks {
    */
   setCurrentIsFirstOrdalie() {
     this.currentIndex = 4
+    OtherManager.setCurrentIndex(4)
     return this.getCurrent()
   }
 
@@ -159,7 +159,8 @@ class Blocks {
   private createNext() {
     if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
 
-    console.log('➡️ -- CREATED NEXT')
+    // TODO
+    if (OrdalieManager.isPlayerDead) return console.log('TODO Create End Block')
 
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION
     if (this.isOrdalie(this.getLast().getType() as ORDALIES)) {
@@ -170,6 +171,8 @@ class Blocks {
     if (this.isTransition(this.getLast().getType() as TRANSITIONS)) {
       return OrdalieManager.createNext()
     }
+
+    console.log('➡️ -- CREATED NEXT')
   }
 
   /**
@@ -214,6 +217,7 @@ class Blocks {
         console.log(this.getAll().map((block) => block.getType()))
         console.log('Ordalies' + console.log(OrdalieManager.getAll()))
         console.log('Others ' + console.log(OtherManager.getAll()))
+        console.log('Transitions ' + console.log(TransitionManager.getAll()))
       },
       increaseDifficulty: () => OrdalieManager.increaseDifficulty(),
       decreaseDifficulty: () => OrdalieManager.decreaseDifficulty(),

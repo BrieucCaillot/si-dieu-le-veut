@@ -50,6 +50,9 @@ class Other {
     gsap.ticker.add(this.updateId)
     OtherManager.onStarted()
 
+    // Speed up to first ordalie
+    Blocks.setCurrentIsFirstOrdalie()
+
     document.addEventListener('keydown', this.onSpacePressed)
   }
 
@@ -67,7 +70,9 @@ class Other {
   }
 
   onSpacePressed = (e: KeyboardEvent) => {
-    if (e.code !== 'Space') return
+    // Prevent to skip when key pressed is not Space or user is on the splashscreen
+    if (e.code !== 'Space' || this.block.getType() === OTHERS.SPLASHSCREEN) return
+    // Speed up to first ordalie
     // if (Blocks.isOther(this.block.getType() as OTHERS)) Blocks.setCurrentIsFirstOrdalie()
     this.end()
   }

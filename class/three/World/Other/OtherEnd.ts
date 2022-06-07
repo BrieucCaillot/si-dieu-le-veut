@@ -1,4 +1,3 @@
-
 import GUI from 'lil-gui'
 import * as THREE from 'three'
 
@@ -18,7 +17,7 @@ class OtherEnd {
   }
 
   start() {
-    console.log('Start OtherEnd')
+    console.log('Started OtherEnd')
   }
 
   end() {
@@ -30,4 +29,4 @@ class OtherEnd {
   }
 }
 
-export default OtherEnd 
+export default OtherEnd

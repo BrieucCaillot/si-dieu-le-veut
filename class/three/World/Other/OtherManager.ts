@@ -30,10 +30,17 @@ class OtherManager {
   }
 
   /**
-   * Get other by index
+   * Get current other from current index
    */
   getCurrent() {
     return this.instances[this.currentIndex]
+  }
+
+  /**
+   * Set current new current index
+   */
+  setCurrentIndex(index: number) {
+    this.currentIndex = index
   }
 
   /**
@@ -46,9 +53,10 @@ class OtherManager {
   /**
    * Start next other
    */
-  startNext() {
+  startNext = () => {
     // console.log('✨ START NEXT')
     this.currentIndex++
+    console.log('wtfff', this.getCurrent().block.getType(), this.currentIndex)
     this.getCurrent().start()
   }
 

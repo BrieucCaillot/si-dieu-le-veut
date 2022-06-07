@@ -45,6 +45,7 @@ class Ordalie {
   end() {
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()
+    if (OrdalieManager.isPlayerDead || this.block.getType() === ORDALIES.CROIX) return
     this.block.toggleCharacter(false)
   }
 
