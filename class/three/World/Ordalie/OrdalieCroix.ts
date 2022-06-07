@@ -16,7 +16,8 @@ class OrdalieCroix {
   debugObject: any
   timeScaleController: any
   difficultyData: CroixInterface
-
+  container: HTMLDivElement
+  planeTextReference: THREE.Mesh
   delay: number
 
   debugFolder: GUI
@@ -25,19 +26,33 @@ class OrdalieCroix {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as CroixInterface
 
+    this.planeTextReference = this.instance.block.getModel().scene.children.find((child) => child.name === 'text') as THREE.Mesh
+
     this.setCharacter()
     this.setAnimation()
   }
 
+  setContainer(container: HTMLDivElement) {
+    this.container = container
+  }
+
   start() {
+    console.log('start')
+
+    window.addEventListener('resize', this.onResize)
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('OrdalieCroix')
     this.animation.play('Croix_CuisinierSIDE_Entree')
     this.animation.play('Croix_Cuisinier_FRONT_Entree')
   }
 
   end() {
+    // window.removeEventListener('resize', this.onResize)
     if (this.debugFolder) this.debugFolder.destroy()
-    this.instance.end()
+    // this.instance.end()
+  }
+
+  onResize = () => {
+    this.setHTMLPosition()
   }
 
   private setCharacter() {
@@ -171,17 +186,14 @@ class OrdalieCroix {
     this.animation.actions['Croix_CuisinierFRONT_Mort'].play()
   }
 
-  setHTMLPosition(container: HTMLDivElement) {
-    //récupérer la taille de ce plane
-    const plane = this.instance.block.getModel().scene.children.find((child) => child.name === 'text') as THREE.Mesh
-    const planeSize = new THREE.Box3().setFromObject(plane)
+  setHTMLPosition() {
+    // console.log(WebGL.sizes.width, WebGL.sizes.height)
 
-    // console.log('plane size', planeSize)
+    //récupérer la taille de ce plane
+    const planeSize = new THREE.Box3().setFromObject(this.planeTextReference)
 
     const topLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.max.y, planeSize.max.z)
     const topRightCorner3D = new THREE.Vector3(planeSize.max.x, planeSize.max.y, planeSize.max.z)
-    // console.log('top left corner', topLeftCorner3D)
-    // console.log('top right corner', topRightCorner3D)
 
     //récupérer la position dans l'espace 2D de ce point en haut à gauche
     topLeftCorner3D.project(WebGL.camera.instance)
@@ -191,15 +203,16 @@ class OrdalieCroix {
     topRightCorner3D.project(WebGL.camera.instance)
     const x2 = (topRightCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
 
-    container.style.transform = `translate(${x1}px,${y}px)`
+    this.container.style.transform = `translate(${x1}px,${y}px)`
 
     const width = Math.abs(x1 - x2)
-    container.style.width = width + 'px'
-  }
+    this.container.style.width = width + 'px'
 
-  solo() {
-    gsap.ticker.add(() => this.update())
-    this.start()
+    const fontSize = width / 27.78
+    this.container.style.fontSize = fontSize - 1 + 'px'
+
+    const lineHeight = width / 24.19
+    this.container.style.lineHeight = lineHeight + 'px'
   }
 
   update() {

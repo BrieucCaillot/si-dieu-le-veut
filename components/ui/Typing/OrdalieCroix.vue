@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed top-0 left-0 text-typingBaseColor text-[17px] leading-tight hidden" id="typing" ref="containerRef" v-SplitText></div>
+    <div class="fixed top-0 left-0 text-croix-base text-[27px] pr-[15px] hidden" id="typing" ref="containerRef" v-SplitText></div>
   </div>
 </template>
 
@@ -11,11 +11,15 @@ import { ref, onMounted } from 'vue'
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
+const texts = [
+  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de charité, de pitié et de perdon.",
+  "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
+  "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
+]
+
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
-const textToWrite = ref(
-  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre delivrance come la vertu de cherité, de pitié et de perdon."
-)
+const textToWrite = ref(texts[Math.floor(Math.random() * texts.length)])
 
 const ordalie = ref()
 
@@ -23,7 +27,8 @@ onMounted(() => {
   document.addEventListener('keydown', newChar)
   ordalie.value = OrdalieManager.getCurrent().instance
   // ordalie.value = OrdalieManager.getByIndex(0).instance
-  ordalie.value.setHTMLPosition(containerRef.value)
+  ordalie.value.setContainer(containerRef.value)
+  ordalie.value.setHTMLPosition()
 
   setTimeout(() => {
     containerRef.value.classList.remove('hidden')
@@ -51,8 +56,6 @@ const vSplitText = {
     })
 
     currentWordDOM.value = el.querySelector('.word-item')
-    currentWordDOM.value.children.item(0).classList.add('text-typingActiveLetter')
-    // currentLetterDOM.value = el.querySelector('span')
   },
 }
 
@@ -90,27 +93,31 @@ const wordCompleted = () => {
   letterToType = lettersToType[wordProgressIndex]
 
   currentWordDOM.value = currentWordDOM.value.nextSibling
-  currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-typingActiveLetter')
 }
 
 const newChar = (e: KeyboardEvent) => {
+  console.log(e.code)
+
+  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) {
+    console.log('return')
+
+    return
+  }
+
   if (letterToType.toLowerCase() === e.key.toLowerCase() && wordToType) {
     ordalie.value.armsUp()
-    currentWordDOM.value.children.item(wordProgressIndex).classList.remove('text-typingActiveLetter')
-    currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-typingDoneColor')
+    currentWordDOM.value.children.item(wordProgressIndex).classList.remove('text-croix-error')
+    currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-croix-valid')
     AudioManager.play('success')
 
     wordProgressIndex++
     letterToType = lettersToType[wordProgressIndex]
     // console.log('new letter', letterToType)
-    if (letterToType) {
-      currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-typingActiveLetter')
-    } else {
-      wordCompleted()
-    }
+    if (!letterToType) wordCompleted()
   } else {
     //wrong letter
     const letter = currentWordDOM.value.children.item(wordProgressIndex)
+    letter.classList.add('text-croix-error')
 
     gsap.to(letter, {
       scale: 2,
