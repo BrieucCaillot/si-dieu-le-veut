@@ -62,6 +62,24 @@ class Block {
   }
 
   /**
+   * Hide materials of models to hide
+   */
+  toggleCharacter(value: boolean) {
+    const character = this.getModel().scene.children.filter((child) => child.name.includes('Cuisinier'))
+    character.forEach((element) => (element.visible = value))
+  }
+
+  toggleGarde(value: boolean) {
+    const garde = this.getModel().scene.children.filter((child) => child.name.includes('Garde'))
+    garde.forEach((element) => {
+      console.log(this.getType())
+      console.log(value)
+      console.log(element.name)
+      element.visible = value
+    })
+  }
+
+  /**
    * Add model to scene
    */
   private add() {
@@ -118,6 +136,13 @@ class Block {
    */
   getPosition() {
     return this.position
+  }
+
+  /**
+   * Update position of model
+   */
+  updatePosition(position: THREE.Vector3) {
+    return this.position.set(position.x, position.y, position.z)
   }
 
   /**
