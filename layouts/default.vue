@@ -38,6 +38,4 @@ onMounted(() => {
   showLoader.value = !is404.value && !isMobile.value
   startWebGL.value = !is404.value && !isMobile.value
 })
-
-console.log('SETUP DEFAULT LAYOUT')
 </script>

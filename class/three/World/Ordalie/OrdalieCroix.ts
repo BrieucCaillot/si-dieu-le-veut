@@ -7,6 +7,7 @@ import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
 import WebGL from '@/class/three/WebGL'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
+import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 
 class OrdalieCroix {
   instance: Ordalie
@@ -50,7 +51,7 @@ class OrdalieCroix {
   }
 
   onResize = () => {
-    this.setHTMLPosition()
+    this.updateHTML()
   }
 
   private setCharacter() {
@@ -184,32 +185,16 @@ class OrdalieCroix {
     this.animation.actions['Croix_CuisinierFRONT_Mort'].play()
   }
 
-  setHTMLPosition() {
-    // console.log(WebGL.sizes.width, WebGL.sizes.height)
+  updateHTML() {
+    const positions = setHTMLPosition(this.planeTextReference)
 
-    //récupérer la taille de ce plane
-    const planeSize = new THREE.Box3().setFromObject(this.planeTextReference)
+    this.container.style.transform = `translate(${positions.topLeft.x}px,${positions.topLeft.y}px)`
+    this.container.style.width = positions.width + 'px'
 
-    const topLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.max.y, planeSize.max.z)
-    const topRightCorner3D = new THREE.Vector3(planeSize.max.x, planeSize.max.y, planeSize.max.z)
-
-    //récupérer la position dans l'espace 2D de ce point en haut à gauche
-    topLeftCorner3D.project(WebGL.camera.instance)
-    const x1 = (topLeftCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-    const y = (topLeftCorner3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
-
-    topRightCorner3D.project(WebGL.camera.instance)
-    const x2 = (topRightCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-
-    this.container.style.transform = `translate(${x1}px,${y}px)`
-
-    const width = Math.abs(x1 - x2)
-    this.container.style.width = width + 'px'
-
-    const fontSize = width / 27.78
+    const fontSize = positions.width / 27.78
     this.container.style.fontSize = fontSize - 1 + 'px'
 
-    const lineHeight = width / 24.19
+    const lineHeight = positions.width / 24.19
     this.container.style.lineHeight = lineHeight + 'px'
   }
 

@@ -4,6 +4,7 @@ import gsap from 'gsap'
 
 import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
 
+import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
@@ -71,8 +72,16 @@ class OrdalieBBQ {
 
   onResize = () => {
     for (let i = 0; i < this.container.length; i++) {
-      this.setHTMLPosition(i)
+      this.updateHTML(i)
     }
+  }
+
+  updateHTML(i: number) {
+    const positions = setHTMLPosition(this.texts[i])
+    this.container[i].style.transform = `translate(${positions.topLeft.x}px,${positions.topLeft.y}px)`
+    this.container[i].style.width = positions.width + 'px'
+    this.container[i].style.height = positions.height + 'px'
+    this.container[i].style.fontSize = positions.width / 11.28 + 'px'
   }
 
   private setTexts() {
@@ -198,35 +207,6 @@ class OrdalieBBQ {
         duration: 1,
       })
     }
-  }
-
-  setHTMLPosition(i: number) {
-    //récupérer la taille de ce plane
-    const planeSize = new THREE.Box3().setFromObject(this.texts[i])
-
-    const topLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.max.y, planeSize.max.z)
-    const topRightCorner3D = new THREE.Vector3(planeSize.max.x, planeSize.max.y, planeSize.max.z)
-    const bottomLeftCorner3D = new THREE.Vector3(planeSize.min.x, planeSize.min.y, planeSize.max.z)
-
-    // const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, (topLeftCorner3D.y + bottomLeftCorner3D.y) / 2, planeSize.max.z)
-
-    topLeftCorner3D.project(WebGL.camera.instance)
-    const x1 = (topLeftCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-    const y1 = (topLeftCorner3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
-    topRightCorner3D.project(WebGL.camera.instance)
-    const x2 = (topRightCorner3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-
-    bottomLeftCorner3D.project(WebGL.camera.instance)
-    const y2 = (bottomLeftCorner3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
-
-    const width = Math.abs(x1 - x2)
-    const height = Math.abs(y1 - y2)
-
-    this.container[i].style.transform = `translate(${x1}px,${y1}px)`
-    this.container[i].style.width = width + 'px'
-    this.container[i].style.height = height + 'px'
-
-    this.container[i].style.fontSize = width / 11.28 + 'px'
   }
 
   update() {

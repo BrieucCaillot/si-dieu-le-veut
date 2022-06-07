@@ -253,7 +253,7 @@ const update = (time, deltaTime, frame) => {
         gameOver()
       }
 
-      ordalie.value.setHTMLPosition(current.el, current.mesh, current.scale)
+      ordalie.value.updateHTML(current.el, current.mesh, current.scale)
       ordalie.value.updateMesh(current.mesh, current.path, current.progress)
     }
   }

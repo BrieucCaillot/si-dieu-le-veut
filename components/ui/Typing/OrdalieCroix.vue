@@ -28,7 +28,7 @@ onMounted(() => {
   ordalie.value = OrdalieManager.getCurrent().instance
   // ordalie.value = OrdalieManager.getByIndex(0).instance
   ordalie.value.setContainer(containerRef.value)
-  ordalie.value.setHTMLPosition()
+  ordalie.value.updateHTML()
 
   setTimeout(() => {
     containerRef.value.classList.remove('hidden')
@@ -74,8 +74,6 @@ let letterToType = lettersToType[wordProgressIndex]
 
 // console.log('word to type is', wordToType)
 const gameWon = () => {
-  console.log('game won')
-
   ordalie.value.gameWon()
 }
 
@@ -96,11 +94,7 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  console.log(e.code)
-
   if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) {
-    console.log('return')
-
     return
   }
 
