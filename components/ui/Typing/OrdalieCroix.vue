@@ -6,13 +6,12 @@
 
 <script setup lang="ts">
 import gsap from 'gsap'
-import { ref, onMounted } from 'vue'
 
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const texts = [
-  'Pr',
+  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre délivrance come la vertu de cherité, de pitié et de perdon.",
   // "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
   // "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
 ]
@@ -25,8 +24,13 @@ const ordalie = ref()
 
 onMounted(() => {
   document.addEventListener('keydown', newChar)
-  ordalie.value = OrdalieManager.getCurrent().instance
-  // ordalie.value = OrdalieManager.getByIndex(0).instance
+
+  if (OrdalieManager.getAll().length === 1) {
+    ordalie.value = OrdalieManager.getByIndex(0).instance
+  } else {
+    ordalie.value = OrdalieManager.getCurrent().instance
+  }
+
   ordalie.value.setContainer(containerRef.value)
   ordalie.value.updateHTML()
 
@@ -72,13 +76,11 @@ let lettersToType = wordToType.split('')
 //letter to type
 let letterToType = lettersToType[wordProgressIndex]
 
-// console.log('word to type is', wordToType)
 const gameWon = () => {
   ordalie.value.gameWon()
 }
 
 const wordCompleted = () => {
-  // console.log('undefined, next word')
   wordProgressIndex = 0
   index++
   wordToType = textToWriteSplit[index]
@@ -94,35 +96,37 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) {
-    return
-  }
+  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) return
 
-  if (letterToType.toLowerCase() === e.key.toLowerCase() && wordToType) {
-    ordalie.value.armsUp()
-    currentWordDOM.value.children.item(wordProgressIndex).classList.remove('text-croix-error')
-    currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-croix-valid')
-    AudioManager.play('success')
+  if (letterToType.toLowerCase() === e.key.toLowerCase() && wordToType) validChar()
+  else invalidChar()
 
-    wordProgressIndex++
-    letterToType = lettersToType[wordProgressIndex]
-    // console.log('new letter', letterToType)
-    if (!letterToType) wordCompleted()
-  } else {
-    //wrong letter
-    const letter = currentWordDOM.value.children.item(wordProgressIndex)
-    letter.classList.add('text-croix-error')
+  if (!letterToType) wordCompleted()
+}
 
-    gsap.to(letter, {
-      scale: 2,
-      duration: 0.1,
-    })
+const validChar = () => {
+  ordalie.value.armsUp()
+  currentWordDOM.value.children.item(wordProgressIndex).classList.remove('text-croix-error')
+  currentWordDOM.value.children.item(wordProgressIndex).classList.add('text-croix-valid')
+  AudioManager.play('success')
 
-    gsap.to(letter, {
-      scale: 1,
-      duration: 0.1,
-      delay: 0.1,
-    })
-  }
+  wordProgressIndex++
+  letterToType = lettersToType[wordProgressIndex]
+}
+
+const invalidChar = () => {
+  const letter = currentWordDOM.value.children.item(wordProgressIndex)
+  letter.classList.add('text-croix-error')
+
+  gsap.to(letter, {
+    scale: 2,
+    duration: 0.1,
+  })
+
+  gsap.to(letter, {
+    scale: 1,
+    duration: 0.1,
+    delay: 0.1,
+  })
 }
 </script>

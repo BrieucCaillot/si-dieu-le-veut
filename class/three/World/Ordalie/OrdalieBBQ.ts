@@ -43,6 +43,8 @@ class OrdalieBBQ {
     this.container = []
 
     this.instance.block.getModel().scene.traverse((mesh) => {
+      // console.log(mesh)
+
       if (mesh.name.startsWith('text')) {
         this.texts.push(mesh)
       }
@@ -70,7 +72,7 @@ class OrdalieBBQ {
     this.instance.end()
   }
 
-  onResize = () => {
+  private onResize = () => {
     for (let i = 0; i < this.container.length; i++) {
       this.updateHTML(i)
     }

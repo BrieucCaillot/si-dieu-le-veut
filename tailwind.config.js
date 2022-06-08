@@ -14,6 +14,11 @@ module.exports = {
         green: '#00FF00',
         red: '#FF0000',
         typingDoneColor: '#2D2923',
+        food: {
+          base: '#9F9789',
+          error: '#A3411F',
+          valid: '#2D2923',
+        },
         bbq: {
           valid: '#2D2923',
         },

@@ -9,13 +9,6 @@
     <div ref="parent3" class="fixed top-0 flex justify-center items-center">
       <div ref="placeholder3"></div>
     </div>
-
-    <!-- debug purposes -->
-    <!-- <div class="flex fixed flex-col top-32 text-black" ref="chronometer">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div> -->
   </div>
 </template>
 
@@ -42,8 +35,6 @@ const TARGET_COLOR = { r: 195, g: 0, b: 0 }
 let COUNTER = 0
 let GAME_RUNNING = false
 
-const chronometer = ref<HTMLDivElement>()
-
 const parent1 = ref<HTMLDivElement>()
 const parent2 = ref<HTMLDivElement>()
 const parent3 = ref<HTMLDivElement>()
@@ -51,12 +42,6 @@ const parent3 = ref<HTMLDivElement>()
 const placeholder1 = ref<HTMLDivElement>()
 const placeholder2 = ref<HTMLDivElement>()
 const placeholder3 = ref<HTMLDivElement>()
-
-let positions = [
-  { x: 0, y: 0 },
-  { x: 0, y: 0 },
-  { x: 0, y: 0 },
-]
 
 const ordalie = ref()
 
@@ -102,22 +87,15 @@ onUnmounted(() => {
   document.removeEventListener('keydown', newChar)
 })
 
-// // get translate values of the words
-// const getTranslate = (el: HTMLDivElement, index: number) => {
-//   const style = window.getComputedStyle(el)
-//   const matrix = new WebKitCSSMatrix(style.transform)
-//   console.log(matrix)
-
-//   positions[index].x = matrix.m41
-//   positions[index].y = matrix.m42
-// }
-
 //init function, executed once
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  // ordalie.value = OrdalieManager.getByIndex(0).instance
-  ordalie.value = OrdalieManager.getCurrent().instance
+  if (OrdalieManager.getAll().length === 1) {
+    ordalie.value = OrdalieManager.getByIndex(0).instance
+  } else {
+    ordalie.value = OrdalieManager.getCurrent().instance
+  }
 
   MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
   MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
@@ -128,7 +106,6 @@ const initialization = () => {
   for (let i = 0; i < 3; i++) {
     ordalie.value.setContainer(parentArray[i].value, i)
     ordalie.value.updateHTML(i)
-    // getTranslate(parentArray[i].value, i)
     pickWord(i)
   }
 
@@ -204,15 +181,6 @@ const pickWord = (index: number) => {
 
     refArray[index].value.appendChild(span)
   })
-
-  // parentArray[index].value.style.transform = `translate(
-  //   ${positions[index].x - parentArray[index].value.offsetWidth / 2}px,
-  //   ${positions[index].y - parentArray[index].value.offsetHeight / 2}px
-  // )`
-  // parentArray[index].value.style.transform = `translate(
-  //   ${positions[index].x}px,
-  //   ${positions[index].y}px
-  // )`
 
   return selectedWord
 }
@@ -293,9 +261,6 @@ const update = (time: any, deltaTime: number, frame: any) => {
 
     //from 0 to 1
     const progress = displayedWords[i].displayTime / displayedWords[i].maxDisplayTime
-
-    // for debug purposes, display the remaining time
-    // chronometer.value.children.item(i).innerHTML = displayedWords[i].maxDisplayTime + displayedWords[i].word + Math.round(displayedWords[i].displayTime)
 
     //color transition according to the time
     //notice that progress is multiplied by 2 so it progresses 2 times faster
