@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
-import SOUNDS from '@/constants/SOUNDS'
 
 enum SourceType {
   gltfModel = 'gltfLoader',
@@ -121,6 +120,13 @@ const OTHER_SOURCES = {
       path: 'models/Others/tutorial.glb',
     },
   ],
+  [OTHERS.DEAD]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/dead.glb',
+    },
+  ],
   [OTHERS.END]: [
     {
       name: 'model',
@@ -135,14 +141,14 @@ const TRANSITION_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Transitions/transition1.glb',
+      path: 'models/Transitions/transition_1.glb',
     },
   ],
   [TRANSITIONS.TRANSITION_2]: [
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Transitions/transition2.glb',
+      path: 'models/Transitions/transition_1.glb',
     },
   ],
 }

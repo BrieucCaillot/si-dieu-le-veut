@@ -16,6 +16,8 @@ class Ordalie {
 
   constructor(_type: ORDALIES) {
     this.block = new Block(_type)
+    this.block.toggleCharacter(false)
+
     switch (_type) {
       case ORDALIES.CROIX:
         this.instance = new OrdalieCroix(this)
@@ -26,9 +28,9 @@ class Ordalie {
       case ORDALIES.FOOD:
         this.instance = new OrdalieFood(this)
         break
-      case ORDALIES.CAULDRON:
-        this.instance = new OrdalieCauldron(this)
-        break
+      // case ORDALIES.CAULDRON:
+      //   this.instance = new OrdalieCauldron(this)
+      //   break
     }
     this.updateId = this.update
   }
@@ -37,11 +39,14 @@ class Ordalie {
     this.instance.start()
     gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
+    this.block.toggleCharacter(true)
   }
 
   end() {
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()
+    if (OrdalieManager.isPlayerDead || this.block.getType() === ORDALIES.CROIX) return
+    this.block.toggleCharacter(false)
   }
 
   update = () => {

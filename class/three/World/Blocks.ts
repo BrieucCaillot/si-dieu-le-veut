@@ -9,6 +9,7 @@ import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
+import Other from '@/class/three/World/Other/Other'
 
 class Blocks {
   private instances: Block[] = []
@@ -16,6 +17,7 @@ class Blocks {
   private currentIndex = 0
   private debugFolder: GUI
   private isStarted = false
+  private isEnded = false
 
   /**
    * Create default blocks
@@ -27,7 +29,8 @@ class Blocks {
     OtherManager.create(OTHERS.CINEMATIC_3)
     OtherManager.create(OTHERS.TUTORIAL)
 
-    OrdalieManager.create(ORDALIES.BBQ)
+    // To uncomment for debug
+    OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -37,7 +40,7 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'increaseDifficulty').name('🎲 Increase Difficulty')
       this.debugFolder.add(this.debugParams(), 'decreaseDifficulty').name('🎲 Decrease Difficulty')
-      this.debugFolder.add(this.debugParams(), 'createNext').name('Create Next')
+      this.debugFolder.add(OtherManager, 'currentIndex').name('Current Other Index').listen().disable()
     }
 
     // Start
@@ -65,8 +68,8 @@ class Blocks {
    * End blocks system
    */
   end() {
-    OtherManager.create(OTHERS.END)
-    console.log('☠️ Player is dead ' + OrdalieManager.isPlayerDead)
+    console.log('🏠 END OF BLOCK SYSTEM')
+    this.isEnded = true
   }
 
   /**
@@ -102,6 +105,7 @@ class Blocks {
    */
   setCurrentIsFirstOrdalie() {
     this.currentIndex = 4
+    OtherManager.setCurrentIndex(4)
     return this.getCurrent()
   }
 
@@ -154,18 +158,30 @@ class Blocks {
    * Create block from latest block created
    */
   private createNext() {
-    if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
+    // IF PLAYER IS DEAD & PREVIOUS BLOCKS IS TRANSITION TYPE, CREATE DEATH BLOCK
+    if (OrdalieManager.isPlayerDead && this.isTransition(this.getLast().getType() as TRANSITIONS)) {
+      return OtherManager.createNext()
+    }
 
-    console.log('➡️ -- CREATED NEXT')
+    // IF PREVIOUS BLOCK IS OTHER TUTORIAL, CREATE ORDALIE BLOCK
+    if (this.getLast().getType() === OTHERS.TUTORIAL) {
+      return OrdalieManager.createNext()
+    }
+
+    // PREVENT TO CREATE NEXT OTHER BLOCK AT START
+    if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
 
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION
     if (this.isOrdalie(this.getLast().getType() as ORDALIES)) {
       return TransitionManager.createNext()
     }
+
     // IF PREVIOUS BLOCK IS TRANSITION, CREATE ORDALIE
     if (this.isTransition(this.getLast().getType() as TRANSITIONS)) {
       return OrdalieManager.createNext()
     }
+
+    console.log('➡️ -- CREATED NEXT')
   }
 
   /**
@@ -174,8 +190,8 @@ class Blocks {
   private goToNext() {
     console.log('➡️ -- GO TO NEXT')
 
-    if (OrdalieManager.isPlayerDead) return this.end()
     if (this.getNext() === undefined) return console.log('🤡 No next block')
+    if (this.getNext().getType() === OTHERS.END) return this.end()
 
     const nextPosX = this.getNext().getCenter().x
 
@@ -187,20 +203,12 @@ class Blocks {
       onComplete: () => {
         const currentType = this.getCurrent().getType()
         if (currentType === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
-        // // IF NEXT BLOCK IS AN OTHER
-        // START NEXT OTHER
+
+        // // IF NEXT BLOCK IS AN OTHER, START NEXT OTHER
         if (this.isOther(currentType as OTHERS)) return OtherManager.startNext()
-
-        // if (OrdalieManager.isPlayerDead) {
-        //   console.log('Player is dead')
-        //   this.end()
-        // }
-
-        // // IF NEXT BLOCK IS AN ORDALIE
-        // START NEXT ORDALIE
+        // // IF NEXT BLOCK IS AN ORDALIE, START NEXT ORDALIE
         if (this.isOrdalie(currentType as ORDALIES)) return OrdalieManager.startNext()
-        // // IF NEXT BLOCK IS A TRANSITION
-        // START NEXT TRANSITION
+        // // IF NEXT BLOCK IS A TRANSITION, START NEXT TRANSITION
         if (this.isTransition(currentType as TRANSITIONS)) return TransitionManager.startNext()
       },
     })
@@ -217,6 +225,7 @@ class Blocks {
         console.log(this.getAll().map((block) => block.getType()))
         console.log('Ordalies' + console.log(OrdalieManager.getAll()))
         console.log('Others ' + console.log(OtherManager.getAll()))
+        console.log('Transitions ' + console.log(TransitionManager.getAll()))
       },
       increaseDifficulty: () => OrdalieManager.increaseDifficulty(),
       decreaseDifficulty: () => OrdalieManager.decreaseDifficulty(),

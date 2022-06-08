@@ -50,6 +50,13 @@ class TransitionManager {
   }
 
   /**
+   * Get last
+   */
+  getLast() {
+    return this.instances[this.instances.length - 1]
+  }
+
+  /**
    * Start next transition
    */
   startNext() {

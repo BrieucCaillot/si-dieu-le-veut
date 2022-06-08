@@ -38,22 +38,11 @@ class OtherTutorial {
 
     // Play the action
     this.animation.play = (name: string) => {
-      // TODO
-      // Fake anim played
       setTimeout(() => {
         console.log('👨‍💼 ANIM PLAYED')
         this.end()
-      }, 1000)
-      // }, 5000)
-      // this.animation.actions[name].play()
+      }, 6000)
     }
-
-    // this.animation.mixer.addEventListener('finished', (e) => this.end())
-
-    // Debug
-    // if (WebGL.debug.isActive()) {
-    //   this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
-    // }
   }
 
   update() {}

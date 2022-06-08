@@ -22,8 +22,8 @@ class Camera extends THREE.EventDispatcher {
   private isMoving = false
   private debugFolder: GUI
   private debugParams = {
-    parallaxFactor: 0.01,
-    moveXSpeed: 0.1,
+    parallaxFactor: 0.1,
+    moveXSpeed: 0.01,
   }
 
   constructor() {
@@ -127,7 +127,7 @@ class Camera extends THREE.EventDispatcher {
     gsap.to([this.parent.position, this.target], {
       x,
       duration,
-      ease: 'power.inOut',
+      ease: 'power1.inOut',
       onStart: () => {
         this.isMoving = true
         onStart?.()

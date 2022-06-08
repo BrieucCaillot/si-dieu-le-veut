@@ -6,6 +6,7 @@ import Other from '@/class/three/World/Other/Other'
 class OtherManager {
   private instances: Other[] = []
   private currentIndex = 0
+  private lastType: OTHERS
 
   /**
    * Create other from type
@@ -13,6 +14,33 @@ class OtherManager {
   create(_type: OTHERS) {
     const other = new Other(_type)
     this.instances.push(other)
+    this.lastType = _type
+  }
+
+  /**
+   * Create next other
+   */
+  createNext() {
+    switch (this.lastType) {
+      case OTHERS.SPLASHSCREEN:
+        this.create(OTHERS.CINEMATIC_1)
+        break
+      case OTHERS.CINEMATIC_1:
+        this.create(OTHERS.CINEMATIC_2)
+        break
+      case OTHERS.CINEMATIC_2:
+        this.create(OTHERS.CINEMATIC_3)
+        break
+      case OTHERS.CINEMATIC_3:
+        this.create(OTHERS.TUTORIAL)
+        break
+      case OTHERS.TUTORIAL:
+        this.create(OTHERS.DEAD)
+        break
+      case OTHERS.DEAD:
+        this.create(OTHERS.END)
+        break
+    }
   }
 
   /**
@@ -30,10 +58,17 @@ class OtherManager {
   }
 
   /**
-   * Get other by index
+   * Get current other from current index
    */
   getCurrent() {
     return this.instances[this.currentIndex]
+  }
+
+  /**
+   * Set current new current index
+   */
+  setCurrentIndex(index: number) {
+    this.currentIndex = index
   }
 
   /**

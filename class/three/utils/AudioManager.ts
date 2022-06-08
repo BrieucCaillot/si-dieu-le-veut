@@ -1,10 +1,13 @@
 import { Howler, Howl } from 'howler'
-import audio from '@/public/sounds/typing-feedback.mp3'
 
 const SOUNDS = [
   {
     name: 'success',
     path: '/sounds/type_2.mp3',
+  },
+  {
+    name: 'oi',
+    path: '/sounds/oi.mp3',
   },
 ]
 
@@ -19,16 +22,12 @@ class AudioManager {
   async setup() {
     const promises = []
     // this.activeHowl = null
-    // Howler.volume(0.1)
+    Howler.volume(0.1)
     for (const sound of SOUNDS) {
       promises.push(this.loadSound(sound))
     }
 
     this.sounds = await Promise.all(promises)
-
-    // console.log(this.sounds)
-
-    // this.play('success')
   }
 
   async loadSound(sound: { name: string; path: string }) {

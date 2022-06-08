@@ -10,6 +10,7 @@ import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
 import PATHS from '@/constants/PATHS'
 import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
+import setHTMLPosition from '../../utils/setHTMLPosition'
 
 class OrdalieFood {
   instance: Ordalie
@@ -32,7 +33,6 @@ class OrdalieFood {
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as FoodInterface
-    console.log(this.difficultyData)
 
     this.debug = {
       progress: 0,
@@ -53,10 +53,6 @@ class OrdalieFood {
       WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
     ]
 
-    // for (let i = 0; i < this.textures.length; i++) {
-    //   this.textures[i].encoding = THREE.sRGBEncoding
-    // }
-
     this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
     this.material = new THREE.ShaderMaterial({
       transparent: true,
@@ -73,7 +69,7 @@ class OrdalieFood {
 
   createInstance(path: THREE.CatmullRomCurve3, i: number) {
     const clone = this.mesh.clone()
-    // clone.scale.set(2, 2, 2)
+    clone.scale.set(1.5, 1.5, 1.5)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uMap: { value: this.textures[Math.floor(Math.random() * this.textures.length)] },
@@ -100,10 +96,8 @@ class OrdalieFood {
   }
 
   startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
-    console.log('start bite transition', mesh)
     return new Promise<void>((resolve, reject) => {
       const uniform = mesh.material.uniforms.uProgress
-      console.log('uniform is', uniform)
 
       gsap.to(uniform, {
         value: 0,
@@ -114,7 +108,6 @@ class OrdalieFood {
         },
       })
     })
-    // let uniform
   }
 
   disposeInstance(name: string) {
@@ -144,20 +137,10 @@ class OrdalieFood {
     this.instance.end()
   }
 
-  setHTMLPosition(container: HTMLSpanElement, mesh: THREE.Mesh, scale: number) {
-    const objectSize = new THREE.Box3().setFromObject(mesh)
-
-    const topLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.max.y, objectSize.max.z)
-    const topRightCorner3D = new THREE.Vector3(objectSize.max.x, objectSize.max.y, objectSize.max.z)
-    const bottomLeftCorner3D = new THREE.Vector3(objectSize.min.x, objectSize.min.y, objectSize.max.z)
-
-    const center3D = new THREE.Vector3((topLeftCorner3D.x + topRightCorner3D.x) / 2, bottomLeftCorner3D.y, objectSize.max.z)
-
-    center3D.project(WebGL.camera.instance)
-    const x1 = (center3D.x * 0.5 + 0.5) * WebGL.canvas.clientWidth
-    const y1 = (center3D.y * -0.5 + 0.5) * WebGL.canvas.clientHeight
-
-    container.style.transform = `translate3d(${x1 - container.offsetWidth / 2}px,${y1}px, 0) scale3d(${scale}, ${scale}, ${scale})`
+  updateHTML(container: HTMLElement, mesh: THREE.Mesh, scale: number) {
+    const positions = setHTMLPosition(mesh)
+    container.style.transform = `translate3d(${positions.center.x - container.offsetWidth / 2}px,${positions.center.y}px, 0) scale3d(${scale}, ${scale}, ${scale})`
+    container.style.fontSize = WebGL.sizes.width / 57.6 + 'px'
   }
 
   private setPath() {
@@ -172,7 +155,7 @@ class OrdalieFood {
       this.paths.push(new THREE.CatmullRomCurve3(PATHS[i]))
 
       // this.instance.block.getModel().scene.attach(this.paths[i])
-      // console.log(this.instance.block.getModel())
+
       // const radius = 0.01
       // const geometry = new THREE.TubeGeometry(this.paths[i], 20, radius, 20, false)
       // const material = new THREE.MeshNormalMaterial({
@@ -202,7 +185,6 @@ class OrdalieFood {
   updateMesh(mesh: THREE.Mesh, path: THREE.CatmullRomCurve3, progress: number) {
     const point = path.getPointAt(1 - progress)
     mesh.position.set(point.x, point.y, point.z)
-    mesh.updateMatrix()
   }
 
   update() {

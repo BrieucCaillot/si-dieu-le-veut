@@ -7,10 +7,10 @@
 </template>
 
 <script setup lang="ts">
+import gsap from 'gsap'
+
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import AudioManager from '@/class/three/utils/AudioManager'
-
-import gsap from 'gsap'
 import { random } from '@/class/three/utils/Maths'
 
 const ordalie = ref()
@@ -76,7 +76,7 @@ const vSplitText = {
     textToSplit.forEach((letter) => {
       const span = document.createElement('span')
       span.innerHTML = letter
-      span.setAttribute('class', 'inline-block text-black-primary')
+      span.setAttribute('class', 'inline-block text-food-base')
       el.appendChild(span)
     })
   },
@@ -85,8 +85,11 @@ const vSplitText = {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  // ordalie.value = OrdalieManager.getByIndex(0).instance
-  ordalie.value = OrdalieManager.getCurrent().instance
+  if (OrdalieManager.getAll().length === 1) {
+    ordalie.value = OrdalieManager.getByIndex(0).instance
+  } else {
+    ordalie.value = OrdalieManager.getCurrent().instance
+  }
 
   MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.minDisplayTime
   MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.maxDisplayTime
@@ -137,21 +140,22 @@ const pickWord = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  // if (!GAME_RUNNING) return
   if (!wordToType) {
     selectWordToType(e)
   } else {
     if (letterToType.toLowerCase() === e.key.toLowerCase()) {
       AudioManager.play('success')
 
-      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.remove('text-black-primary')
-      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.add('text-red')
+      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.remove('text-food-error')
+      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.remove('text-food-base')
+      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.add('text-food-valid')
 
       wordToTypeIndex++
       letterToType = lettersToType[wordToTypeIndex]
       if (!letterToType) replaceWord()
     } else {
       const expectedLetterDOM = wordList.value[wordIndex].el.children.item(wordToTypeIndex)
+      expectedLetterDOM.classList.add('text-food-error')
       gsap.to(expectedLetterDOM, {
         scale: 2,
         duration: 0.1,
@@ -173,8 +177,8 @@ const selectWordToType = (e: KeyboardEvent) => {
 
       const displayed = wordList.value.find((display) => display.word === wordToType)
       wordIndex = displayed.index
-      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.remove('text-black-primary')
-      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.add('text-red')
+      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.remove('text-food-base')
+      wordList.value[wordIndex].el.children.item(wordToTypeIndex).classList.add('text-food-valid')
 
       wordToTypeIndex++
       letterToType = lettersToType[wordToTypeIndex]
@@ -222,14 +226,11 @@ const replaceWord = async () => {
 }
 
 const gameWon = () => {
-  console.log('game won')
   gsap.ticker.remove(update)
   ordalie.value.end()
 }
 
 const gameOver = () => {
-  console.log('game over')
-
   gsap.ticker.remove(update)
   ordalie.value.end()
 }
@@ -253,10 +254,10 @@ const update = (time, deltaTime, frame) => {
         current.progress = 0
         current.displayTime = 0
 
-        // gameOver()
+        gameOver()
       }
 
-      ordalie.value.setHTMLPosition(current.el, current.mesh, current.scale)
+      ordalie.value.updateHTML(current.el, current.mesh, current.scale)
       ordalie.value.updateMesh(current.mesh, current.path, current.progress)
     }
   }

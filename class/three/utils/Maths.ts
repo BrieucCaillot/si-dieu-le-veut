@@ -7,3 +7,7 @@ export const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 export const random = (min, max) => {
   return Math.random() * (max - min) + min
 }
+
+export const getFrame = (time: number) => {
+  return time * 30
+}
