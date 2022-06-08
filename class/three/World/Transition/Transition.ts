@@ -3,10 +3,13 @@ import GUI from 'lil-gui'
 import * as THREE from 'three'
 
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import OTHERS from '@/constants/OTHERS'
 
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
+import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
+import OrdalieManager from '../Ordalie/OrdalieManager'
 
 class Transition {
   block: Block
@@ -25,6 +28,7 @@ class Transition {
   }
 
   start() {
+    if (OrdalieManager.isPlayerDead) return this.hideTransition()
     this.onStart()
     gsap.ticker.add(this.updateId)
     TransitionManager.onStarted()
@@ -74,7 +78,24 @@ class Transition {
     this.debugFolder?.add(this.debugParams().animations, 'playGroupAnim')
   }
 
-  hideCharacter() {}
+  hideTransition() {
+    const transitionMaterials = new Set()
+    this.block
+      .getModel()
+      .scene.children.filter((obj) => obj instanceof THREE.Mesh)
+      .map((child) => transitionMaterials.add(child.material))
+
+    gsap.to([[...transitionMaterials]], {
+      opacity: 0,
+      duration: 3,
+      stagger: 1,
+      onStart: () => this.showDeath(),
+    })
+  }
+
+  showDeath() {
+    OtherManager.startNext()
+  }
 
   update = () => {
     const { deltaTime } = WebGL.time

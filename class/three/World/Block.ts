@@ -72,9 +72,6 @@ class Block {
   toggleGarde(value: boolean) {
     const garde = this.getModel().scene.children.filter((child) => child.name.includes('Garde'))
     garde.forEach((element) => {
-      console.log(this.getType())
-      console.log(value)
-      console.log(element.name)
       element.visible = value
     })
   }

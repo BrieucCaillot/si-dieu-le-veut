@@ -22,9 +22,9 @@ class OtherCinematic {
     // }
   }
 
-  end() {
-    this.instance.end()
-  }
+  // end() {
+  //   this.instance.end()
+  // }
 
   private delayEnd() {
     // setTimeout(() => {

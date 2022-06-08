@@ -1,10 +1,6 @@
-
 import GUI from 'lil-gui'
-import * as THREE from 'three'
 
-import WebGL from '@/class/three/WebGL'
 import Other from '@/class/three/World/Other/Other'
-import Block from '@/class/three/World/Block'
 
 class OtherEnd {
   instance: Other
@@ -18,16 +14,16 @@ class OtherEnd {
   }
 
   start() {
-    console.log('Start OtherEnd')
+    console.log('Started OtherEnd')
+    setTimeout(() => this.end(), 100)
   }
 
   end() {
+    console.log('This is the end other end')
     this.instance.end()
   }
 
-  update() {
-    console.log('Update OtherEnd')
-  }
+  update() {}
 }
 
-export default OtherEnd 
+export default OtherEnd

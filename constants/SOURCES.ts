@@ -120,6 +120,13 @@ const OTHER_SOURCES = {
       path: 'models/Others/tutorial.glb',
     },
   ],
+  [OTHERS.DEAD]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Others/dead.glb',
+    },
+  ],
   [OTHERS.END]: [
     {
       name: 'model',

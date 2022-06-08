@@ -23,7 +23,7 @@ class Camera extends THREE.EventDispatcher {
   private debugFolder: GUI
   private debugParams = {
     parallaxFactor: 0.01,
-    moveXSpeed: 0.1,
+    moveXSpeed: 0.01,
   }
 
   constructor() {

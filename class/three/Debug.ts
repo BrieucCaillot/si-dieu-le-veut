@@ -15,6 +15,7 @@ class Debug {
 
   private setGUI() {
     this.gui = new GUI()
+    this.gui.close()
     this.active = useStore().isDebug.value
     this.gui.hide()
     if (!this.active) return
