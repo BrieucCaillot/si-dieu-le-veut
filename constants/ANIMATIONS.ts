@@ -1,11 +1,5 @@
 import ORDALIES from './ORDALIES'
 
-// type ANIMATIONS = `ORDALIES.${keyof typeof ORDALIES}`
-
-// enum ANIMATIONS {
-//     [ORDALIES.BBQ] =
-// }
-
 const ANIMATIONS = {
   [ORDALIES.BBQ]: {
     AVANCE: 'Braises_Cuisinier_Avance',
@@ -23,18 +17,5 @@ const ANIMATIONS = {
     SIDE_SORTIE: 'Croix_CuisinierSIDE_Sortie',
   },
 }
-
-// const ordalies = ['BBQ', 'CROIX', 'FOOD'] as const
-
-// type ORDALIES_NAME = typeof ordalies[number]
-// const a: ORDALIES_NAME
-
-// const sounds: Record<ORDALIES_NAME, string> = {
-
-// }
-
-// sounds[a]
-
-// ANIMATIONS[ORDALIES.BBQ].IDLE
 
 export default ANIMATIONS

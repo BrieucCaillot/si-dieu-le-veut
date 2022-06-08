@@ -1,5 +1,5 @@
-import ANIMATIONS from './ANIMATIONS'
-import ORDALIES from './ORDALIES'
+import ANIMATIONS from '@/constants/ANIMATIONS'
+import ORDALIES from '@/constants/ORDALIES'
 
 const SOUNDS = {
   [ORDALIES.BBQ]: {
