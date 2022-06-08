@@ -29,17 +29,17 @@ interface CauldronInterface {
 const DIFFICULTY_DATAS = {
   [DIFFICULTY.EASY]: {
     ['CAMERA']: {
-      // moveDuration: 6,
       // Debug
-      moveDuration: 1,
+      // moveDuration: 1,
+      moveDuration: 6,
     },
     ['TRANSITIONS']: {
       speedCoef: 1,
     },
     [ORDALIES.CROIX]: {
-      // fallingSpeedArm: 0.4,
       // Debug
-      fallingSpeedArm: 10,
+      // fallingSpeedArm: 10,
+      fallingSpeedArm: 0.4,
       upSpeedArm: -1,
       upDurationArm: 100,
     },

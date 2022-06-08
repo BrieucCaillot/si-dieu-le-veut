@@ -22,7 +22,7 @@ class Camera extends THREE.EventDispatcher {
   private isMoving = false
   private debugFolder: GUI
   private debugParams = {
-    parallaxFactor: 0.01,
+    parallaxFactor: 0.1,
     moveXSpeed: 0.01,
   }
 
