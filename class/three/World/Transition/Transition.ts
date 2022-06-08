@@ -89,20 +89,12 @@ class Transition {
       opacity: 0,
       duration: 3,
       stagger: 1,
-      ease: 'power1.inOut',
-      onStart: () => OtherManager.create(OTHERS.DEAD),
-      onComplete: () => this.showDeath(),
+      onStart: () => this.showDeath(),
     })
   }
 
   showDeath() {
     OtherManager.startNext()
-    setTimeout(() => {
-      OtherManager.getCurrent().block.updatePosition(this.block.getPosition())
-      console.log(OtherManager.currentIndex)
-    }, 2000)
-    // OtherManager.getCurrent().block.updatePosition(this.block.getPosition())
-    console.log('Show death')
   }
 
   update = () => {

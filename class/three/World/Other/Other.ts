@@ -51,14 +51,16 @@ class Other {
     OtherManager.onStarted()
 
     // Speed up to first ordalie
-    Blocks.setCurrentIsFirstOrdalie()
+    // Blocks.setCurrentIsFirstOrdalie()
 
     document.addEventListener('keydown', this.onSpacePressed)
   }
 
   end() {
+    // Prevent to call it twice with SpacePressed
     if (this.isEnded) return
     this.isEnded = true
+
     gsap.ticker.remove(this.updateId)
     OtherManager.onEnded()
     document.removeEventListener('keydown', this.onSpacePressed)

@@ -17,7 +17,7 @@ class Blocks {
   private currentIndex = 0
   private debugFolder: GUI
   private isStarted = false
-  private showDeath = false
+  private isEnded = false
 
   /**
    * Create default blocks
@@ -29,7 +29,7 @@ class Blocks {
     OtherManager.create(OTHERS.CINEMATIC_3)
     OtherManager.create(OTHERS.TUTORIAL)
 
-    // OtherManager.create(OTHERS.DEAD)
+    // To uncomment for debug
     OrdalieManager.create(ORDALIES.CROIX)
 
     if (WebGL.debug.isActive()) {
@@ -68,7 +68,8 @@ class Blocks {
    * End blocks system
    */
   end() {
-    // console.log('☠️ Player is dead ' + OrdalieManager.isPlayerDead)
+    console.log('🏠 END OF BLOCK SYSTEM')
+    this.isEnded = true
   }
 
   /**
@@ -157,10 +158,18 @@ class Blocks {
    * Create block from latest block created
    */
   private createNext() {
-    if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
+    // IF PLAYER IS DEAD & PREVIOUS BLOCKS IS TRANSITION TYPE, CREATE DEATH BLOCK
+    if (OrdalieManager.isPlayerDead && this.isTransition(this.getLast().getType() as TRANSITIONS)) {
+      return OtherManager.createNext()
+    }
 
-    // TODO
-    if (OrdalieManager.isPlayerDead) return console.log('TODO Create End Block')
+    // IF PREVIOUS BLOCK IS OTHER TUTORIAL, CREATE ORDALIE BLOCK
+    if (this.getLast().getType() === OTHERS.TUTORIAL) {
+      return OrdalieManager.createNext()
+    }
+
+    // PREVENT TO CREATE NEXT OTHER BLOCK AT START
+    if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
 
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION
     if (this.isOrdalie(this.getLast().getType() as ORDALIES)) {
@@ -181,9 +190,8 @@ class Blocks {
   private goToNext() {
     console.log('➡️ -- GO TO NEXT')
 
-    // if (this.showDeath) return console.log('should show death ', this.showDeath)
-    // if (OrdalieManager.isPlayerDead && this.isTransition(this.getNext().getType() as TRANSITIONS)) this.showDeath = true
     if (this.getNext() === undefined) return console.log('🤡 No next block')
+    if (this.getNext().getType() === OTHERS.END) return this.end()
 
     const nextPosX = this.getNext().getCenter().x
 
