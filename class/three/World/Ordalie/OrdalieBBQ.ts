@@ -75,11 +75,6 @@ class OrdalieBBQ {
     this.setCharacter()
     this.setAnimation()
     this.setTexts()
-    this.setSounds()
-  }
-
-  setSounds() {
-    console.log(SOUNDS[ORDALIES.BBQ])
   }
 
   setContainer(container: HTMLDivElement, i: number) {

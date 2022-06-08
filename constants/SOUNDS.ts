@@ -44,6 +44,56 @@ const SOUNDS = {
       ],
     },
   },
+  [ORDALIES.CROIX]: {
+    [ANIMATIONS.CROIX.FRONT_ENTREE]: {
+      frames: [
+        {
+          frame: 40,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.CROIX.FRONT_SORTIE]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.CROIX.FRONT_BRAS]: {
+      frames: [
+        {
+          frame: 13,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.CROIX.FRONT_MORT]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.CROIX.SIDE_ENTREE]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.CROIX.SIDE_SORTIE]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'oi',
+        },
+      ],
+    },
+  },
 }
 
 export default SOUNDS
