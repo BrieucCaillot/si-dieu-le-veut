@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
-import SOUNDS from '@/constants/SOUNDS'
 
 enum SourceType {
   gltfModel = 'gltfLoader',
