@@ -14,12 +14,10 @@ class OtherEnd {
   }
 
   start() {
-    console.log('Started OtherEnd')
     setTimeout(() => this.end(), 100)
   }
 
   end() {
-    console.log('This is the end other end')
     this.instance.end()
   }
 

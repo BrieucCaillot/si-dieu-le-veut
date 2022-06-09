@@ -17,7 +17,7 @@ class Blocks {
   private currentIndex = 0
   private debugFolder: GUI
   private isStarted = false
-  private isEnded = false
+  isEnded = false
 
   /**
    * Create default blocks

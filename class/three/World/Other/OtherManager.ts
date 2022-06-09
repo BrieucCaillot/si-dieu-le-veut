@@ -65,6 +65,13 @@ class OtherManager {
   }
 
   /**
+   * Get next other
+   */
+  getNext() {
+    return this.instances[this.currentIndex + 1]
+  }
+
+  /**
    * Set current new current index
    */
   setCurrentIndex(index: number) {

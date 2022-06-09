@@ -16,6 +16,7 @@ class Other {
   instance: OtherSplashscreen | OtherCinematic | OtherTutorial | OtherEnd
   updateId: () => void
   isEnded = false
+  isSplashscreen = false
 
   constructor(_type: OTHERS) {
     this.block = new Block(_type)
@@ -43,17 +44,19 @@ class Other {
         break
     }
     this.updateId = this.update
+    this.isSplashscreen = _type === OTHERS.SPLASHSCREEN
   }
 
   start() {
     this.instance.start()
-    gsap.ticker.add(this.updateId)
     OtherManager.onStarted()
+    document.addEventListener('keydown', this.onSpacePressed)
 
     // Speed up to first ordalie
     // Blocks.setCurrentIsFirstOrdalie()
 
-    document.addEventListener('keydown', this.onSpacePressed)
+    if (!this.isSplashscreen) return
+    gsap.ticker.add(this.updateId)
   }
 
   end() {
@@ -61,9 +64,16 @@ class Other {
     if (this.isEnded) return
     this.isEnded = true
 
-    gsap.ticker.remove(this.updateId)
     OtherManager.onEnded()
     document.removeEventListener('keydown', this.onSpacePressed)
+
+    // Prevent to remove animation if Splashscreen
+    if (this.isSplashscreen) return
+
+    // Remove update of Splashscreen if we are on Tutorial
+    if (this.block.getType() === OTHERS.TUTORIAL) OtherManager.getByIndex(0).removeSplashscreenUpdate()
+
+    gsap.ticker.remove(this.updateId)
   }
 
   update = () => {
@@ -71,9 +81,15 @@ class Other {
     console.log(`🔁 ${this.block.getType()}`)
   }
 
+  removeSplashscreenUpdate() {
+    if (!this.isSplashscreen) return
+    console.log('REMOVED UPDATE')
+    gsap.ticker.remove(this.updateId)
+  }
+
   onSpacePressed = (e: KeyboardEvent) => {
     // Prevent to skip when key pressed is not Space or user is on the splashscreen
-    if (e.code !== 'Space' || this.block.getType() === OTHERS.SPLASHSCREEN) return
+    if (e.code !== 'Space' || this.isSplashscreen) return
     // Speed up to first ordalie
     // if (Blocks.isOther(this.block.getType() as OTHERS)) Blocks.setCurrentIsFirstOrdalie()
     this.end()
