@@ -92,7 +92,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   moveOnX(direction: 'left' | 'right') {
-    if (!this.instance) return
+    if (!this.instance || !Blocks.isEnded) return
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1

@@ -25,7 +25,7 @@ let MAX_DISPLAY_TIME = {
   MIN: 13,
   MAX: 15,
 }
-const NB_WORDS_TO_WRITE = 10
+const NB_WORDS_TO_WRITE = 1
 const BASE_BURNING = 0
 const MAX_BURNING = 0.3
 const START_BURNING_TIME = 2

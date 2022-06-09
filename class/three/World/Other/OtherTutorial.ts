@@ -38,10 +38,10 @@ class OtherTutorial {
 
     // Play the action
     this.animation.play = (name: string) => {
-      setTimeout(() => {
-        console.log('👨‍💼 ANIM PLAYED')
-        this.end()
-      }, 6000)
+      // setTimeout(() => {
+      //   console.log('👨‍💼 ANIM PLAYED')
+      //   this.end()
+      // }, 6000)
     }
   }
 

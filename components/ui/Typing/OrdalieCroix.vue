@@ -11,7 +11,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const texts = [
-  "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre délivrance come la vertu de cherité, de pitié et de perdon.",
+  'Pr',
   // "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
   // "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
 ]

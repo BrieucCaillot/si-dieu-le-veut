@@ -34,7 +34,7 @@ class Mouse extends THREE.EventDispatcher {
   }
 
   setEvents = () => {
-    if (WebGL.debug.isActive()) window.addEventListener('wheel', this.onScroll)
+    window.addEventListener('wheel', this.onScroll)
     window.addEventListener('mousemove', (e: MouseEvent) => {
       this.onMouseMove(e)
 
