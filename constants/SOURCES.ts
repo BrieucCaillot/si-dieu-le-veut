@@ -199,7 +199,7 @@ const ORDALIE_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_bbq.glb',
+      path: 'models/Ordalies/ordalie_bbq_2.glb',
     },
     {
       name: 'noise',

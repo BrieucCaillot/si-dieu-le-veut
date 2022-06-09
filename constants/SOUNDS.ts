@@ -3,18 +3,29 @@ import ORDALIES from '@/constants/ORDALIES'
 
 const SOUNDS = {
   [ORDALIES.BBQ]: {
+    INTRODUCTION: 'ordalie',
+    DEATH: '',
+  },
+}
+
+const ANIMATIONS_SOUNDS = {
+  [ORDALIES.BBQ]: {
     [ANIMATIONS.BBQ.IDLE]: {
       frames: [
         {
+          frame: 20,
+          sound: 'fire-hit',
+        },
+        {
           frame: 40,
-          sound: 'oi',
+          sound: 'fire-hit',
         },
       ],
     },
     [ANIMATIONS.BBQ.ENTREE]: {
       frames: [
         {
-          frame: 10,
+          frame: 1,
           sound: 'oi',
         },
       ],
@@ -22,16 +33,16 @@ const SOUNDS = {
     [ANIMATIONS.BBQ.AVANCE]: {
       frames: [
         {
-          frame: 13,
-          sound: 'oi',
+          frame: 1,
+          sound: 'boing',
         },
       ],
     },
     [ANIMATIONS.BBQ.MORT]: {
       frames: [
         {
-          frame: 10,
-          sound: 'oi',
+          frame: 1,
+          sound: 'death',
         },
       ],
     },
@@ -96,4 +107,4 @@ const SOUNDS = {
   },
 }
 
-export default SOUNDS
+export default ANIMATIONS_SOUNDS
