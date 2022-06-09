@@ -12,6 +12,8 @@ import gsap from 'gsap'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import AudioManager from '@/class/three/utils/AudioManager'
 import { random } from '@/class/three/utils/Maths'
+import WORDS_LIST from '@/constants/WORDS_LIST'
+import ORDALIES from '@/constants/ORDALIES'
 
 const ordalie = ref()
 const wordList = ref([])
@@ -37,31 +39,7 @@ let lettersToType = null
 let letterToType = null
 let wordIndex = 0
 
-let words = [
-  'Attrapoire',
-  'Ardre',
-  'Batelage',
-  'Bigre',
-  'Carnade',
-  'Chiaberna',
-  'Deable',
-  'Douloir',
-  'Esbigner',
-  'Estrapade',
-  'Fallace',
-  'Fredain',
-  'Gorrin',
-  'Grevain',
-  'Quarteler',
-  'Merdaille',
-  'Mordiable',
-  'Porpisser',
-  'Por-Diu',
-  'Trouiller',
-  'Tudieu',
-  'Vain-dieu',
-  'Vergogne',
-]
+let words = WORDS_LIST[ORDALIES.FOOD]
 
 onMounted(() => initialization())
 

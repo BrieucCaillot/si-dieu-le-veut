@@ -18,6 +18,8 @@ import gsap from 'gsap'
 import { random } from '@/class/three/utils/Maths'
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import ORDALIES from '@/constants/ORDALIES'
+import WORDS_LIST from '@/constants/WORDS_LIST'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
@@ -48,31 +50,7 @@ const ordalie = ref()
 let parentArray = []
 let refArray = []
 
-let words = [
-  'Attrapoire',
-  'Ardre',
-  'Batelage',
-  'Bigre',
-  'Carnade',
-  'Chiaberna',
-  'Deable',
-  'Douloir',
-  'Esbigner',
-  'Estrapade',
-  'Fallace',
-  'Fredain',
-  'Gorrin',
-  'Grevain',
-  'Quarteler',
-  'Merdaille',
-  'Mordiable',
-  'Porpisser',
-  'Por-Diu',
-  'Trouiller',
-  'Tudieu',
-  'Vain-dieu',
-  'Vergogne',
-]
+let words = WORDS_LIST[ORDALIES.BBQ]
 
 let displayedWords = []
 let wordToType = null
