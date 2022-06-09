@@ -92,7 +92,9 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) return
+  console.log(e.code)
+
+  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon') && !e.code.startsWith('Comma')) return
 
   if (letterToType.toLowerCase() === e.key.toLowerCase() && wordToType) validChar()
   else invalidChar()
