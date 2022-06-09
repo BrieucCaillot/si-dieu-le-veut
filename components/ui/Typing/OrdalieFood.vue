@@ -20,7 +20,7 @@ const wordList = ref([])
 let displayedWords = []
 
 let COUNTER = 0
-const NB_WORDS_TO_WRITE = 10
+const NB_WORDS_TO_WRITE = 1
 let CURRENT_TIME_BEFORE_NEW_WORD = 0
 const TIME_BEFORE_NEW_WORD = {
   MIN: 1.8,
@@ -75,7 +75,6 @@ const initialization = () => {
   TIME_BEFORE_NEW_WORD.MIN = ordalie.value.difficultyData.minTimeBeforeNewWord
   TIME_BEFORE_NEW_WORD.MAX = ordalie.value.difficultyData.maxTimeBeforeNewWord
 
-  ordalie.value.start()
   gsap.ticker.add(update)
 }
 
@@ -83,15 +82,15 @@ const pickWord = () => {
   //pick a random word
   const selectedWord = words[Math.floor(Math.random() * words.length)]
 
-  //get in an array words starting with the same letters
+  // //get in an array words starting with the same letters
   const matchingLetter = displayedWords.filter((displayedWord) => displayedWord.charAt(0) === selectedWord.charAt(0))
 
-  //if there is already a word starting with the same letter, pick another word
+  // //if there is already a word starting with the same letter, pick another word
   if (matchingLetter.length > 0) {
     return pickWord()
   }
 
-  //remove the selected word from the list
+  // //remove the selected word from the list
   words = words.filter((word) => word !== selectedWord)
 
   const selectedPath = ordalie.value.getRandomPath()
@@ -213,7 +212,7 @@ const gameOver = () => {
   ordalie.value.end()
 }
 
-const update = (time, deltaTime, frame) => {
+const update = (time: number, deltaTime: number, frame: number) => {
   CURRENT_TIME_BEFORE_NEW_WORD -= deltaTime * 0.001
 
   if (CURRENT_TIME_BEFORE_NEW_WORD < 0 && COUNT_WORDS < NB_WORDS_TO_WRITE) {
