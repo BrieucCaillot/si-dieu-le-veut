@@ -110,8 +110,6 @@ class OrdalieCroix {
       },
     }
 
-    const characterPos = new THREE.Vector3()
-
     this.delay = this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action._clip.duration
 
     this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.clampWhenFinished = true
@@ -133,31 +131,35 @@ class OrdalieCroix {
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.clampWhenFinished = true
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.loop = THREE.LoopOnce
 
-    this.animation.mixer.addEventListener('finished', (e) => {
-      //fin de l'anim classique, le mec a perdu
-      if (e.direction === 1 && e.action._clip.name === ANIMATIONS.CROIX.FRONT_BRAS) {
-        this.gameOver()
-        return
-      }
+    this.animation.mixer.addEventListener('finished', (e) => this.onFinish(e))
+  }
 
-      if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_ENTREE) {
-        characterPos.set(this.character.position.x, this.character.position.y, this.character.position.z)
-        this.character.position.set(characterPos.x, characterPos.y, characterPos.z)
-        // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
-        this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action.stop()
-        this.animation.play(ANIMATIONS.CROIX.FRONT_BRAS)
-      }
+  onFinish(e) {
+    const characterPos = new THREE.Vector3()
 
-      //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
-      if (e.direction === -1 && e.action._clip.name === ANIMATIONS.CROIX.FRONT_BRAS) {
-        this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
-        this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.play()
-      }
+    //fin de l'anim classique, le mec a perdu
+    if (e.direction === 1 && e.action._clip.name === ANIMATIONS.CROIX.FRONT_BRAS) {
+      this.gameOver()
+      return
+    }
 
-      if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_SORTIE || e.action._clip.name === ANIMATIONS.CROIX.FRONT_MORT) {
-        this.end()
-      }
-    })
+    if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_ENTREE) {
+      characterPos.set(this.character.position.x, this.character.position.y, this.character.position.z)
+      this.character.position.set(characterPos.x, characterPos.y, characterPos.z)
+      // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
+      this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action.stop()
+      this.animation.play(ANIMATIONS.CROIX.FRONT_BRAS)
+    }
+
+    //le mec tape tellement vite qu'il remonte l'anim jusqu'au début
+    if (e.direction === -1 && e.action._clip.name === ANIMATIONS.CROIX.FRONT_BRAS) {
+      this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
+      this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.play()
+    }
+
+    if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_SORTIE || e.action._clip.name === ANIMATIONS.CROIX.FRONT_MORT) {
+      this.end()
+    }
   }
 
   armsUp() {
