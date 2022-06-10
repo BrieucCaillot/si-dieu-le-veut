@@ -15,6 +15,7 @@ class Ordalie {
 
   constructor(_type: ORDALIES) {
     this.block = new Block(_type)
+    this.block.showFront()
     this.block.toggleCharacter(false)
 
     switch (_type) {
@@ -35,6 +36,7 @@ class Ordalie {
     this.instance.start()
     gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
+    this.block.showBehind()
     this.block.toggleCharacter(true)
   }
 

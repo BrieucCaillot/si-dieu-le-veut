@@ -22,8 +22,9 @@ class Camera extends THREE.EventDispatcher {
   private isMoving = false
   private debugFolder: GUI
   private debugParams = {
+    canScroll: false,
     parallaxFactor: 0.1,
-    moveXSpeed: 0.01,
+    moveXSpeed: 0.1,
   }
 
   constructor() {
@@ -36,6 +37,7 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.5).step(0.01)
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
+      this.debugFolder.add(this.debugParams, 'canScroll').listen()
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
     }
@@ -92,7 +94,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   moveOnX(direction: 'left' | 'right') {
-    if (!this.instance || !Blocks.isEnded) return
+    if ((!this.instance || !Blocks.isEnded) && !this.debugParams.canScroll) return
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1

@@ -1,3 +1,4 @@
+import gsap from 'gsap'
 import * as THREE from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import cloneSkinnedMesh from '@/class/three/utils/CloneSkinnedMesh'
@@ -20,8 +21,8 @@ class Block {
 
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
+  private zMaxPosition = 0.101
   // Box3
-  private modelBox: THREE.Box3
   private box: THREE.BoxHelper
   private size: THREE.Vector3
 
@@ -81,6 +82,10 @@ class Block {
    */
   private add() {
     const bg = this.model.scene.children.find((child) => child.name === 'background')
+    const newMat = new THREE.MeshBasicMaterial({
+      color: 0xe6e1db,
+    })
+    bg.material = newMat
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
   }
@@ -89,11 +94,21 @@ class Block {
    * Set position of model according to other blocks
    */
   private setPosition() {
-    if (Blocks.getAll().length < 1) return
-    const lastBlockPositionX = Blocks.getLast().getPosition().x
-    const lastBlockSizeX = Blocks.getLast().getSize().x
-    this.model.scene.position.setX(lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2)
-    // this.model.scene.scale.multiplyScalar(WebGL.camera.perspective)
+    let x = 0
+    let y = 0
+    let z = 0
+    // If block is not the first one created
+    if (Blocks.getAll().length >= 1) {
+      const lastBlockPositionX = Blocks.getLast().getPosition().x
+      const lastBlockSizeX = Blocks.getLast().getSize().x
+      x = lastBlockPositionX + lastBlockSizeX / 2 + this.size.x / 2
+    }
+    // this.model.scene.position.set(x, y, z)
+    gsap.set(this.model.scene.position, {
+      x,
+      y,
+      z,
+    })
     this.position = this.model.scene.position
   }
 
@@ -139,7 +154,26 @@ class Block {
    * Update position of model
    */
   updatePosition(position: THREE.Vector3) {
+    // this.model.scene.setWor
     return this.position.set(position.x, position.y, position.z)
+  }
+
+  showFront() {
+    console.log('⬇️ FRONT', this.type)
+    gsap.to(this.model.scene.position, {
+      z: this.zMaxPosition,
+      duration: 0.3,
+      ease: 'power3.inOut',
+    })
+  }
+
+  showBehind() {
+    console.log('⬆️ BEHIND', this.type)
+    gsap.to(this.model.scene.position, {
+      z: -this.zMaxPosition,
+      duration: 0.3,
+      ease: 'power3.inOut',
+    })
   }
 
   /**
