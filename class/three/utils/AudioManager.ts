@@ -26,6 +26,18 @@ const SOUNDS = [
     name: 'death',
     path: '/sounds/death.mp3',
   },
+  {
+    name: 'bone-cracking',
+    path: '/sounds/bone-cracking.mp3',
+  },
+  {
+    name: 'bone-cracking-death',
+    path: '/sounds/bone-cracking-death.mp3',
+  },
+  {
+    name: 'ground-hit',
+    path: '/sounds/ground-hit.mp3',
+  },
 ]
 
 class AudioManager {

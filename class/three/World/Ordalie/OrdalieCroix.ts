@@ -25,6 +25,7 @@ class OrdalieCroix {
           frame: number
           sound: string
         }[]
+        lastFrame: number
       }
     }
     play: (name: string) => void
@@ -58,11 +59,13 @@ class OrdalieCroix {
     window.addEventListener('resize', this.onResize)
     this.animation.play(ANIMATIONS.CROIX.SIDE_ENTREE)
     this.animation.play(ANIMATIONS.CROIX.FRONT_ENTREE)
+    AudioManager.play('ordalie')
   }
 
   end() {
     window.removeEventListener('resize', this.onResize)
     this.instance.end()
+    AudioManager.fadeOut('ordalie', 500)
   }
 
   onResize = () => {
@@ -83,26 +86,32 @@ class OrdalieCroix {
         [ANIMATIONS.CROIX.FRONT_ENTREE]: {
           action: mixer.clipAction(this.instance.block.getModel().animations[0]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_ENTREE].frames,
+          lastFrame: 0,
         },
         [ANIMATIONS.CROIX.FRONT_SORTIE]: {
           action: mixer.clipAction(this.instance.block.getModel().animations[1]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_SORTIE].frames,
+          lastFrame: 0,
         },
         [ANIMATIONS.CROIX.FRONT_BRAS]: {
           action: mixer.clipAction(this.instance.block.getModel().animations[2]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_BRAS].frames,
+          lastFrame: 0,
         },
         [ANIMATIONS.CROIX.FRONT_MORT]: {
           action: mixer.clipAction(this.instance.block.getModel().animations[3]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_MORT].frames,
+          lastFrame: 0,
         },
         [ANIMATIONS.CROIX.SIDE_ENTREE]: {
           action: mixer.clipAction(this.instance.block.getModel().animations[4]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.SIDE_ENTREE].frames,
+          lastFrame: 0,
         },
         [ANIMATIONS.CROIX.SIDE_SORTIE]: {
           action: mixer.clipAction(this.instance.block.getModel().animations[5]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.SIDE_SORTIE].frames,
+          lastFrame: 0,
         },
       },
       play: (name: string) => {
@@ -178,6 +187,7 @@ class OrdalieCroix {
   }
 
   gameOver() {
+    AudioManager.play('death')
     OrdalieManager.setIsDead(true)
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.play()
@@ -202,13 +212,18 @@ class OrdalieCroix {
 
     for (const animation of Object.values(this.animation.actions)) {
       const time = animation.action.time
-      const currentFrame = Math.round(getFrame(time))
+      const currentFrame = Math.ceil(getFrame(time))
+      if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+        console.log(animation.action._clip.name, currentFrame)
+      }
 
       for (let j = 0; j < animation.frames.length; j++) {
-        if (animation.frames[j].frame === currentFrame) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
           AudioManager.play(animation.frames[j].sound)
         }
       }
+
+      animation.lastFrame = currentFrame
     }
   }
 }

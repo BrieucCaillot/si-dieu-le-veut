@@ -4,7 +4,6 @@ import ORDALIES from '@/constants/ORDALIES'
 const SOUNDS = {
   [ORDALIES.BBQ]: {
     INTRODUCTION: 'ordalie',
-    DEATH: '',
   },
 }
 
@@ -59,48 +58,46 @@ const ANIMATIONS_SOUNDS = {
     [ANIMATIONS.CROIX.FRONT_ENTREE]: {
       frames: [
         {
-          frame: 40,
+          frame: 20,
+          sound: 'boing',
+        },
+        {
+          frame: 45,
           sound: 'oi',
         },
       ],
     },
     [ANIMATIONS.CROIX.FRONT_SORTIE]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.CROIX.FRONT_BRAS]: {
       frames: [
         {
-          frame: 13,
-          sound: 'oi',
+          frame: 100,
+          sound: 'bone-cracking',
+        },
+        {
+          frame: 140,
+          sound: 'bone-cracking-death',
         },
       ],
     },
     [ANIMATIONS.CROIX.FRONT_MORT]: {
       frames: [
         {
-          frame: 10,
-          sound: 'oi',
+          frame: 40,
+          sound: 'ground-hit',
         },
       ],
     },
     [ANIMATIONS.CROIX.SIDE_ENTREE]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.CROIX.SIDE_SORTIE]: {
       frames: [
         {
-          frame: 10,
-          sound: 'oi',
+          frame: 20,
+          sound: 'boing',
         },
       ],
     },
