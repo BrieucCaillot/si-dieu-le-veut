@@ -21,65 +21,11 @@ interface Source {
 const COMMON_SOURCES = {
   ['COMMON']: [
     {
-      name: 'dust',
-      type: SourceType.texture,
-      path: 'textures/post/dust.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'normal',
-      type: SourceType.texture,
-      path: 'textures/post/tapisserie_normal.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'scratches',
-      type: SourceType.texture,
-      path: 'textures/post/scratches.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'fabric_1',
-      type: SourceType.texture,
-      path: 'textures/post/fabric_1.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'fabric_2',
+      name: 'fabric',
       type: SourceType.texture,
       path: 'textures/post/fabric_2.webp',
       encoding: THREE.sRGBEncoding,
       wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'fabric_3',
-      type: SourceType.texture,
-      path: 'textures/post/fabric_3.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'textile_1',
-      type: SourceType.texture,
-      path: 'textures/post/textile_1.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'textile_2',
-      type: SourceType.texture,
-      path: 'textures/post/textile_2.jpg',
-      encoding: THREE.sRGBEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'gradient',
-      type: SourceType.texture,
-      path: 'textures/gradient.png',
     },
   ],
 }
@@ -199,7 +145,7 @@ const ORDALIE_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_bbq.glb',
+      path: 'models/Ordalies/ordalie_bbq_2.glb',
     },
     {
       name: 'noise',

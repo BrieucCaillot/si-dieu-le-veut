@@ -31,6 +31,7 @@ class Blocks {
 
     // To uncomment for debug
     OrdalieManager.create(ORDALIES.CROIX)
+    TransitionManager.create(TRANSITIONS.TRANSITION_1)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -195,12 +196,12 @@ class Blocks {
 
     const nextPosX = this.getNext().getCenter().x
 
+    this.createNext()
+
     WebGL.camera.setPositionX({
       x: nextPosX,
-      onStart: () => {
-        this.createNext()
-      },
       onComplete: () => {
+        // setTimeout(() => this.createNext(), 1000)
         const currentType = this.getCurrent().getType()
         if (currentType === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
 

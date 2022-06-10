@@ -1,12 +1,12 @@
 <template>
   <div class="text-[25px]">
-    <div ref="parent1" class="fixed top-0 flex justify-center items-center">
+    <div ref="parent1" class="fixed -top-2 flex justify-center items-center">
       <div ref="placeholder1"></div>
     </div>
-    <div ref="parent2" class="fixed top-0 flex justify-center items-center">
+    <div ref="parent2" class="fixed -top-2 flex justify-center items-center">
       <div ref="placeholder2"></div>
     </div>
-    <div ref="parent3" class="fixed top-0 flex justify-center items-center">
+    <div ref="parent3" class="fixed -top-2 flex justify-center items-center">
       <div ref="placeholder3"></div>
     </div>
   </div>
@@ -18,6 +18,8 @@ import gsap from 'gsap'
 import { random } from '@/class/three/utils/Maths'
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import ORDALIES from '@/constants/ORDALIES'
+import WORDS_LIST from '@/constants/WORDS_LIST'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
@@ -48,31 +50,7 @@ const ordalie = ref()
 let parentArray = []
 let refArray = []
 
-let words = [
-  'Attrapoire',
-  'Ardre',
-  'Batelage',
-  'Bigre',
-  'Carnade',
-  'Chiaberna',
-  'Deable',
-  'Douloir',
-  'Esbigner',
-  'Estrapade',
-  'Fallace',
-  'Fredain',
-  'Gorrin',
-  'Grevain',
-  'Quarteler',
-  'Merdaille',
-  'Mordiable',
-  'Porpisser',
-  'Por-Diu',
-  'Trouiller',
-  'Tudieu',
-  'Vain-dieu',
-  'Vergogne',
-]
+let words = WORDS_LIST[ORDALIES.BBQ]
 
 let displayedWords = []
 let wordToType = null
@@ -167,6 +145,7 @@ const pickWord = (index: number) => {
     color: BASE_COLOR,
     index: index,
     mesh: ordalie.value.texts[index],
+    // braise: ordalie.value.braises[index],
   })
 
   const splittedWord = selectedWord.split('')
@@ -262,8 +241,8 @@ const update = (time: any, deltaTime: number, frame: any) => {
     //from 0 to 1
     const progress = displayedWords[i].displayTime / displayedWords[i].maxDisplayTime
 
-    //color transition according to the time
-    //notice that progress is multiplied by 2 so it progresses 2 times faster
+    // color transition according to the time
+    // notice that progress is multiplied by 2 so it progresses 2 times faster
     const r = BASE_COLOR.r + (TARGET_COLOR.r - BASE_COLOR.r) * (progress * 2)
     const g = BASE_COLOR.g + (TARGET_COLOR.g - BASE_COLOR.g) * (progress * 2)
     const b = BASE_COLOR.b + (TARGET_COLOR.b - BASE_COLOR.b) * (progress * 2)
@@ -271,6 +250,8 @@ const update = (time: any, deltaTime: number, frame: any) => {
 
     //scale transition from base_scale to max_scale
     currentRef.style.transform = `scale(${BASE_SCALE + (MAX_SCALE - BASE_SCALE) * progress})`
+
+    // displayedWords[i].braise.material.opacity = progress
 
     //control the uDissolve value to start burning the paper after START_BURNING_TIME
     if (displayedWords[i].displayTime > START_BURNING_TIME) {

@@ -29,6 +29,7 @@ class OrdalieFood {
   textures: THREE.Texture[]
   biteTexture: THREE.Texture
   difficultyData: FoodInterface
+  BASE_PATHS: any[]
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
@@ -40,27 +41,10 @@ class OrdalieFood {
       maxDisplayTime: 5,
     }
 
+    this.BASE_PATHS = JSON.parse(JSON.stringify(PATHS))
+
     this.paths = []
-
-    this.setAnimation()
     this.setPath()
-
-    this.biteTexture = WebGL.resources.getItems(this.instance.block.getType(), 'miam') as THREE.Texture
-
-    this.textures = [
-      WebGL.resources.getItems(this.instance.block.getType(), 'bread') as THREE.Texture,
-      WebGL.resources.getItems(this.instance.block.getType(), 'cheese') as THREE.Texture,
-      WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
-    ]
-
-    this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
-    this.material = new THREE.ShaderMaterial({
-      transparent: true,
-      fragmentShader: fragmentShader,
-      vertexShader: vertexShader,
-    })
-
-    this.mesh = new THREE.Mesh(this.geometry, this.material)
   }
 
   getRandomPath() {
@@ -88,7 +72,8 @@ class OrdalieFood {
     clone.material = material
 
     clone.name = 'clone_' + i
-    const point = path.getPointAt(1)
+    const point = path.getPointAt(0)
+
     clone.position.set(point.x, point.y, point.z)
     WebGL.scene.add(clone)
 
@@ -127,9 +112,22 @@ class OrdalieFood {
       // this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
     }
 
-    // setTimeout(() => {
-    //   this.end()
-    // }, 3000)
+    this.biteTexture = WebGL.resources.getItems(this.instance.block.getType(), 'miam') as THREE.Texture
+
+    this.textures = [
+      WebGL.resources.getItems(this.instance.block.getType(), 'bread') as THREE.Texture,
+      WebGL.resources.getItems(this.instance.block.getType(), 'cheese') as THREE.Texture,
+      WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
+    ]
+
+    this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
+    this.material = new THREE.ShaderMaterial({
+      transparent: true,
+      fragmentShader: fragmentShader,
+      vertexShader: vertexShader,
+    })
+
+    this.mesh = new THREE.Mesh(this.geometry, this.material)
   }
 
   end() {
@@ -143,16 +141,16 @@ class OrdalieFood {
     container.style.fontSize = WebGL.sizes.width / 57.6 + 'px'
   }
 
-  private setPath() {
-    for (let i = 0; i < PATHS.length; i++) {
-      for (let j = 0; j < PATHS[i].length; j++) {
-        const x = PATHS[i][j][0]
-        const y = PATHS[i][j][1]
-        const z = PATHS[i][j][2]
-        PATHS[i][j] = new THREE.Vector3(x + this.instance.block.getPosition().x, z, -y)
+  setPath() {
+    for (let i = 0; i < this.BASE_PATHS.length; i++) {
+      for (let j = 0; j < this.BASE_PATHS[i].length; j++) {
+        const x = this.BASE_PATHS[i][j][0]
+        const y = this.BASE_PATHS[i][j][1]
+        const z = this.BASE_PATHS[i][j][2]
+        this.BASE_PATHS[i][j] = new THREE.Vector3(x + this.instance.block.getPosition().x, z, -y)
       }
 
-      this.paths.push(new THREE.CatmullRomCurve3(PATHS[i]))
+      this.paths.push(new THREE.CatmullRomCurve3(this.BASE_PATHS[i]))
 
       // this.instance.block.getModel().scene.attach(this.paths[i])
 
@@ -167,29 +165,14 @@ class OrdalieFood {
     }
   }
 
-  private setAnimation() {
-    this.animation = {}
-
-    this.animation.mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
-
-    this.animation.actions = {}
-
-    // Play the action
-    this.animation.play = (name: string) => {
-      this.animation.actions[name].play()
-    }
-
-    this.animation.mixer.addEventListener('finished', (e) => {})
-  }
-
   updateMesh(mesh: THREE.Mesh, path: THREE.CatmullRomCurve3, progress: number) {
     const point = path.getPointAt(1 - progress)
     mesh.position.set(point.x, point.y, point.z)
   }
 
   update() {
-    const { deltaTime } = WebGL.time
-    this.animation.mixer.update(deltaTime * 0.001)
+    // const { deltaTime } = WebGL.time
+    // this.animation.mixer.update(deltaTime * 0.001)
   }
 }
 

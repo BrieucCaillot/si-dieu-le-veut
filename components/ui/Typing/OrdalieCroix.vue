@@ -9,16 +9,12 @@ import gsap from 'gsap'
 
 import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
-
-const texts = [
-  'Pr',
-  // "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
-  // "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
-]
+import WORDS_LIST from '@/constants/WORDS_LIST'
+import ORDALIES from '@/constants/ORDALIES'
 
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
-const textToWrite = ref(texts[Math.floor(Math.random() * texts.length)])
+const textToWrite = ref(WORDS_LIST[ORDALIES.CROIX][Math.floor(Math.random() * WORDS_LIST[ORDALIES.CROIX].length)])
 
 const ordalie = ref()
 
@@ -96,9 +92,13 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon')) return
+  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon') && !e.code.startsWith('Comma') && !e.code.startsWith('Quote') && !e.code.startsWith('Period')) return
 
-  if (letterToType.toLowerCase() === e.key.toLowerCase() && wordToType) validChar()
+  // Fix apostrophe Dead key returned
+  let key = e.key.toLowerCase()
+  key = key === 'dead' ? `'` : key
+
+  if (letterToType.toLowerCase() === key && wordToType) validChar()
   else invalidChar()
 
   if (!letterToType) wordCompleted()
