@@ -30,8 +30,8 @@ const DIFFICULTY_DATAS = {
   [DIFFICULTY.EASY]: {
     ['CAMERA']: {
       // Debug
-      moveDuration: 1,
-      // moveDuration: 6,
+      // moveDuration: 1,
+      moveDuration: 6,
     },
     ['TRANSITIONS']: {
       speedCoef: 1,
