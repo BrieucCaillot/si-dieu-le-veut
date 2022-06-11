@@ -1,4 +1,5 @@
 import ANIMATIONS from '@/constants/ANIMATIONS'
+import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 
 const SOUNDS = {
@@ -8,6 +9,80 @@ const SOUNDS = {
 }
 
 const ANIMATIONS_SOUNDS = {
+  [OTHERS.SPLASHSCREEN]: {
+    [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION2]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION3]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_IDLE]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION2]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION3]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION4]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'boing',
+        },
+      ],
+    },
+  },
   [ORDALIES.BBQ]: {
     [ANIMATIONS.BBQ.IDLE]: {
       frames: [

@@ -2,7 +2,6 @@ import gsap from 'gsap'
 
 import OTHERS from '@/constants/OTHERS'
 
-import Blocks from '@/class/three/World/Blocks'
 import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
@@ -44,7 +43,7 @@ class Other {
         break
     }
     this.updateId = this.update
-    this.isSplashscreen = _type === OTHERS.SPLASHSCREEN
+    this.isSplashscreen = [OTHERS.SPLASHSCREEN].includes(_type)
   }
 
   start() {
@@ -55,8 +54,10 @@ class Other {
     // Speed up to first ordalie
     // Blocks.setCurrentIsFirstOrdalie()
 
-    if (!this.isSplashscreen) return
-    gsap.ticker.add(this.updateId)
+    // Add update only if we are on Splashscreen
+    if (this.isSplashscreen) {
+      gsap.ticker.add(this.updateId)
+    }
   }
 
   end() {
@@ -66,13 +67,11 @@ class Other {
 
     OtherManager.onEnded()
     document.removeEventListener('keydown', this.onSpacePressed)
+  }
 
-    // Prevent to remove animation if Splashscreen
-    if (this.isSplashscreen) return
-
-    // Remove update of Splashscreen if we are on Tutorial
-    if (this.block.getType() === OTHERS.TUTORIAL) OtherManager.getByIndex(0).removeSplashscreenUpdate()
-
+  removeUpdate() {
+    if (!this.isSplashscreen) return
+    this.block.toggleCharacter(false)
     gsap.ticker.remove(this.updateId)
   }
 
@@ -81,17 +80,13 @@ class Other {
     console.log(`🔁 ${this.block.getType()}`)
   }
 
-  removeSplashscreenUpdate() {
-    if (!this.isSplashscreen) return
-    console.log('REMOVED UPDATE')
-    gsap.ticker.remove(this.updateId)
-  }
-
   onSpacePressed = (e: KeyboardEvent) => {
     // Prevent to skip when key pressed is not Space or user is on the splashscreen
-    if (e.code !== 'Space' || this.isSplashscreen) return
-    // Speed up to first ordalie
-    // if (Blocks.isOther(this.block.getType() as OTHERS)) Blocks.setCurrentIsFirstOrdalie()
+    if (e.code !== 'Space' && this.isSplashscreen) return
+
+    // Play animation for the next others
+    OtherManager.getSplashscreenRef().playAnimFromOther(this.block.getType() as OTHERS)
+
     this.end()
   }
 }
