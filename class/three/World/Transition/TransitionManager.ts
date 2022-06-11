@@ -50,7 +50,7 @@ class TransitionManager {
   }
 
   /**
-   * Get last
+   * Get last transition
    */
   getLast() {
     return this.instances[this.instances.length - 1]

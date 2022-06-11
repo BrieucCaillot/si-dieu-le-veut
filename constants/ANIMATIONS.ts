@@ -1,12 +1,18 @@
-import ORDALIES from './ORDALIES'
-
-// type ANIMATIONS = `ORDALIES.${keyof typeof ORDALIES}`
-
-// enum ANIMATIONS {
-//     [ORDALIES.BBQ] =
-// }
+import ORDALIES from '@/constants/ORDALIES'
+import OTHERS from '@/constants/OTHERS'
 
 const ANIMATIONS = {
+  [OTHERS.SPLASHSCREEN]: {
+    INTRO_CUISINIER_LOCATION1: 'Intro_Cuisinier_Location1',
+    INTRO_CUISINIER_LOCATION2: 'Intro_Cuisinier_Location2',
+    INTRO_CUISINIER_LOCATION3: 'Intro_Cuisinier_Location3',
+    INTRO_CUISINIER_LOCATION4: 'Intro_Cuisinier_Location4',
+    INTRO_CUISINIER_SADIDLE: 'Intro_Cuisinier_SadIdle',
+    INTRO_GARDE_IDLE: 'Intro_Garde_Idle',
+    INTRO_GARDE_LOCATION2: 'Intro_Garde_Location2',
+    INTRO_GARDE_LOCATION3: 'Intro_Garde_Location3',
+    INTRO_GARDE_LOCATION4: 'Intro_Garde_Location4',
+  },
   [ORDALIES.BBQ]: {
     AVANCE: 'Braises_Cuisinier_Avance',
     ENTREE: 'Braises_Cuisinier_Entree',
@@ -23,18 +29,5 @@ const ANIMATIONS = {
     SIDE_SORTIE: 'Croix_CuisinierSIDE_Sortie',
   },
 }
-
-// const ordalies = ['BBQ', 'CROIX', 'FOOD'] as const
-
-// type ORDALIES_NAME = typeof ordalies[number]
-// const a: ORDALIES_NAME
-
-// const sounds: Record<ORDALIES_NAME, string> = {
-
-// }
-
-// sounds[a]
-
-// ANIMATIONS[ORDALIES.BBQ].IDLE
 
 export default ANIMATIONS

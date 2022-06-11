@@ -9,17 +9,13 @@ class OtherEnd {
 
   constructor(_other: Other) {
     this.instance = _other
-
-    // if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Other Transition')
   }
 
   start() {
-    console.log('Started OtherEnd')
     setTimeout(() => this.end(), 100)
   }
 
   end() {
-    console.log('This is the end other end')
     this.instance.end()
   }
 

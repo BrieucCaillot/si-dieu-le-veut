@@ -33,7 +33,7 @@ class PostProcessing {
   private createTextureEffect() {
     this.textureEffect = new TextureEffect({
       blendFunction: BlendFunction.MULTIPLY,
-      texture: WebGL.resources.getItems('COMMON', 'fabric_2') as THREE.Texture,
+      texture: WebGL.resources.getItems('COMMON', 'fabric') as THREE.Texture,
     })
 
     this.textureEffect.blendMode.opacity.value = 0.705
@@ -47,16 +47,6 @@ class PostProcessing {
         effect: this.textureEffect,
         opacity: this.textureEffect.blendMode.opacity.value,
         blendMode: this.textureEffect.blendMode.blendFunction,
-        texture: {
-          dust: WebGL.resources.getItems('COMMON', 'dust') as THREE.Texture,
-          normal: WebGL.resources.getItems('COMMON', 'normal') as THREE.Texture,
-          scratches: WebGL.resources.getItems('COMMON', 'scratches') as THREE.Texture,
-          fabric_1: WebGL.resources.getItems('COMMON', 'fabric_1') as THREE.Texture,
-          fabric_2: WebGL.resources.getItems('COMMON', 'fabric_2') as THREE.Texture,
-          fabric_3: WebGL.resources.getItems('COMMON', 'fabric_3') as THREE.Texture,
-          textile_1: WebGL.resources.getItems('COMMON', 'textile_1') as THREE.Texture,
-          textile_2: WebGL.resources.getItems('COMMON', 'textile_2') as THREE.Texture,
-        },
       }
 
       this.debugFolder.add(this.debugParams, 'opacity', 0, 1).onChange(() => {
@@ -64,9 +54,6 @@ class PostProcessing {
       })
       this.debugFolder.add(this.debugParams, 'blendMode', BlendFunction).onChange(() => {
         this.textureEffect.blendMode.blendFunction = this.debugParams.blendMode
-      })
-      this.debugFolder.add(this.debugParams, 'texture', this.debugParams.texture).onChange((t) => {
-        this.textureEffect.texture = t
       })
 
       const subFolder1 = this.debugFolder.addFolder('UV Transformation')

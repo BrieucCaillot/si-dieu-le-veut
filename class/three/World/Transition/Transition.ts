@@ -22,6 +22,7 @@ class Transition {
     this.block = new Block(_type)
     this.block.toggleGarde(false)
     this.block.toggleCharacter(false)
+    this.block.showFront()
 
     this.setAnimation()
     this.updateId = this.update
@@ -29,6 +30,7 @@ class Transition {
 
   start() {
     if (OrdalieManager.isPlayerDead) return this.hideTransition()
+    this.block.showBehind()
     this.onStart()
     gsap.ticker.add(this.updateId)
     TransitionManager.onStarted()

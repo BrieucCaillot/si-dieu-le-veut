@@ -1,4 +1,5 @@
 import { Howler, Howl } from 'howler'
+import ORDALIES from '~~/constants/ORDALIES'
 
 const SOUNDS = [
   {
@@ -8,6 +9,34 @@ const SOUNDS = [
   {
     name: 'oi',
     path: '/sounds/oi.mp3',
+  },
+  {
+    name: 'ordalie',
+    path: '/sounds/ordalie.mp3',
+  },
+  {
+    name: 'fire-hit',
+    path: '/sounds/fire-hit.mp3',
+  },
+  {
+    name: 'boing',
+    path: '/sounds/boing.mp3',
+  },
+  {
+    name: 'death',
+    path: '/sounds/death.mp3',
+  },
+  {
+    name: 'bone-cracking',
+    path: '/sounds/bone-cracking.mp3',
+  },
+  {
+    name: 'bone-cracking-death',
+    path: '/sounds/bone-cracking-death.mp3',
+  },
+  {
+    name: 'ground-hit',
+    path: '/sounds/ground-hit.mp3',
   },
 ]
 
@@ -48,6 +77,26 @@ class AudioManager {
   play(name: string) {
     const sound = this.sounds.find((sound) => sound.name === name)
     sound.howl.play()
+  }
+
+  fadeIn(name: string, durationInMs: number) {
+    const sound = this.sounds.find((sound) => sound.name === name)
+    sound.howl.play()
+    sound.howl.fade(0, 1, durationInMs)
+  }
+
+  fadeOut(name: string, durationInMs: number) {
+    const sound = this.sounds.find((sound) => sound.name === name)
+    sound.howl.fade(1, 0, durationInMs)
+
+    sound.howl.once('fade', () => {
+      sound.howl.stop()
+    })
+  }
+
+  isPlaying(name: string) {
+    const sound = this.sounds.find((sound) => sound.name === name)
+    return sound.howl.playing()
   }
 }
 

@@ -22,8 +22,9 @@ class Camera extends THREE.EventDispatcher {
   private isMoving = false
   private debugFolder: GUI
   private debugParams = {
+    canScroll: false,
     parallaxFactor: 0.1,
-    moveXSpeed: 0.01,
+    moveXSpeed: 0.1,
   }
 
   constructor() {
@@ -36,6 +37,21 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.5).step(0.01)
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
+      this.debugFolder.add(this.debugParams, 'canScroll').listen()
+      this.debugFolder
+        .add(this.instance, 'near')
+        .step(0.001)
+        .listen()
+        .onChange(() => {
+          this.instance.updateProjectionMatrix()
+        })
+      this.debugFolder
+        .add(this.instance, 'far')
+        .step(0.001)
+        .listen()
+        .onChange(() => {
+          this.instance.updateProjectionMatrix()
+        })
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
     }
@@ -44,8 +60,8 @@ class Camera extends THREE.EventDispatcher {
   private setInstance() {
     this.parent = new THREE.Group()
     // const fov = (180 * (2 * Math.atan(WebGL.sizes.height / (2 * this.perspective)))) / Math.PI
-    this.parent.position.set(0, 0, 16)
-    this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 1, 1000)
+    this.parent.position.set(0, 0, 13)
+    this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 0.1, 1000)
     this.instance.position.set(0, 0, 0)
     this.setFov()
     this.parent.add(this.instance)
@@ -92,7 +108,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   moveOnX(direction: 'left' | 'right') {
-    if (!this.instance) return
+    if ((!this.instance || !Blocks.isEnded) && !this.debugParams.canScroll) return
 
     const maxBlocksX = Blocks.getLast().getPosition().x
     const directionCoef = direction === 'right' ? -1 : 1
@@ -101,6 +117,7 @@ class Camera extends THREE.EventDispatcher {
 
     gsap.to([this.parent.position, this.target], {
       x: this.currentPosX,
+      delay: 0.2,
       onUpdate: this.onPositionChange,
       duration: 0.5,
     })
@@ -122,7 +139,7 @@ class Camera extends THREE.EventDispatcher {
 
   setPositionX({ x, onStart, onComplete }: { x: number; onStart?: () => void; onComplete?: () => void }) {
     console.log('📷 MOVING..')
-    const duration = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]?.['CAMERA']?.moveDuration ?? 0.5
+    const duration = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]['CAMERA'].moveDuration ?? 0.5
 
     gsap.to([this.parent.position, this.target], {
       x,
