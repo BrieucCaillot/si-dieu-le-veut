@@ -9,7 +9,6 @@ import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
-import Other from '@/class/three/World/Other/Other'
 
 class Blocks {
   private instances: Block[] = []
@@ -30,8 +29,8 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     // To uncomment for debug
-    OrdalieManager.create(ORDALIES.CROIX)
-    TransitionManager.create(TRANSITIONS.TRANSITION_1)
+    // OrdalieManager.create(ORDALIES.CROIX)
+    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -159,6 +158,8 @@ class Blocks {
    * Create block from latest block created
    */
   private createNext() {
+    console.log('➡️ -- CREATE NEXT')
+
     // IF PLAYER IS DEAD & PREVIOUS BLOCKS IS TRANSITION TYPE, CREATE DEATH BLOCK
     if (OrdalieManager.isPlayerDead && this.isTransition(this.getLast().getType() as TRANSITIONS)) {
       return OtherManager.createNext()
@@ -170,7 +171,7 @@ class Blocks {
     }
 
     // PREVENT TO CREATE NEXT OTHER BLOCK AT START
-    if (Object.values(OTHERS).includes(this.getCurrent().getType() as OTHERS)) return
+    if ([OTHERS.SPLASHSCREEN, OTHERS.CINEMATIC_1, OTHERS.CINEMATIC_2, OTHERS.CINEMATIC_3, OTHERS].includes(this.getCurrent().getType() as OTHERS)) return
 
     // IF PREVIOUS BLOCK IS ORDALIE, CREATE TRANSITION
     if (this.isOrdalie(this.getLast().getType() as ORDALIES)) {
@@ -181,8 +182,6 @@ class Blocks {
     if (this.isTransition(this.getLast().getType() as TRANSITIONS)) {
       return OrdalieManager.createNext()
     }
-
-    console.log('➡️ -- CREATED NEXT')
   }
 
   /**
@@ -192,7 +191,7 @@ class Blocks {
     console.log('➡️ -- GO TO NEXT')
 
     if (this.getNext() === undefined) return console.log('🤡 No next block')
-    if (this.getNext().getType() === OTHERS.END) return this.end()
+    if ([OTHERS.END].includes(this.getNext().getType() as OTHERS)) return this.end() // END OF BLOCK SYSTEM
 
     const nextPosX = this.getNext().getCenter().x
 
@@ -201,7 +200,6 @@ class Blocks {
     WebGL.camera.setPositionX({
       x: nextPosX,
       onComplete: () => {
-        // setTimeout(() => this.createNext(), 1000)
         const currentType = this.getCurrent().getType()
         if (currentType === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
 

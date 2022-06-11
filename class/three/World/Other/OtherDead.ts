@@ -25,10 +25,10 @@ class OtherDead {
   }
 
   getMaterials() {
-    this.allMaterials = this.instance.block
-      .getModel()
-      .scene.children.map((child) => child.material)
-      .find((mat) => mat.name !== 'bg')
+    this.allMaterials = this.instance.block.getModel().scene.children.map((child) => child.material)
+    // .find((mat) => mat.name !== 'bg')
+
+    console.log(this.allMaterials)
   }
 
   hideMaterials() {
@@ -40,7 +40,6 @@ class OtherDead {
   showMaterials() {
     gsap.to([this.allMaterials], {
       opacity: 1,
-      delay: 2,
       duration: 2,
       stagger: 1,
     })
@@ -51,7 +50,7 @@ class OtherDead {
 
     this.showMaterials()
 
-    setTimeout(() => this.end(), 3000)
+    setTimeout(() => this.end(), 5000)
   }
 
   end() {
