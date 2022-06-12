@@ -9,8 +9,8 @@
       <Meta name="og:type" content="website" />
       <Meta name="og:url" content="https://si-dieu-le-veut.vercel.app/" />
       <Meta name="og:image" content="https://si-dieu-le-veut.vercel.app/images/preview.png" />
-      <Meta name="og:image:width" content="1280" />
-      <Meta name="og:image:height" content="889" />
+      <Meta name="og:image:width" content="1200" />
+      <Meta name="og:image:height" content="630" />
       <Meta name="og:image:type" content="image/png" />
       <Meta name="og:image:alt" content="Si Dieu le veut" />
       <Meta name="twitter:card" content="summary_large_image" />
