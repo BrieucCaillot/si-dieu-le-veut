@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@types/gsap": "^3.0.0",
-    "@types/three": "^0.141.0",
+    "@types/three": "^0.137.0",
     "autoprefixer": "^10.4.4",
     "lil-gui": "^0.16.1",
     "nuxt": "3.0.0-rc.2",
