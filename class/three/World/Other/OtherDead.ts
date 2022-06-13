@@ -22,8 +22,6 @@ class OtherDead {
   }
 
   start() {
-    OtherManager.create(OTHERS.END)
-
     setTimeout(() => this.end(), 8000)
   }
 

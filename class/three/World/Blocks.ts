@@ -162,7 +162,9 @@ class Blocks {
 
     // IF PLAYER IS DEAD & PREVIOUS BLOCKS IS TRANSITION TYPE, CREATE DEATH BLOCK
     if (OrdalieManager.isPlayerDead && this.isTransition(this.getLast().getType() as TRANSITIONS)) {
-      return OtherManager.createNext()
+      OtherManager.create(OTHERS.DEAD)
+      OtherManager.create(OTHERS.END)
+      return
     }
 
     // IF PREVIOUS BLOCK IS OTHER TUTORIAL, CREATE ORDALIE BLOCK

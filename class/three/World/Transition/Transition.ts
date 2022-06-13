@@ -110,6 +110,9 @@ class Transition {
       value: 1,
       duration: 3,
       ease: 'linear',
+      onComplete: () => {
+        OtherManager.startNext()
+      },
     })
   }
 
