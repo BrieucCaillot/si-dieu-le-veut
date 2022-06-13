@@ -29,9 +29,8 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     // To uncomment for debug
-    OrdalieManager.create(ORDALIES.BBQ)
-    TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    // TransitionManager.startNext()
+    // OrdalieManager.create(ORDALIES.FOOD)
+    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')

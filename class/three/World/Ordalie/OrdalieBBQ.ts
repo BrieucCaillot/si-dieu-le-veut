@@ -2,22 +2,21 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
 
-import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
-
-import { getFrame } from '@/class/three/utils/Maths'
-
 import ORDALIES from '@/constants/ORDALIES'
 import SOUNDS from '@/constants/SOUNDS'
 import ANIMATIONS from '@/constants/ANIMATIONS'
+import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
 
+import WebGL from '@/class/three/WebGL'
+import AudioManager from '@/class/three/utils/AudioManager'
+
+import { getFrame } from '@/class/three/utils/Maths'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
-import AudioManager from '@/class/three/utils/AudioManager'
 
 // import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
 // import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
@@ -140,8 +139,8 @@ class OrdalieBBQ {
 
   private setTexts() {
     const texture = 'map' in this.texts[0].material ? this.texts[0].material.map : null
-    const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise')
-    const gradient = WebGL.resources.getItems(this.instance.block.getType(), 'gradient')
+    const noise = WebGL.resources.getItems('COMMON', 'noise')
+    const gradient = WebGL.resources.getItems('COMMON', 'gradient')
 
     this.uniforms = {
       uNoise: { value: noise },

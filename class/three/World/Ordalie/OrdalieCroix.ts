@@ -188,6 +188,7 @@ class OrdalieCroix {
 
   gameOver() {
     AudioManager.play('death')
+
     OrdalieManager.setIsDead(true)
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.play()
