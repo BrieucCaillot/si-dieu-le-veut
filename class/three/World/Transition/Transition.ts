@@ -29,6 +29,8 @@ class Transition {
   }
 
   start() {
+    console.log('allo')
+
     if (OrdalieManager.isPlayerDead) return this.hideTransition()
     this.block.showBehind()
     this.onStart()

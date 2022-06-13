@@ -145,12 +145,17 @@ const ORDALIE_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Ordalies/ordalie_bbq_2.glb',
+      path: 'models/Ordalies/ordalie_bbq.glb',
     },
     {
       name: 'noise',
       type: SourceType.texture,
       path: 'textures/noise.jpg',
+    },
+    {
+      name: 'banniere_ordalieFER',
+      type: SourceType.texture,
+      path: 'textures/banniere_ordalieFER.png',
     },
   ],
 }

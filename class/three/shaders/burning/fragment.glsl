@@ -17,7 +17,7 @@ void main() {
     discard;
   }
 
-  texel.rgb *= gradientTexture;
+  // texel.rgb *= gradientTexture;
 
   gl_FragColor = texel;
   // gl_FragColor = vec4(vec3(alpha), 1.0);

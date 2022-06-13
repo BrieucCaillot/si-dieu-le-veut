@@ -66,6 +66,9 @@ class OrdalieBBQ {
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
+        // if (mesh.name.startsWith('text')) {
+        console.log('text found')
+
         this.texts.push(mesh)
       }
       // if (mesh.name.startsWith('braise')) {
@@ -140,8 +143,11 @@ class OrdalieBBQ {
 
   private setTexts() {
     const texture = 'map' in this.texts[0].material ? this.texts[0].material.map : null
+    // const texture = WebGL.resources.getItems(this.instance.block.getType(), 'banniere_ordalieFER')
     const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise')
     const gradient = WebGL.resources.getItems('COMMON', 'gradient')
+
+    // console.log(texture)
 
     this.uniforms = {
       uNoise: { value: noise },
@@ -286,19 +292,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    for (const animation of Object.values(this.animation.actions)) {
-      const time = animation.action.time
-      const currentFrame = Math.ceil(getFrame(time))
+    // for (const animation of Object.values(this.animation.actions)) {
+    //   const time = animation.action.time
+    //   const currentFrame = Math.ceil(getFrame(time))
 
-      for (let j = 0; j < animation.frames.length; j++) {
-        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-          // console.log('play', animation.action._clip.name, currentFrame)
-          AudioManager.play(animation.frames[j].sound)
-        }
-      }
+    //   for (let j = 0; j < animation.frames.length; j++) {
+    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+    //       // console.log('play', animation.action._clip.name, currentFrame)
+    //       AudioManager.play(animation.frames[j].sound)
+    //     }
+    //   }
 
-      animation.lastFrame = currentFrame
-    }
+    //   animation.lastFrame = currentFrame
+    // }
   }
 }
 
