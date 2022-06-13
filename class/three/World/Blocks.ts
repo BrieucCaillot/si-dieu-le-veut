@@ -29,7 +29,7 @@ class Blocks {
     OtherManager.create(OTHERS.TUTORIAL)
 
     // To uncomment for debug
-    // OrdalieManager.create(ORDALIES.CROIX)
+    // OrdalieManager.create(ORDALIES.FOOD)
     // TransitionManager.create(TRANSITIONS.TRANSITION_1)
 
     if (WebGL.debug.isActive()) {

@@ -27,6 +27,31 @@ const COMMON_SOURCES = {
       encoding: THREE.sRGBEncoding,
       wrap: THREE.RepeatWrapping,
     },
+    {
+      name: 'noise',
+      type: SourceType.texture,
+      path: 'textures/noise.jpg',
+    },
+    {
+      name: 'noise-2',
+      type: SourceType.texture,
+      path: 'textures/noise-2.jpg',
+    },
+    {
+      name: 'noise-3',
+      type: SourceType.texture,
+      path: 'textures/noise-3.png',
+    },
+    {
+      name: 'gradient',
+      type: SourceType.texture,
+      path: 'textures/gradient.png',
+    },
+    {
+      name: 'gradient-1',
+      type: SourceType.texture,
+      path: 'textures/gradient-1.png',
+    },
   ],
 }
 
@@ -146,11 +171,6 @@ const ORDALIE_SOURCES = {
       name: 'model',
       type: SourceType.gltfModel,
       path: 'models/Ordalies/ordalie_bbq_2.glb',
-    },
-    {
-      name: 'noise',
-      type: SourceType.texture,
-      path: 'textures/noise.jpg',
     },
   ],
 }
