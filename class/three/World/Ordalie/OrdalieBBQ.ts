@@ -64,6 +64,37 @@ class OrdalieBBQ {
     this.braises = []
     this.container = []
 
+    const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
+    testCharacter.scale.set(0.2, 0.2, 0.2)
+
+    testCharacter.traverse((object: THREE.Object3D) => {
+    
+      if (object.name === 'Plane005') {
+        console.log('BODY')
+        console.log(object);
+        
+      }
+
+      if(object.name === 'Plane005_1'){
+        // object.visible = false
+        console.log('HEAD');
+
+        console.log(object.material.map.offset);
+        
+
+          
+          object.material.map.offset.x = 1
+
+
+        
+        
+        // width : 364 height : 329 
+
+      }
+    })
+
+    WebGL.scene.add(testCharacter)
+
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
         this.texts.push(mesh)
@@ -288,19 +319,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       // console.log('play', animation.action._clip.name, currentFrame)
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // console.log('play', animation.action._clip.name, currentFrame)
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
 
-    //   animation.lastFrame = currentFrame
-    // }
+      animation.lastFrame = currentFrame
+    }
   }
 }
 
