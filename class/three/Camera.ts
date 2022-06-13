@@ -14,8 +14,15 @@ class Camera extends THREE.EventDispatcher {
   private parent: THREE.Group
   instance: THREE.PerspectiveCamera
   private target: THREE.Vector3 = new THREE.Vector3(0, 0, 0.1)
-  private fov = 0
   private targetDebugMesh: THREE.Mesh
+  private minPos = {
+    x: 0,
+    z: 13,
+  }
+  private maxPos = {
+    x: 0,
+    z: 30,
+  }
   private controls: OrbitControls
   private planeWidth = 1.4072
   private currentPosX = 0
@@ -33,25 +40,12 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('camera')
 
     this.setInstance()
+    this.setEvents()
 
     if (WebGL.debug.isActive()) {
       this.debugFolder.add(this.debugParams, 'parallaxFactor', 0, 0.5).step(0.01)
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
       this.debugFolder.add(this.debugParams, 'canScroll').listen()
-      this.debugFolder
-        .add(this.instance, 'near')
-        .step(0.001)
-        .listen()
-        .onChange(() => {
-          this.instance.updateProjectionMatrix()
-        })
-      this.debugFolder
-        .add(this.instance, 'far')
-        .step(0.001)
-        .listen()
-        .onChange(() => {
-          this.instance.updateProjectionMatrix()
-        })
       this.debugFolder.add(this.parent.position, 'x')
       this.debugFolder.add(this.parent.position, 'z')
     }
@@ -59,7 +53,6 @@ class Camera extends THREE.EventDispatcher {
 
   private setInstance() {
     this.parent = new THREE.Group()
-    // const fov = (180 * (2 * Math.atan(WebGL.sizes.height / (2 * this.perspective)))) / Math.PI
     this.parent.position.set(0, 0, 13)
     this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 0.1, 1000)
     this.instance.position.set(0, 0, 0)
@@ -85,17 +78,37 @@ class Camera extends THREE.EventDispatcher {
     if (WebGL.debug.isActive()) this.debugFolder.add(this.controls, 'enabled')
   }
 
+  private setEvents() {
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          this.moveOnX('left')
+          break
+        case 'ArrowRight':
+          this.moveOnX('right')
+          break
+        case 'ArrowUp':
+          this.moveOnZ('forward')
+          break
+        case 'ArrowDown':
+          this.moveOnZ('backward')
+          break
+      }
+    })
+  }
+
   private setFov() {
     let dist = this.parent.position.z - 0
     let height = 1 // desired height to fit
+    let fov = 0
 
     if (WebGL.sizes.aspect < this.planeWidth) {
-      this.fov = 2 * Math.atan(this.planeWidth / (2 * dist) / this.instance.aspect) * (180 / Math.PI)
+      fov = 2 * Math.atan(this.planeWidth / (2 * dist) / this.instance.aspect) * (180 / Math.PI)
     } else {
-      this.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
+      fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
     }
 
-    this.instance.fov = this.fov
+    this.instance.fov = fov
     this.instance.updateProjectionMatrix()
   }
 
@@ -103,23 +116,45 @@ class Camera extends THREE.EventDispatcher {
     return this.parent.position
   }
 
-  getIsMoving() {
-    return this.isMoving
+  /**
+   * Returns if camera can move
+   */
+  private canMove() {
+    return this.instance && (Blocks.isEnded || this.debugParams.canScroll)
   }
 
+  /**
+   * Move Horizontally
+   */
   moveOnX(direction: 'left' | 'right') {
-    if ((!this.instance || !Blocks.isEnded) && !this.debugParams.canScroll) return
+    if (!this.canMove()) return
 
-    const maxBlocksX = Blocks.getLast().getPosition().x
-    const directionCoef = direction === 'right' ? -1 : 1
+    this.maxPos.x = Blocks.getLast().getPosition().x
+    const directionCoef = direction === 'right' ? 1 : -1
     this.currentPosX += directionCoef * this.debugParams.moveXSpeed
-    this.currentPosX = clamp(this.currentPosX, 0, maxBlocksX)
+    this.currentPosX = clamp(this.currentPosX, this.minPos.x, this.maxPos.x)
 
     gsap.to([this.parent.position, this.target], {
       x: this.currentPosX,
-      delay: 0.2,
       onUpdate: this.onPositionChange,
       duration: 0.5,
+    })
+  }
+
+  /**
+   * Move in Depth
+   */
+  moveOnZ(direction: 'forward' | 'backward') {
+    if (!this.canMove() || this.isMoving) return
+    gsap.to(this.parent.position, {
+      z: direction === 'forward' ? this.minPos.z : this.maxPos.z,
+      duration: 0.5,
+      onStart: () => {
+        this.isMoving = true
+      },
+      onComplete: () => {
+        this.isMoving = false
+      },
     })
   }
 

@@ -65,8 +65,6 @@ class Transition {
   }
 
   onEnd() {
-    // useStore().isTransition.value = false
-
     if (this.debugFolder) this.debugFolder.destroy()
   }
 
