@@ -135,8 +135,8 @@ class OrdalieManager {
    * On Ordalie started
    */
   onStarted() {
-    // console.log('🎲 STARTED ' + this.getCurrent().block.getType())
-    // useStore().currentOrdalie.value = this.getCurrent().block.getType()
+    console.log('🎲 STARTED ' + this.getCurrent().block.getType())
+    useStore().currentOrdalie.value = this.getCurrent().block.getType()
     Blocks.onStarted()
   }
 

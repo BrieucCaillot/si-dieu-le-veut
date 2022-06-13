@@ -66,9 +66,6 @@ class OrdalieBBQ {
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
-        // if (mesh.name.startsWith('text')) {
-        console.log('text found')
-
         this.texts.push(mesh)
       }
       // if (mesh.name.startsWith('braise')) {
@@ -143,11 +140,8 @@ class OrdalieBBQ {
 
   private setTexts() {
     const texture = 'map' in this.texts[0].material ? this.texts[0].material.map : null
-    // const texture = WebGL.resources.getItems(this.instance.block.getType(), 'banniere_ordalieFER')
     const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise')
-    const gradient = WebGL.resources.getItems('COMMON', 'gradient')
-
-    // console.log(texture)
+    const gradient = WebGL.resources.getItems(this.instance.block.getType(), 'gradient')
 
     this.uniforms = {
       uNoise: { value: noise },

@@ -17,6 +17,7 @@ class Transition {
   animation!: { [key: string]: any }
   debugFolder: GUI
   updateId: () => void
+  text: THREE.Mesh
 
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
@@ -26,11 +27,15 @@ class Transition {
 
     this.setAnimation()
     this.updateId = this.update
+
+    this.block.getModel().scene.traverse((object: THREE.Object3D) => {
+      if (object.name === 'texte') {
+        this.text = object as THREE.Mesh
+      }
+    })
   }
 
   start() {
-    console.log('allo')
-
     if (OrdalieManager.isPlayerDead) return this.hideTransition()
     this.block.showBehind()
     this.onStart()
@@ -39,6 +44,8 @@ class Transition {
   }
 
   onStart() {
+    useStore().isTransition.value = true
+
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
@@ -53,6 +60,8 @@ class Transition {
   }
 
   onEnd() {
+    // useStore().isTransition.value = false
+
     if (this.debugFolder) this.debugFolder.destroy()
   }
 

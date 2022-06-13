@@ -42,6 +42,10 @@ class TransitionManager {
     return this.instances
   }
 
+  getByIndex(index: number) {
+    return this.instances[index]
+  }
+
   /**
    * Get active transition
    */

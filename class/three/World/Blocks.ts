@@ -22,16 +22,16 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    // OtherManager.create(OTHERS.SPLASHSCREEN)
-    // OtherManager.create(OTHERS.CINEMATIC_1)
-    // OtherManager.create(OTHERS.CINEMATIC_2)
-    // OtherManager.create(OTHERS.CINEMATIC_3)
-    // OtherManager.create(OTHERS.TUTORIAL)
+    OtherManager.create(OTHERS.SPLASHSCREEN)
+    OtherManager.create(OTHERS.CINEMATIC_1)
+    OtherManager.create(OTHERS.CINEMATIC_2)
+    OtherManager.create(OTHERS.CINEMATIC_3)
+    OtherManager.create(OTHERS.TUTORIAL)
 
     // To uncomment for debug
-    // OrdalieManager.create(ORDALIES.BBQ)
+    OrdalieManager.create(ORDALIES.BBQ)
     TransitionManager.create(TRANSITIONS.TRANSITION_1)
-    TransitionManager.startNext()
+    // TransitionManager.startNext()
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
