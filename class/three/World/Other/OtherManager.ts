@@ -1,5 +1,6 @@
 import OTHERS from '@/constants/OTHERS'
 
+import OtherSplashscreen from '@/class/three/World/Other/OtherSplashscreen'
 import Blocks from '@/class/three/World/Blocks'
 import Other from '@/class/three/World/Other/Other'
 
@@ -7,6 +8,7 @@ class OtherManager {
   private instances: Other[] = []
   private currentIndex = 0
   private lastType: OTHERS
+  private splashScreenClass: OtherSplashscreen
 
   /**
    * Create other from type
@@ -23,7 +25,6 @@ class OtherManager {
   createNext() {
     switch (this.lastType) {
       case OTHERS.SPLASHSCREEN:
-        this.create(OTHERS.CINEMATIC_1)
         break
       case OTHERS.CINEMATIC_1:
         this.create(OTHERS.CINEMATIC_2)
@@ -41,6 +42,14 @@ class OtherManager {
         this.create(OTHERS.END)
         break
     }
+  }
+
+  setSplashscreenRef(splashscreen: OtherSplashscreen) {
+    this.splashScreenClass = splashscreen
+  }
+
+  getSplashscreenRef() {
+    return this.splashScreenClass
   }
 
   /**

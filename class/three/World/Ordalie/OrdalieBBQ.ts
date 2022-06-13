@@ -8,6 +8,7 @@ import { getFrame } from '@/class/three/utils/Maths'
 
 import ORDALIES from '@/constants/ORDALIES'
 import SOUNDS from '@/constants/SOUNDS'
+import ANIMATIONS from '@/constants/ANIMATIONS'
 
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
@@ -17,7 +18,6 @@ import WebGL from '@/class/three/WebGL'
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 import AudioManager from '@/class/three/utils/AudioManager'
-import ANIMATIONS from '@/constants/ANIMATIONS'
 
 // import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
 // import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
@@ -222,29 +222,31 @@ class OrdalieBBQ {
     this.animation.actions[ANIMATIONS.BBQ.SORTIE].action.clampWhenFinished = true
     this.animation.actions[ANIMATIONS.BBQ.SORTIE].action.loop = THREE.LoopOnce
 
-    this.animation.mixer.addEventListener('finished', (e) => {
-      if (e.action._clip.name === ANIMATIONS.BBQ.ENTREE) {
-        this.characterPosEntreeEnd.set(this.character.position.x, this.character.position.y, this.character.position.z)
-        this.animation.actions[ANIMATIONS.BBQ.ENTREE].action.stop()
-        this.character.position.set(this.characterPosEntreeEnd.x, this.characterPosEntreeEnd.y, this.characterPosEntreeEnd.z)
-        this.animation.actions[ANIMATIONS.BBQ.IDLE].action.play()
-      }
-
-      if (e.action._clip.name === ANIMATIONS.BBQ.AVANCE) {
-        this.animation.actions[ANIMATIONS.BBQ.AVANCE].action.stop()
-        this.animation.actions[ANIMATIONS.BBQ.IDLE].action.reset()
-        this.animation.play(ANIMATIONS.BBQ.IDLE)
-      }
-
-      if (e.action._clip.name === ANIMATIONS.BBQ.MORT || e.action._clip.name === ANIMATIONS.BBQ.SORTIE) {
-        this.end()
-      }
-    })
+    this.animation.mixer.addEventListener('finished', (e) => this.onFinish(e))
 
     // Debug
     // if (WebGL.debug.isActive()) {
     //   this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
     // }
+  }
+
+  onFinish(e) {
+    if (e.action._clip.name === ANIMATIONS.BBQ.ENTREE) {
+      this.characterPosEntreeEnd.set(this.character.position.x, this.character.position.y, this.character.position.z)
+      this.animation.actions[ANIMATIONS.BBQ.ENTREE].action.stop()
+      this.character.position.set(this.characterPosEntreeEnd.x, this.characterPosEntreeEnd.y, this.characterPosEntreeEnd.z)
+      this.animation.actions[ANIMATIONS.BBQ.IDLE].action.play()
+    }
+
+    if (e.action._clip.name === ANIMATIONS.BBQ.AVANCE) {
+      this.animation.actions[ANIMATIONS.BBQ.AVANCE].action.stop()
+      this.animation.actions[ANIMATIONS.BBQ.IDLE].action.reset()
+      this.animation.play(ANIMATIONS.BBQ.IDLE)
+    }
+
+    if (e.action._clip.name === ANIMATIONS.BBQ.MORT || e.action._clip.name === ANIMATIONS.BBQ.SORTIE) {
+      this.end()
+    }
   }
 
   makeAStep() {

@@ -20,7 +20,7 @@ const wordList = ref([])
 let displayedWords = []
 
 let COUNTER = 0
-const NB_WORDS_TO_WRITE = 1
+const NB_WORDS_TO_WRITE = 10
 let CURRENT_TIME_BEFORE_NEW_WORD = 0
 const TIME_BEFORE_NEW_WORD = {
   MIN: 1.8,

@@ -38,6 +38,7 @@ const onClick = () => {
 const showTextStart = () => {
   gsap.to(textStartEl.value, {
     duration: 0.8,
+    bottom: '3rem',
     autoAlpha: 1,
     ease: 'power3.inOut',
     onComplete: () => document.addEventListener('click', onClick),
