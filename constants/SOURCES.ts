@@ -152,10 +152,15 @@ const ORDALIE_SOURCES = {
       type: SourceType.texture,
       path: 'textures/noise.jpg',
     },
+    // {
+    //   name: 'banniere_ordalieFER',
+    //   type: SourceType.texture,
+    //   path: 'textures/banniere_ordalieFER.png',
+    // },
     {
-      name: 'banniere_ordalieFER',
+      name: 'gradient',
       type: SourceType.texture,
-      path: 'textures/banniere_ordalieFER.png',
+      path: 'textures/gradient.png',
     },
   ],
 }
