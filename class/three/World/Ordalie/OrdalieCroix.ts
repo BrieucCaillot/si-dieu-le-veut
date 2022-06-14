@@ -188,6 +188,7 @@ class OrdalieCroix {
 
   gameOver() {
     AudioManager.play('death')
+
     OrdalieManager.setIsDead(true)
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.play()
@@ -210,21 +211,21 @@ class OrdalieCroix {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    for (const animation of Object.values(this.animation.actions)) {
-      const time = animation.action.time
-      const currentFrame = Math.ceil(getFrame(time))
-      if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
-        console.log(animation.action._clip.name, currentFrame)
-      }
+    // for (const animation of Object.values(this.animation.actions)) {
+    //   const time = animation.action.time
+    //   const currentFrame = Math.ceil(getFrame(time))
+    //   if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+    //     console.log(animation.action._clip.name, currentFrame)
+    //   }
 
-      for (let j = 0; j < animation.frames.length; j++) {
-        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-          AudioManager.play(animation.frames[j].sound)
-        }
-      }
+    //   for (let j = 0; j < animation.frames.length; j++) {
+    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+    //       AudioManager.play(animation.frames[j].sound)
+    //     }
+    //   }
 
-      animation.lastFrame = currentFrame
-    }
+    //   animation.lastFrame = currentFrame
+    // }
   }
 }
 
