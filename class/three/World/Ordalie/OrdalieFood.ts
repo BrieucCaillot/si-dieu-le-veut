@@ -18,7 +18,6 @@ import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
 class OrdalieFood {
   instance: Ordalie
-
   character: THREE.Mesh
   animation: {
     mixer: THREE.AnimationMixer
@@ -214,10 +213,6 @@ class OrdalieFood {
 
     if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE) {
       console.log('FNINISHED SORTIE')
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_MORT].action.stop()
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT].action.stop()
       this.end()
     }
   }
@@ -226,10 +221,6 @@ class OrdalieFood {
     this.toggleFrustrumOnCharacters(false)
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE)
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE)
-
-    // setTimeout(() => {
-    //   this.gameOver()
-    // }, 4000)
 
     // DEBUG
     if (WebGL.debug.isActive()) {
@@ -323,7 +314,9 @@ class OrdalieFood {
   }
 
   gameWon() {
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE)
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE)
   }
 

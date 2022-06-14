@@ -17,6 +17,8 @@ class Block {
   // Model
   private defaultModel: GLTF
   private model: any
+  private character: THREE.Object3D
+  private garde: THREE.Object3D
   private difficultyData: { [key: string]: any }
 
   private position: THREE.Vector3 = new THREE.Vector3()
@@ -31,6 +33,8 @@ class Block {
 
     this.type = _type
     this.setModel()
+    this.setCharacter()
+    this.setGarde()
     this.add()
     this.setPosition()
     this.setCenter()
@@ -62,17 +66,33 @@ class Block {
     return this.model
   }
 
-  /**
-   * Hide materials of models to hide
-   */
-  toggleCharacter(value: boolean) {
-    const character = this.getModel().scene.children.filter((child) => child.name.includes('Cuisinier'))
-    character.forEach((element) => (element.visible = value))
+  private setCharacter() {
+    this.character = this.getModel().scene.children.find((child) => child.name.includes('Cuisinier'))
   }
 
+  /**
+   * Get character of model
+   */
+  getCharacter() {
+    return this.character
+  }
+
+  /**
+   * Toggle character's visibility
+   */
+  toggleCharacter(value: boolean) {
+    this.character.visible = value
+  }
+
+  private setGarde() {
+    this.garde = this.getModel().scene.children.find((child) => child.name.includes('Cuisinier'))
+  }
+
+  /**
+   * Toggle garde's visibility
+   */
   toggleGarde(value: boolean) {
-    const garde = this.getModel().scene.children.filter((child) => child.name.includes('Garde'))
-    garde.forEach((element) => (element.visible = value))
+    this.garde.visible = value
   }
 
   /**
