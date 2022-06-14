@@ -32,10 +32,10 @@ class WebGL {
     this.mouse = new Mouse()
     this.time = new Time()
     this.scene = new THREE.Scene()
+    this.renderer = new Renderer()
     this.resources = new Resources()
     this.camera = new Camera()
     this.raycaster = new Raycaster()
-    this.renderer = new Renderer()
 
     // Listeners
     this.sizes.addEventListener('resize', this.resize)

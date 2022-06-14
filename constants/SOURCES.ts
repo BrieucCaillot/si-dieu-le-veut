@@ -7,7 +7,7 @@ import TRANSITIONS from '@/constants/TRANSITIONS'
 enum SourceType {
   gltfModel = 'gltfLoader',
   texture = 'textureLoader',
-  cubeTexture = 'cubeTextureLoader',
+  ktx2 = 'ktx2Loader',
 }
 
 interface Source {
@@ -62,6 +62,11 @@ const OTHER_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Others/splashscreen.glb',
     },
+    // {
+    //   name: 'modelKTX',
+    //   type: SourceType.ktx2,
+    //   path: 'models/Others/splashscreen-ktx.glb',
+    // },
   ],
   [OTHERS.CINEMATIC_1]: [
     {

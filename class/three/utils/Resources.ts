@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader'
 
 import useStore from '@/composables/useStore'
 import { Source, ALL_SOURCES, SourceType } from '@/constants/SOURCES'
@@ -7,12 +8,14 @@ import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 
+import WebGL from '@/class/three/WebGL'
+
 class Resources extends THREE.EventDispatcher {
   sources = ALL_SOURCES
   loaders: {
     gltfLoader: GLTFLoader
     textureLoader: THREE.TextureLoader
-    cubeTextureLoader: THREE.CubeTextureLoader
+    ktx2Loader: KTX2Loader
   }
   itemsLoaded: {}
   resourcesLoaded: boolean
@@ -23,8 +26,11 @@ class Resources extends THREE.EventDispatcher {
     this.loaders = {
       gltfLoader: new GLTFLoader(),
       textureLoader: new THREE.TextureLoader(),
-      cubeTextureLoader: new THREE.CubeTextureLoader(),
+      ktx2Loader: new KTX2Loader(),
     }
+    this.loaders.ktx2Loader.setTranscoderPath('three/examples/js/libs/basis/basis_transcoder')
+    this.loaders.ktx2Loader.detectSupport(WebGL.renderer.instance)
+    this.loaders.gltfLoader.setKTX2Loader(this.loaders.ktx2Loader)
     this.itemsLoaded = {}
 
     this.startLoading()
@@ -57,6 +63,10 @@ class Resources extends THREE.EventDispatcher {
         this.loaders[source.type].load(source.path as string, (file) => {
           if (source.encoding) file.encoding = source.encoding
           if (source.wrap) file.wrapS = file.wrapT = THREE.RepeatWrapping
+
+          if (source.type === SourceType.ktx2) {
+            console.log(source)
+          }
 
           itemsLoaded.assets.push({
             name: source.name,
