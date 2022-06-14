@@ -3,7 +3,7 @@
     <OrdalieCroix v-if="showOrdalie(ORDALIES.CROIX)" />
     <OrdalieBBQ v-if="showOrdalie(ORDALIES.BBQ)" />
     <OrdalieFood v-if="showOrdalie(ORDALIES.FOOD)" />
-    <TransitionTyping v-if="isTransition" />
+    <TransitionTyping :type="currentOther" v-if="currentOther !== null" />
   </div>
 </template>
 
@@ -16,16 +16,18 @@ import TransitionTyping from '@/components/ui/Typing/TransitionTyping.vue'
 import ORDALIES from '@/constants/ORDALIES'
 
 const currentOrdalie = ref(null)
-const isTransition = ref(null)
+const currentOther = ref(null)
 
 onMounted(() => {
   currentOrdalie.value = useStore().currentOrdalie.value
-  isTransition.value = useStore().isTransition.value
+  currentOther.value = useStore().currentOther.value
 })
 
 watch(useStore().currentOrdalie, (value: ORDALIES) => (currentOrdalie.value = value))
-watch(useStore().isTransition, (value: boolean) => {
-  isTransition.value = value
+watch(useStore().currentOther, (value) => {
+  currentOther.value = value
+
+  console.log('current other new value', value)
 })
 
 const showOrdalie = (_ordalie: ORDALIES) => currentOrdalie.value === _ordalie

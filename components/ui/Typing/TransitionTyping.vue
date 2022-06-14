@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-0 left-0 font-primary" v-SplitText ref="domText"></div>
+  <div class="absolute top-0 left-0 font-primary opacity-0" v-SplitText ref="domText"></div>
 </template>
 
 <script setup lang="ts">
@@ -8,11 +8,14 @@ import gsap from 'gsap'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 
-const domText = ref<HTMLDivElement>(null)
-const text = ref('coupable')
-const transition = ref()
+import OtherManager from '~~/class/three/World/Other/OtherManager'
 
+const domText = ref<HTMLDivElement>(null)
+const text = ref('')
+const currentBlock = ref()
+const props = defineProps(['type'])
 let index = 0
+let fontSizeCoef = null
 let lettersToType = null
 let letterToType = null
 
@@ -20,30 +23,48 @@ onMounted(() => {
   document.addEventListener('keydown', newChar)
   window.addEventListener('resize', resize)
 
-  // transition.value = TransitionManager.getByIndex(0)
-  transition.value = TransitionManager.getCurrent()
+  if (props.type.startsWith('Transition')) {
+    currentBlock.value = TransitionManager.getCurrent()
+    fontSizeCoef = 2.22
+  } else if (props.type === 'END') {
+    currentBlock.value = OtherManager.getCurrent().instance
+    fontSizeCoef = 3.26
+  }
 
-  const positions = setHTMLPosition(transition.value.text)
-  domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y}px, 0)`
-  domText.value.style.fontSize = positions.width / 2.22 + 'px'
+  gsap.to(domText.value, {
+    opacity: 1,
+    duration: 0.25,
+  })
+
+  resize()
 
   lettersToType = text.value.split('')
   letterToType = lettersToType[index]
 })
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', newChar)
-  window.removeEventListener('resize', resize)
+  clearEvents()
 })
 
+const clearEvents = () => {
+  document.removeEventListener('keydown', newChar)
+  window.removeEventListener('resize', resize)
+}
+
 const resize = () => {
-  const positions = setHTMLPosition(transition.value.text)
+  const positions = setHTMLPosition(currentBlock.value.text)
   domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y}px, 0)`
-  domText.value.style.fontSize = positions.width / 2.22 + 'px'
+  domText.value.style.fontSize = positions.width / fontSizeCoef + 'px'
 }
 
 const vSplitText = {
-  created: (el: HTMLDivElement) => {
+  mounted: (el: HTMLDivElement) => {
+    if (props.type.startsWith('Transition')) {
+      text.value = 'coupable'
+    } else if (props.type === 'END') {
+      text.value = 'résurrection'
+    }
+
     const textToSplit = text.value.split('')
 
     textToSplit.forEach((letter) => {
@@ -83,5 +104,19 @@ const newChar = (e: KeyboardEvent) => {
 
 const completed = () => {
   console.log('game over')
+  clearEvents()
+
+  if (props.type.startsWith('Transition')) {
+    currentBlock.value.hide()
+    gsap.to(domText.value, {
+      opacity: 0,
+      duration: 0.25,
+      delay: 2,
+    })
+  }
+
+  if (props.type === 'END') {
+    currentBlock.value.onRetry()
+  }
 }
 </script>

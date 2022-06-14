@@ -194,6 +194,34 @@ const SOUNDS = [
     path: '/sounds/Other/splashscreen_cough.mp3',
   },
   {
+    name: 'splashscreen_cough',
+    path: '/sounds/Other/splashscreen_cough.mp3',
+  },
+  {
+    name: 'braise_ambience',
+    path: '/sounds/Ordalies/BBQ/braise_ambience.mp3',
+  },
+  {
+    name: 'walk_braises1',
+    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises1.mp3',
+  },
+  {
+    name: 'walk_braises2',
+    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises2.mp3',
+  },
+  {
+    name: 'walk_braises3',
+    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises3.mp3',
+  },
+  {
+    name: 'walk_braises4',
+    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises4.mp3',
+  },
+  {
+    name: 'walk_braises5',
+    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises5.mp3',
+  },
+  {
     name: 'success',
     path: '/sounds/type_2.mp3',
   },
