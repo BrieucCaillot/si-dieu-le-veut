@@ -122,6 +122,27 @@ const TRANSITION_SOURCES = {
       path: 'models/Transitions/transition_1.glb',
     },
   ],
+  [TRANSITIONS.TRANSITION_3]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Transitions/transition_3.glb',
+    },
+  ],
+  [TRANSITIONS.TRANSITION_4]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Transitions/transition_4.glb',
+    },
+  ],
+  [TRANSITIONS.TRANSITION_5]: [
+    {
+      name: 'model',
+      type: SourceType.gltfModel,
+      path: 'models/Transitions/transition_4.glb',
+    },
+  ],
 }
 
 const ORDALIE_SOURCES = {

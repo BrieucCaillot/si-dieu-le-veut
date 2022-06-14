@@ -6,7 +6,8 @@ import Transition from '@/class/three/World/Transition/Transition'
 class TransitionManager {
   private instances: Transition[] = []
   private currentIndex = -1
-  private lastType: TRANSITIONS
+  private lastCreated: TRANSITIONS
+  private alreadyPlayed: TRANSITIONS[] = []
 
   /**
    * Create transition from type
@@ -14,25 +15,22 @@ class TransitionManager {
   create(_type: TRANSITIONS) {
     const transition = new Transition(_type)
     this.instances.push(transition)
-    this.lastType = _type
+    this.lastCreated = _type
   }
 
   /**
    * Create next transition
    */
   createNext() {
-    // @TODO Define logic
-    switch (this.lastType) {
-      case TRANSITIONS.TRANSITION_1:
-        this.create(TRANSITIONS.TRANSITION_2)
-        break
-      case TRANSITIONS.TRANSITION_2:
-        this.create(TRANSITIONS.TRANSITION_1)
-        break
-      default:
-        this.create(TRANSITIONS.TRANSITION_1)
-        break
-    }
+    const randomIndex = Math.floor(Math.random() * Object.values(TRANSITIONS).length)
+    const randomTransition = Object.values(TRANSITIONS)[randomIndex]
+
+    // Recall the function if the random transition picked is already played
+    if (this.alreadyPlayed.includes(randomTransition)) return this.createNext()
+    // Recall the function if the previous transition played is the same as the random transition picked
+    if (this.lastCreated === randomTransition) return this.createNext()
+
+    this.create(randomTransition)
   }
 
   /**
