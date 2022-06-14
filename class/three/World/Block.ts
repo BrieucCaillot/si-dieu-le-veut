@@ -85,7 +85,7 @@ class Block {
   }
 
   private setGarde() {
-    this.garde = this.getModel().scene.children.find((child) => child.name.includes('Cuisinier'))
+    this.garde = this.getModel().scene.children.find((child) => child.name.includes('Garde'))
   }
 
   /**
@@ -181,7 +181,7 @@ class Block {
     console.log('⬇️ FRONT', this.type)
     gsap.to(this.model.scene.position, {
       z: this.zMaxPosition,
-      duration: 0.3,
+      duration: 0.1,
       ease: 'power3.inOut',
     })
   }
@@ -190,7 +190,7 @@ class Block {
     console.log('⬆️ BEHIND', this.type)
     gsap.to(this.model.scene.position, {
       z: -this.zMaxPosition,
-      duration: 0.3,
+      duration: 0.1,
       ease: 'power3.inOut',
     })
   }

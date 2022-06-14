@@ -153,7 +153,6 @@ class OrdalieFood {
       },
       play: (name: string) => {
         this.animation.actions[name].action.play()
-        console.log(name)
       },
     }
 
@@ -191,28 +190,14 @@ class OrdalieFood {
 
   onFinish(e) {
     if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE) {
-      console.log('FNINISHED ENTREE')
+      // console.log('FNINISHED ENTREE')
       this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE].action.stop()
       this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE)
       this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE].action.stop()
       this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE)
     }
-    if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE) {
-      console.log('FNINISHED IDLE')
-    }
 
-    if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_MORT) {
-      console.log('FNINISHED MORT')
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_MORT].action.stop()
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
-      this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE)
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT].action.stop()
-      this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
-      this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE)
-    }
-
-    if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE) {
-      console.log('FNINISHED SORTIE')
+    if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE || e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_MORT) {
       this.end()
     }
   }
