@@ -72,6 +72,7 @@ class TransitionManager {
    */
   onStarted() {
     console.log('🏴‍☠️ STARTED ' + this.getCurrent().block.getType())
+    useStore().currentType.value = this.getCurrent().block.getType()
     Blocks.onStarted()
   }
 
@@ -80,6 +81,7 @@ class TransitionManager {
    */
   onEnded() {
     console.log('🏴‍☠️ ENDED ' + this.getCurrent().block.getType())
+    useStore().currentType.value = null
     Blocks.onEnded()
   }
 }

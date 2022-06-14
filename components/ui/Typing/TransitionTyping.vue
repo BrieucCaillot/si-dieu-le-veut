@@ -5,10 +5,13 @@
 <script setup lang="ts">
 import AudioManager from '@/class/three/utils/AudioManager'
 import gsap from 'gsap'
+
+import OTHERS from '@/constants/OTHERS'
+
+import Blocks from '@/class/three/World/Blocks'
+import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
-
-import OtherManager from '~~/class/three/World/Other/OtherManager'
 
 const domText = ref<HTMLDivElement>(null)
 const text = ref('')
@@ -23,10 +26,18 @@ onMounted(() => {
   document.addEventListener('keydown', newChar)
   window.addEventListener('resize', resize)
 
-  if (props.type.startsWith('Transition')) {
+  const isTransition = Blocks.isTransition(props.type)
+  const isOtherEnd = props.type === OTHERS.END
+
+  // Debug
+  // console.log('TYPE :', props.type)
+  // console.log('IS OTHER END : ', isOtherEnd)
+  // console.log('IS TRANSITION : ', isTransition)
+
+  if (isTransition) {
     currentBlock.value = TransitionManager.getCurrent()
     fontSizeCoef = 2.22
-  } else if (props.type === 'END') {
+  } else if (isOtherEnd) {
     currentBlock.value = OtherManager.getCurrent().instance
     fontSizeCoef = 3.26
   }

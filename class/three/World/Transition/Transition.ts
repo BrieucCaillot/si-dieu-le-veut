@@ -81,29 +81,21 @@ class Transition {
   start() {
     this.block.showBehind()
     if (OrdalieManager.isPlayerDead) return this.hide()
-    this.onStart()
-    gsap.ticker.add(this.updateId)
-    TransitionManager.onStarted()
-  }
 
-  onStart() {
-    useStore().currentOther.value = this.block.getType()
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
     this.debugParams().animations.playGroupAnim()
+
+    gsap.ticker.add(this.updateId)
+    TransitionManager.onStarted()
   }
 
   end() {
-    this.onEnd()
+    if (this.debugFolder) this.debugFolder.destroy()
     gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
     this.block.toggleCharacter(false)
-  }
-
-  onEnd() {
-    useStore().currentOther.value = null
-    if (this.debugFolder) this.debugFolder.destroy()
   }
 
   changeMaterial() {
