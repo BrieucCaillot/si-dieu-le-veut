@@ -15,14 +15,14 @@
 </template>
 
 <script setup lang="ts">
-import WebGL from '@/class/three/WebGL'
 import Canvas from '@/components/three/Canvas.vue'
 
-import Header from '@/components/ui/Header.vue'
 import Loader from '@/components/ui/Loader.vue'
 import Video from '@/components/ui/Video.vue'
 import HUD from '@/components/ui/HUD.vue'
 import Mobile from '@/components/ui/Mobile.vue'
+
+import { isMobileTest, isTabletSize } from '@/class/three/utils/isMobile'
 
 const route = useRoute()
 const startWebGL = ref(false)
@@ -34,7 +34,7 @@ isDebug.value = route.name === 'debug'
 is404.value = route.name === '404'
 
 onMounted(() => {
-  isMobile.value = window.matchMedia('(max-width: 768px)').matches
+  isMobile.value = isMobileTest()
   showLoader.value = !is404.value && !isMobile.value
   startWebGL.value = !is404.value && !isMobile.value
 })
