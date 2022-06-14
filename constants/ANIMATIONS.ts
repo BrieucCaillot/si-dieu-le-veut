@@ -28,6 +28,16 @@ const ANIMATIONS = {
     SIDE_ENTREE: 'Croix_CuisinierSIDE_Entree',
     SIDE_SORTIE: 'Croix_CuisinierSIDE_Sortie',
   },
+  [ORDALIES.FOOD]: {
+    FOOD_CUISINIER_ENTREE: 'Food_Cuisinier_Entree',
+    FOOD_CUISINIER_IDLE: 'Food_Cuisinier_Idle',
+    FOOD_CUISINIER_MORT: 'Food_Cuisinier_Mort',
+    FOOD_CUISINIER_SORTIE: 'Food_Cuisinier_Sortie',
+    FOOD_ENTONNOIR_ENTREE: 'Food_Entonnoir_Entree',
+    FOOD_ENTONNOIR_IDLE: 'Food_Entonnoir_Idle',
+    FOOD_ENTONNOIR_MORT: 'Food_Entonnoir_Mort',
+    FOOD_ENTONNOIR_SORTIE: 'Food_Entonnoir_Sortie',
+  },
 }
 
 export default ANIMATIONS

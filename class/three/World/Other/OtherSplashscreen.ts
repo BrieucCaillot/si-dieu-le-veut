@@ -12,7 +12,7 @@ import { getFrame } from '../../utils/Maths'
 
 class OtherSplashscreen {
   instance: Other
-  character: THREE.Mesh
+  characterRoot: THREE.Mesh
   isFollowingCharacter = false
   animation: {
     mixer: THREE.AnimationMixer
@@ -33,7 +33,7 @@ class OtherSplashscreen {
     this.instance = _other
 
     this.setAnimation()
-    this.setCharacter()
+    this.setCharacterRoot()
     this.toggleFrustrumOnCharacters(false)
 
     OtherManager.setSplashscreenRef(this)
@@ -184,9 +184,8 @@ class OtherSplashscreen {
     }
   }
 
-  private setCharacter() {
-    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
-    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
+  private setCharacterRoot() {
+    this.characterRoot = this.instance.block.getCharacter().children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   toggleFrustrumOnCharacters(value: boolean) {
@@ -197,7 +196,7 @@ class OtherSplashscreen {
 
   followCharacter() {
     const currentBlockType = OtherManager.getCurrent().block.getType() as OTHERS
-    const characterPosition = this.character.getWorldPosition(new THREE.Vector3())
+    const characterPosition = this.characterRoot.getWorldPosition(new THREE.Vector3())
 
     // Return if current block type is not Splashscreen or Cinematic 2
     if (![OTHERS.SPLASHSCREEN].includes(currentBlockType)) return
@@ -220,7 +219,6 @@ class OtherSplashscreen {
 
       for (let j = 0; j < animation.frames.length; j++) {
         if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-          console.log('play', animation.action._clip.name, currentFrame)
           AudioManager.play(animation.frames[j].sound)
         }
       }

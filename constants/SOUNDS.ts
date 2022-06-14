@@ -145,6 +145,72 @@ const ANIMATIONS_SOUNDS = {
       ],
     },
   },
+  [ORDALIES.FOOD]: {
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_MORT]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+  },
 }
 
 export default ANIMATIONS_SOUNDS
