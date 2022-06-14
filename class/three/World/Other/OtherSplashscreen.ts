@@ -7,6 +7,8 @@ import SOUNDS from '@/constants/SOUNDS'
 import WebGL from '@/class/three/WebGL'
 import Other from '@/class/three/World/Other/Other'
 import OtherManager from './OtherManager'
+import AudioManager from '@/class/three/utils/AudioManager'
+import { getFrame } from '../../utils/Maths'
 
 class OtherSplashscreen {
   instance: Other
@@ -210,7 +212,21 @@ class OtherSplashscreen {
   update() {
     const { deltaTime } = WebGL.time
 
-    this.animation.mixer.update(deltaTime * 0.002)
+    this.animation.mixer.update(deltaTime * 0.001)
+
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          console.log('play', animation.action._clip.name, currentFrame)
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
 
     if (this.isFollowingCharacter) return
     this.followCharacter()

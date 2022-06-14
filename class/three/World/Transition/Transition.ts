@@ -13,6 +13,9 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
+import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
+import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
+
 class Transition {
   block: Block
   instance: any
@@ -20,7 +23,15 @@ class Transition {
   debugFolder: GUI
   updateId: () => void
   text: THREE.Mesh
+  character: THREE.Mesh
+  garde: THREE.Mesh
   transitionObj: THREE.Mesh
+
+  // uniforms: {
+  //   uNoise: { value: THREE.Texture }
+  //   uGradient: { value: THREE.Texture }
+  //   uDissolve: { value: number }
+  // }
 
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
@@ -33,10 +44,37 @@ class Transition {
     this.setAnimation()
     this.updateId = this.update
 
-    this.block.getModel().scene.traverse((object: THREE.Object3D) => {
-      if (object.name === 'texte') {
-        this.text = object as THREE.Mesh
-      }
+    this.text = this.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'texte')
+    this.character = this.block
+      .getModel()
+      .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Cuisinier')
+      .children.find((mesh: THREE.Mesh) => mesh.name === 'SIDE_Cuisinier')
+    this.garde = this.block
+      .getModel()
+      .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Garde')
+      .children.find((mesh: THREE.Mesh) => mesh.name === 'Garde')
+
+    const characterTexture = this.character.material.map
+    characterTexture.encoding = THREE.LinearEncoding
+
+    const gardeTexture = this.garde.material.map
+    gardeTexture.encoding = THREE.LinearEncoding
+
+    const uniforms = {
+      uNoise: { value: WebGL.resources.getItems('COMMON', 'noise-3') },
+      uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-1') },
+      uDissolve: { value: 0 },
+    }
+
+    this.character.material = new THREE.ShaderMaterial({
+      uniforms: { ...uniforms, uTexture: { value: characterTexture } },
+      vertexShader: characterBurningVert,
+      fragmentShader: characterBurningFrag,
+    })
+    this.garde.material = new THREE.ShaderMaterial({
+      uniforms: { ...uniforms, uTexture: { value: gardeTexture } },
+      vertexShader: characterBurningVert,
+      fragmentShader: characterBurningFrag,
     })
   }
 
@@ -49,8 +87,7 @@ class Transition {
   }
 
   onStart() {
-    useStore().isTransition.value = true
-
+    useStore().currentOther.value = this.block.getType()
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
@@ -65,6 +102,7 @@ class Transition {
   }
 
   onEnd() {
+    useStore().currentOther.value = null
     if (this.debugFolder) this.debugFolder.destroy()
   }
 
@@ -103,7 +141,7 @@ class Transition {
   }
 
   hide() {
-    gsap.to(this.transitionObj.material.uniforms.uDissolve, {
+    gsap.to([this.transitionObj.material.uniforms.uDissolve, this.character.material.uniforms.uDissolve], {
       delay: 1,
       value: 1,
       duration: 3,

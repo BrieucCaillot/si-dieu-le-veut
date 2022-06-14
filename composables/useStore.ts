@@ -5,7 +5,7 @@ const showLoader = ref(true)
 const resourcesLoaded = ref(false)
 const isDebug = ref(false)
 const currentOrdalie = ref(null)
-const isTransition = ref(null)
+const currentOther = ref(null)
 
 export default () => {
   return {
@@ -14,6 +14,6 @@ export default () => {
     resourcesLoaded,
     isDebug,
     currentOrdalie,
-    isTransition,
+    currentOther,
   }
 }

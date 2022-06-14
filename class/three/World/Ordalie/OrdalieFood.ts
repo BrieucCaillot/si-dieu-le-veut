@@ -93,7 +93,7 @@ class OrdalieFood {
     clone.material = material
 
     clone.name = 'clone_' + i
-    const point = path.getPointAt(0)
+    const point = path.getPointAt(1)
 
     clone.position.set(point.x, point.y, point.z)
     WebGL.scene.add(clone)
