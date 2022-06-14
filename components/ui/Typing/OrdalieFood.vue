@@ -203,13 +203,13 @@ const replaceWord = async () => {
 }
 
 const gameWon = () => {
+  ordalie.value.gameWon()
   gsap.ticker.remove(update)
-  ordalie.value.end()
 }
 
 const gameOver = () => {
+  ordalie.value.gameOver()
   gsap.ticker.remove(update)
-  ordalie.value.end()
 }
 
 const update = (time: number, deltaTime: number, frame: number) => {

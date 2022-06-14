@@ -3,13 +3,15 @@ import GUI from 'lil-gui'
 import * as THREE from 'three'
 
 import TRANSITIONS from '@/constants/TRANSITIONS'
-import OTHERS from '@/constants/OTHERS'
 
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
-import OrdalieManager from '../Ordalie/OrdalieManager'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+
+import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
+import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
 class Transition {
   block: Block
@@ -17,6 +19,8 @@ class Transition {
   animation!: { [key: string]: any }
   debugFolder: GUI
   updateId: () => void
+  text: THREE.Mesh
+  transitionObj: THREE.Mesh
 
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
@@ -24,19 +28,29 @@ class Transition {
     this.block.toggleCharacter(false)
     this.block.showFront()
 
+    this.changeMaterial()
+
     this.setAnimation()
     this.updateId = this.update
+
+    this.block.getModel().scene.traverse((object: THREE.Object3D) => {
+      if (object.name === 'texte') {
+        this.text = object as THREE.Mesh
+      }
+    })
   }
 
   start() {
-    if (OrdalieManager.isPlayerDead) return this.hideTransition()
     this.block.showBehind()
+    if (OrdalieManager.isPlayerDead) return this.hide()
     this.onStart()
     gsap.ticker.add(this.updateId)
     TransitionManager.onStarted()
   }
 
   onStart() {
+    useStore().isTransition.value = true
+
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
@@ -52,6 +66,52 @@ class Transition {
 
   onEnd() {
     if (this.debugFolder) this.debugFolder.destroy()
+  }
+
+  changeMaterial() {
+    const objs = this.block.getModel().scene.children.filter((obj) => obj.material)
+
+    this.transitionObj = objs.find((obj) => obj.material.name === 'transition_texture')
+
+    const uniforms = {
+      uNoise: { value: WebGL.resources.getItems('COMMON', 'noise-3') },
+      uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-1') },
+      uDissolve: { value: 0 },
+    }
+
+    const texture = this.transitionObj.material.map
+    texture.encoding = THREE.LinearEncoding
+
+    const newTransitionMat = new THREE.ShaderMaterial({
+      uniforms: { ...uniforms, uTexture: { value: texture } },
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      transparent: true,
+    })
+
+    this.transitionObj.material = newTransitionMat
+
+    const backgroundObj = objs.find((obj) => obj.material.name === 'background')
+
+    const newBackgroundMat = new THREE.ShaderMaterial({
+      uniforms: { ...uniforms, uTexture: { value: null } },
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+    })
+
+    backgroundObj.material = newBackgroundMat
+  }
+
+  hide() {
+    gsap.to(this.transitionObj.material.uniforms.uDissolve, {
+      delay: 1,
+      value: 1,
+      duration: 3,
+      ease: 'linear',
+      onComplete: () => {
+        OtherManager.startNext()
+      },
+    })
   }
 
   setAnimation() {
@@ -78,25 +138,6 @@ class Transition {
 
     // Debug
     this.debugFolder?.add(this.debugParams().animations, 'playGroupAnim')
-  }
-
-  hideTransition() {
-    const transitionMaterials = new Set()
-    this.block
-      .getModel()
-      .scene.children.filter((obj) => obj instanceof THREE.Mesh)
-      .map((child) => transitionMaterials.add(child.material))
-
-    gsap.to([[...transitionMaterials]], {
-      opacity: 0,
-      duration: 3,
-      stagger: 1,
-      onStart: () => this.showDeath(),
-    })
-  }
-
-  showDeath() {
-    OtherManager.startNext()
   }
 
   update = () => {

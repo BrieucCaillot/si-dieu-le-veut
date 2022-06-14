@@ -15,6 +15,10 @@ class OtherEnd {
     setTimeout(() => this.end(), 100)
   }
 
+  onRetry() {
+    window.location.reload()
+  }
+
   end() {
     this.instance.end()
   }

@@ -1,6 +1,5 @@
 import GUI from 'lil-gui'
 import * as THREE from 'three'
-import gsap from 'gsap'
 
 import OTHERS from '@/constants/OTHERS'
 
@@ -18,39 +17,12 @@ class OtherDead {
     this.instance = _other
 
     // Update position to last transition to overlap it
-    this.instance.block.updatePosition(TransitionManager.getLast().block.getPosition())
-
-    this.getMaterials()
-    this.hideMaterials()
-  }
-
-  getMaterials() {
-    this.allMaterials = this.instance.block.getModel().scene.children.map((child) => child.material)
-    // .find((mat) => mat.name !== 'bg')
-
-    console.log(this.allMaterials)
-  }
-
-  hideMaterials() {
-    gsap.set([this.allMaterials], {
-      opacity: 0,
-    })
-  }
-
-  showMaterials() {
-    gsap.to([this.allMaterials], {
-      opacity: 1,
-      duration: 2,
-      stagger: 1,
-    })
+    const lastBlockPosition = TransitionManager.getLast().block.getPosition()
+    this.instance.block.updatePosition(new THREE.Vector3(lastBlockPosition.x, lastBlockPosition.y, lastBlockPosition.z - 0.4))
   }
 
   start() {
-    OtherManager.create(OTHERS.END)
-
-    this.showMaterials()
-
-    setTimeout(() => this.end(), 5000)
+    setTimeout(() => this.end(), 8000)
   }
 
   end() {

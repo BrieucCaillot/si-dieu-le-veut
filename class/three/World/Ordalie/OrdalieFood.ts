@@ -2,15 +2,16 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap, { SteppedEase } from 'gsap'
 
+import PATHS from '@/constants/PATHS'
+import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
+import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/bite/fragment.glsl'
 import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
-
-import PATHS from '@/constants/PATHS'
-import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
-import setHTMLPosition from '../../utils/setHTMLPosition'
 
 class OrdalieFood {
   instance: Ordalie
@@ -163,6 +164,16 @@ class OrdalieFood {
       // const tube = new THREE.Mesh(geometry, material)
       // WebGL.scene.add(tube)
     }
+  }
+
+  gameWon() {
+    this.end()
+  }
+
+  gameOver() {
+    console.log('game over food ')
+    OrdalieManager.setIsDead(true)
+    this.end()
   }
 
   updateMesh(mesh: THREE.Mesh, path: THREE.CatmullRomCurve3, progress: number) {
