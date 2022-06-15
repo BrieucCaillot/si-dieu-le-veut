@@ -44,7 +44,7 @@ const vSplitText = {
     textToWriteSplit.forEach((word) => {
       const splittedWord = word.split('')
       const div = document.createElement('div')
-      div.setAttribute('class', 'word-item inline mr-[5px] whitespace-nowrap')
+      div.setAttribute('class', 'inline-block mr-[5px]')
       el.append(div)
 
       splittedWord.forEach((letter) => {
@@ -55,7 +55,7 @@ const vSplitText = {
       })
     })
 
-    currentWordDOM.value = el.querySelector('.word-item')
+    currentWordDOM.value = el.children.item(0)
   },
 }
 

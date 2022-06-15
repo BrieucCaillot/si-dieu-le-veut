@@ -2,19 +2,37 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap, { SteppedEase } from 'gsap'
 
+import ORDALIES from '@/constants/ORDALIES'
+import SOUNDS from '@/constants/SOUNDS'
+import ANIMATIONS from '@/constants/ANIMATIONS'
+import PATHS from '@/constants/PATHS'
+import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
+import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/bite/fragment.glsl'
 import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
-import PATHS from '@/constants/PATHS'
-import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
-import setHTMLPosition from '../../utils/setHTMLPosition'
-
 class OrdalieFood {
   instance: Ordalie
-  animation: { [key: string]: any }
+  character: THREE.Mesh
+  animation: {
+    mixer: THREE.AnimationMixer
+    actions: {
+      [key: string]: {
+        action: THREE.AnimationAction
+        frames: {
+          frame: number
+          sound: string
+        }[]
+        lastFrame: number
+      }
+    }
+    play: (name: string) => void
+  }
   debugFolder: GUI
   path: THREE.CatmullRomCurve3
   mesh: THREE.Mesh
@@ -45,6 +63,8 @@ class OrdalieFood {
 
     this.paths = []
     this.setPath()
+    this.setCharacter()
+    this.setAnimation()
   }
 
   getRandomPath() {
@@ -72,41 +92,122 @@ class OrdalieFood {
     clone.material = material
 
     clone.name = 'clone_' + i
-    const point = path.getPointAt(0)
+    const point = path.getPointAt(1)
 
     clone.position.set(point.x, point.y, point.z)
     WebGL.scene.add(clone)
 
     return clone
   }
-
-  startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
-    return new Promise<void>((resolve, reject) => {
-      const uniform = mesh.material.uniforms.uProgress
-
-      gsap.to(uniform, {
-        value: 0,
-        ease: SteppedEase.config(4),
-        duration: 0.5,
-        onComplete: () => {
-          resolve()
-        },
-      })
-    })
+  private setCharacter() {
+    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
+    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
-  disposeInstance(name: string) {
-    let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
+  private setAnimation() {
+    const mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
 
-    WebGL.scene.remove(mesh)
+    this.animation = {
+      mixer,
+      actions: {
+        [ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[0]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[1]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_CUISINIER_MORT]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[2]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_CUISINIER_MORT].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[3]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[4]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[5]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[6]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[7]),
+          frames: SOUNDS[ORDALIES.FOOD][ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE].frames,
+          lastFrame: 0,
+        },
+      },
+      play: (name: string) => {
+        this.animation.actions[name].action.play()
+      },
+    }
 
-    mesh.geometry.dispose()
-    mesh.material.dispose()
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE].action.loop = THREE.LoopOnce
 
-    mesh = null
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.clampWhenFinished = true
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.loop = THREE.LoopRepeat
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_MORT].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_MORT].action.loop = THREE.LoopOnce
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE].action.loop = THREE.LoopOnce
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE].action.loop = THREE.LoopOnce
+
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.clampWhenFinished = true
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.loop = THREE.LoopRepeat
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT].action.loop = THREE.LoopOnce
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE].action.loop = THREE.LoopOnce
+
+    this.animation.mixer.addEventListener('finished', (e) => this.onFinish(e))
+
+    // Debug
+    // if (WebGL.debug.isActive()) {
+    //   this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
+    // }
+  }
+
+  onFinish(e) {
+    if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE) {
+      // console.log('FNINISHED ENTREE')
+      this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE].action.stop()
+      this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE)
+      this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE].action.stop()
+      this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE)
+    }
+
+    if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE || e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_MORT) {
+      this.end()
+    }
   }
 
   start() {
+    this.toggleFrustrumOnCharacters(false)
+    this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE)
+    this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE)
+
+    // DEBUG
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieFood')
       // this.debugFolder.add(this.debug, 'progress', 0, 1).step(0.01)
@@ -133,6 +234,38 @@ class OrdalieFood {
   end() {
     if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
+  }
+
+  toggleFrustrumOnCharacters(value: boolean) {
+    this.instance.block.getModel().scene.traverse((child) => {
+      if (child.type === 'SkinnedMesh') child.frustumCulled = value
+    })
+  }
+
+  startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
+    return new Promise<void>((resolve, reject) => {
+      const uniform = mesh.material.uniforms.uProgress
+
+      gsap.to(uniform, {
+        value: 0,
+        ease: SteppedEase.config(4),
+        duration: 0.5,
+        onComplete: () => {
+          resolve()
+        },
+      })
+    })
+  }
+
+  disposeInstance(name: string) {
+    let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
+
+    WebGL.scene.remove(mesh)
+
+    mesh.geometry.dispose()
+    mesh.material.dispose()
+
+    mesh = null
   }
 
   updateHTML(container: HTMLElement, mesh: THREE.Mesh, scale: number) {
@@ -165,14 +298,30 @@ class OrdalieFood {
     }
   }
 
+  gameWon() {
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
+    this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE)
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
+    this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE)
+  }
+
+  gameOver() {
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
+    this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_MORT)
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
+    this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT)
+
+    OrdalieManager.setIsDead(true)
+  }
+
   updateMesh(mesh: THREE.Mesh, path: THREE.CatmullRomCurve3, progress: number) {
     const point = path.getPointAt(1 - progress)
     mesh.position.set(point.x, point.y, point.z)
   }
 
   update() {
-    // const { deltaTime } = WebGL.time
-    // this.animation.mixer.update(deltaTime * 0.001)
+    const { deltaTime } = WebGL.time
+    this.animation.mixer.update(deltaTime * 0.001)
   }
 }
 

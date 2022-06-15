@@ -82,7 +82,7 @@ class Other {
 
   onSpacePressed = (e: KeyboardEvent) => {
     // Prevent to skip when key pressed is not Space or user is on the splashscreen
-    if (e.code !== 'Space' && this.isSplashscreen) return
+    if (e.code !== 'Space' || this.isSplashscreen) return
 
     // Play animation for the next others
     OtherManager.getSplashscreenRef().playAnimFromOther(this.block.getType() as OTHERS)

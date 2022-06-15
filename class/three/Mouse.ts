@@ -30,7 +30,7 @@ class Mouse extends THREE.EventDispatcher {
 
   onScroll(e: WheelEvent) {
     const normalized = normalizeWheel(e)
-    WebGL.camera.moveOnX(normalized.pixelY < 0 ? 'right' : 'left')
+    WebGL.camera.moveOnX(normalized.pixelY < 0 ? 'left' : 'right')
   }
 
   setEvents = () => {

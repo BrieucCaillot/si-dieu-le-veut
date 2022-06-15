@@ -6,13 +6,19 @@ class OtherEnd {
   instance: Other
   animation!: { [key: string]: any }
   debugFolder: GUI
+  text: THREE.Mesh
 
   constructor(_other: Other) {
     this.instance = _other
+    this.text = this.instance.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'resurection')
   }
 
   start() {
-    setTimeout(() => this.end(), 100)
+    this.instance.end()
+  }
+
+  onRetry() {
+    window.location.reload()
   }
 
   end() {

@@ -2,22 +2,21 @@ import * as THREE from 'three'
 import GUI from 'lil-gui'
 import gsap from 'gsap'
 
-import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
-
-import { getFrame } from '@/class/three/utils/Maths'
-
 import ORDALIES from '@/constants/ORDALIES'
 import SOUNDS from '@/constants/SOUNDS'
 import ANIMATIONS from '@/constants/ANIMATIONS'
+import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
 
+import WebGL from '@/class/three/WebGL'
+import AudioManager from '@/class/three/utils/AudioManager'
+
+import { getFrame } from '@/class/three/utils/Maths'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
-import AudioManager from '@/class/three/utils/AudioManager'
 
 // import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
 // import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
@@ -28,7 +27,7 @@ class OrdalieBBQ {
   characterPosEntreeEnd = new THREE.Vector3(0)
   characterPosSortieStart = new THREE.Vector3(0)
   texts: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>[]
-  braises: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>[]
+
   container: HTMLDivElement[]
   // Gameplay
   animation: {
@@ -61,19 +60,29 @@ class OrdalieBBQ {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as BBQInterface
     this.texts = []
-    this.braises = []
+
     this.container = []
+
+    // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
+    // testCharacter.scale.set(0.2, 0.2, 0.2)
+
+    // testCharacter.traverse((object: THREE.Object3D) => {
+    //   if (object.name === 'Plane005_1') {
+    //     const mesh = object as THREE.Mesh
+    //     console.log(mesh.material.map.offset)
+    //     mesh.material.map.offset.x = 0.2
+
+    //     // width : 364 height : 329
+    //   }
+    // })
+
+    // WebGL.scene.add(testCharacter)
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
         this.texts.push(mesh)
       }
-      // if (mesh.name.startsWith('braise')) {
-      //   this.braises.push(mesh)
-      // }
     })
-
-    // console.log(this.braises)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
@@ -89,20 +98,7 @@ class OrdalieBBQ {
     this.setCharacter()
     this.setAnimation()
     this.setTexts()
-    // this.setBraises()
   }
-
-  // setBraises() {
-  //   const texture = this.braises[0].material.map
-
-  //   for (let i = 0; i < this.braises.length; i++) {
-  //     this.braises[i].material = new THREE.MeshBasicMaterial({
-  //       map: texture,
-  //       transparent: true,
-  //       opacity: 0,
-  //     })
-  //   }
-  // }
 
   setContainer(container: HTMLDivElement, i: number) {
     this.container[i] = container
@@ -140,7 +136,7 @@ class OrdalieBBQ {
 
   private setTexts() {
     const texture = 'map' in this.texts[0].material ? this.texts[0].material.map : null
-    const noise = WebGL.resources.getItems(this.instance.block.getType(), 'noise')
+    const noise = WebGL.resources.getItems('COMMON', 'noise')
     const gradient = WebGL.resources.getItems('COMMON', 'gradient')
 
     this.uniforms = {

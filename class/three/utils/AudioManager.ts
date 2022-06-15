@@ -1,44 +1,7 @@
 import { Howler, Howl } from 'howler'
 import ORDALIES from '~~/constants/ORDALIES'
 
-const SOUNDS = [
-  {
-    name: 'success',
-    path: '/sounds/type_2.mp3',
-  },
-  {
-    name: 'oi',
-    path: '/sounds/oi.mp3',
-  },
-  {
-    name: 'ordalie',
-    path: '/sounds/ordalie.mp3',
-  },
-  {
-    name: 'fire-hit',
-    path: '/sounds/fire-hit.mp3',
-  },
-  {
-    name: 'boing',
-    path: '/sounds/boing.mp3',
-  },
-  {
-    name: 'death',
-    path: '/sounds/death.mp3',
-  },
-  {
-    name: 'bone-cracking',
-    path: '/sounds/bone-cracking.mp3',
-  },
-  {
-    name: 'bone-cracking-death',
-    path: '/sounds/bone-cracking-death.mp3',
-  },
-  {
-    name: 'ground-hit',
-    path: '/sounds/ground-hit.mp3',
-  },
-]
+import { SOUNDS } from '@/constants/SOURCES'
 
 class AudioManager {
   activeHowl: Howl | null
@@ -51,7 +14,7 @@ class AudioManager {
   async setup() {
     const promises = []
     // this.activeHowl = null
-    Howler.volume(0.1)
+    Howler.volume(1)
     for (const sound of SOUNDS) {
       promises.push(this.loadSound(sound))
     }
