@@ -180,13 +180,6 @@ const ORDALIE_SOURCES = {
       path: 'textures/miam.jpg',
     },
   ],
-  // [ORDALIES.CAULDRON]: [
-  //   {
-  //     name: 'model',
-  //     type: SourceType.gltfModel,
-  //     path: 'models/Ordalies/ordalie_cauldron.glb',
-  //   },
-  // ],
   [ORDALIES.BBQ]: [
     {
       name: 'model',

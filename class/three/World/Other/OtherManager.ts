@@ -6,7 +6,7 @@ import Other from '@/class/three/World/Other/Other'
 
 class OtherManager {
   private instances: Other[] = []
-  private currentIndex = 0
+  private currentIndex = -1
   private lastType: OTHERS
   private splashScreenClass: OtherSplashscreen
 
@@ -85,13 +85,6 @@ class OtherManager {
    */
   setCurrentIndex(index: number) {
     this.currentIndex = index
-  }
-
-  /**
-   * Start Splashscreen
-   */
-  startFirst() {
-    this.getByIndex(0).start()
   }
 
   /**

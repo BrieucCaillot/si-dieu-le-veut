@@ -21,12 +21,7 @@ const ordalie = ref()
 onMounted(() => {
   document.addEventListener('keydown', newChar)
 
-  if (OrdalieManager.getAll().length === 1) {
-    ordalie.value = OrdalieManager.getByIndex(0).instance
-  } else {
-    ordalie.value = OrdalieManager.getCurrent().instance
-  }
-
+  ordalie.value = OrdalieManager.getCurrent().instance
   ordalie.value.setContainer(containerRef.value)
   ordalie.value.updateHTML()
 
