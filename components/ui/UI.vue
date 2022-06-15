@@ -24,19 +24,11 @@ import Mobile from '@/components/ui/Mobile.vue'
 import Typing from '@/components/ui/Typing/Typing.vue'
 
 import { isMobileTest } from '@/class/three/utils/isMobile'
-import DIFFICULTY from '~~/constants/DIFFICULTY'
 
 const route = useRoute()
 const startWebGL = ref(false)
 
-const { isMobile, showLoader, isDebug } = useStore()
-const { difficulty, score } = useHUD()
-
-isDebug.value = route.query.debug !== undefined && route.query.debug !== 'false'
-// console.log(Object.keys(DIFFICULTY))
-// difficulty.value = route.query.difficulty || DIFFICULTY.EASY
-
-console.log(route.query.debug)
+const { isMobile, showLoader } = useStore()
 
 onMounted(() => {
   isMobile.value = isMobileTest()

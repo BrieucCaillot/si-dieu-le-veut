@@ -1,4 +1,5 @@
 import GUI from 'lil-gui'
+import useStore from '@/composables/useStore'
 
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
@@ -22,15 +23,19 @@ class Blocks {
    * Create default blocks
    */
   setup() {
-    OtherManager.create(OTHERS.SPLASHSCREEN)
-    OtherManager.create(OTHERS.CINEMATIC_1)
-    OtherManager.create(OTHERS.CINEMATIC_2)
-    OtherManager.create(OTHERS.CINEMATIC_3)
-    OtherManager.create(OTHERS.TUTORIAL)
+    if (useStore().isDebugType.value) {
+      this.createIsolated(useStore().debugType.value)
+    } else {
+      OtherManager.create(OTHERS.SPLASHSCREEN)
+      OtherManager.create(OTHERS.CINEMATIC_1)
+      OtherManager.create(OTHERS.CINEMATIC_2)
+      OtherManager.create(OTHERS.CINEMATIC_3)
+      OtherManager.create(OTHERS.TUTORIAL)
 
-    // To uncomment for debug
-    // OrdalieManager.create(ORDALIES.FOOD)
-    // TransitionManager.create(TRANSITIONS.TRANSITION_1)
+      // url for debug
+      // t=OTHERS|ORDALIES|TRANSITIONS
+      // http://localhost:3000/?t=splashscreen
+    }
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('Blocks')
@@ -54,13 +59,17 @@ class Blocks {
     if (this.isStarted) return
 
     this.isStarted = true
-    const currentType = this.getCurrent().getType() as OTHERS | ORDALIES
+
+    const currentType = this.getCurrent().getType() as OTHERS | ORDALIES | TRANSITIONS
 
     if (this.isOther(currentType as OTHERS)) {
-      return OtherManager.startFirst()
+      return OtherManager.startNext()
     }
     if (this.isOrdalie(currentType as ORDALIES)) {
-      return OrdalieManager.startFirst()
+      return OrdalieManager.startNext()
+    }
+    if (this.isTransition(currentType as TRANSITIONS)) {
+      return TransitionManager.startNext()
     }
   }
 
@@ -73,10 +82,18 @@ class Blocks {
   }
 
   /**
-   * Create block from type
+   * Create isolated block from type
    */
-  create(_type: OTHERS | ORDALIES | TRANSITIONS) {
-    return new Block(_type)
+  createIsolated(_type: OTHERS | ORDALIES | TRANSITIONS) {
+    if (this.isOther(_type as OTHERS)) {
+      OtherManager.create(_type as OTHERS)
+    }
+    if (this.isOrdalie(_type as ORDALIES)) {
+      OrdalieManager.create(_type as ORDALIES)
+    }
+    if (this.isTransition(_type as TRANSITIONS)) {
+      TransitionManager.create(_type as TRANSITIONS)
+    }
   }
 
   /**

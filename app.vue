@@ -27,9 +27,32 @@
 import '@/assets/css/tailwind.css'
 import '@/assets/sass/styles.scss'
 
+import DIFFICULTY from '@/constants/DIFFICULTY'
+import OTHERS from '@/constants/OTHERS'
+import ORDALIES from '@/constants/ORDALIES'
+import TRANSITIONS from '@/constants/TRANSITIONS'
+
 const url = 'https://si-dieu-le-veut.vercel.app'
 const title = 'Si Dieu le veut'
 const description = ref('Aide un malheureux cuisinier survivre à l’ordalie à laquelle il a été condamné après avoir été injustement accusé en tapant le plus vite possible !')
+
+// Handle URL Query
+const route = useRoute()
+
+const { isDebug, isDebugType, debugType } = useStore()
+const { difficulty } = useHUD()
+
+const queryDifficulty = route.query.d as string
+const queryType = route.query.t as OTHERS | ORDALIES | TRANSITIONS
+
+isDebug.value = route.query.debug !== undefined && route.query.debug !== 'false'
+difficulty.value = queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY
+isDebugType.value = queryType?.length > 0
+
+if (isDebugType.value) {
+  debugType.value = queryType
+  debugType.value = debugType.value.toUpperCase() as OTHERS | ORDALIES | TRANSITIONS
+}
 </script>
 
 <style lang="scss">
