@@ -27,7 +27,7 @@ class OrdalieBBQ {
   characterPosEntreeEnd = new THREE.Vector3(0)
   characterPosSortieStart = new THREE.Vector3(0)
   texts: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>[]
-  braises: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>[]
+
   container: HTMLDivElement[]
   // Gameplay
   animation: {
@@ -60,19 +60,29 @@ class OrdalieBBQ {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as BBQInterface
     this.texts = []
-    this.braises = []
+
     this.container = []
+
+    // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
+    // testCharacter.scale.set(0.2, 0.2, 0.2)
+
+    // testCharacter.traverse((object: THREE.Object3D) => {
+    //   if (object.name === 'Plane005_1') {
+    //     const mesh = object as THREE.Mesh
+    //     console.log(mesh.material.map.offset)
+    //     mesh.material.map.offset.x = 0.2
+
+    //     // width : 364 height : 329
+    //   }
+    // })
+
+    // WebGL.scene.add(testCharacter)
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
         this.texts.push(mesh)
       }
-      // if (mesh.name.startsWith('braise')) {
-      //   this.braises.push(mesh)
-      // }
     })
-
-    // console.log(this.braises)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
@@ -88,20 +98,7 @@ class OrdalieBBQ {
     this.setCharacter()
     this.setAnimation()
     this.setTexts()
-    // this.setBraises()
   }
-
-  // setBraises() {
-  //   const texture = this.braises[0].material.map
-
-  //   for (let i = 0; i < this.braises.length; i++) {
-  //     this.braises[i].material = new THREE.MeshBasicMaterial({
-  //       map: texture,
-  //       transparent: true,
-  //       opacity: 0,
-  //     })
-  //   }
-  // }
 
   setContainer(container: HTMLDivElement, i: number) {
     this.container[i] = container
@@ -287,19 +284,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       // console.log('play', animation.action._clip.name, currentFrame)
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // console.log('play', animation.action._clip.name, currentFrame)
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
 
-    //   animation.lastFrame = currentFrame
-    // }
+      animation.lastFrame = currentFrame
+    }
   }
 }
 

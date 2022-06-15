@@ -108,6 +108,7 @@ class OtherManager {
    */
   onStarted() {
     console.log('✨ STARTED ' + this.getCurrent().block.getType())
+    useStore().currentType.value = this.getCurrent().block.getType()
     Blocks.onStarted()
   }
 
@@ -116,6 +117,10 @@ class OtherManager {
    */
   onEnded() {
     console.log('✨ ENDED ' + this.getCurrent().block.getType())
+    // Dont unmount if Other is End
+    if (this.getCurrent().block.getType() !== OTHERS.END) {
+      useStore().currentType.value = null
+    }
     Blocks.onEnded()
   }
 }

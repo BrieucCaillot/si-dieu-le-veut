@@ -1,11 +1,8 @@
-import ORDALIES from '@/constants/ORDALIES'
-
 const isMobile = ref(null)
 const showLoader = ref(true)
 const resourcesLoaded = ref(false)
 const isDebug = ref(false)
-const currentOrdalie = ref(null)
-const isTransition = ref(null)
+const currentType = ref(null)
 
 export default () => {
   return {
@@ -13,7 +10,6 @@ export default () => {
     showLoader,
     resourcesLoaded,
     isDebug,
-    currentOrdalie,
-    isTransition,
+    currentType,
   }
 }
