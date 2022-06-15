@@ -19,9 +19,7 @@
       <Meta name="twitter:image" :content="`${url}/preview.png`" />
       <Meta name="twitter:image:alt" :content="`${title} - Preview`" />
     </Head>
-    <NuxtLayout name="default">
-      <NuxtPage />
-    </NuxtLayout>
+    <NuxtLayout />
   </div>
 </template>
 
