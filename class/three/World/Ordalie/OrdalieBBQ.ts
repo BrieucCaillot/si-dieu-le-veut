@@ -95,7 +95,6 @@ class OrdalieBBQ {
       // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
     }
 
-    this.setCharacter()
     this.setAnimation()
     this.setTexts()
   }
@@ -153,11 +152,6 @@ class OrdalieBBQ {
         transparent: true,
       })
     }
-  }
-
-  private setCharacter() {
-    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
-    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   private setAnimation() {
@@ -222,9 +216,9 @@ class OrdalieBBQ {
 
   onFinish(e) {
     if (e.action._clip.name === ANIMATIONS.BBQ.ENTREE) {
-      this.characterPosEntreeEnd.set(this.character.position.x, this.character.position.y, this.character.position.z)
+      this.characterPosEntreeEnd.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
       this.animation.actions[ANIMATIONS.BBQ.ENTREE].action.stop()
-      this.character.position.set(this.characterPosEntreeEnd.x, this.characterPosEntreeEnd.y, this.characterPosEntreeEnd.z)
+      this.instance.block.getCharacterRoot().position.set(this.characterPosEntreeEnd.x, this.characterPosEntreeEnd.y, this.characterPosEntreeEnd.z)
       this.animation.actions[ANIMATIONS.BBQ.IDLE].action.play()
     }
 
@@ -247,8 +241,8 @@ class OrdalieBBQ {
 
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.BBQ.AVANCE].action, 0.16, false)
 
-    gsap.to(this.character.position, {
-      x: this.character.position.x + this.forwardSpeed,
+    gsap.to(this.instance.block.getCharacterRoot().position, {
+      x: this.instance.block.getCharacterRoot().position.x + this.forwardSpeed,
       duration: 1,
     })
   }
@@ -257,9 +251,9 @@ class OrdalieBBQ {
     this.isGameWon = true
 
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.stop()
-    this.characterPosSortieStart.set(this.character.position.x, this.character.position.y, this.character.position.z)
+    this.characterPosSortieStart.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
     this.animation.play(ANIMATIONS.BBQ.SORTIE)
-    this.character.position.set(this.characterPosSortieStart.x, this.characterPosSortieStart.y, this.characterPosSortieStart.z)
+    this.instance.block.getCharacterRoot().position.set(this.characterPosSortieStart.x, this.characterPosSortieStart.y, this.characterPosSortieStart.z)
 
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.BBQ.SORTIE].action, 0.16, false)
   }

@@ -18,7 +18,6 @@ import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
 
 class OrdalieFood {
   instance: Ordalie
-  character: THREE.Mesh
   animation: {
     mixer: THREE.AnimationMixer
     actions: {
@@ -63,8 +62,8 @@ class OrdalieFood {
 
     this.paths = []
     this.setPath()
-    this.setCharacter()
     this.setAnimation()
+    this.instance.block.toggleFrustumCulling(false)
   }
 
   getRandomPath() {
@@ -98,10 +97,6 @@ class OrdalieFood {
     WebGL.scene.add(clone)
 
     return clone
-  }
-  private setCharacter() {
-    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
-    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   private setAnimation() {
@@ -188,6 +183,10 @@ class OrdalieFood {
     // }
   }
 
+  private hideEntonnoir() {
+    this.instance.block.getModel().scene.children.find((child) => child.name.includes('Entonnoir')).visible = false
+  }
+
   onFinish(e) {
     if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE) {
       // console.log('FNINISHED ENTREE')
@@ -203,7 +202,6 @@ class OrdalieFood {
   }
 
   start() {
-    this.toggleFrustrumOnCharacters(false)
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE)
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE)
 
@@ -233,13 +231,8 @@ class OrdalieFood {
 
   end() {
     if (this.debugFolder) this.debugFolder.destroy()
+    this.hideEntonnoir()
     this.instance.end()
-  }
-
-  toggleFrustrumOnCharacters(value: boolean) {
-    this.instance.block.getModel().scene.traverse((child) => {
-      if (child.type === 'SkinnedMesh') child.frustumCulled = value
-    })
   }
 
   startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {

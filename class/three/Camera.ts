@@ -53,7 +53,7 @@ class Camera extends THREE.EventDispatcher {
 
   private setInstance() {
     this.parent = new THREE.Group()
-    this.parent.position.set(0, 0, 13)
+    this.parent.position.set(0, 0, this.minPos.z)
     this.instance = new THREE.PerspectiveCamera(0, WebGL.sizes.width / WebGL.sizes.height, 0.1, 1000)
     this.instance.position.set(0, 0, 0)
     this.setFov()

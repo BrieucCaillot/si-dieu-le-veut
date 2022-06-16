@@ -18,6 +18,7 @@ class Block {
   private defaultModel: GLTF
   private model: any
   private character: THREE.Object3D
+  private characterMainRoot: THREE.Mesh
   private garde: THREE.Object3D
   private difficultyData: { [key: string]: any }
 
@@ -68,6 +69,7 @@ class Block {
 
   private setCharacter() {
     this.character = this.getModel().scene.children.find((child) => child.name.includes('Cuisinier'))
+    this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
   }
 
   /**
@@ -75,6 +77,13 @@ class Block {
    */
   getCharacter() {
     return this.character
+  }
+
+  /**
+   * Get character of model
+   */
+  getCharacterRoot() {
+    return this.characterMainRoot
   }
 
   /**
@@ -93,6 +102,12 @@ class Block {
    */
   toggleGarde(value: boolean) {
     this.garde.visible = value
+  }
+
+  toggleFrustumCulling(value: boolean) {
+    this.getModel().scene.traverse((child) => {
+      if (child.type === 'SkinnedMesh') child.frustumCulled = value
+    })
   }
 
   /**

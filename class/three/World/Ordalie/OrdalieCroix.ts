@@ -30,7 +30,6 @@ class OrdalieCroix {
     }
     play: (name: string) => void
   }
-  character: THREE.Mesh
   // Gameplay
   debugObject: any
   timeScaleController: any
@@ -47,7 +46,6 @@ class OrdalieCroix {
 
     this.planeTextReference = this.instance.block.getModel().scene.children.find((child) => child.name === 'text') as THREE.Mesh
 
-    this.setCharacter()
     this.setAnimation()
   }
 
@@ -70,11 +68,6 @@ class OrdalieCroix {
 
   onResize = () => {
     this.updateHTML()
-  }
-
-  private setCharacter() {
-    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
-    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   private setAnimation() {
@@ -153,8 +146,8 @@ class OrdalieCroix {
     }
 
     if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_ENTREE) {
-      characterPos.set(this.character.position.x, this.character.position.y, this.character.position.z)
-      this.character.position.set(characterPos.x, characterPos.y, characterPos.z)
+      characterPos.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
+      this.instance.block.getCharacterRoot().position.set(characterPos.x, characterPos.y, characterPos.z)
       // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
       this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action.stop()
       this.animation.play(ANIMATIONS.CROIX.FRONT_BRAS)
