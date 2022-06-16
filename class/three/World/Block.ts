@@ -69,7 +69,7 @@ class Block {
 
   private setCharacter() {
     this.character = this.getModel().scene.children.find((child) => child.name.includes('Cuisinier'))
-    this.characterMainRoot = this.character.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
+    this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
   }
 
   /**

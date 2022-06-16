@@ -183,6 +183,10 @@ class OrdalieFood {
     // }
   }
 
+  private hideEntonnoir() {
+    this.instance.block.getModel().scene.children.find((child) => child.name.includes('Entonnoir')).visible = false
+  }
+
   onFinish(e) {
     if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE) {
       // console.log('FNINISHED ENTREE')
@@ -227,6 +231,7 @@ class OrdalieFood {
 
   end() {
     if (this.debugFolder) this.debugFolder.destroy()
+    this.hideEntonnoir()
     this.instance.end()
   }
 
