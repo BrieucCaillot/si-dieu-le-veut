@@ -28,7 +28,6 @@ onMounted(() => {
   const isOtherEnd = props.type === OTHERS.END
 
   // Debug
-  // console.log('TYPE :', props.type)
   // console.log('IS OTHER END : ', isOtherEnd)
   // console.log('IS TRANSITION : ', isTransition)
 
@@ -50,6 +49,7 @@ onMounted(() => {
 
   lettersToType = text.value.split('')
   letterToType = lettersToType[index]
+  console.log('broo ', letterToType)
 })
 
 onUnmounted(() => {
@@ -69,7 +69,7 @@ const positionHTML = () => {
 
 const vSplitText = {
   mounted: (el: HTMLDivElement) => {
-    if (props.type.startsWith('Transition')) {
+    if (Blocks.isTransition(props.type)) {
       text.value = 'coupable'
     } else if (props.type === 'END') {
       text.value = 'résurrection'
