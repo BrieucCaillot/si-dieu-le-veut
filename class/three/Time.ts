@@ -3,21 +3,15 @@ import gsap from 'gsap'
 import WebGL from '@/class/three/WebGL'
 
 class Time {
-  time: number = 0
   deltaTime: number = 0
-  frame: number = 0
-  elapsed: number = 0
 
   addUpdate(fn: Function) {
     gsap.ticker.fps(60)
 
-    gsap.ticker.add((time: number, deltaTime: number, frame: number, elapsed: number) => {
-      WebGL.debug!.stats.begin()
-      this.time = time
+    gsap.ticker.add((deltaTime: number) => {
+      WebGL.debug.getStats()?.begin()
       this.deltaTime = deltaTime
-      this.frame = frame
-      this.elapsed = elapsed
-      WebGL.debug!.stats.end()
+      WebGL.debug.getStats()?.end()
       fn()
     })
   }
