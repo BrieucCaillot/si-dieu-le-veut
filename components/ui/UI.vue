@@ -44,7 +44,6 @@ onMounted(() => {
   startWebGL.value = !isMobile.value
 
   currentType.value = useStore().currentType.value
-  console.log('OnMounted UI, currentType value', currentType.value)
 })
 
 watch(useStore().currentType, (value: OTHERS | ORDALIES | TRANSITIONS) => {
