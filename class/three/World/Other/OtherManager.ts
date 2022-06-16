@@ -111,7 +111,7 @@ class OtherManager {
   onEnded() {
     console.log('✨ ENDED ' + this.getCurrent().block.getType())
     // Dont unmount if Other is End
-    if (this.getCurrent().block.getType() !== OTHERS.END) {
+    if (this.getCurrent().block.getType() !== OTHERS.END && this.getCurrent().block.getType() !== OTHERS.DEAD) {
       useStore().currentType.value = null
     }
     Blocks.onEnded()

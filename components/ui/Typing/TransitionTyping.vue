@@ -1,17 +1,16 @@
 <template>
-  <div class="absolute top-0 left-0 font-primary opacity-0" v-SplitText ref="domText"></div>
+  <div class="absolute left-0 font-primary opacity-0" v-SplitText ref="domText"></div>
 </template>
 
 <script setup lang="ts">
-import AudioManager from '@/class/three/utils/AudioManager'
-import gsap from 'gsap'
-
 import OTHERS from '@/constants/OTHERS'
-
 import Blocks from '@/class/three/World/Blocks'
+import AudioManager from '@/class/three/utils/AudioManager'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+
+import gsap from 'gsap'
 
 const domText = ref<HTMLDivElement>(null)
 const text = ref('')
@@ -24,7 +23,6 @@ let letterToType = null
 
 onMounted(() => {
   document.addEventListener('keydown', newChar)
-  window.addEventListener('resize', resize)
 
   const isTransition = Blocks.isTransition(props.type)
   const isOtherEnd = props.type === OTHERS.END
@@ -40,6 +38,7 @@ onMounted(() => {
   } else if (isOtherEnd) {
     currentBlock.value = OtherManager.getCurrent().instance
     fontSizeCoef = 3.26
+    domText.value.classList.add('-top-[10px]')
   }
 
   gsap.to(domText.value, {
@@ -47,7 +46,7 @@ onMounted(() => {
     duration: 0.25,
   })
 
-  resize()
+  gsap.ticker.add(positionHTML)
 
   lettersToType = text.value.split('')
   letterToType = lettersToType[index]
@@ -55,14 +54,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   clearEvents()
+  gsap.ticker.remove(positionHTML)
 })
 
 const clearEvents = () => {
   document.removeEventListener('keydown', newChar)
-  window.removeEventListener('resize', resize)
 }
 
-const resize = () => {
+const positionHTML = () => {
   const positions = setHTMLPosition(currentBlock.value.text)
   domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y}px, 0)`
   domText.value.style.fontSize = positions.width / fontSizeCoef + 'px'
