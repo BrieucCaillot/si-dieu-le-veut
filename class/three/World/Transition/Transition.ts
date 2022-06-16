@@ -76,9 +76,9 @@ class Transition {
   }
 
   start() {
-    this.block.showBehind()
     if (OrdalieManager.isPlayerDead) return this.hide()
 
+    this.block.showBehind()
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
     this.debugParams().animations.playGroupAnim()
