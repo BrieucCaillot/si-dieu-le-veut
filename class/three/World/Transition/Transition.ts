@@ -16,6 +16,9 @@ import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
 import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
 
+import backgroundBurningFrag from '@/class/three/shaders/backgroundBurning/fragment.glsl'
+import backgroundBurningVert from '@/class/three/shaders/backgroundBurning/vertex.glsl'
+
 class Transition {
   block: Block
   instance: any
@@ -73,9 +76,9 @@ class Transition {
   }
 
   start() {
-    this.block.showBehind()
     if (OrdalieManager.isPlayerDead) return this.hide()
 
+    this.block.showBehind()
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
     this.debugParams().animations.playGroupAnim()
@@ -105,7 +108,6 @@ class Transition {
     }
 
     const texture = this.planeTexture.material.map
-    console.log(texture)
     texture.encoding = THREE.LinearEncoding
 
     const newTransitionTextureMat = new THREE.ShaderMaterial({
@@ -119,8 +121,8 @@ class Transition {
 
     const newBackgroundMat = new THREE.ShaderMaterial({
       uniforms: { ...this.uniforms, uTexture: { value: null } },
-      vertexShader: vertexShader,
-      fragmentShader: fragmentShader,
+      vertexShader: backgroundBurningVert,
+      fragmentShader: backgroundBurningFrag,
     })
 
     this.planeBackground.material = newBackgroundMat
