@@ -18,9 +18,6 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
-// import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
-// import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
-
 class OrdalieBBQ {
   instance: Ordalie
   character: THREE.Mesh
