@@ -6,6 +6,7 @@ uniform sampler2D uGradient;
 uniform float uProgress;
 uniform vec2 spriteSheetSize;   // In px
 uniform vec2 spriteSize;        // In px
+uniform float uAlpha;
 
 // vec4 LinearTosRGB(vec4 value) {
 // 	return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
@@ -36,6 +37,8 @@ void main() {
 
   texel.rgb = mix(texel.rgb, vec3(46.0/255.0, 41.0/255.0, 34.0/255.0), contour);
   texel.a *= noiseTexture;
+
+  texel.a *= mix(0.0, texel.a, uAlpha);
 
   gl_FragColor = texel;
 }
