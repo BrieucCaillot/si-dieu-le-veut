@@ -12,7 +12,6 @@ import { getFrame } from '../../utils/Maths'
 
 class OtherSplashscreen {
   instance: Other
-  characterRoot: THREE.Mesh
   isFollowingCharacter = false
   animation: {
     mixer: THREE.AnimationMixer
@@ -33,8 +32,7 @@ class OtherSplashscreen {
     this.instance = _other
 
     this.setAnimation()
-    this.setCharacterRoot()
-    this.toggleFrustrumOnCharacters(false)
+    this.instance.block.toggleFrustumCulling(false)
 
     OtherManager.setSplashscreenRef(this)
   }
@@ -184,19 +182,9 @@ class OtherSplashscreen {
     }
   }
 
-  private setCharacterRoot() {
-    this.characterRoot = this.instance.block.getCharacter().children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
-  }
-
-  toggleFrustrumOnCharacters(value: boolean) {
-    this.instance.block.getModel().scene.traverse((child) => {
-      if (child.type === 'SkinnedMesh') child.frustumCulled = value
-    })
-  }
-
   followCharacter() {
     const currentBlockType = OtherManager.getCurrent().block.getType() as OTHERS
-    const characterPosition = this.characterRoot.getWorldPosition(new THREE.Vector3())
+    const characterPosition = this.instance.block.getCharacterRoot().getWorldPosition(new THREE.Vector3())
 
     // Return if current block type is not Splashscreen or Cinematic 2
     if (![OTHERS.SPLASHSCREEN].includes(currentBlockType)) return
