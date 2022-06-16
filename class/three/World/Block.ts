@@ -192,10 +192,10 @@ class Block {
     return this.position.set(position.x, position.y, position.z)
   }
 
-  showFront() {
-    console.log('⬇️ FRONT', this.type)
+  showDefault() {
+    console.log('⬇️ DEFAULT', this.type)
     gsap.to(this.model.scene.position, {
-      z: this.zMaxPosition,
+      z: 0,
       duration: 0.1,
       ease: 'power3.inOut',
     })
