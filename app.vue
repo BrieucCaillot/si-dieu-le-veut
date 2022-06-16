@@ -31,6 +31,7 @@ import DIFFICULTY from '@/constants/DIFFICULTY'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
 const url = 'https://si-dieu-le-veut.vercel.app'
 const title = 'Si Dieu le veut'
@@ -42,12 +43,15 @@ const route = useRoute()
 const { isDebug, isDebugType, debugType } = useStore()
 const { difficulty } = useHUD()
 
+const queryDebug = route.query.debug
 const queryDifficulty = route.query.d as string
 const queryType = route.query.t as OTHERS | ORDALIES | TRANSITIONS
+const queryDead = route.query.m
 
-isDebug.value = route.query.debug !== undefined && route.query.debug !== 'false'
+isDebug.value = queryDebug !== undefined && queryDebug !== 'false'
 difficulty.value = queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY
 isDebugType.value = queryType?.length > 0
+OrdalieManager.setIsDead(queryDead !== undefined && queryDead !== 'false')
 
 if (isDebugType.value) {
   debugType.value = queryType

@@ -49,7 +49,6 @@ onMounted(() => {
 
   lettersToType = text.value.split('')
   letterToType = lettersToType[index]
-  console.log('broo ', letterToType)
 })
 
 onUnmounted(() => {

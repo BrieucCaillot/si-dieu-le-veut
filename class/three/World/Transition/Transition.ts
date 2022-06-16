@@ -10,8 +10,8 @@ import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 
-import fragmentShader from '@/class/three/shaders/transition/fragment.glsl'
-import vertexShader from '@/class/three/shaders/transition/vertex.glsl'
+import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
+import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
 import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
 import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
@@ -27,6 +27,11 @@ class Transition {
   planeTexture: THREE.Mesh
   planeBackground: THREE.Mesh
   backgroundMaterial: THREE.Mesh
+  uniforms: {
+    uNoise: { value: THREE.Texture }
+    uGradient: { value: THREE.Texture }
+    uDissolve: { value: number }
+  }
 
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
@@ -55,24 +60,13 @@ class Transition {
     const gardeTexture = this.garde.material.map
     gardeTexture.encoding = THREE.LinearEncoding
 
-    const uniforms = {
-      uNoise: { value: WebGL.resources.getItems('COMMON', 'noise-3') },
-      uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-1') },
-      uDissolve: { value: 0.5 },
-    }
-
-    if (WebGL.debug.isActive) {
-      const debug = WebGL.debug.addFolder('uDisolve')
-      debug.add(uniforms.uDissolve, 'value', 0, 1).step(0.1).listen()
-    }
-
     this.character.material = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: characterTexture } },
+      uniforms: { ...this.uniforms, uTexture: { value: characterTexture } },
       vertexShader: characterBurningVert,
       fragmentShader: characterBurningFrag,
     })
     this.garde.material = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: gardeTexture } },
+      uniforms: { ...this.uniforms, uTexture: { value: gardeTexture } },
       vertexShader: characterBurningVert,
       fragmentShader: characterBurningFrag,
     })
@@ -91,7 +85,7 @@ class Transition {
   }
 
   end() {
-    this.block.showDefault()
+    // this.block.showDefault()
     gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
     this.block.toggleCharacter(false)
@@ -104,17 +98,18 @@ class Transition {
   }
 
   changeMaterials() {
-    const uniforms = {
+    this.uniforms = {
       uNoise: { value: WebGL.resources.getItems('COMMON', 'noise-3') },
       uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-1') },
       uDissolve: { value: 0 },
     }
 
     const texture = this.planeTexture.material.map
+    console.log(texture)
     texture.encoding = THREE.LinearEncoding
 
     const newTransitionTextureMat = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: texture } },
+      uniforms: { ...this.uniforms, uTexture: { value: texture } },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       transparent: true,
@@ -123,7 +118,7 @@ class Transition {
     this.planeTexture.material = newTransitionTextureMat
 
     const newBackgroundMat = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: null } },
+      uniforms: { ...this.uniforms, uTexture: { value: null } },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
     })
