@@ -119,7 +119,7 @@ const TRANSITION_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Transitions/transition_1.glb',
+      path: 'models/Transitions/transition_2.glb',
     },
   ],
   [TRANSITIONS.TRANSITION_3]: [
@@ -140,7 +140,7 @@ const TRANSITION_SOURCES = {
     {
       name: 'model',
       type: SourceType.gltfModel,
-      path: 'models/Transitions/transition_4.glb',
+      path: 'models/Transitions/transition_5.glb',
     },
   ],
 }
