@@ -142,7 +142,7 @@ class OtherSplashscreen {
     }
     // If last animation is finished
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4) {
-      this.instance.removeUpdate()
+      this.instance.kill()
     }
   }
 

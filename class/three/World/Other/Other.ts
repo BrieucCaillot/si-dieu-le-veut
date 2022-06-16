@@ -69,7 +69,7 @@ class Other {
     document.removeEventListener('keydown', this.onSpacePressed)
   }
 
-  removeUpdate() {
+  kill() {
     if (!this.isSplashscreen) return
     this.block.toggleCharacter(false)
     gsap.ticker.remove(this.updateId)
