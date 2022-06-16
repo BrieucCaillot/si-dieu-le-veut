@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p ref="meters" class="text-[231px] text-[#f9bd65] score opacity-0">{{ (useHUD().score.value + 25) * 10 }}m</p>
+    <p ref="meters" class="text-[231px] text-[#f9bd65] score opacity-0">{{ width }}m</p>
     <p class="absolute top-0 left-0 text-[35px] text-black-primary z-30 font-primary leading-[30px] opacity-0" ref="subtitle">
       C’est la longeur de la tapisserie qui retrace le supplice de ce pauvre cuisinier. <br />Cela correspond à <span>{{ useHUD().score.value }}</span> ordalies survécues.
     </p>
@@ -11,17 +11,21 @@
 import useHUD from '@/composables/useHUD'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+import Blocks from '@/class/three/World/Blocks'
+
 import gsap from 'gsap'
 
 const currentBlock = ref(null)
 const meters = ref<HTMLSpanElement>(null)
 const subtitle = ref<HTMLSpanElement>(null)
+const width = ref(null)
 
 onMounted(() => {
+  width.value = Math.round(Blocks.getWidth() * 10)
+
   currentBlock.value = OtherManager.getCurrent()
 
-  //   window.addEventListener('resize', resize)
-  gsap.ticker.add(resize)
+  gsap.ticker.add(positionHTML)
 
   gsap.to(meters.value, {
     opacity: 1,
@@ -33,18 +37,13 @@ onMounted(() => {
     duration: 0.3,
     delay: 0.3,
   })
-
-  resize()
 })
 
 onUnmounted(() => {
-  gsap.ticker.remove(resize)
-  //   window.removeEventListener('resize', resize)
+  gsap.ticker.remove(positionHTML)
 })
 
-const resize = () => {
-  console.log('resize')
-
+const positionHTML = () => {
   const positionMeter = setHTMLPosition(currentBlock.value.instance.metre)
   const positionSubtitle = setHTMLPosition(currentBlock.value.instance.text)
 

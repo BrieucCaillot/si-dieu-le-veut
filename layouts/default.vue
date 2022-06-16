@@ -1,5 +1,7 @@
 <template>
-  <UI />
+  <div id="layout">
+    <UI />
+  </div>
 </template>
 
 <script setup lang="ts">
