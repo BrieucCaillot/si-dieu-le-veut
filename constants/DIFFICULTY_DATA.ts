@@ -18,14 +18,6 @@ interface FoodInterface {
   upDurationArm: number
 }
 
-interface CauldronInterface {
-  fallingSpeedArm: number
-  upSpeedArm: number
-  upDurationArm: number
-}
-
-//fallingSpeedArm: 0.33, en easy c'est un peu trop facile
-
 const DIFFICULTY_DATAS = {
   [DIFFICULTY.EASY]: {
     ['CAMERA']: {
@@ -53,9 +45,6 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 2,
       maxTimeBeforeNewWord: 2.2,
     },
-    // [ORDALIES.CAULDRON]: {
-    //   speedCoef: 1,
-    // },
   },
   [DIFFICULTY.MEDIUM]: {
     ['CAMERA']: {
@@ -80,7 +69,6 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 1.8,
       maxTimeBeforeNewWord: 2,
     },
-    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.HARD]: {
     ['CAMERA']: {
@@ -104,7 +92,6 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 1.6,
       maxTimeBeforeNewWord: 1.8,
     },
-    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.VERY_HARD]: {
     ['CAMERA']: {
@@ -128,7 +115,6 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 1,
       maxTimeBeforeNewWord: 1.3,
     },
-    // [ORDALIES.CAULDRON]: {},
   },
   [DIFFICULTY.INSANE]: {
     ['CAMERA']: {
@@ -152,9 +138,8 @@ const DIFFICULTY_DATAS = {
       minTimeBeforeNewWord: 0.8,
       maxTimeBeforeNewWord: 1,
     },
-    // [ORDALIES.CAULDRON]: {},
   },
 }
 
-export { CroixInterface, BBQInterface, CauldronInterface, FoodInterface }
+export { CroixInterface, BBQInterface, FoodInterface }
 export default DIFFICULTY_DATAS

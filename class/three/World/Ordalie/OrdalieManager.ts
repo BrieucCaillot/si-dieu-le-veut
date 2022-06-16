@@ -116,13 +116,6 @@ class OrdalieManager {
   }
 
   /**
-   * Start first ordalie
-   */
-  startFirst() {
-    this.getByIndex(0).start()
-  }
-
-  /**
    * Start next ordalie
    */
   startNext() {
