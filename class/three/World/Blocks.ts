@@ -184,6 +184,10 @@ class Blocks {
       return
     }
 
+    // PREVENT TO CREATE BLOCK WHEN SOME BLOCKS ARE ALREADY CREATED
+    // ONLY HAPPENDS ON DEBUG
+    if (this.getAll().indexOf(this.getCurrent()) < this.getAll().length - 2) return
+
     // IF PREVIOUS BLOCK IS OTHER TUTORIAL, CREATE ORDALIE BLOCK
     if (this.getLast().getType() === OTHERS.TUTORIAL) {
       return OrdalieManager.createNext()
