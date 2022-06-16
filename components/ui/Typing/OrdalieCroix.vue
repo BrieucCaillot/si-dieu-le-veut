@@ -93,6 +93,8 @@ const newChar = (e: KeyboardEvent) => {
   let key = e.key.toLowerCase()
   key = key === 'dead' ? `'` : key
 
+  letterToType = letterToType.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
   if (letterToType.toLowerCase() === key && wordToType) validChar()
   else invalidChar()
 
