@@ -20,26 +20,26 @@ class Transition {
   block: Block
   instance: any
   animation!: { [key: string]: any }
-  debugFolder: GUI
   updateId: () => void
   text: THREE.Mesh
   character: THREE.Mesh
   garde: THREE.Mesh
-  transitionObj: THREE.Mesh
-
-  // uniforms: {
-  //   uNoise: { value: THREE.Texture }
-  //   uGradient: { value: THREE.Texture }
-  //   uDissolve: { value: number }
-  // }
+  planeTexture: THREE.Mesh
+  planeBackground: THREE.Mesh
+  backgroundMaterial: THREE.Mesh
+  uniforms: {
+    uNoise: { value: THREE.Texture }
+    uGradient: { value: THREE.Texture }
+    uDissolve: { value: number }
+  }
 
   constructor(_type: TRANSITIONS) {
     this.block = new Block(_type)
     this.block.toggleGarde(false)
     this.block.toggleCharacter(false)
-    this.block.showFront()
 
-    this.changeMaterial()
+    this.setPlaneRefs()
+    this.changeMaterials()
 
     this.setAnimation()
     this.updateId = this.update
@@ -60,19 +60,13 @@ class Transition {
     const gardeTexture = this.garde.material.map
     gardeTexture.encoding = THREE.LinearEncoding
 
-    const uniforms = {
-      uNoise: { value: WebGL.resources.getItems('COMMON', 'noise-3') },
-      uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-1') },
-      uDissolve: { value: 0 },
-    }
-
     this.character.material = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: characterTexture } },
+      uniforms: { ...this.uniforms, uTexture: { value: characterTexture } },
       vertexShader: characterBurningVert,
       fragmentShader: characterBurningFrag,
     })
     this.garde.material = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: gardeTexture } },
+      uniforms: { ...this.uniforms, uTexture: { value: gardeTexture } },
       vertexShader: characterBurningVert,
       fragmentShader: characterBurningFrag,
     })
@@ -82,7 +76,6 @@ class Transition {
     this.block.showBehind()
     if (OrdalieManager.isPlayerDead) return this.hide()
 
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('Transition')
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
     this.debugParams().animations.playGroupAnim()
@@ -92,48 +85,49 @@ class Transition {
   }
 
   end() {
-    if (this.debugFolder) this.debugFolder.destroy()
+    // this.block.showDefault()
     gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
     this.block.toggleCharacter(false)
   }
 
-  changeMaterial() {
+  setPlaneRefs() {
     const objs = this.block.getModel().scene.children.filter((obj) => obj.material)
+    this.planeTexture = objs.find((obj) => obj.material.name === 'transition_texture')
+    this.planeBackground = objs.find((obj) => obj.material.name === 'background')
+  }
 
-    this.transitionObj = objs.find((obj) => obj.material.name === 'transition_texture')
-
-    const uniforms = {
+  changeMaterials() {
+    this.uniforms = {
       uNoise: { value: WebGL.resources.getItems('COMMON', 'noise-3') },
       uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-1') },
       uDissolve: { value: 0 },
     }
 
-    const texture = this.transitionObj.material.map
+    const texture = this.planeTexture.material.map
+    console.log(texture)
     texture.encoding = THREE.LinearEncoding
 
-    const newTransitionMat = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: texture } },
+    const newTransitionTextureMat = new THREE.ShaderMaterial({
+      uniforms: { ...this.uniforms, uTexture: { value: texture } },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       transparent: true,
     })
 
-    this.transitionObj.material = newTransitionMat
-
-    const backgroundObj = objs.find((obj) => obj.material.name === 'background')
+    this.planeTexture.material = newTransitionTextureMat
 
     const newBackgroundMat = new THREE.ShaderMaterial({
-      uniforms: { ...uniforms, uTexture: { value: null } },
+      uniforms: { ...this.uniforms, uTexture: { value: null } },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
     })
 
-    backgroundObj.material = newBackgroundMat
+    this.planeBackground.material = newBackgroundMat
   }
 
   hide() {
-    gsap.to([this.transitionObj.material.uniforms.uDissolve, this.character.material.uniforms.uDissolve], {
+    gsap.to([this.planeTexture.material.uniforms.uDissolve, this.character.material.uniforms.uDissolve], {
       delay: 1,
       value: 1,
       duration: 3,
@@ -165,9 +159,6 @@ class Transition {
     this.animation.mixer.addEventListener('finished', (e) => {
       e.action.getClip().name.includes('Garde') && this.end()
     })
-
-    // Debug
-    this.debugFolder?.add(this.debugParams().animations, 'playGroupAnim')
   }
 
   update = () => {
