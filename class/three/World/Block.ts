@@ -68,7 +68,7 @@ class Block {
   }
 
   private setCharacter() {
-    this.character = this.getModel().scene.children.find((child) => child.name.includes('Cuisinier'))
+    this.character = this.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier')
     this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
   }
 
@@ -94,7 +94,7 @@ class Block {
   }
 
   private setGarde() {
-    this.garde = this.getModel().scene.children.find((child) => child.name.includes('Garde'))
+    this.garde = this.getModel().scene.children.find((child) => child.name === 'RIG_Garde')
   }
 
   /**
