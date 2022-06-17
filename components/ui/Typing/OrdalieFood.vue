@@ -14,6 +14,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import { random } from '@/class/three/utils/Maths'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
+import KEY from '@/constants/KEY'
 
 const ordalie = ref()
 const wordList = ref([])
@@ -116,6 +117,7 @@ const newChar = (e: KeyboardEvent) => {
   if (!wordToType) {
     selectWordToType(e)
   } else {
+    if (KEY.includes(e.key)) return
     if (letterToType.toLowerCase() === e.key.toLowerCase()) {
       AudioManager.play('success')
 
@@ -182,6 +184,10 @@ const replaceWord = async () => {
   letterToType = null
 
   COUNTER++
+
+  if (COUNTER % Math.floor(NB_WORDS_TO_WRITE / 2) === 0) {
+    ordalie.value.updateFurnace()
+  }
 
   //shader transition
   await ordalie.value.startBiteTransition(displayedToRemove.mesh)
