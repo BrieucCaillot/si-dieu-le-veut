@@ -28,7 +28,7 @@ class Resources extends THREE.EventDispatcher {
       textureLoader: new THREE.TextureLoader(),
       ktx2Loader: new KTX2Loader(),
     }
-    this.loaders.ktx2Loader.setTranscoderPath('three/examples/js/libs/basis/basis_transcoder')
+    this.loaders.ktx2Loader.setTranscoderPath('/basis/')
     this.loaders.ktx2Loader.detectSupport(WebGL.renderer.instance)
     this.loaders.gltfLoader.setKTX2Loader(this.loaders.ktx2Loader)
     this.itemsLoaded = {}

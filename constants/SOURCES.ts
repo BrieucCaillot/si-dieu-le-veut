@@ -61,12 +61,8 @@ const OTHER_SOURCES = {
       name: 'model',
       type: SourceType.gltfModel,
       path: 'models/Others/splashscreen.glb',
+      // uastc 2048 unlit
     },
-    // {
-    //   name: 'modelKTX',
-    //   type: SourceType.ktx2,
-    //   path: 'models/Others/splashscreen-ktx.glb',
-    // },
   ],
   [OTHERS.CINEMATIC_1]: [
     {
