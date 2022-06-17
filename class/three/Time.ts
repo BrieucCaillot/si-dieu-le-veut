@@ -8,9 +8,10 @@ class Time {
   addUpdate(fn: Function) {
     gsap.ticker.fps(60)
 
-    gsap.ticker.add((deltaTime: number) => {
+    gsap.ticker.add((time: number, deltaTime: number, frame: number) => {
       WebGL.debug.getStats()?.begin()
       this.deltaTime = deltaTime
+
       WebGL.debug.getStats()?.end()
       fn()
     })

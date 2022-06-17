@@ -11,6 +11,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
+import KEY from '@/constants/KEY'
 
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
@@ -87,8 +88,8 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon') && !e.code.startsWith('Comma') && !e.code.startsWith('Quote') && !e.code.startsWith('Period')) return
-
+  // if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon') && !e.code.startsWith('Comma') && !e.code.startsWith('Quote') && !e.code.startsWith('Period')) return
+  if (KEY.includes(e.key)) return
   // Fix apostrophe Dead key returned
   let key = e.key.toLowerCase()
   key = key === 'dead' ? `'` : key

@@ -48,6 +48,8 @@ class OrdalieFood {
   difficultyData: FoodInterface
   BASE_PATHS: any[]
   cloneGroup: THREE.Group
+  fours: THREE.Mesh[]
+  fourIndex: number
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
@@ -68,6 +70,28 @@ class OrdalieFood {
 
     this.cloneGroup = new THREE.Group()
     WebGL.scene.add(this.cloneGroup)
+
+    this.fours = [
+      this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'four1'),
+      this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'four2'),
+      this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'four3'),
+    ]
+
+    this.fours[0].visible = true
+    this.fours[1].visible = false
+    this.fours[2].visible = false
+
+    this.fourIndex = 0
+  }
+
+  updateFurnace() {
+    console.log('update furnace')
+
+    if (this.fourIndex === this.fours.length - 1) return
+
+    this.fours[this.fourIndex].visible = false
+    this.fourIndex++
+    this.fours[this.fourIndex].visible = true
   }
 
   getRandomPath() {
@@ -288,14 +312,14 @@ class OrdalieFood {
 
       // this.instance.block.getModel().scene.attach(this.paths[i])
 
-      const radius = 0.01
-      const geometry = new THREE.TubeGeometry(this.paths[i], 20, radius, 20, false)
-      const material = new THREE.MeshNormalMaterial({
-        side: THREE.DoubleSide,
-        wireframe: true,
-      })
-      const tube = new THREE.Mesh(geometry, material)
-      WebGL.scene.add(tube)
+      // const radius = 0.01
+      // const geometry = new THREE.TubeGeometry(this.paths[i], 20, radius, 20, false)
+      // const material = new THREE.MeshNormalMaterial({
+      //   side: THREE.DoubleSide,
+      //   wireframe: true,
+      // })
+      // const tube = new THREE.Mesh(geometry, material)
+      // WebGL.scene.add(tube)
     }
   }
 
