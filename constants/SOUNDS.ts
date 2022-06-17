@@ -13,74 +13,42 @@ const ANIMATIONS_SOUNDS = {
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1]: {
       frames: [
         {
-          frame: 10,
-          sound: 'boing',
+          frame: 1,
+          sound: 'splashscreen_cough',
+        },
+        {
+          frame: 160,
+          sound: 'title',
+        },
+        {
+          frame: 450,
+          sound: 'cinematique',
         },
       ],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION2]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION3]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_IDLE]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION2]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION3]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION4]: {
-      frames: [
-        {
-          frame: 10,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
   },
   [ORDALIES.BBQ]: {
@@ -173,6 +141,72 @@ const ANIMATIONS_SOUNDS = {
         {
           frame: 20,
           sound: 'boing',
+        },
+      ],
+    },
+  },
+  [ORDALIES.FOOD]: {
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'boing',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_MORT]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
+        },
+      ],
+    },
+    [ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE]: {
+      frames: [
+        {
+          frame: 0,
+          sound: 'oi',
         },
       ],
     },

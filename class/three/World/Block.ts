@@ -17,6 +17,9 @@ class Block {
   // Model
   private defaultModel: GLTF
   private model: any
+  private character: THREE.Object3D
+  private characterMainRoot: THREE.Mesh
+  private garde: THREE.Object3D
   private difficultyData: { [key: string]: any }
 
   private position: THREE.Vector3 = new THREE.Vector3()
@@ -31,6 +34,8 @@ class Block {
 
     this.type = _type
     this.setModel()
+    this.setCharacter()
+    this.setGarde()
     this.add()
     this.setPosition()
     this.setCenter()
@@ -62,17 +67,47 @@ class Block {
     return this.model
   }
 
-  /**
-   * Hide materials of models to hide
-   */
-  toggleCharacter(value: boolean) {
-    const character = this.getModel().scene.children.filter((child) => child.name.includes('Cuisinier'))
-    character.forEach((element) => (element.visible = value))
+  private setCharacter() {
+    this.character = this.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier')
+    this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
   }
 
+  /**
+   * Get character of model
+   */
+  getCharacter() {
+    return this.character
+  }
+
+  /**
+   * Get character of model
+   */
+  getCharacterRoot() {
+    return this.characterMainRoot
+  }
+
+  /**
+   * Toggle character's visibility
+   */
+  toggleCharacter(value: boolean) {
+    this.character.visible = value
+  }
+
+  private setGarde() {
+    this.garde = this.getModel().scene.children.find((child) => child.name === 'RIG_Garde')
+  }
+
+  /**
+   * Toggle garde's visibility
+   */
   toggleGarde(value: boolean) {
-    const garde = this.getModel().scene.children.filter((child) => child.name.includes('Garde'))
-    garde.forEach((element) => (element.visible = value))
+    this.garde.visible = value
+  }
+
+  toggleFrustumCulling(value: boolean) {
+    this.getModel().scene.traverse((child) => {
+      if (child.type === 'SkinnedMesh') child.frustumCulled = value
+    })
   }
 
   /**
@@ -161,7 +196,7 @@ class Block {
     console.log('⬇️ FRONT', this.type)
     gsap.to(this.model.scene.position, {
       z: this.zMaxPosition,
-      duration: 0.3,
+      duration: 0.1,
       ease: 'power3.inOut',
     })
   }
@@ -170,7 +205,7 @@ class Block {
     console.log('⬆️ BEHIND', this.type)
     gsap.to(this.model.scene.position, {
       z: -this.zMaxPosition,
-      duration: 0.3,
+      duration: 0.1,
       ease: 'power3.inOut',
     })
   }

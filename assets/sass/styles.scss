@@ -25,6 +25,10 @@
   font-display: swap;
 }
 
+* {
+  user-select: none;
+}
+
 // COMMON
 body {
   @apply bg-background overflow-hidden;
@@ -36,4 +40,8 @@ main {
 
 .content {
   @apply relative z-10;
+}
+
+.score {
+  -webkit-text-stroke: 2px #2d2923;
 }

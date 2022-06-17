@@ -4,13 +4,15 @@ import ANIMATIONS from '@/constants/ANIMATIONS'
 import OTHERS from '@/constants/OTHERS'
 import SOUNDS from '@/constants/SOUNDS'
 
+import AudioManager from '@/class/three/utils/AudioManager'
+import { getFrame } from '@/class/three/utils/Maths'
+
 import WebGL from '@/class/three/WebGL'
+import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
-import OtherManager from './OtherManager'
 
 class OtherSplashscreen {
   instance: Other
-  character: THREE.Mesh
   isFollowingCharacter = false
   animation: {
     mixer: THREE.AnimationMixer
@@ -31,8 +33,7 @@ class OtherSplashscreen {
     this.instance = _other
 
     this.setAnimation()
-    this.setCharacter()
-    this.toggleFrustrumOnCharacters(false)
+    this.instance.block.toggleFrustumCulling(false)
 
     OtherManager.setSplashscreenRef(this)
   }
@@ -182,20 +183,9 @@ class OtherSplashscreen {
     }
   }
 
-  private setCharacter() {
-    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
-    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
-  }
-
-  toggleFrustrumOnCharacters(value: boolean) {
-    this.instance.block.getModel().scene.traverse((child) => {
-      if (child.type === 'SkinnedMesh') child.frustumCulled = value
-    })
-  }
-
   followCharacter() {
     const currentBlockType = OtherManager.getCurrent().block.getType() as OTHERS
-    const characterPosition = this.character.getWorldPosition(new THREE.Vector3())
+    const characterPosition = this.instance.block.getCharacterRoot().getWorldPosition(new THREE.Vector3())
 
     // Return if current block type is not Splashscreen or Cinematic 2
     if (![OTHERS.SPLASHSCREEN].includes(currentBlockType)) return
@@ -210,7 +200,20 @@ class OtherSplashscreen {
   update() {
     const { deltaTime } = WebGL.time
 
-    this.animation.mixer.update(deltaTime * 0.002)
+    this.animation.mixer.update(deltaTime * 0.001)
+
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
 
     if (this.isFollowingCharacter) return
     this.followCharacter()

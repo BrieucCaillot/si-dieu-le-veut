@@ -2,9 +2,10 @@ import ORDALIES from '@/constants/ORDALIES'
 
 export default {
   [ORDALIES.CROIX]: [
-    "Priés pour nous trespassez, vous qui vivez, et nous aidez en la vertu de charité, n'est rienz que tant vaille a nostre délivrance come la vertu de cherité, de pitié et de perdon.",
-    "Sire, envoiez vous sainz ainglez de paradix a moy, por me défendre, enluminer et eschaufier en l'amour de la veritey et la bialtey que est en ce saint sacrement contenu.",
-    "O vous mors qui gisés es sepulchrez, levez vous, sire aidés moy, perdonnez moy, confortez moy, aies merci de moy. Ainsi soit il, c'est amen.",
+    'Je soussygnez, moy, Enguerrand le Bienventru, lègue mon fouet, ma cuillèr en bois et ma casserole à mon cherz second, puisse la grâce l’épargnez d’oublier la cerise sur le gasteau !',
+    'O sire, puysse ma trèz célèbre recette de ragoutz de boudain estre preservé a jamais et restez dans les mèmoir de touz ceux qui onz eu la joy dy goûter !',
+    'Pour confectionnez un flan aux pruneau, il vous fauds des oeufs fraiz de la matinée, du lait tiréz des éstable du chasteau, ez des pruneau d’un diamètre équidvalant à un écu.',
+    'Chanceux es le biensheureux qui jouy de l’insouciance de la libertéz, puis que je n’atens plus que l’heure de la mort, asfin de festoyer de vin et de ragoutz au paradiz des cuisiniez.',
   ],
   [ORDALIES.BBQ]: [
     'Attrapoire',

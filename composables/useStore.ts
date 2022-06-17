@@ -1,19 +1,23 @@
 import ORDALIES from '@/constants/ORDALIES'
+import OTHERS from '@/constants/OTHERS'
+import TRANSITIONS from '@/constants/TRANSITIONS'
 
 const isMobile = ref(null)
+const isDebug = ref(false)
+const isDebugType = ref(false)
+const debugType = ref<OTHERS | ORDALIES | TRANSITIONS>(null)
 const showLoader = ref(true)
 const resourcesLoaded = ref(false)
-const isDebug = ref(false)
-const currentOrdalie = ref(null)
-const isTransition = ref(null)
+const currentType = ref<OTHERS | ORDALIES | TRANSITIONS>(null)
 
 export default () => {
   return {
     isMobile,
+    isDebug,
+    isDebugType,
+    debugType,
     showLoader,
     resourcesLoaded,
-    isDebug,
-    currentOrdalie,
-    isTransition,
+    currentType,
   }
 }

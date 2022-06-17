@@ -116,13 +116,6 @@ class OrdalieManager {
   }
 
   /**
-   * Start first ordalie
-   */
-  startFirst() {
-    this.getByIndex(0).start()
-  }
-
-  /**
    * Start next ordalie
    */
   startNext() {
@@ -132,16 +125,10 @@ class OrdalieManager {
   }
 
   /**
-   * On Ordalie started
+   * On Ordalie played
    */
-  onStarted() {
-    console.log('🎲 STARTED ' + this.getCurrent().block.getType())
-    useStore().currentOrdalie.value = this.getCurrent().block.getType()
-    Blocks.onStarted()
-  }
-
   onPlayed() {
-    // Add ordalie type to already played
+    // Add Ordalie type to already played
     this.alreadyPlayed.push(this.getCurrent().block.getType() as ORDALIES)
 
     // Increment score
@@ -155,11 +142,20 @@ class OrdalieManager {
   }
 
   /**
+   * On Ordalie started
+   */
+  onStarted() {
+    console.log('🎲 STARTED ' + this.getCurrent().block.getType())
+    useStore().currentType.value = this.getCurrent().block.getType()
+    Blocks.onStarted()
+  }
+
+  /**
    * On Ordalie ended
    */
   onEnded() {
     console.log('🎲 ENDED ' + this.getCurrent().block.getType())
-    useStore().currentOrdalie.value = null
+    useStore().currentType.value = null
     this.onPlayed()
     Blocks.onEnded()
   }

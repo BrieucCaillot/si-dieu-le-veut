@@ -1,3 +1,5 @@
+
+
 uniform float time;
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -8,6 +10,7 @@ varying vec3 vNormal;
 #include <skinning_pars_vertex>
 
 
+
 void main() {
 	#include <skinbase_vertex>
 	#include <begin_vertex>
@@ -15,6 +18,8 @@ void main() {
 	#include <skinning_vertex>
 	#include <project_vertex>
 
+
 	vNormal = normal;
-  vUv = uv;
+  	vUv = uv;
+
 }

@@ -8,21 +8,15 @@ uniform float uDissolve;
 void main() {
   vec4 texel = texture2D(uTexture, vUv);
   float noiseTexture = texture2D(uNoise, vUv).r;
+  float alpha = smoothstep(uDissolve - 0.1, uDissolve + 0.1, noiseTexture);
 
-  // float r = 1.0/236.0;
-  // float g = 1.0/223.0;
-  // float b = 1.0/203.0;
+  vec3 gradientTexture = texture2D(uGradient, vec2(alpha, 0)).rgb;
 
-  float alpha = smoothstep(uDissolve-0.1, uDissolve + 0.1, noiseTexture);
-  
-  // vec3 gradientTexture = texture2D(uGradient, vec2(alpha, 0)).rgb;
-
-  if(texel.a < 0.01 ){
+  if(texel.a < 0.5 || alpha == 0.0) {
     discard;
   }
 
-  // texel.rgb *= gradientTexture;
+  texel.rgb *= gradientTexture;
 
-  // gl_FragColor = texel;
-  gl_FragColor = vec4(vec3(texel.rgb), texel.a);
+  gl_FragColor = texel;
 }

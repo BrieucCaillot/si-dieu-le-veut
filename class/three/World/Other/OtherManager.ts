@@ -6,7 +6,7 @@ import Other from '@/class/three/World/Other/Other'
 
 class OtherManager {
   private instances: Other[] = []
-  private currentIndex = 0
+  private currentIndex = -1
   private lastType: OTHERS
   private splashScreenClass: OtherSplashscreen
 
@@ -88,13 +88,6 @@ class OtherManager {
   }
 
   /**
-   * Start Splashscreen
-   */
-  startFirst() {
-    this.getByIndex(0).start()
-  }
-
-  /**
    * Start next other
    */
   startNext() {
@@ -108,6 +101,7 @@ class OtherManager {
    */
   onStarted() {
     console.log('✨ STARTED ' + this.getCurrent().block.getType())
+    useStore().currentType.value = this.getCurrent().block.getType()
     Blocks.onStarted()
   }
 
@@ -116,6 +110,10 @@ class OtherManager {
    */
   onEnded() {
     console.log('✨ ENDED ' + this.getCurrent().block.getType())
+    // Dont unmount if Other is End
+    if (this.getCurrent().block.getType() !== OTHERS.END && this.getCurrent().block.getType() !== OTHERS.DEAD) {
+      useStore().currentType.value = null
+    }
     Blocks.onEnded()
   }
 }

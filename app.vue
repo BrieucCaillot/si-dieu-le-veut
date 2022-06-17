@@ -19,9 +19,7 @@
       <Meta name="twitter:image" :content="`${url}/preview.png`" />
       <Meta name="twitter:image:alt" :content="`${title} - Preview`" />
     </Head>
-    <NuxtLayout name="default">
-      <NuxtPage />
-    </NuxtLayout>
+    <NuxtLayout />
   </div>
 </template>
 
@@ -29,9 +27,36 @@
 import '@/assets/css/tailwind.css'
 import '@/assets/sass/styles.scss'
 
+import DIFFICULTY from '@/constants/DIFFICULTY'
+import OTHERS from '@/constants/OTHERS'
+import ORDALIES from '@/constants/ORDALIES'
+import TRANSITIONS from '@/constants/TRANSITIONS'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+
 const url = 'https://si-dieu-le-veut.vercel.app'
 const title = 'Si Dieu le veut'
 const description = ref('Aide un malheureux cuisinier survivre à l’ordalie à laquelle il a été condamné après avoir été injustement accusé en tapant le plus vite possible !')
+
+// Handle URL Query
+const route = useRoute()
+
+const { isDebug, isDebugType, debugType } = useStore()
+const { difficulty } = useHUD()
+
+const queryDebug = route.query.debug
+const queryDifficulty = route.query.d as string
+const queryType = route.query.t as OTHERS | ORDALIES | TRANSITIONS
+const queryDead = route.query.m
+
+isDebug.value = queryDebug !== undefined && queryDebug !== 'false'
+difficulty.value = queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY
+isDebugType.value = queryType?.length > 0
+OrdalieManager.setIsDead(queryDead !== undefined && queryDead !== 'false')
+
+if (isDebugType.value) {
+  debugType.value = queryType
+  debugType.value = debugType.value.toUpperCase() as OTHERS | ORDALIES | TRANSITIONS
+}
 </script>
 
 <style lang="scss">

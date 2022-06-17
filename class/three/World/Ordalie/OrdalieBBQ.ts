@@ -18,16 +18,13 @@ import Ordalie from '@/class/three/World/Ordalie/Ordalie'
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
-// import characterBurningFrag from '@/class/three/shaders/characterBurning/fragment.glsl'
-// import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.glsl'
-
 class OrdalieBBQ {
   instance: Ordalie
   character: THREE.Mesh
   characterPosEntreeEnd = new THREE.Vector3(0)
   characterPosSortieStart = new THREE.Vector3(0)
   texts: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>[]
-  braises: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>[]
+
   container: HTMLDivElement[]
   // Gameplay
   animation: {
@@ -60,19 +57,29 @@ class OrdalieBBQ {
     this.instance = _ordalie
     this.difficultyData = this.instance.block.getDifficultyData() as BBQInterface
     this.texts = []
-    this.braises = []
+
     this.container = []
+
+    // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
+    // testCharacter.scale.set(0.2, 0.2, 0.2)
+
+    // testCharacter.traverse((object: THREE.Object3D) => {
+    //   if (object.name === 'Plane005_1') {
+    //     const mesh = object as THREE.Mesh
+    //     console.log(mesh.material.map.offset)
+    //     mesh.material.map.offset.x = 0.2
+
+    //     // width : 364 height : 329
+    //   }
+    // })
+
+    // WebGL.scene.add(testCharacter)
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
         this.texts.push(mesh)
       }
-      // if (mesh.name.startsWith('braise')) {
-      //   this.braises.push(mesh)
-      // }
     })
-
-    // console.log(this.braises)
 
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
@@ -85,23 +92,9 @@ class OrdalieBBQ {
       // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
     }
 
-    this.setCharacter()
     this.setAnimation()
     this.setTexts()
-    // this.setBraises()
   }
-
-  // setBraises() {
-  //   const texture = this.braises[0].material.map
-
-  //   for (let i = 0; i < this.braises.length; i++) {
-  //     this.braises[i].material = new THREE.MeshBasicMaterial({
-  //       map: texture,
-  //       transparent: true,
-  //       opacity: 0,
-  //     })
-  //   }
-  // }
 
   setContainer(container: HTMLDivElement, i: number) {
     this.container[i] = container
@@ -156,11 +149,6 @@ class OrdalieBBQ {
         transparent: true,
       })
     }
-  }
-
-  private setCharacter() {
-    const rig = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier') as THREE.Mesh
-    this.character = rig.children.find((child) => child.name === 'MAIN_SIDE_ROOT') as THREE.Mesh
   }
 
   private setAnimation() {
@@ -225,9 +213,9 @@ class OrdalieBBQ {
 
   onFinish(e) {
     if (e.action._clip.name === ANIMATIONS.BBQ.ENTREE) {
-      this.characterPosEntreeEnd.set(this.character.position.x, this.character.position.y, this.character.position.z)
+      this.characterPosEntreeEnd.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
       this.animation.actions[ANIMATIONS.BBQ.ENTREE].action.stop()
-      this.character.position.set(this.characterPosEntreeEnd.x, this.characterPosEntreeEnd.y, this.characterPosEntreeEnd.z)
+      this.instance.block.getCharacterRoot().position.set(this.characterPosEntreeEnd.x, this.characterPosEntreeEnd.y, this.characterPosEntreeEnd.z)
       this.animation.actions[ANIMATIONS.BBQ.IDLE].action.play()
     }
 
@@ -250,8 +238,8 @@ class OrdalieBBQ {
 
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.BBQ.AVANCE].action, 0.16, false)
 
-    gsap.to(this.character.position, {
-      x: this.character.position.x + this.forwardSpeed,
+    gsap.to(this.instance.block.getCharacterRoot().position, {
+      x: this.instance.block.getCharacterRoot().position.x + this.forwardSpeed,
       duration: 1,
     })
   }
@@ -260,9 +248,9 @@ class OrdalieBBQ {
     this.isGameWon = true
 
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.stop()
-    this.characterPosSortieStart.set(this.character.position.x, this.character.position.y, this.character.position.z)
+    this.characterPosSortieStart.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
     this.animation.play(ANIMATIONS.BBQ.SORTIE)
-    this.character.position.set(this.characterPosSortieStart.x, this.characterPosSortieStart.y, this.characterPosSortieStart.z)
+    this.instance.block.getCharacterRoot().position.set(this.characterPosSortieStart.x, this.characterPosSortieStart.y, this.characterPosSortieStart.z)
 
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.BBQ.SORTIE].action, 0.16, false)
   }
@@ -287,19 +275,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       // console.log('play', animation.action._clip.name, currentFrame)
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // console.log('play', animation.action._clip.name, currentFrame)
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
 
-    //   animation.lastFrame = currentFrame
-    // }
+      animation.lastFrame = currentFrame
+    }
   }
 }
 

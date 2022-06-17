@@ -20,6 +20,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import ORDALIES from '@/constants/ORDALIES'
 import WORDS_LIST from '@/constants/WORDS_LIST'
+import KEY from '@/constants/KEY'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
@@ -69,11 +70,7 @@ onUnmounted(() => {
 const initialization = () => {
   document.addEventListener('keydown', newChar)
 
-  if (OrdalieManager.getAll().length === 1) {
-    ordalie.value = OrdalieManager.getByIndex(0).instance
-  } else {
-    ordalie.value = OrdalieManager.getCurrent().instance
-  }
+  ordalie.value = OrdalieManager.getCurrent().instance
 
   MAX_DISPLAY_TIME.MIN = ordalie.value.difficultyData.min
   MAX_DISPLAY_TIME.MAX = ordalie.value.difficultyData.max
@@ -187,6 +184,7 @@ const newChar = (e: KeyboardEvent) => {
   if (!wordToType) {
     selectWordToType(e)
   } else {
+    if (KEY.includes(e.key)) return
     if (letterToType.toLowerCase() === e.key.toLowerCase()) {
       refArray[wordIndex].value.children.item(wordToTypeIndex).classList.add('text-bbq-valid')
       AudioManager.play('success')
