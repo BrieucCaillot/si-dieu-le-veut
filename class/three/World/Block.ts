@@ -108,10 +108,17 @@ class Block {
   }
 
   /**
-   * Get character of model
+   * Get character root of character model
    */
   getCharacterRoot() {
     return this.characterMainRoot
+  }
+
+  /**
+   * Get character side of character model
+   */
+  getCharacterSide() {
+    return this.characterSide
   }
 
   /**
