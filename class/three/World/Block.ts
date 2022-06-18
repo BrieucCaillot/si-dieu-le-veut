@@ -100,8 +100,12 @@ class Block {
   /**
    * Toggle garde's visibility
    */
-  toggleGarde(value: boolean) {
-    this.garde.visible = value
+  toggleGarde(value: boolean, delayed: boolean = false) {
+    if (delayed) {
+      setTimeout(() => (this.garde.visible = value), 4000)
+    } else {
+      this.garde.visible = value
+    }
   }
 
   toggleFrustumCulling(value: boolean) {
@@ -192,10 +196,10 @@ class Block {
     return this.position.set(position.x, position.y, position.z)
   }
 
-  showFront() {
-    console.log('⬇️ FRONT', this.type)
+  showDefault() {
+    console.log('⬇️ DEFAULT', this.type)
     gsap.to(this.model.scene.position, {
-      z: this.zMaxPosition,
+      z: 0,
       duration: 0.1,
       ease: 'power3.inOut',
     })

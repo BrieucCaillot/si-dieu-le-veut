@@ -15,7 +15,6 @@ class Ordalie {
 
   constructor(_type: ORDALIES) {
     this.block = new Block(_type)
-    this.block.showFront()
     this.block.toggleCharacter(false)
 
     switch (_type) {
@@ -33,14 +32,15 @@ class Ordalie {
   }
 
   start() {
+    this.block.showBehind()
     this.instance.start()
     gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
-    this.block.showBehind()
     this.block.toggleCharacter(true)
   }
 
   end() {
+    this.block.showDefault()
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()
     if (OrdalieManager.isPlayerDead) return

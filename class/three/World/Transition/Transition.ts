@@ -88,10 +88,11 @@ class Transition {
   }
 
   end() {
-    // this.block.showDefault()
+    this.block.showDefault()
+    this.block.toggleCharacter(false)
+    this.block.toggleGarde(false, true)
     gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
-    this.block.toggleCharacter(false)
   }
 
   setPlaneRefs() {

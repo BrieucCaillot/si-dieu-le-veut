@@ -37,13 +37,9 @@ class OtherSplashscreen {
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
 
-    OtherManager.setSplashscreenRef(this)
-
     const material = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'splashscreen').material
     this.title = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'titre')
     this.title.material = material.clone()
-    console.log(this.title.material)
-
     this.title.material.transparent = true
     this.title.material.opacity = 0
   }
@@ -158,7 +154,7 @@ class OtherSplashscreen {
     }
     // If last animation is finished
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4) {
-      this.instance.removeUpdate()
+      this.instance.kill()
     }
   }
 
