@@ -279,12 +279,15 @@ const ORDALIE_SOURCES = {
 }
 
 const SOUNDS = [
+  /* 
+  OTHERS
+  */
   {
-    name: 'title',
+    name: 'splashscreen_title',
     path: '/sounds/Other/title.mp3',
   },
   {
-    name: 'cinematique',
+    name: 'splashscreen_cinematique',
     path: '/sounds/Other/cinematique.mp3',
   },
   {
@@ -292,32 +295,186 @@ const SOUNDS = [
     path: '/sounds/Other/splashscreen_cough.mp3',
   },
   {
-    name: 'splashscreen_cough',
-    path: '/sounds/Other/splashscreen_cough.mp3',
+    name: 'gameover',
+    path: '/sounds/Other/mort_musique.mp3',
+  },
+  /* 
+  CUISINIER
+  */
+  {
+    name: 'cuisinier_walk_1',
+    path: '/sounds/Character/Cuisinier/Walk_Normal/walk_1.mp3',
   },
   {
+    name: 'cuisinier_walk_2',
+    path: '/sounds/Character/Cuisinier/Walk_Normal/walk_2.mp3',
+  },
+  {
+    name: 'cuisinier_walk_3',
+    path: '/sounds/Character/Cuisinier/Walk_Normal/walk_3.mp3',
+  },
+  {
+    name: 'cuisinier_walk_4',
+    path: '/sounds/Character/Cuisinier/Walk_Normal/walk_4.mp3',
+  },
+  {
+    name: 'cuisinier_walk_5',
+    path: '/sounds/Character/Cuisinier/Walk_Normal/walk_5.mp3',
+  },
+  /* 
+  GARDE
+  */
+  {
+    name: 'garde_walk_1',
+    path: '/sounds/Character/Garde/Walk_garde/walk_garde1.mp3',
+  },
+  {
+    name: 'garde_walk_2',
+    path: '/sounds/Character/Garde/Walk_garde/walk_garde2.mp3',
+  },
+  {
+    name: 'garde_walk_3',
+    path: '/sounds/Character/Garde/Walk_garde/walk_garde3.mp3',
+  },
+  {
+    name: 'garde_walk_4',
+    path: '/sounds/Character/Garde/Walk_garde/walk_garde4.mp3',
+  },
+  {
+    name: 'garde_kick',
+    path: '/sounds/Character/Garde/Kick/kick_garde.mp3',
+  },
+
+  /* 
+  ORDALIES COMMON
+  */
+  {
+    name: 'ordalie_music',
+    path: '/sounds/Ordalie/ordalie_loop.mp3',
+  },
+  {
+    name: 'ordalie_end',
+    path: '/sounds/Ordalie/ordalie_end.mp3',
+  },
+
+  /* 
+  ORDALIES BBQ
+  */
+
+  {
+    name: 'ordalie_bbq_death',
+    path: '/sounds/Ordalie/BBQ/mort_braises.mp3',
+  },
+  {
+    name: 'ordalie_bbq_ambiant',
+    path: '/sounds/Ordalie/BBQ/ambience_braises.mp3',
+  },
+  {
+    name: 'ordalie_bbq_walk_braises_1',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises1.mp3',
+  },
+  {
+    name: 'ordalie_bbq_walk_braises_2',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises2.mp3',
+  },
+  {
+    name: 'ordalie_bbq_walk_braises_3',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises3.mp3',
+  },
+  {
+    name: 'ordalie_bbq_walk_braises_4',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises4.mp3',
+  },
+  {
+    name: 'ordalie_bbq_walk_braises_5',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises5.mp3',
+  },
+
+  {
+    name: 'ordalie_bbq_jump_1',
+    path: '/sounds/Ordalie/BBQ/Jump/jump1.mp3',
+  },
+  {
+    name: 'ordalie_bbq_jump_2',
+    path: '/sounds/Ordalie/BBQ/Jump/jump2.mp3',
+  },
+  {
+    name: 'ordalie_bbq_jump_3',
+    path: '/sounds/Ordalie/BBQ/Jump/jump3.mp3',
+  },
+  {
+    name: 'ordalie_bbq_jump_4',
+    path: '/sounds/Ordalie/BBQ/Jump/jump4.mp3',
+  },
+
+  /* 
+  ORDALIE CROIX
+  */
+
+  {
+    name: 'ordalie_croix_intro',
+    path: '/sounds/Ordalie/CROIX/entree_croix.mp3',
+  },
+  {
+    name: 'ordalie_croix_death',
+    path: '/sounds/Ordalie/CROIX/mort_croix.mp3',
+  },
+  {
+    name: 'ordalie_croix_outro',
+    path: '/sounds/Ordalie/CROIX/sortie_croix.mp3',
+  },
+  /* 
+  ORDALIE FOOD
+  */
+
+  {
+    name: 'ordalie_food_intro',
+    path: '/sounds/Ordalie/FOOD/entree_food.mp3',
+  },
+  {
+    name: 'ordalie_food_death',
+    path: '/sounds/Ordalie/FOOD/mort_food.mp3',
+  },
+  {
+    name: 'ordalie_food_outro',
+    path: '/sounds/Ordalie/FOOD/sortie_food.mp3',
+  },
+
+  /*
+  Transitions
+  */
+
+  {
+    name: 'transition_ambient',
+    path: '/sounds/Transitions/ambience_transition.mp3',
+  },
+
+  /* *****************************************************************************
+   ********************************************************************************/
+
+  {
     name: 'braise_ambience',
-    path: '/sounds/Ordalies/BBQ/braise_ambience.mp3',
+    path: '/sounds/Ordalie/BBQ/braise_ambient.mp3',
   },
   {
     name: 'walk_braises1',
-    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises1.mp3',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises1.mp3',
   },
   {
     name: 'walk_braises2',
-    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises2.mp3',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises2.mp3',
   },
   {
     name: 'walk_braises3',
-    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises3.mp3',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises3.mp3',
   },
   {
     name: 'walk_braises4',
-    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises4.mp3',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises4.mp3',
   },
   {
     name: 'walk_braises5',
-    path: '/sounds/Ordalies/BBQ/walk_braises/walk_braises5.mp3',
+    path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises5.mp3',
   },
   {
     name: 'success',

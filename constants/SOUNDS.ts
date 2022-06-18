@@ -18,11 +18,11 @@ const ANIMATIONS_SOUNDS = {
         },
         {
           frame: 160,
-          sound: 'title',
+          sound: 'splashscreen_title',
         },
         {
           frame: 450,
-          sound: 'cinematique',
+          sound: 'splashscreen_cinematique',
         },
       ],
     },
