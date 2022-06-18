@@ -12,15 +12,19 @@ import {
   HueSaturationEffect,
   LUT3DEffect,
   LookupTexture,
+  SMAAEffect,
+  SMAAPreset,
+  EdgeDetectionMode,
+  PredicationMode,
 } from 'postprocessing'
 
 import WebGL from '@/class/three/WebGL'
-import { walkIdentifiers } from '@vue/compiler-core'
 
 class PostProcessing {
   private renderScene: RenderPass
   private composer: EffectComposer
   private textureEffect: TextureEffect
+  private smaaEffect: SMAAEffect
   private debugFolder: GUI
   private debugParams: { [key: string]: any }
 
@@ -30,15 +34,14 @@ class PostProcessing {
     this.createRenderScene()
     this.createTextureEffect()
     this.createLUTEffect()
+    this.createSMAAEffect()
   }
 
   private createRenderScene() {
     this.renderScene = new RenderPass(WebGL.scene, WebGL.camera.instance!)
     this.renderScene.renderToScreen = false
 
-    // const clearPass = new ClearPass(true)
     this.composer = new EffectComposer(WebGL.renderer.instance)
-    // this.composer.addPass(clearPass)
     this.composer.addPass(this.renderScene)
   }
 
@@ -134,10 +137,11 @@ class PostProcessing {
 
     const lut = LookupTexture.from(luts.get('png/warm-contrast') as THREE.Texture)
     const lutEffect = new LUT3DEffect(lut as THREE.Texture)
+    lutEffect.blendMode.blendFunction = BlendFunction.SKIP
 
-    const pass = new EffectPass(WebGL.camera.instance, colorAverageEffect, sepiaEffect, brightnessContrastEffect, hueSaturationEffect, lutEffect)
+    const effectPass = new EffectPass(WebGL.camera.instance, colorAverageEffect, sepiaEffect, brightnessContrastEffect, hueSaturationEffect, lutEffect)
+    this.composer.addPass(effectPass)
 
-    this.composer.addPass(pass)
     if (this.debugFolder) {
       // DEBUG
       const params = {
@@ -271,6 +275,19 @@ class PostProcessing {
         lutEffect.blendMode.blendFunction = Number(value)
       })
     }
+  }
+
+  private createSMAAEffect() {
+    this.smaaEffect = new SMAAEffect({
+      preset: SMAAPreset.HIGH,
+      edgeDetectionMode: EdgeDetectionMode.COLOR,
+    })
+    this.smaaEffect.edgeDetectionMaterial.edgeDetectionThreshold = 0.02
+    this.smaaEffect.edgeDetectionMaterial.predicationMode = PredicationMode.DEPTH
+    this.smaaEffect.edgeDetectionMaterial.predicationThreshold = 0.002
+    this.smaaEffect.edgeDetectionMaterial.predicationScale = 1.0
+
+    this.composer.addPass(new EffectPass(WebGL.camera.instance, this.smaaEffect))
   }
 
   onCameraMove() {

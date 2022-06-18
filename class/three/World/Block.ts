@@ -102,6 +102,13 @@ class Block {
   }
 
   /**
+   * Get garde of model
+   */
+  getGardeModel() {
+    return this.garde
+  }
+
+  /**
    * Toggle garde's visibility
    */
   toggleGarde(value: boolean, delayed: boolean = false) {

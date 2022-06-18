@@ -25,8 +25,6 @@ class Transition {
   animation!: { [key: string]: any }
   updateId: () => void
   text: THREE.Mesh
-  character: THREE.Mesh
-  garde: THREE.Mesh
   planeTexture: THREE.Mesh
   planeBackground: THREE.Mesh
   backgroundMaterial: THREE.Mesh
@@ -48,31 +46,6 @@ class Transition {
     this.updateId = this.update
 
     this.text = this.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'texte')
-    this.character = this.block
-      .getModel()
-      .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Cuisinier')
-      .children.find((mesh: THREE.Mesh) => mesh.name === 'SIDE_Cuisinier')
-    this.garde = this.block
-      .getModel()
-      .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Garde')
-      .children.find((mesh: THREE.Mesh) => mesh.name === 'Garde')
-
-    const characterTexture = this.character.material.map
-    characterTexture.encoding = THREE.LinearEncoding
-
-    const gardeTexture = this.garde.material.map
-    gardeTexture.encoding = THREE.LinearEncoding
-
-    this.character.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: characterTexture } },
-      vertexShader: characterBurningVert,
-      fragmentShader: characterBurningFrag,
-    })
-    this.garde.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: gardeTexture } },
-      vertexShader: characterBurningVert,
-      fragmentShader: characterBurningFrag,
-    })
   }
 
   start() {
@@ -109,7 +82,6 @@ class Transition {
     }
 
     const texture = this.planeTexture.material.map
-    texture.encoding = THREE.LinearEncoding
 
     const newTransitionTextureMat = new THREE.ShaderMaterial({
       uniforms: { ...this.uniforms, uTexture: { value: texture } },
@@ -127,6 +99,35 @@ class Transition {
     })
 
     this.planeBackground.material = newBackgroundMat
+
+    // Character
+    // this.character = this.block
+    //   .getModel()
+    //   .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Cuisinier')
+    //   .children.find((mesh: THREE.Mesh) => mesh.name === 'SIDE_Cuisinier')
+
+    // console.log(this.block.getCharacter())
+
+    // const characterTexture = this.block.getCharacter().material.map
+    // this.block.getCharacter().material = new THREE.ShaderMaterial({
+    //   uniforms: { ...this.uniforms, uTexture: { value: characterTexture } },
+    //   vertexShader: characterBurningVert,
+    //   fragmentShader: characterBurningFrag,
+    // })
+
+    // Garde
+    // this.character = this.block
+    // this.garde = this.block
+    //   .getModel()
+    //   .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Garde')
+    //   .children.find((mesh: THREE.Mesh) => mesh.name === 'Garde')
+
+    // const gardeTexture = this.block.getGardeModel().material.map
+    // this.block.getGardeModel().material = new THREE.ShaderMaterial({
+    //   uniforms: { ...this.uniforms, uTexture: { value: gardeTexture } },
+    //   vertexShader: characterBurningVert,
+    //   fragmentShader: characterBurningFrag,
+    // })
   }
 
   hide() {
