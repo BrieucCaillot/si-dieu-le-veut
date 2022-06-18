@@ -7,10 +7,13 @@ import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import HEAD from '@/constants/HEAD'
 
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+
+interface HeadTypes {}
 
 class Block {
   private type: OTHERS | ORDALIES | TRANSITIONS
@@ -18,6 +21,8 @@ class Block {
   private defaultModel: GLTF
   private model: any
   private character: THREE.Object3D
+  private characterSide: THREE.Mesh
+  private characterHead: THREE.Mesh
   private characterMainRoot: THREE.Mesh
   private garde: THREE.Object3D
   private difficultyData: { [key: string]: any }
@@ -69,7 +74,30 @@ class Block {
 
   private setCharacter() {
     this.character = this.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier')
+    this.characterSide = this.character?.children.find((child) => child.name === 'SIDE_Cuisinier') as THREE.SkinnedMesh
     this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
+    this.characterHead = this.characterSide?.children?.find((child) => child.material.name === 'cuisinier_tete') as THREE.Mesh
+  }
+
+  /**
+   * Change Character face
+   */
+  changeCharacterHead(head: THREE.Mesh, type: HEAD = HEAD.NORMAL) {
+    let offset = 0
+    console.log(type)
+    switch (type) {
+      case HEAD.NORMAL:
+        offset = 0
+        break
+      case HEAD.HAPPY:
+        offset = 0.2
+        break
+      case HEAD.SAD:
+        offset = 0.4
+        break
+    }
+    // this.characterHead.material.map.offset.x = offset
+    head.material.map.offset.x = offset
   }
 
   /**
