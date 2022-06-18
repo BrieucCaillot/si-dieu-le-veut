@@ -36,21 +36,12 @@ class OtherSplashscreen {
 
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
-
-    const material = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'splashscreen').material
-    this.title = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'titre')
-    this.title.material = material.clone()
-    this.title.material.transparent = true
-    this.title.material.opacity = 0
+    this.setTitle()
   }
 
   start() {
-    gsap.to(this.title.material, {
-      opacity: 1,
-      duration: 3,
-      delay: 1,
-    })
     this.playAnimFromOther(OTHERS.SPLASHSCREEN)
+    this.fadeInTitle()
   }
 
   end() {
@@ -142,6 +133,23 @@ class OtherSplashscreen {
 
     // Play the action
     this.animation.mixer.addEventListener('finished', (e) => this.onFinish(e))
+  }
+
+  private setTitle() {
+    const material = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'splashscreen').material
+    this.title = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'titre')
+    this.title.material = material.clone()
+    this.title.material.transparent = true
+    this.title.material.opacity = 0
+  }
+
+  private fadeInTitle() {
+    gsap.to(this.title.material, {
+      opacity: 1,
+      duration: 2,
+      delay: 5,
+      ease: 'power2.easeOut',
+    })
   }
 
   onFinish(e) {
