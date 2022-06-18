@@ -47,9 +47,6 @@ class WebGL {
       this.world = new World()
       this.time.addUpdate(this.update)
     })
-
-    // Dispose WebGL
-    // setTimeout(() => this.destroy(), 3000)
   }
 
   onResourcesLoaded() {}
@@ -68,8 +65,8 @@ class WebGL {
     this.camera.onUpdate()
     this.world.onUpdate()
     this.raycaster.onUpdate()
-    this.renderer.onUpdate()
-    // this.postProcessing.onUpdate()
+    // this.renderer.onUpdate()
+    this.postProcessing.onUpdate()
   }
 
   destroy() {
