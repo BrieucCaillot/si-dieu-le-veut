@@ -50,9 +50,6 @@ class Other {
     this.instance.start()
     OtherManager.onStarted()
 
-    // Speed up to first ordalie
-    // Blocks.setCurrentIsFirstOrdalie()
-
     // Add update only if we are on Splashscreen
     if (this.isSplashscreen) {
       gsap.ticker.add(this.updateId)
@@ -75,7 +72,7 @@ class Other {
   kill() {
     if (!this.isSplashscreen) return
     this.block.showDefault()
-    this.block.toggleCharacter(false)
+    this.block.toggleCharacter(false, true)
     this.block.toggleGarde(false, true)
     gsap.ticker.remove(this.updateId)
   }

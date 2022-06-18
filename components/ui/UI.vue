@@ -4,8 +4,8 @@
   <main id="main" class="page">
     <template v-if="startWebGL">
       <Loader v-if="showLoader" />
-      <Video />
       <Canvas />
+      <Skip v-if="showSkip" />
       <Typing />
       <Score v-if="isEndOrDead()" />
       <HUD />
@@ -16,27 +16,23 @@
 </template>
 
 <script setup lang="ts">
-import Canvas from '@/components/three/Canvas.vue'
-
-import Loader from '@/components/ui/Loader.vue'
-import Video from '@/components/ui/Video.vue'
-import HUD from '@/components/ui/HUD.vue'
 import Mobile from '@/components/ui/Mobile.vue'
+import Loader from '@/components/ui/Loader.vue'
+import Canvas from '@/components/three/Canvas.vue'
+import Skip from '@/components/ui/Skip.vue'
 import Typing from '@/components/ui/Typing/Typing.vue'
 import Score from '@/components/ui/Score.vue'
+import HUD from '@/components/ui/HUD.vue'
 
 import { isMobileTest } from '@/class/three/utils/isMobile'
-import Blocks from '@/class/three/World/Blocks'
 import ORDALIES from '@/constants/ORDALIES'
 import OTHERS from '@/constants/OTHERS'
 import TRANSITIONS from '@/constants/TRANSITIONS'
 
-const route = useRoute()
 const startWebGL = ref(false)
-
 const currentType = ref(null)
 
-const { isMobile, showLoader } = useStore()
+const { isMobile, showLoader, showSkip } = useStore()
 
 onMounted(() => {
   isMobile.value = isMobileTest()

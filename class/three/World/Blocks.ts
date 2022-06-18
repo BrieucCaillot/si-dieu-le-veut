@@ -17,6 +17,7 @@ class Blocks {
   private currentIndex = 0
   private debugFolder: GUI
   private isStarted = false
+  private isSkipingIntro = false
   isEnded = false
 
   /**
@@ -31,10 +32,6 @@ class Blocks {
       OtherManager.create(OTHERS.CINEMATIC_2)
       OtherManager.create(OTHERS.CINEMATIC_3)
       OtherManager.create(OTHERS.TUTORIAL)
-
-      // url for debug
-      // t=OTHERS|ORDALIES|TRANSITIONS
-      // http://localhost:3000/?t=splashscreen
     }
 
     if (WebGL.debug.isActive()) {
@@ -45,11 +42,9 @@ class Blocks {
       this.debugFolder.add(this.debugParams(), 'getAll').name('Get All With Type')
       this.debugFolder.add(this.debugParams(), 'increaseDifficulty').name('🎲 Increase Difficulty')
       this.debugFolder.add(this.debugParams(), 'decreaseDifficulty').name('🎲 Decrease Difficulty')
+      this.debugFolder.add(this, 'currentIndex').name('Current Blocks Index').listen().disable()
       this.debugFolder.add(OtherManager, 'currentIndex').name('Current Other Index').listen().disable()
     }
-
-    // Start
-    // document.addEventListener('keydown', (e) => useStore().showLoader.value === false && e.code === 'Space' && this.start())
   }
 
   /**
@@ -57,10 +52,13 @@ class Blocks {
    */
   start() {
     if (this.isStarted) return
-
     this.isStarted = true
 
+    useStore().isSkippingIntro.value && this.skipIntro()
+
     const currentType = this.getCurrent().getType() as OTHERS | ORDALIES | TRANSITIONS
+
+    // console.log('fking current type in start ', currentType)
 
     if (this.isOther(currentType as OTHERS)) {
       return OtherManager.startNext()
@@ -79,6 +77,26 @@ class Blocks {
   end() {
     console.log('🏠 END OF BLOCK SYSTEM')
     this.isEnded = true
+  }
+
+  /**
+   * Skip intro and go directly to first ordalie
+   */
+  skipIntro() {
+    if (this.isSkipingIntro) return
+    this.isSkipingIntro = true
+
+    console.log('🏠 SKIP INTRO')
+
+    // Stop splashscreen
+    OtherManager.getSplashscreen().kill()
+    // Create nexts blocks
+    OrdalieManager.createNext()
+    TransitionManager.createNext()
+    // Change current index to ordalie created
+    this.currentIndex = 5
+    OtherManager.setCurrentIndex(4)
+    this.goToNext()
   }
 
   /**
@@ -115,15 +133,6 @@ class Blocks {
    */
   getCurrent() {
     return this.instances[this.currentIndex]
-  }
-
-  /**
-   * Get current block instance in view
-   */
-  setCurrentIsFirstOrdalie() {
-    this.currentIndex = 4
-    OtherManager.setCurrentIndex(4)
-    return this.getCurrent()
   }
 
   /**
@@ -216,14 +225,21 @@ class Blocks {
     if (this.getNext() === undefined) return console.log('🤡 No next block')
     if ([OTHERS.END].includes(this.getNext().getType() as OTHERS)) return this.end() // END OF BLOCK SYSTEM
 
-    const nextPosX = this.getNext().getCenter().x
-
-    this.createNext()
+    let nextPosX = null
+    if (this.isSkipingIntro) {
+      nextPosX = this.getCurrent().getCenter().x
+    } else {
+      nextPosX = this.getNext().getCenter().x
+      this.createNext()
+    }
 
     WebGL.camera.setPositionX({
       x: nextPosX,
       onComplete: () => {
         const currentType = this.getCurrent().getType()
+
+        this.isSkipingIntro = false
+
         if (currentType === OTHERS.SPLASHSCREEN) return OtherManager.startNext()
 
         // // IF NEXT BLOCK IS AN OTHER, START NEXT OTHER
