@@ -89,8 +89,12 @@ class Block {
   /**
    * Toggle character's visibility
    */
-  toggleCharacter(value: boolean) {
-    this.character.visible = value
+  toggleCharacter(value: boolean, delayed: boolean = false) {
+    if (delayed) {
+      setTimeout(() => (this.character.visible = value), 6000)
+    } else {
+      this.character.visible = value
+    }
   }
 
   private setGarde() {
@@ -102,7 +106,7 @@ class Block {
    */
   toggleGarde(value: boolean, delayed: boolean = false) {
     if (delayed) {
-      setTimeout(() => (this.garde.visible = value), 4000)
+      setTimeout(() => (this.garde.visible = value), 6000)
     } else {
       this.garde.visible = value
     }

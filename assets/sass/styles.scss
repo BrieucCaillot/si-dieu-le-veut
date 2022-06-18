@@ -3,10 +3,11 @@
 @import 'pages/_404.scss';
 
 // COMPONENTS
-@import 'components/loader.scss';
 @import 'components/_mobile.scss';
+@import 'components/_loader.scss';
+@import 'components/_skip.scss';
 @import 'components/_typing.scss';
-@import 'components/hud.scss';
+@import 'components/_hud.scss';
 
 @font-face {
   font-family: 'Mordova';

@@ -82,11 +82,10 @@ class OrdalieBBQ {
     })
 
     if (WebGL.debug.isActive()) {
-      this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
+      // this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
       // this.debugFolder.add(this.braises[0], 'visible').name('braises 0')
       // this.debugFolder.add(this.braises[1], 'visible').name('braises 1')
       // this.debugFolder.add(this.braises[2], 'visible').name('braises 2')
-
       // this.debugFolder.add(this.braises[0].material, 'opacity', 0, 1).name('opacity 0')
       // this.debugFolder.add(this.braises[1].material, 'opacity', 0, 1).name('opacity 1')
       // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
