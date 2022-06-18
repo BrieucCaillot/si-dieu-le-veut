@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import ORDALIES from '@/constants/ORDALIES'
 import SOUNDS from '@/constants/SOUNDS'
 import ANIMATIONS from '@/constants/ANIMATIONS'
+import HEAD from '@/constants/HEAD'
 import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
@@ -60,20 +61,36 @@ class OrdalieBBQ {
 
     this.container = []
 
-    // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
-    // testCharacter.scale.set(0.2, 0.2, 0.2)
+    const debugParams = {
+      offsetX: 0,
+    }
 
-    // testCharacter.traverse((object: THREE.Object3D) => {
-    //   if (object.name === 'Plane005_1') {
-    //     const mesh = object as THREE.Mesh
-    //     console.log(mesh.material.map.offset)
-    //     mesh.material.map.offset.x = 0.2
+    let materialRef = null
 
-    //     // width : 364 height : 329
-    //   }
-    // })
+    if (WebGL.debug.isActive()) {
+      this.debugFolder = WebGL.debug.addFolder('BBQ')
+      this.debugFolder
+        .add(debugParams, 'offsetX', {
+          normal: 0,
+          sad: 0.2,
+          dead: 0.4,
+        })
+        .onChange((value) => {
+          console.log(value)
+          materialRef.map.offset.x = value
+        })
+    }
 
-    // WebGL.scene.add(testCharacter)
+    const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
+    testCharacter.scale.multiplyScalar(0.3)
+
+    testCharacter.traverse((mesh: THREE.Mesh) => {
+      if (mesh.name === 'Plane005_1') {
+        this.instance.block.changeCharacterHead(mesh)
+      }
+    })
+
+    WebGL.scene.add(testCharacter)
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
