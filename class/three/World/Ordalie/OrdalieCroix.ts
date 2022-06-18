@@ -120,7 +120,6 @@ class OrdalieCroix {
       },
       play: (name: string) => {
         this.animation.actions[name].action.play()
-        console.log(name)
       },
     }
 

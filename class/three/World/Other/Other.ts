@@ -74,7 +74,9 @@ class Other {
 
   kill() {
     if (!this.isSplashscreen) return
+    this.block.showDefault()
     this.block.toggleCharacter(false)
+    this.block.toggleGarde(false, true)
     gsap.ticker.remove(this.updateId)
   }
 
@@ -87,10 +89,9 @@ class Other {
     // Prevent to skip when key pressed is not Space or user is on the splashscreen
     if (e.code !== 'Space') return
 
-    //
     if (![OTHERS.DEAD, OTHERS.END].includes(this.block.getType() as OTHERS)) {
       // Play animation for the next others
-      OtherManager.getSplashscreenRef().playAnimFromOther(this.block.getType() as OTHERS)
+      OtherManager.getSplashscreen().instance.playAnimFromOther(this.block.getType() as OTHERS)
     }
 
     this.end()

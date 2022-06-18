@@ -100,8 +100,12 @@ class Block {
   /**
    * Toggle garde's visibility
    */
-  toggleGarde(value: boolean) {
-    this.garde.visible = value
+  toggleGarde(value: boolean, delayed: boolean = false) {
+    if (delayed) {
+      setTimeout(() => (this.garde.visible = value), 4000)
+    } else {
+      this.garde.visible = value
+    }
   }
 
   toggleFrustumCulling(value: boolean) {

@@ -1,5 +1,6 @@
 import GUI from 'lil-gui'
 
+import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
 
 class OtherTutorial {
@@ -11,9 +12,13 @@ class OtherTutorial {
     this.instance = _other
   }
 
-  start() {}
+  start() {
+    OtherManager.getSplashscreen().block.showBehind()
+    this.instance.block.showBehind()
+  }
 
   end() {
+    this.instance.block.showDefault()
     this.instance.end()
   }
 

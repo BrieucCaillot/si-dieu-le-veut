@@ -34,8 +34,6 @@ class OtherSplashscreen {
 
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
-
-    OtherManager.setSplashscreenRef(this)
   }
 
   start() {

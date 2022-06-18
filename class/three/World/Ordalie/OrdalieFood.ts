@@ -85,8 +85,6 @@ class OrdalieFood {
   }
 
   updateFurnace() {
-    console.log('update furnace')
-
     if (this.fourIndex === this.fours.length - 1) return
 
     this.fours[this.fourIndex].visible = false

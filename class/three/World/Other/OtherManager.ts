@@ -8,7 +8,6 @@ class OtherManager {
   private instances: Other[] = []
   private currentIndex = -1
   private lastType: OTHERS
-  private splashScreenClass: OtherSplashscreen
 
   /**
    * Create other from type
@@ -44,12 +43,8 @@ class OtherManager {
     }
   }
 
-  setSplashscreenRef(splashscreen: OtherSplashscreen) {
-    this.splashScreenClass = splashscreen
-  }
-
-  getSplashscreenRef() {
-    return this.splashScreenClass
+  getSplashscreen() {
+    return this.getByIndex(0)
   }
 
   /**
