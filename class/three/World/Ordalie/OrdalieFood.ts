@@ -47,6 +47,9 @@ class OrdalieFood {
   biteTexture: THREE.Texture
   difficultyData: FoodInterface
   BASE_PATHS: any[]
+  cloneGroup: THREE.Group
+  fours: THREE.Mesh[]
+  fourIndex: number
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
@@ -64,6 +67,31 @@ class OrdalieFood {
     this.setPath()
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
+
+    this.cloneGroup = new THREE.Group()
+    WebGL.scene.add(this.cloneGroup)
+
+    this.fours = [
+      this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'four1'),
+      this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'four2'),
+      this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'four3'),
+    ]
+
+    this.fours[0].visible = true
+    this.fours[1].visible = false
+    this.fours[2].visible = false
+
+    this.fourIndex = 0
+  }
+
+  updateFurnace() {
+    console.log('update furnace')
+
+    if (this.fourIndex === this.fours.length - 1) return
+
+    this.fours[this.fourIndex].visible = false
+    this.fourIndex++
+    this.fours[this.fourIndex].visible = true
   }
 
   getRandomPath() {
@@ -79,6 +107,7 @@ class OrdalieFood {
         uMask: { value: this.biteTexture },
         uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient') as THREE.Texture },
         uProgress: { value: 4 },
+        uAlpha: { value: 0 },
         spriteSheetSize: { value: new THREE.Vector2(320, 64) },
         spriteSize: { value: new THREE.Vector2(64, 64) },
       },
@@ -94,7 +123,13 @@ class OrdalieFood {
     const point = path.getPointAt(1)
 
     clone.position.set(point.x, point.y, point.z)
-    WebGL.scene.add(clone)
+    // WebGL.scene.add(clone)
+    this.cloneGroup.add(clone)
+
+    gsap.to(material.uniforms.uAlpha, {
+      value: 1,
+      duration: 0.5,
+    })
 
     return clone
   }
@@ -189,7 +224,6 @@ class OrdalieFood {
 
   onFinish(e) {
     if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE) {
-      // console.log('FNINISHED ENTREE')
       this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE].action.stop()
       this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE)
       this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE].action.stop()
@@ -237,9 +271,7 @@ class OrdalieFood {
 
   startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
     return new Promise<void>((resolve, reject) => {
-      const uniform = mesh.material.uniforms.uProgress
-
-      gsap.to(uniform, {
+      gsap.to(mesh.material.uniforms.uProgress, {
         value: 0,
         ease: SteppedEase.config(4),
         duration: 0.5,
@@ -251,9 +283,9 @@ class OrdalieFood {
   }
 
   disposeInstance(name: string) {
-    let mesh = WebGL.scene.children.find((mesh) => mesh.name === name) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
+    let mesh = this.cloneGroup.children.find((mesh) => mesh.name === name) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
 
-    WebGL.scene.remove(mesh)
+    this.cloneGroup.remove(mesh)
 
     mesh.geometry.dispose()
     mesh.material.dispose()
@@ -299,6 +331,18 @@ class OrdalieFood {
   }
 
   gameOver() {
+    this.cloneGroup.traverse((object: THREE.Object3D) => {
+      if (object.type === 'Group') return
+      const mesh = object as THREE.Mesh
+      gsap.to(mesh.material.uniforms.uAlpha, {
+        duration: 0.5,
+        value: 0,
+        onComplete: () => {
+          this.disposeInstance(mesh.name)
+        },
+      })
+    })
+
     this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_MORT)
     this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()

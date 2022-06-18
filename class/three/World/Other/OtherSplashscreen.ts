@@ -4,11 +4,12 @@ import ANIMATIONS from '@/constants/ANIMATIONS'
 import OTHERS from '@/constants/OTHERS'
 import SOUNDS from '@/constants/SOUNDS'
 
-import WebGL from '@/class/three/WebGL'
-import Other from '@/class/three/World/Other/Other'
-import OtherManager from './OtherManager'
 import AudioManager from '@/class/three/utils/AudioManager'
-import { getFrame } from '../../utils/Maths'
+import { getFrame } from '@/class/three/utils/Maths'
+
+import WebGL from '@/class/three/WebGL'
+import OtherManager from '@/class/three/World/Other/OtherManager'
+import Other from '@/class/three/World/Other/Other'
 
 class OtherSplashscreen {
   instance: Other

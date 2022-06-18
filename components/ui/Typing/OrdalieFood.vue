@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(word, i) in wordList" :key="i">
-      <span class="cadre" :ref="(el) => (wordList[i] ? (wordList[i].el = el) : null)" v-SplitText>{{ word.word }}</span>
+      <span class="cadre opacity-0" :ref="(el) => (wordList[i] ? (wordList[i].el = el) : null)" v-SplitText>{{ word.word }}</span>
     </div>
   </div>
 </template>
@@ -14,6 +14,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import { random } from '@/class/three/utils/Maths'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
+import KEY from '@/constants/KEY'
 
 const ordalie = ref()
 const wordList = ref([])
@@ -116,6 +117,7 @@ const newChar = (e: KeyboardEvent) => {
   if (!wordToType) {
     selectWordToType(e)
   } else {
+    if (KEY.includes(e.key)) return
     if (letterToType.toLowerCase() === e.key.toLowerCase()) {
       AudioManager.play('success')
 
@@ -183,6 +185,10 @@ const replaceWord = async () => {
 
   COUNTER++
 
+  if (COUNTER % Math.floor(NB_WORDS_TO_WRITE / 2) === 0) {
+    ordalie.value.updateFurnace()
+  }
+
   //shader transition
   await ordalie.value.startBiteTransition(displayedToRemove.mesh)
 
@@ -199,11 +205,22 @@ const replaceWord = async () => {
 }
 
 const gameWon = () => {
+  console.log('game won bro')
   ordalie.value.gameWon()
   gsap.ticker.remove(update)
 }
 
 const gameOver = () => {
+  for (let i = 0; i < wordList.value.length; i++) {
+    const current = wordList.value[i]
+    if (current.el && !current.wordCompleted) {
+      gsap.to(current.el, {
+        opacity: 0,
+        duration: 0.25,
+      })
+    }
+  }
+
   ordalie.value.gameOver()
   gsap.ticker.remove(update)
 }
@@ -222,6 +239,15 @@ const update = (time: number, deltaTime: number, frame: number) => {
     if (current.el && !current.wordCompleted) {
       current.displayTime += deltaTime * 0.001
       current.progress = current.displayTime / current.maxDisplayTime
+
+      if (current.el.style.opacity <= 1) {
+        current.el.style.opacity = current.displayTime / 0.25
+      }
+
+      // gsap.to(current.el, {
+      //   opacity: 1,
+      //   duration: 0.25,
+      // })
 
       if (current.progress >= 1) {
         current.progress = 0

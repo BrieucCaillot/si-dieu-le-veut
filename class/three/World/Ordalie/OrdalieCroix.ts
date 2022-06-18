@@ -16,6 +16,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 
 class OrdalieCroix {
   instance: Ordalie
+  rigCuisinierFront
   animation: {
     mixer: THREE.AnimationMixer
     actions: {
@@ -46,6 +47,8 @@ class OrdalieCroix {
 
     this.planeTextReference = this.instance.block.getModel().scene.children.find((child) => child.name === 'text') as THREE.Mesh
 
+    this.setRigCuisinierFront()
+    // this.toggleRigCuisinierFront(false)
     this.setAnimation()
   }
 
@@ -70,30 +73,38 @@ class OrdalieCroix {
     this.updateHTML()
   }
 
+  private setRigCuisinierFront() {
+    this.rigCuisinierFront = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier_FRONT')
+  }
+
+  private toggleRigCuisinierFront(_value) {
+    this.rigCuisinierFront.visible = _value
+  }
+
   private setAnimation() {
     const mixer = new THREE.AnimationMixer(this.instance.block.getModel().scene)
 
     this.animation = {
       mixer,
       actions: {
-        [ANIMATIONS.CROIX.FRONT_ENTREE]: {
-          action: mixer.clipAction(this.instance.block.getModel().animations[0]),
-          frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_ENTREE].frames,
-          lastFrame: 0,
-        },
-        [ANIMATIONS.CROIX.FRONT_SORTIE]: {
-          action: mixer.clipAction(this.instance.block.getModel().animations[1]),
-          frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_SORTIE].frames,
-          lastFrame: 0,
-        },
         [ANIMATIONS.CROIX.FRONT_BRAS]: {
-          action: mixer.clipAction(this.instance.block.getModel().animations[2]),
+          action: mixer.clipAction(this.instance.block.getModel().animations[0]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_BRAS].frames,
           lastFrame: 0,
         },
+        [ANIMATIONS.CROIX.FRONT_ENTREE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[1]),
+          frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_ENTREE].frames,
+          lastFrame: 0,
+        },
         [ANIMATIONS.CROIX.FRONT_MORT]: {
-          action: mixer.clipAction(this.instance.block.getModel().animations[3]),
+          action: mixer.clipAction(this.instance.block.getModel().animations[2]),
           frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_MORT].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.CROIX.FRONT_SORTIE]: {
+          action: mixer.clipAction(this.instance.block.getModel().animations[3]),
+          frames: SOUNDS[ORDALIES.CROIX][ANIMATIONS.CROIX.FRONT_SORTIE].frames,
           lastFrame: 0,
         },
         [ANIMATIONS.CROIX.SIDE_ENTREE]: {
@@ -109,6 +120,7 @@ class OrdalieCroix {
       },
       play: (name: string) => {
         this.animation.actions[name].action.play()
+        console.log(name)
       },
     }
 
@@ -147,6 +159,7 @@ class OrdalieCroix {
 
     if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_ENTREE) {
       characterPos.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
+      this.toggleRigCuisinierFront(true)
       this.instance.block.getCharacterRoot().position.set(characterPos.x, characterPos.y, characterPos.z)
       // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
       this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action.stop()

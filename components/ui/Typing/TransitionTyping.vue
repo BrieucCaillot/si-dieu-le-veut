@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute left-0 font-primary opacity-0" v-SplitText ref="domText"></div>
+  <div class="absolute top-0 left-0 font-primary opacity-0" v-SplitText ref="domText"></div>
 </template>
 
 <script setup lang="ts">
@@ -9,13 +9,16 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+import KEY from '@/constants/KEY'
 
 import gsap from 'gsap'
+import TRANSITIONS from '~~/constants/TRANSITIONS'
 
 const domText = ref<HTMLDivElement>(null)
 const text = ref('')
 const currentBlock = ref()
 const props = defineProps(['type'])
+let type = null
 let index = 0
 let fontSizeCoef = null
 let lettersToType = null
@@ -33,7 +36,10 @@ onMounted(() => {
 
   if (isTransition) {
     currentBlock.value = TransitionManager.getCurrent()
-    fontSizeCoef = 2.22
+
+    type = TransitionManager.getCurrent().block.getType()
+
+    fontSizeCoef = 2.4
   } else if (isOtherEnd) {
     currentBlock.value = OtherManager.getCurrent().instance
     fontSizeCoef = 3.26
@@ -49,7 +55,6 @@ onMounted(() => {
 
   lettersToType = text.value.split('')
   letterToType = lettersToType[index]
-  console.log('broo ', letterToType)
 })
 
 onUnmounted(() => {
@@ -63,7 +68,7 @@ const clearEvents = () => {
 
 const positionHTML = () => {
   const positions = setHTMLPosition(currentBlock.value.text)
-  domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y}px, 0)`
+  domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y - domText.value.offsetHeight / 3}px, 0) ${type === TRANSITIONS.TRANSITION_4 ? 'rotate(-8deg)' : ''}`
   domText.value.style.fontSize = positions.width / fontSizeCoef + 'px'
 }
 
@@ -87,6 +92,7 @@ const vSplitText = {
 }
 
 const newChar = (e: KeyboardEvent) => {
+  if (KEY.includes(e.key)) return
   if (letterToType.toLowerCase() === e.key.toLowerCase()) {
     AudioManager.play('success')
 
