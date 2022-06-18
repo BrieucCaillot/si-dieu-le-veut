@@ -162,7 +162,7 @@ class OtherSplashscreen {
     }
     // If last animation is finished
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4) {
-      this.instance.kill()
+      this.kill()
     }
   }
 
@@ -214,6 +214,14 @@ class OtherSplashscreen {
       OtherManager.getCurrent().end()
       return (this.isFollowingCharacter = true)
     }
+  }
+
+  kill() {
+    this.instance.block.toggleCharacter(false)
+    this.instance.block.getCharacterSide().visible = false
+    this.instance.block.toggleGarde(false, true)
+
+    gsap.ticker.remove(this.instance.updateId)
   }
 
   update() {

@@ -62,7 +62,7 @@ class Transition {
   }
 
   end() {
-    this.block.showDefault()
+    // this.block.showDefault()
     this.block.toggleCharacter(false)
     this.block.toggleGarde(false, true)
     gsap.ticker.remove(this.updateId)
@@ -82,10 +82,10 @@ class Transition {
       uDissolve: { value: 0 },
     }
 
-    if (WebGL.debug.isActive()) {
-      const folder = WebGL.debug.addFolder('Transition')
-      folder.add(this.uniforms.uDissolve, 'value', 0, 1, 0.01).name('Dissolve')
-    }
+    // if (WebGL.debug.isActive()) {
+    //   const folder = WebGL.debug.addFolder('Transition')
+    //   folder.add(this.uniforms.uDissolve, 'value', 0, 1, 0.01).name('Dissolve')
+    // }
 
     // Scene
     this.planeTexture.material = new THREE.ShaderMaterial({

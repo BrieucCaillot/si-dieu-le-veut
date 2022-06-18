@@ -12,13 +12,9 @@ class OtherTutorial {
     this.instance = _other
   }
 
-  start() {
-    OtherManager.getSplashscreen().block.showBehind()
-    this.instance.block.showBehind()
-  }
+  start() {}
 
   end() {
-    this.instance.block.showDefault()
     this.instance.end()
   }
 
