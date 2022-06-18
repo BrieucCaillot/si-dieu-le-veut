@@ -44,6 +44,10 @@ class Other {
     }
     this.updateId = this.update
     this.isSplashscreen = [OTHERS.SPLASHSCREEN].includes(_type)
+
+    // Show behind for all except dead
+    if ([OTHERS.DEAD].includes(_type)) return
+    this.block.showBehind()
   }
 
   start() {
@@ -67,14 +71,6 @@ class Other {
     OtherManager.onEnded()
     if (this.isSplashscreen) return
     document.removeEventListener('keydown', this.onSpacePressed)
-  }
-
-  kill() {
-    if (!this.isSplashscreen) return
-    this.block.showDefault()
-    this.block.toggleCharacter(false, true)
-    this.block.toggleGarde(false, true)
-    gsap.ticker.remove(this.updateId)
   }
 
   update = () => {

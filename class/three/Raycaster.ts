@@ -22,12 +22,11 @@ class Raycaster {
 
     for (let i = 0; i < intersects.length; i++) {
       const object = intersects[i].object as THREE.Mesh
-
       switch (object.name) {
-        case 'twitter':
+        case 'TWITTER':
           Social.onHover(object)
           break
-        case 'facebook':
+        case 'FACEBOOK':
           Social.onHover(object)
           break
       }

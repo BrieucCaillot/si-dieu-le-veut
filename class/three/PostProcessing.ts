@@ -32,9 +32,9 @@ class PostProcessing {
     if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('PostProcessing')
 
     this.createRenderScene()
-    this.createTextureEffect()
     this.createLUTEffect()
     this.createSMAAEffect()
+    this.createTextureEffect()
   }
 
   private createRenderScene() {

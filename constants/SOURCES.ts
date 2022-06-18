@@ -247,16 +247,19 @@ const ORDALIE_SOURCES = {
       name: 'bread',
       type: SourceType.texture,
       path: 'textures/bread.png',
+      encoding: THREE.sRGBEncoding,
     },
     {
       name: 'cheese',
       type: SourceType.texture,
       path: 'textures/cheese.png',
+      encoding: THREE.sRGBEncoding,
     },
     {
       name: 'cake',
       type: SourceType.texture,
       path: 'textures/cake.png',
+      encoding: THREE.sRGBEncoding,
     },
     {
       name: 'miam',

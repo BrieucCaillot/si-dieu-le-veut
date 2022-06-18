@@ -40,7 +40,7 @@ class Ordalie {
   }
 
   end() {
-    this.block.showDefault()
+    // this.block.showDefault()
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()
     if (OrdalieManager.isPlayerDead) return

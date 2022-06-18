@@ -28,16 +28,16 @@ class Renderer extends THREE.EventDispatcher {
   }
 
   onResize() {
-    this.instance!.setSize(WebGL.sizes.width, WebGL.sizes.height)
-    this.instance!.setPixelRatio(WebGL.sizes.pixelRatio)
+    this.instance.setSize(WebGL.sizes.width, WebGL.sizes.height)
+    this.instance.setPixelRatio(WebGL.sizes.pixelRatio)
   }
 
   onUpdate() {
-    this.instance!.render(WebGL.scene, WebGL.camera.instance!)
+    this.instance.render(WebGL.scene, WebGL.camera.instance!)
   }
 
   destroy() {
-    this.instance!.dispose()
+    this.instance.dispose()
   }
 }
 

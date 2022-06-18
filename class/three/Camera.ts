@@ -199,7 +199,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   destroy() {
-    this.controls!.dispose()
+    this.controls.dispose()
   }
 }
 

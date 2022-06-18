@@ -125,11 +125,8 @@ class Block {
    * Toggle character's visibility
    */
   toggleCharacter(value: boolean, delayed: boolean = false) {
-    if (delayed) {
-      setTimeout(() => (this.character.visible = value), 6000)
-    } else {
-      this.character.visible = value
-    }
+    this.character.visible = value
+    this.characterSide.visible = value
   }
 
   private setGarde() {
@@ -165,11 +162,10 @@ class Block {
    */
   private add() {
     const bg = this.model.scene.children.find((child) => child.name === 'background')
-    const newMat = new THREE.MeshBasicMaterial({
+    bg.material = new THREE.MeshBasicMaterial({
       name: 'background',
-      color: 0xe6e1db,
+      color: 0xffffff,
     })
-    bg.material = newMat
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
   }
@@ -238,7 +234,6 @@ class Block {
    * Update position of model
    */
   updatePosition(position: THREE.Vector3) {
-    // this.model.scene.setWor
     return this.position.set(position.x, position.y, position.z)
   }
 

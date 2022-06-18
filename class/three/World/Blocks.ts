@@ -89,7 +89,7 @@ class Blocks {
     console.log('🏠 SKIP INTRO')
 
     // Stop splashscreen
-    OtherManager.getSplashscreen().kill()
+    OtherManager.getSplashscreen().instance.kill()
     // Create nexts blocks
     OrdalieManager.createNext()
     TransitionManager.createNext()
