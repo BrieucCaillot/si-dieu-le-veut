@@ -82,36 +82,39 @@ class Transition {
       uDissolve: { value: 0 },
     }
 
-    const texture = this.planeTexture.material.map
+    if (WebGL.debug.isActive()) {
+      const folder = WebGL.debug.addFolder('Transition')
+      folder.add(this.uniforms.uDissolve, 'value', 0, 1, 0.01).name('Dissolve')
+    }
 
+    // Scene
     this.planeTexture.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: texture } },
+      uniforms: { ...this.uniforms, uTexture: { value: this.planeTexture.material.map } },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       transparent: true,
     })
 
+    // Background
     this.planeBackground.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: null } },
+      uniforms: { ...this.uniforms, uColor: { value: this.planeBackground.material.color } },
       vertexShader: backgroundBurningVert,
       fragmentShader: backgroundBurningFrag,
+      transparent: true,
     })
 
     // Character
     this.characterSide = this.block.getCharacterSide()
-    const characterTexture = this.characterSide.material.map
     this.characterSide.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: characterTexture } },
+      uniforms: { ...this.uniforms, uTexture: { value: this.characterSide.material.map } },
       vertexShader: characterBurningVert,
       fragmentShader: characterBurningFrag,
     })
 
     // Garde
-
     const gardeMesh = this.block.getGardeModel().children.find((mesh: THREE.Mesh) => mesh.name === 'Garde')
-    const gardeTexture = gardeMesh.material.map
     gardeMesh.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: gardeTexture } },
+      uniforms: { ...this.uniforms, uTexture: { value: gardeMesh.material.map } },
       vertexShader: characterBurningVert,
       fragmentShader: characterBurningFrag,
     })
