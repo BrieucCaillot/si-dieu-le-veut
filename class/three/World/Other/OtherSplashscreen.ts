@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 import ANIMATIONS from '@/constants/ANIMATIONS'
 import OTHERS from '@/constants/OTHERS'
@@ -28,15 +29,27 @@ class OtherSplashscreen {
     }
     play: (name: string) => void
   }
+  title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>
 
   constructor(_other: Other) {
     this.instance = _other
 
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
+
+    const material = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'splashscreen').material
+    this.title = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'titre')
+    this.title.material = material.clone()
+    this.title.material.transparent = true
+    this.title.material.opacity = 0
   }
 
   start() {
+    gsap.to(this.title.material, {
+      opacity: 1,
+      duration: 3,
+      delay: 1,
+    })
     this.playAnimFromOther(OTHERS.SPLASHSCREEN)
   }
 
