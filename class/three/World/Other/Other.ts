@@ -44,6 +44,9 @@ class Other {
     }
     this.updateId = this.update
     this.isSplashscreen = [OTHERS.SPLASHSCREEN].includes(_type)
+
+    // Show behind for all except dead
+    if ([OTHERS.DEAD].includes(_type)) return
     this.block.showBehind()
   }
 
