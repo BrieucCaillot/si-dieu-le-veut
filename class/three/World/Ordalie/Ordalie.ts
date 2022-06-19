@@ -45,6 +45,7 @@ class Ordalie {
     OrdalieManager.onEnded()
     if (OrdalieManager.isPlayerDead) return
     this.block.toggleCharacter(false)
+    this.block.dipose()
   }
 
   update = () => {

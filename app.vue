@@ -50,7 +50,7 @@ const queryDead = route.query.m
 const querySkip = route.query.skip as string
 
 isDebug.value = queryDebug !== undefined && queryDebug !== 'false'
-difficulty.value = queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY
+OrdalieManager.setDifficulty(queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY)
 isDebugType.value = queryType?.length > 0
 isSkippingIntro.value = querySkip !== undefined && queryDebug !== 'false'
 OrdalieManager.setIsDead(queryDead !== undefined && queryDead !== 'false')

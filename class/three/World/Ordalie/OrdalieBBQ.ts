@@ -81,16 +81,16 @@ class OrdalieBBQ {
         })
     }
 
-    const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
-    testCharacter.scale.multiplyScalar(0.3)
+    // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
+    // testCharacter.scale.multiplyScalar(0.3)
 
-    testCharacter.traverse((mesh: THREE.Mesh) => {
-      if (mesh.name === 'Plane005_1') {
-        this.instance.block.changeCharacterHead(mesh)
-      }
-    })
+    // testCharacter.traverse((mesh: THREE.Mesh) => {
+    //   if (mesh.name === 'Plane005_1') {
+    //     this.instance.block.changeCharacterHead(mesh)
+    //   }
+    // })
 
-    WebGL.scene.add(testCharacter)
+    // WebGL.scene.add(testCharacter)
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
@@ -98,15 +98,15 @@ class OrdalieBBQ {
       }
     })
 
-    if (WebGL.debug.isActive()) {
-      // this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
-      // this.debugFolder.add(this.braises[0], 'visible').name('braises 0')
-      // this.debugFolder.add(this.braises[1], 'visible').name('braises 1')
-      // this.debugFolder.add(this.braises[2], 'visible').name('braises 2')
-      // this.debugFolder.add(this.braises[0].material, 'opacity', 0, 1).name('opacity 0')
-      // this.debugFolder.add(this.braises[1].material, 'opacity', 0, 1).name('opacity 1')
-      // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
-    }
+    // if (WebGL.debug.isActive()) {
+    // this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
+    // this.debugFolder.add(this.braises[0], 'visible').name('braises 0')
+    // this.debugFolder.add(this.braises[1], 'visible').name('braises 1')
+    // this.debugFolder.add(this.braises[2], 'visible').name('braises 2')
+    // this.debugFolder.add(this.braises[0].material, 'opacity', 0, 1).name('opacity 0')
+    // this.debugFolder.add(this.braises[1].material, 'opacity', 0, 1).name('opacity 1')
+    // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
+    // }
 
     this.setAnimation()
     this.setTexts()
