@@ -1,5 +1,6 @@
 import ORDALIES from '@/constants/ORDALIES'
 import OTHERS from '@/constants/OTHERS'
+import TRANSITIONS from './TRANSITIONS'
 
 const ANIMATIONS = {
   [OTHERS.SPLASHSCREEN]: {
@@ -12,6 +13,10 @@ const ANIMATIONS = {
     INTRO_GARDE_LOCATION2: 'Intro_Garde_Location2',
     INTRO_GARDE_LOCATION3: 'Intro_Garde_Location3',
     INTRO_GARDE_LOCATION4: 'Intro_Garde_Location4',
+  },
+  TRANSITION: {
+    GARDE: 'Transition_Garde',
+    CUISINIER: 'Transition_Cuisinier',
   },
   [ORDALIES.BBQ]: {
     AVANCE: 'Braises_Cuisinier_Avance',

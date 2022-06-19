@@ -15,6 +15,7 @@ import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/bite/fragment.glsl'
 import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
+import AudioManager from '../../utils/AudioManager'
 
 class OrdalieFood {
   instance: Ordalie
@@ -234,6 +235,7 @@ class OrdalieFood {
   }
 
   start() {
+    AudioManager.play('ordalie_food_intro')
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE)
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE)
 
@@ -326,9 +328,12 @@ class OrdalieFood {
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE)
     this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE)
+
+    AudioManager.play('ordalie_food_outro')
   }
 
   gameOver() {
+    AudioManager.play('ordalie_food_death')
     this.cloneGroup.traverse((object: THREE.Object3D) => {
       if (object.type === 'Group') return
       const mesh = object as THREE.Mesh

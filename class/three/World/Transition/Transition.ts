@@ -18,11 +18,14 @@ import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.
 
 import backgroundBurningFrag from '@/class/three/shaders/backgroundBurning/fragment.glsl'
 import backgroundBurningVert from '@/class/three/shaders/backgroundBurning/vertex.glsl'
+import AudioManager from '../../utils/AudioManager'
+import ANIMATIONS from '~~/constants/ANIMATIONS'
+import SOUNDS from '@/constants/SOUNDS'
+import { getFrame } from '../../utils/Maths'
 
 class Transition {
   block: Block
   instance: any
-  animation!: { [key: string]: any }
   updateId: () => void
   text: THREE.Mesh
   characterSide: THREE.Mesh
@@ -33,6 +36,20 @@ class Transition {
     uNoise: { value: THREE.Texture }
     uGradient: { value: THREE.Texture }
     uDissolve: { value: number }
+  }
+  animation: {
+    mixer: THREE.AnimationMixer
+    actions: {
+      [key: string]: {
+        action: THREE.AnimationAction
+        frames: {
+          frame: number
+          sound: string
+        }[]
+        lastFrame: number
+      }
+    }
+    play: (name: string) => void
   }
 
   constructor(_type: TRANSITIONS) {
@@ -59,9 +76,12 @@ class Transition {
 
     gsap.ticker.add(this.updateId)
     TransitionManager.onStarted()
+
+    AudioManager.play('transition_ambient')
   }
 
   end() {
+    AudioManager.fadeOut('transition_ambient', 100)
     // this.block.showDefault()
     this.block.toggleCharacter(false)
 
@@ -139,22 +159,33 @@ class Transition {
   }
 
   setAnimation() {
-    this.animation = {}
-    this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
-    this.animation.actions = {
-      Transition_Garde: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
-      Transition_Cuisinier: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
+    const mixer = new THREE.AnimationMixer(this.block.getModel().scene)
+
+    this.animation = {
+      mixer,
+      actions: {
+        [ANIMATIONS.TRANSITION.GARDE]: {
+          action: mixer.clipAction(this.block.getModel().animations[0]),
+          frames: SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.GARDE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.TRANSITION.CUISINIER]: {
+          action: mixer.clipAction(this.block.getModel().animations[1]),
+          frames: SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.CUISINIER].frames,
+          lastFrame: 0,
+        },
+      },
+      play: (name: string) => {
+        this.animation.actions[name].action.play()
+      },
     }
 
-    this.animation.actions['Transition_Garde'].clampWhenFinished = true
-    this.animation.actions['Transition_Garde'].loop = THREE.LoopOnce
-    this.animation.actions['Transition_Cuisinier'].clampWhenFinished = true
-    this.animation.actions['Transition_Cuisinier'].loop = THREE.LoopOnce
+    this.animation.actions[ANIMATIONS.TRANSITION.GARDE].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.TRANSITION.GARDE].action.loop = THREE.LoopOnce
+    this.animation.actions[ANIMATIONS.TRANSITION.CUISINIER].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.TRANSITION.CUISINIER].action.loop = THREE.LoopOnce
 
     // Play the action
-    this.animation.play = (name: string) => {
-      this.animation.actions[name].play()
-    }
 
     this.animation.mixer.addEventListener('finished', (e) => {
       e.action.getClip().name.includes('Garde') && this.end()
@@ -165,6 +196,22 @@ class Transition {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001 * this.block.getDifficultyData().speedCoef)
     console.log(`🔁 ${this.block.getType()}`)
+
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
+      if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+        console.log(animation.action._clip.name, currentFrame)
+      }
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
   }
 
   private debugParams() {

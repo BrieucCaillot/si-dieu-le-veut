@@ -88,7 +88,6 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  // if (!e.code.startsWith('Key') && !e.code.startsWith('Digit') && !e.code.startsWith('Semicolon') && !e.code.startsWith('Comma') && !e.code.startsWith('Quote') && !e.code.startsWith('Period')) return
   if (KEY.includes(e.key)) return
   // Fix apostrophe Dead key returned
   let key = e.key.toLowerCase()

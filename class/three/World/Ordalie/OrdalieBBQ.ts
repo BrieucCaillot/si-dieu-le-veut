@@ -119,12 +119,11 @@ class OrdalieBBQ {
   start() {
     window.addEventListener('resize', this.onResize)
     this.animation.play(ANIMATIONS.BBQ.ENTREE)
-    AudioManager.play('ordalie')
+    AudioManager.play('ordalie_bbq_ambient', true)
   }
 
   end() {
-    AudioManager.fadeOut('ordalie', 500)
-
+    AudioManager.fadeOut('ordalie_bbq_ambient', 100)
     window.removeEventListener('resize', this.onResize)
     if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
@@ -249,6 +248,11 @@ class OrdalieBBQ {
   makeAStep() {
     if (this.isGameWon) return
 
+    AudioManager.play('ordalie_bbq_jump')
+    setTimeout(() => {
+      AudioManager.play('ordalie_bbq_walk_braises')
+    }, 500)
+
     this.animation.actions[ANIMATIONS.BBQ.AVANCE].action.stop()
     this.animation.play(ANIMATIONS.BBQ.AVANCE)
 
@@ -272,6 +276,7 @@ class OrdalieBBQ {
   }
 
   gameOver() {
+    AudioManager.play('ordalie_bbq_death')
     OrdalieManager.setIsDead(true)
     // this.animation.actions[ANIMATIONS.BBQ.ENTREE].fadeOut(0)
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.stop()
@@ -291,19 +296,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    for (const animation of Object.values(this.animation.actions)) {
-      const time = animation.action.time
-      const currentFrame = Math.ceil(getFrame(time))
+    // for (const animation of Object.values(this.animation.actions)) {
+    //   const time = animation.action.time
+    //   const currentFrame = Math.ceil(getFrame(time))
 
-      for (let j = 0; j < animation.frames.length; j++) {
-        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-          // console.log('play', animation.action._clip.name, currentFrame)
-          AudioManager.play(animation.frames[j].sound)
-        }
-      }
+    //   for (let j = 0; j < animation.frames.length; j++) {
+    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+    //       // console.log('play', animation.action._clip.name, currentFrame)
+    //       AudioManager.play(animation.frames[j].sound)
+    //     }
+    //   }
 
-      animation.lastFrame = currentFrame
-    }
+    //   animation.lastFrame = currentFrame
+    // }
   }
 }
 

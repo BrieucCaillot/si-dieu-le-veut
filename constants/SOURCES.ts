@@ -281,13 +281,14 @@ const ORDALIE_SOURCES = {
   ],
 }
 
-const SOUNDS = [
+const SOUNDS: { name: string; path: string; volume?: number }[] = [
   /* 
   OTHERS
   */
   {
     name: 'splashscreen_title',
     path: '/sounds/Other/title.mp3',
+    volume: 0.1,
   },
   {
     name: 'splashscreen_cinematique',
@@ -354,6 +355,7 @@ const SOUNDS = [
   {
     name: 'ordalie_music',
     path: '/sounds/Ordalie/ordalie_loop.mp3',
+    volume: 0.1,
   },
   {
     name: 'ordalie_end',
@@ -369,7 +371,7 @@ const SOUNDS = [
     path: '/sounds/Ordalie/BBQ/mort_braises.mp3',
   },
   {
-    name: 'ordalie_bbq_ambiant',
+    name: 'ordalie_bbq_ambient',
     path: '/sounds/Ordalie/BBQ/ambience_braises.mp3',
   },
   {

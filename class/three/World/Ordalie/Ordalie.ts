@@ -7,6 +7,7 @@ import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
 import OrdalieBBQ from '@/class/three/World/Ordalie/OrdalieBBQ'
 import OrdalieFood from '@/class/three/World/Ordalie/OrdalieFood'
+import AudioManager from '../../utils/AudioManager'
 
 class Ordalie {
   block: Block
@@ -37,9 +38,14 @@ class Ordalie {
     gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
     this.block.toggleCharacter(true)
+
+    AudioManager.play('ordalie_music', true)
   }
 
   end() {
+    // this.block.showDefault()
+    AudioManager.fadeOut('ordalie_music', 100)
+    AudioManager.play('ordalie_end')
     // this.block.showDefault()
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()

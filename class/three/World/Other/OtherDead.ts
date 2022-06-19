@@ -6,6 +6,7 @@ import OTHERS from '@/constants/OTHERS'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
+import AudioManager from '@/class/three/utils/AudioManager'
 
 class OtherDead {
   instance: Other
@@ -27,6 +28,7 @@ class OtherDead {
 
   start() {
     this.instance.block.showBehind()
+    AudioManager.play('gameover')
     setTimeout(() => this.end(), 8000)
   }
 
