@@ -9,6 +9,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import { getFrame } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
+import Blocks from '@/class/three/World/Blocks'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
 
@@ -160,9 +161,10 @@ class OtherSplashscreen {
       this.animation.play(ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE)
       this.end()
     }
+
     // If behind tutorial
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION3) {
-      this.instance.block.showBehind()
+      this.instance.block.moveBehind()
     }
 
     // If last animation is finished
@@ -222,17 +224,20 @@ class OtherSplashscreen {
   }
 
   kill() {
-    this.instance.block.showFarBehind()
-
     setTimeout(() => {
+      this.instance.block.moveFarBehind()
       this.instance.block.toggleCharacter(false)
       this.instance.block.toggleGarde(false)
       this.instance.block.dipose()
       this.animation.mixer.uncacheRoot(this.instance.block.getModel().scene)
-      this.instance.block.showDefault()
+      this.instance.block.moveDefault()
     }, 6000)
 
     gsap.ticker.remove(this.instance.updateId)
+
+    // Dont hide character immediately if skipping
+    if (Blocks.getIsSkippingIntro()) return
+    this.instance.block.toggleCharacter(false)
   }
 
   update() {

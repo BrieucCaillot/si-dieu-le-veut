@@ -25,14 +25,14 @@ class OtherDead {
 
   start() {
     AudioManager.play('gameover')
-    this.instance.block.showDefault()
+    this.instance.block.moveDefault()
     setTimeout(() => this.end(), 8000)
   }
 
   moveBehindTransition() {
     const { x, y, z } = TransitionManager.getLast()?.block.getPosition()
     if (x) this.instance.block.updatePosition(new THREE.Vector3(x, y, z))
-    this.instance.block.showFarBehind()
+    this.instance.block.moveFarBehind()
   }
 
   end() {

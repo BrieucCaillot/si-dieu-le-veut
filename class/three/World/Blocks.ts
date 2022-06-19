@@ -99,6 +99,10 @@ class Blocks {
     this.goToNext()
   }
 
+  getIsSkippingIntro() {
+    return this.isSkipingIntro
+  }
+
   /**
    * Create isolated block from type
    */

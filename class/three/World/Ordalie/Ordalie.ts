@@ -34,7 +34,7 @@ class Ordalie {
   }
 
   start() {
-    this.block.showBehind()
+    this.block.moveBehind()
     this.instance.start()
     gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
@@ -48,7 +48,7 @@ class Ordalie {
     AudioManager.play('ordalie_end')
 
     this.block.toggleCharacter(false)
-    this.block.showDefault()
+    this.block.moveDefault()
 
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()

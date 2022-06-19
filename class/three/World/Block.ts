@@ -30,6 +30,10 @@ class Block {
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
   private zMaxPosition = 0.101
+  private moveAnimParams = {
+    duration: 0.25,
+    ease: 'power3.linear',
+  }
   // Box3
   private box: THREE.BoxHelper
   private size: THREE.Vector3
@@ -276,30 +280,27 @@ class Block {
     return this.position.set(position.x, position.y, position.z)
   }
 
-  showDefault() {
+  moveDefault() {
     console.log('⬇️ DEFAULT', this.type)
     gsap.to(this.model.scene.position, {
       z: 0,
-      duration: 0.1,
-      ease: 'power3.inOut',
+      ...this.moveAnimParams,
     })
   }
 
-  showBehind() {
+  moveBehind() {
     console.log('⬆️ BEHIND', this.type)
     gsap.to(this.model.scene.position, {
       z: -this.zMaxPosition,
-      duration: 0.1,
-      ease: 'power3.inOut',
+      ...this.moveAnimParams,
     })
   }
 
-  showFarBehind() {
+  moveFarBehind() {
     console.log('⬆️ FAR BEHIND', this.type)
     gsap.to(this.model.scene.position, {
       z: -this.zMaxPosition * 2,
-      duration: 0.1,
-      ease: 'power3.inOut',
+      ...this.moveAnimParams,
     })
   }
 

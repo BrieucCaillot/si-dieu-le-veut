@@ -12,9 +12,12 @@ class OtherTutorial {
     this.instance = _other
   }
 
-  start() {}
+  start() {
+    this.instance.block.moveBehind()
+  }
 
   end() {
+    this.instance.block.moveDefault()
     this.instance.end()
   }
 
