@@ -30,7 +30,7 @@ const COMMON_SOURCES = {
     {
       name: 'lut',
       type: SourceType.texture,
-      path: 'textures/post/lut/flipped.png',
+      path: 'textures/post/lut/lut.png',
       encoding: THREE.LinearEncoding,
       wrap: THREE.RepeatWrapping,
     },
