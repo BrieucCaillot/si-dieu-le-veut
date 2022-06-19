@@ -64,7 +64,13 @@ class Transition {
   end() {
     // this.block.showDefault()
     this.block.toggleCharacter(false)
-    this.block.toggleGarde(false, true)
+
+    setTimeout(() => {
+      this.block.toggleGarde(false)
+      this.block.dipose()
+      this.animation.mixer.uncacheRoot(this.block.getModel().scene)
+    }, 6000)
+
     gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
   }

@@ -217,9 +217,12 @@ class OtherSplashscreen {
   }
 
   kill() {
-    this.instance.block.toggleCharacter(false)
-    this.instance.block.getCharacterSide().visible = false
-    this.instance.block.toggleGarde(false, true)
+    setTimeout(() => {
+      this.instance.block.toggleCharacter(false)
+      this.instance.block.toggleGarde(false)
+      this.instance.block.dipose()
+      this.animation.mixer.uncacheRoot(this.instance.block.getModel().scene)
+    }, 6000)
 
     gsap.ticker.remove(this.instance.updateId)
   }

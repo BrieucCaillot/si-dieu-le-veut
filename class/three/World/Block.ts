@@ -21,7 +21,7 @@ class Block {
   private defaultModel: GLTF
   private model: any
   private character: THREE.Object3D
-  private characterSide: THREE.Mesh
+  private characterSide: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.Material | THREE.Material[]>
   private characterHead: THREE.Mesh
   private characterMainRoot: THREE.Mesh
   private garde: THREE.Object3D
@@ -125,8 +125,46 @@ class Block {
    * Toggle character's visibility
    */
   toggleCharacter(value: boolean, delayed: boolean = false) {
-    this.character.visible = value
     this.characterSide.visible = value
+  }
+
+  /**
+   * Dipose block
+   */
+  dipose() {
+    // Character
+    this.character.traverse((child) => {
+      if (child.type === 'SkinnedMesh') {
+        ;(child as THREE.SkinnedMesh).geometry.dispose()
+        ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).dispose()
+
+        if (((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).type === 'ShaderMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).uniforms.uTexture.value.dispose()
+        }
+
+        if (((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).type === 'MeshBasicMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).map.dispose()
+        }
+      }
+    })
+
+    // Garde
+    this.garde.traverse((child) => {
+      if (child.type === 'SkinnedMesh') {
+        ;(child as THREE.SkinnedMesh).geometry.dispose()
+        ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).dispose()
+
+        if (((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).type === 'ShaderMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).uniforms.uTexture.value.dispose()
+        }
+
+        if (((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).type === 'MeshBasicMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).map.dispose()
+        }
+      }
+    })
+
+    console.log('🧻 DISPOSED ' + this.type)
   }
 
   private setGarde() {
@@ -216,6 +254,7 @@ class Block {
       this.difficultyData = difficulty['TRANSITIONS']
     }
   }
+
   /**
    * Get speed coef of model animations
    */
