@@ -79,7 +79,6 @@ class Social {
 
   onClick() {
     this.clicked = true
-    console.log('clicked')
     setTimeout(() => (this.clicked = false), 100)
   }
 

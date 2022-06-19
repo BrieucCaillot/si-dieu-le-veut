@@ -34,11 +34,13 @@ class Ordalie {
   }
 
   start() {
-    this.block.moveBehind()
     this.instance.start()
-    gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
+    gsap.ticker.add(this.updateId)
+
+    this.block.moveBehind()
     this.block.toggleCharacter(true)
+    this.block.toggleFrustumCulling(false)
 
     AudioManager.play('ordalie_music', true)
   }
@@ -47,13 +49,14 @@ class Ordalie {
     AudioManager.fadeOut('ordalie_music', 100)
     AudioManager.play('ordalie_end')
 
-    this.block.toggleCharacter(false)
     this.block.moveDefault()
 
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()
 
     if (OrdalieManager.isPlayerDead) return
+    this.block.toggleCharacter(false)
+    this.block.toggleFrustumCulling(true)
     this.block.dipose()
   }
 

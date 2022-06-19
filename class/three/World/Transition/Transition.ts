@@ -74,10 +74,10 @@ class Transition {
     this.block.toggleCharacter(true)
     this.debugParams().animations.playGroupAnim()
 
-    gsap.ticker.add(this.updateId)
-    TransitionManager.onStarted()
-
     AudioManager.play('transition_ambient')
+
+    TransitionManager.onStarted()
+    gsap.ticker.add(this.updateId)
   }
 
   end() {
@@ -91,8 +91,8 @@ class Transition {
       this.animation.mixer.uncacheRoot(this.block.getModel().scene)
     }, 6000)
 
-    gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
+    gsap.ticker.remove(this.updateId)
   }
 
   setPlaneRefs() {
