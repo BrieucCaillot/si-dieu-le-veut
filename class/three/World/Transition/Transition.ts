@@ -3,7 +3,7 @@ import * as THREE from 'three'
 
 import ANIMATIONS from '@/constants/ANIMATIONS'
 import TRANSITIONS from '@/constants/TRANSITIONS'
-import SOUNDS from '@/constants/SOUNDS'
+import SOUNDS, { TRANSITION_4 } from '@/constants/SOUNDS'
 
 import AudioManager from '@/class/three/utils/AudioManager'
 import { getFrame } from '@/class/three/utils/Maths'
@@ -161,17 +161,22 @@ class Transition {
   setAnimation() {
     const mixer = new THREE.AnimationMixer(this.block.getModel().scene)
 
+    console.log(this.block.getType())
+
+    if (this.block.getType() === TRANSITIONS.TRANSITION_4) {
+    }
+
     this.animation = {
       mixer,
       actions: {
         [ANIMATIONS.TRANSITION.GARDE]: {
           action: mixer.clipAction(this.block.getModel().animations[0]),
-          frames: SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.GARDE].frames,
+          frames: this.block.getType() === TRANSITIONS.TRANSITION_4 ? TRANSITION_4[ANIMATIONS.TRANSITION.GARDE].frames : SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.GARDE].frames,
           lastFrame: 0,
         },
         [ANIMATIONS.TRANSITION.CUISINIER]: {
           action: mixer.clipAction(this.block.getModel().animations[1]),
-          frames: SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.CUISINIER].frames,
+          frames: this.block.getType() === TRANSITIONS.TRANSITION_4 ? TRANSITION_4[ANIMATIONS.TRANSITION.CUISINIER].frames : SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.CUISINIER].frames,
           lastFrame: 0,
         },
       },

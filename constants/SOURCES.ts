@@ -293,6 +293,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'splashscreen_cinematique',
     path: '/sounds/Other/cinematique.mp3',
+    volume: 0.1,
   },
   {
     name: 'splashscreen_cough',

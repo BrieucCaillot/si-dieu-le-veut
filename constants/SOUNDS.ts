@@ -12,16 +12,16 @@ const ANIMATIONS_SOUNDS = {
   TRANSITIONS: {
     [ANIMATIONS.TRANSITION.GARDE]: {
       frames: [
+        // {
+        //   frame: 1,
+        //   sound: 'garde_walk',
+        // },
+        // {
+        //   frame: 60,
+        //   sound: 'garde_walk',
+        // },
         {
-          frame: 10,
-          sound: 'garde_walk',
-        },
-        {
-          frame: 60,
-          sound: 'garde_walk',
-        },
-        {
-          frame: 150,
+          frame: 260,
           sound: 'garde_kick',
         },
       ],
@@ -29,7 +29,31 @@ const ANIMATIONS_SOUNDS = {
     [ANIMATIONS.TRANSITION.CUISINIER]: {
       frames: [
         {
-          frame: 30,
+          frame: 25,
+          sound: 'cuisinier_walk',
+        },
+        {
+          frame: 64,
+          sound: 'cuisinier_walk',
+        },
+        {
+          frame: 103,
+          sound: 'cuisinier_walk',
+        },
+        {
+          frame: 143,
+          sound: 'cuisinier_walk',
+        },
+        {
+          frame: 185,
+          sound: 'cuisinier_walk',
+        },
+        {
+          frame: 224,
+          sound: 'cuisinier_walk',
+        },
+        {
+          frame: 265,
           sound: 'cuisinier_walk',
         },
       ],
@@ -49,6 +73,10 @@ const ANIMATIONS_SOUNDS = {
         {
           frame: 450,
           sound: 'splashscreen_cinematique',
+        },
+        {
+          frame: 25,
+          sound: 'cuisinier_walk',
         },
       ],
     },
@@ -239,4 +267,52 @@ const ANIMATIONS_SOUNDS = {
   },
 }
 
+const TRANSITION_4 = {
+  [ANIMATIONS.TRANSITION.GARDE]: {
+    frames: [
+      // {
+      //   frame: 10,
+      //   sound: 'garde_walk',
+      // },
+      // {
+      //   frame: 60,
+      //   sound: 'garde_walk',
+      // },
+      {
+        frame: 197,
+        sound: 'garde_kick',
+      },
+    ],
+  },
+  [ANIMATIONS.TRANSITION.CUISINIER]: {
+    frames: [
+      {
+        frame: 1,
+        sound: 'cuisinier_walk',
+      },
+      {
+        frame: 38,
+        sound: 'cuisinier_walk',
+      },
+      {
+        frame: 78,
+        sound: 'cuisinier_walk',
+      },
+      {
+        frame: 118,
+        sound: 'cuisinier_walk',
+      },
+      {
+        frame: 157,
+        sound: 'cuisinier_walk',
+      },
+      {
+        frame: 198,
+        sound: 'cuisinier_walk',
+      },
+    ],
+  },
+}
+
+export { TRANSITION_4 }
 export default ANIMATIONS_SOUNDS
