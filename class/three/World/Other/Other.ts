@@ -50,9 +50,6 @@ class Other {
     this.instance.start()
     OtherManager.onStarted()
 
-    // Speed up to first ordalie
-    // Blocks.setCurrentIsFirstOrdalie()
-
     // Add update only if we are on Splashscreen
     if (this.isSplashscreen) {
       gsap.ticker.add(this.updateId)
@@ -72,12 +69,6 @@ class Other {
     document.removeEventListener('keydown', this.onSpacePressed)
   }
 
-  removeUpdate() {
-    if (!this.isSplashscreen) return
-    this.block.toggleCharacter(false)
-    gsap.ticker.remove(this.updateId)
-  }
-
   update = () => {
     this.instance && this.instance.update()
     console.log(`🔁 ${this.block.getType()}`)
@@ -87,10 +78,9 @@ class Other {
     // Prevent to skip when key pressed is not Space or user is on the splashscreen
     if (e.code !== 'Space') return
 
-    //
     if (![OTHERS.DEAD, OTHERS.END].includes(this.block.getType() as OTHERS)) {
       // Play animation for the next others
-      OtherManager.getSplashscreenRef().playAnimFromOther(this.block.getType() as OTHERS)
+      OtherManager.getSplashscreen().instance.playAnimFromOther(this.block.getType() as OTHERS)
     }
 
     this.end()

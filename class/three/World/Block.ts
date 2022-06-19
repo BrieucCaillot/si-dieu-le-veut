@@ -7,10 +7,13 @@ import DIFFICULTY_DATAS from '@/constants/DIFFICULTY_DATA'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import HEAD from '@/constants/HEAD'
 
 import WebGL from '@/class/three/WebGL'
 import Blocks from '@/class/three/World/Blocks'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+
+interface HeadTypes {}
 
 class Block {
   private type: OTHERS | ORDALIES | TRANSITIONS
@@ -18,6 +21,8 @@ class Block {
   private defaultModel: GLTF
   private model: any
   private character: THREE.Object3D
+  private characterSide: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.Material | THREE.Material[]>
+  private characterHead: THREE.Mesh
   private characterMainRoot: THREE.Mesh
   private garde: THREE.Object3D
   private difficultyData: { [key: string]: any }
@@ -25,6 +30,10 @@ class Block {
   private position: THREE.Vector3 = new THREE.Vector3()
   private center: THREE.Vector3 = new THREE.Vector3()
   private zMaxPosition = 0.101
+  private moveAnimParams = {
+    duration: 0.25,
+    ease: 'power3.linear',
+  }
   // Box3
   private box: THREE.BoxHelper
   private size: THREE.Vector3
@@ -69,7 +78,30 @@ class Block {
 
   private setCharacter() {
     this.character = this.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier')
+    this.characterSide = this.character?.children.find((child) => child.name === 'SIDE_Cuisinier') as THREE.SkinnedMesh
     this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
+    this.characterHead = this.characterSide?.children?.find((child: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>) => child.material.name === 'cuisinier_tete') as THREE.Mesh
+  }
+
+  /**
+   * Change Character face
+   */
+  changeCharacterHead(head: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>, type: HEAD = HEAD.NORMAL) {
+    let offset = 0
+    console.log(type)
+    switch (type) {
+      case HEAD.NORMAL:
+        offset = 0
+        break
+      case HEAD.HAPPY:
+        offset = 0.2
+        break
+      case HEAD.SAD:
+        offset = 0.4
+        break
+    }
+    // this.characterHead.material.map.offset.x = offset
+    head.material.map.offset.x = offset
   }
 
   /**
@@ -80,17 +112,63 @@ class Block {
   }
 
   /**
-   * Get character of model
+   * Get character root of character model
    */
   getCharacterRoot() {
     return this.characterMainRoot
   }
 
   /**
+   * Get character side of character model
+   */
+  getCharacterSide() {
+    return this.characterSide
+  }
+
+  /**
    * Toggle character's visibility
    */
-  toggleCharacter(value: boolean) {
-    this.character.visible = value
+  toggleCharacter(value: boolean, delayed: boolean = false) {
+    this.characterSide.visible = value
+  }
+
+  /**
+   * Dipose block
+   */
+  dipose() {
+    // Character
+    this.character.traverse((child) => {
+      if (child.type === 'SkinnedMesh') {
+        ;(child as THREE.SkinnedMesh).geometry.dispose()
+        ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).dispose()
+
+        if (((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).type === 'ShaderMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).uniforms.uTexture.value.dispose()
+        }
+
+        if (((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).type === 'MeshBasicMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).map.dispose()
+        }
+      }
+    })
+
+    // Garde
+    this.garde.traverse((child) => {
+      if (child.type === 'SkinnedMesh') {
+        ;(child as THREE.SkinnedMesh).geometry.dispose()
+        ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).dispose()
+
+        if (((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).type === 'ShaderMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.ShaderMaterial).uniforms.uTexture.value.dispose()
+        }
+
+        if (((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).type === 'MeshBasicMaterial') {
+          ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).map.dispose()
+        }
+      }
+    })
+
+    console.log('🧻 DISPOSED ' + this.type)
   }
 
   private setGarde() {
@@ -98,10 +176,21 @@ class Block {
   }
 
   /**
+   * Get garde of model
+   */
+  getGardeModel() {
+    return this.garde
+  }
+
+  /**
    * Toggle garde's visibility
    */
-  toggleGarde(value: boolean) {
-    this.garde.visible = value
+  toggleGarde(value: boolean, delayed: boolean = false) {
+    if (delayed) {
+      setTimeout(() => (this.garde.visible = value), 6000)
+    } else {
+      this.garde.visible = value
+    }
   }
 
   toggleFrustumCulling(value: boolean) {
@@ -115,11 +204,10 @@ class Block {
    */
   private add() {
     const bg = this.model.scene.children.find((child) => child.name === 'background')
-    const newMat = new THREE.MeshBasicMaterial({
+    bg.material = new THREE.MeshBasicMaterial({
       name: 'background',
-      color: 0xe6e1db,
+      color: 0xffffff,
     })
-    bg.material = newMat
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
   }
@@ -170,6 +258,7 @@ class Block {
       this.difficultyData = difficulty['TRANSITIONS']
     }
   }
+
   /**
    * Get speed coef of model animations
    */
@@ -188,25 +277,30 @@ class Block {
    * Update position of model
    */
   updatePosition(position: THREE.Vector3) {
-    // this.model.scene.setWor
     return this.position.set(position.x, position.y, position.z)
   }
 
-  showFront() {
-    console.log('⬇️ FRONT', this.type)
+  moveDefault() {
+    console.log('⬇️ DEFAULT', this.type)
     gsap.to(this.model.scene.position, {
-      z: this.zMaxPosition,
-      duration: 0.1,
-      ease: 'power3.inOut',
+      z: 0,
+      ...this.moveAnimParams,
     })
   }
 
-  showBehind() {
+  moveBehind() {
     console.log('⬆️ BEHIND', this.type)
     gsap.to(this.model.scene.position, {
       z: -this.zMaxPosition,
-      duration: 0.1,
-      ease: 'power3.inOut',
+      ...this.moveAnimParams,
+    })
+  }
+
+  moveFarBehind() {
+    console.log('⬆️ FAR BEHIND', this.type)
+    gsap.to(this.model.scene.position, {
+      z: -this.zMaxPosition * 2,
+      ...this.moveAnimParams,
     })
   }
 

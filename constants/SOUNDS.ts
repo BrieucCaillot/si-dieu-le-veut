@@ -9,6 +9,32 @@ const SOUNDS = {
 }
 
 const ANIMATIONS_SOUNDS = {
+  TRANSITIONS: {
+    [ANIMATIONS.TRANSITION.GARDE]: {
+      frames: [
+        {
+          frame: 10,
+          sound: 'garde_walk',
+        },
+        {
+          frame: 60,
+          sound: 'garde_walk',
+        },
+        {
+          frame: 150,
+          sound: 'garde_kick',
+        },
+      ],
+    },
+    [ANIMATIONS.TRANSITION.CUISINIER]: {
+      frames: [
+        {
+          frame: 30,
+          sound: 'cuisinier_walk',
+        },
+      ],
+    },
+  },
   [OTHERS.SPLASHSCREEN]: {
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1]: {
       frames: [
@@ -18,11 +44,11 @@ const ANIMATIONS_SOUNDS = {
         },
         {
           frame: 160,
-          sound: 'title',
+          sound: 'splashscreen_title',
         },
         {
           frame: 450,
-          sound: 'cinematique',
+          sound: 'splashscreen_cinematique',
         },
       ],
     },
@@ -53,47 +79,47 @@ const ANIMATIONS_SOUNDS = {
   },
   [ORDALIES.BBQ]: {
     [ANIMATIONS.BBQ.IDLE]: {
-      frames: [
-        {
-          frame: 20,
-          sound: 'fire-hit',
-        },
-        {
-          frame: 40,
-          sound: 'fire-hit',
-        },
-      ],
+      // frames: [
+      //   {
+      //     frame: 20,
+      //     sound: 'fire-hit',
+      //   },
+      //   {
+      //     frame: 40,
+      //     sound: 'fire-hit',
+      //   },
+      // ],
     },
     [ANIMATIONS.BBQ.ENTREE]: {
       frames: [
-        {
-          frame: 1,
-          sound: 'oi',
-        },
+        // {
+        //   frame: 1,
+        //   sound: 'oi',
+        // },
       ],
     },
     [ANIMATIONS.BBQ.AVANCE]: {
       frames: [
-        {
-          frame: 1,
-          sound: 'boing',
-        },
+        // {
+        //   frame: 1,
+        //   sound: 'boing',
+        // },
       ],
     },
     [ANIMATIONS.BBQ.MORT]: {
       frames: [
-        {
-          frame: 1,
-          sound: 'death',
-        },
+        // {
+        //   frame: 1,
+        //   sound: 'death',
+        // },
       ],
     },
     [ANIMATIONS.BBQ.SORTIE]: {
       frames: [
-        {
-          frame: 10,
-          sound: 'oi',
-        },
+        // {
+        //   frame: 10,
+        //   sound: 'oi',
+        // },
       ],
     },
   },

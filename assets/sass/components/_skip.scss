@@ -1,0 +1,11 @@
+#skip {
+  @apply absolute bottom-0 left-1/2 transform -translate-x-1/2;
+  .btn {
+    @apply text-xl bg-contain bg-no-repeat bg-center h-24 w-72 outline-none;
+    background-image: url('/images/loader-start.webp');
+
+    span {
+      @apply block mb-3;
+    }
+  }
+}

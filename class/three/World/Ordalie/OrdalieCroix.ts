@@ -60,7 +60,7 @@ class OrdalieCroix {
     window.addEventListener('resize', this.onResize)
     this.animation.play(ANIMATIONS.CROIX.SIDE_ENTREE)
     this.animation.play(ANIMATIONS.CROIX.FRONT_ENTREE)
-    AudioManager.play('ordalie')
+    AudioManager.play('ordalie_croix_intro')
   }
 
   end() {
@@ -120,7 +120,6 @@ class OrdalieCroix {
       },
       play: (name: string) => {
         this.animation.actions[name].action.play()
-        console.log(name)
       },
     }
 
@@ -190,11 +189,11 @@ class OrdalieCroix {
     // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].stop()
     this.animation.play(ANIMATIONS.CROIX.SIDE_SORTIE)
     this.animation.play(ANIMATIONS.CROIX.FRONT_SORTIE)
+    AudioManager.play('ordalie_croix_outro')
   }
 
   gameOver() {
-    AudioManager.play('death')
-
+    AudioManager.play('ordalie_croix_death')
     OrdalieManager.setIsDead(true)
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.play()

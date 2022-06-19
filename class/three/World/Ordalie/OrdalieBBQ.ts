@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import ORDALIES from '@/constants/ORDALIES'
 import SOUNDS from '@/constants/SOUNDS'
 import ANIMATIONS from '@/constants/ANIMATIONS'
+import HEAD from '@/constants/HEAD'
 import { BBQInterface } from '@/constants/DIFFICULTY_DATA'
 
 import WebGL from '@/class/three/WebGL'
@@ -60,16 +61,32 @@ class OrdalieBBQ {
 
     this.container = []
 
+    const debugParams = {
+      offsetX: 0,
+    }
+
+    let materialRef = null
+
+    if (WebGL.debug.isActive()) {
+      this.debugFolder = WebGL.debug.addFolder('BBQ')
+      this.debugFolder
+        .add(debugParams, 'offsetX', {
+          normal: 0,
+          sad: 0.2,
+          dead: 0.4,
+        })
+        .onChange((value) => {
+          console.log(value)
+          materialRef.map.offset.x = value
+        })
+    }
+
     // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
-    // testCharacter.scale.set(0.2, 0.2, 0.2)
+    // testCharacter.scale.multiplyScalar(0.3)
 
-    // testCharacter.traverse((object: THREE.Object3D) => {
-    //   if (object.name === 'Plane005_1') {
-    //     const mesh = object as THREE.Mesh
-    //     console.log(mesh.material.map.offset)
-    //     mesh.material.map.offset.x = 0.2
-
-    //     // width : 364 height : 329
+    // testCharacter.traverse((mesh: THREE.Mesh) => {
+    //   if (mesh.name === 'Plane005_1') {
+    //     this.instance.block.changeCharacterHead(mesh)
     //   }
     // })
 
@@ -81,16 +98,15 @@ class OrdalieBBQ {
       }
     })
 
-    if (WebGL.debug.isActive()) {
-      this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
-      // this.debugFolder.add(this.braises[0], 'visible').name('braises 0')
-      // this.debugFolder.add(this.braises[1], 'visible').name('braises 1')
-      // this.debugFolder.add(this.braises[2], 'visible').name('braises 2')
-
-      // this.debugFolder.add(this.braises[0].material, 'opacity', 0, 1).name('opacity 0')
-      // this.debugFolder.add(this.braises[1].material, 'opacity', 0, 1).name('opacity 1')
-      // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
-    }
+    // if (WebGL.debug.isActive()) {
+    // this.debugFolder = WebGL.debug.addFolder('OrdalieBBQ')
+    // this.debugFolder.add(this.braises[0], 'visible').name('braises 0')
+    // this.debugFolder.add(this.braises[1], 'visible').name('braises 1')
+    // this.debugFolder.add(this.braises[2], 'visible').name('braises 2')
+    // this.debugFolder.add(this.braises[0].material, 'opacity', 0, 1).name('opacity 0')
+    // this.debugFolder.add(this.braises[1].material, 'opacity', 0, 1).name('opacity 1')
+    // this.debugFolder.add(this.braises[2].material, 'opacity', 0, 1).name('opacity 2')
+    // }
 
     this.setAnimation()
     this.setTexts()
@@ -103,12 +119,11 @@ class OrdalieBBQ {
   start() {
     window.addEventListener('resize', this.onResize)
     this.animation.play(ANIMATIONS.BBQ.ENTREE)
-    AudioManager.play('ordalie')
+    AudioManager.play('ordalie_bbq_ambient', true)
   }
 
   end() {
-    AudioManager.fadeOut('ordalie', 500)
-
+    AudioManager.fadeOut('ordalie_bbq_ambient', 100)
     window.removeEventListener('resize', this.onResize)
     if (this.debugFolder) this.debugFolder.destroy()
     this.instance.end()
@@ -233,6 +248,11 @@ class OrdalieBBQ {
   makeAStep() {
     if (this.isGameWon) return
 
+    AudioManager.play('ordalie_bbq_jump')
+    setTimeout(() => {
+      AudioManager.play('ordalie_bbq_walk_braises')
+    }, 500)
+
     this.animation.actions[ANIMATIONS.BBQ.AVANCE].action.stop()
     this.animation.play(ANIMATIONS.BBQ.AVANCE)
 
@@ -256,6 +276,7 @@ class OrdalieBBQ {
   }
 
   gameOver() {
+    AudioManager.play('ordalie_bbq_death')
     OrdalieManager.setIsDead(true)
     // this.animation.actions[ANIMATIONS.BBQ.ENTREE].fadeOut(0)
     this.animation.actions[ANIMATIONS.BBQ.IDLE].action.stop()
@@ -275,19 +296,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    for (const animation of Object.values(this.animation.actions)) {
-      const time = animation.action.time
-      const currentFrame = Math.ceil(getFrame(time))
+    // for (const animation of Object.values(this.animation.actions)) {
+    //   const time = animation.action.time
+    //   const currentFrame = Math.ceil(getFrame(time))
 
-      for (let j = 0; j < animation.frames.length; j++) {
-        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-          // console.log('play', animation.action._clip.name, currentFrame)
-          AudioManager.play(animation.frames[j].sound)
-        }
-      }
+    //   for (let j = 0; j < animation.frames.length; j++) {
+    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+    //       // console.log('play', animation.action._clip.name, currentFrame)
+    //       AudioManager.play(animation.frames[j].sound)
+    //     }
+    //   }
 
-      animation.lastFrame = currentFrame
-    }
+    //   animation.lastFrame = currentFrame
+    // }
   }
 }
 

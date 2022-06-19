@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 import ANIMATIONS from '@/constants/ANIMATIONS'
 import OTHERS from '@/constants/OTHERS'
@@ -8,6 +9,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import { getFrame } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
+import Blocks from '@/class/three/World/Blocks'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
 
@@ -28,18 +30,19 @@ class OtherSplashscreen {
     }
     play: (name: string) => void
   }
+  title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>
 
   constructor(_other: Other) {
     this.instance = _other
 
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
-
-    OtherManager.setSplashscreenRef(this)
+    this.setTitle()
   }
 
   start() {
     this.playAnimFromOther(OTHERS.SPLASHSCREEN)
+    this.fadeInTitle()
   }
 
   end() {
@@ -133,6 +136,23 @@ class OtherSplashscreen {
     this.animation.mixer.addEventListener('finished', (e) => this.onFinish(e))
   }
 
+  private setTitle() {
+    const material = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'splashscreen').material
+    this.title = this.instance.block.getModel().scene.children.find((mesh) => mesh.name === 'titre')
+    this.title.material = material.clone()
+    this.title.material.transparent = true
+    this.title.material.opacity = 0
+  }
+
+  private fadeInTitle() {
+    gsap.to(this.title.material, {
+      opacity: 1,
+      duration: 2,
+      delay: 5,
+      ease: 'power2.easeOut',
+    })
+  }
+
   onFinish(e) {
     this.isFollowingCharacter = false
 
@@ -141,9 +161,15 @@ class OtherSplashscreen {
       this.animation.play(ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE)
       this.end()
     }
+
+    // If behind tutorial
+    if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION3) {
+      this.instance.block.moveBehind()
+    }
+
     // If last animation is finished
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4) {
-      this.instance.removeUpdate()
+      this.kill()
     }
   }
 
@@ -195,6 +221,23 @@ class OtherSplashscreen {
       OtherManager.getCurrent().end()
       return (this.isFollowingCharacter = true)
     }
+  }
+
+  kill() {
+    setTimeout(() => {
+      this.instance.block.moveFarBehind()
+      this.instance.block.toggleCharacter(false)
+      this.instance.block.toggleGarde(false)
+      this.instance.block.dipose()
+      this.animation.mixer.uncacheRoot(this.instance.block.getModel().scene)
+      this.instance.block.moveDefault()
+    }, 6000)
+
+    gsap.ticker.remove(this.instance.updateId)
+
+    // Dont hide character immediately if skipping
+    if (Blocks.getIsSkippingIntro()) return
+    this.instance.block.toggleCharacter(false)
   }
 
   update() {

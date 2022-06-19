@@ -47,7 +47,7 @@ class Camera extends THREE.EventDispatcher {
       this.debugFolder.add(this.debugParams, 'moveXSpeed', 0.0001, 0.5).step(0.1)
       this.debugFolder.add(this.debugParams, 'canScroll').listen()
       this.debugFolder.add(this.parent.position, 'x')
-      this.debugFolder.add(this.parent.position, 'z')
+      this.debugFolder.add(this.parent.position, 'z', this.minPos.z, this.maxPos.z)
     }
   }
 
@@ -199,7 +199,7 @@ class Camera extends THREE.EventDispatcher {
   }
 
   destroy() {
-    this.controls!.dispose()
+    this.controls.dispose()
   }
 }
 

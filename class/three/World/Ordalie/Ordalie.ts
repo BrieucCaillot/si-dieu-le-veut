@@ -2,6 +2,8 @@ import gsap from 'gsap'
 
 import ORDALIES from '@/constants/ORDALIES'
 
+import AudioManager from '@/class/three/utils/AudioManager'
+
 import Block from '@/class/three/World/Block'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import OrdalieCroix from '@/class/three/World/Ordalie/OrdalieCroix'
@@ -15,7 +17,6 @@ class Ordalie {
 
   constructor(_type: ORDALIES) {
     this.block = new Block(_type)
-    this.block.showFront()
     this.block.toggleCharacter(false)
 
     switch (_type) {
@@ -33,18 +34,27 @@ class Ordalie {
   }
 
   start() {
+    this.block.moveBehind()
     this.instance.start()
     gsap.ticker.add(this.updateId)
     OrdalieManager.onStarted()
-    this.block.showBehind()
     this.block.toggleCharacter(true)
+
+    AudioManager.play('ordalie_music', true)
   }
 
   end() {
+    AudioManager.fadeOut('ordalie_music', 100)
+    AudioManager.play('ordalie_end')
+
+    this.block.toggleCharacter(false)
+    this.block.moveDefault()
+
     gsap.ticker.remove(this.updateId)
     OrdalieManager.onEnded()
+
     if (OrdalieManager.isPlayerDead) return
-    this.block.toggleCharacter(false)
+    this.block.dipose()
   }
 
   update = () => {

@@ -40,17 +40,19 @@ const description = ref('Aide un malheureux cuisinier survivre à l’ordalie à
 // Handle URL Query
 const route = useRoute()
 
-const { isDebug, isDebugType, debugType } = useStore()
+const { isDebug, isDebugType, isSkippingIntro, debugType } = useStore()
 const { difficulty } = useHUD()
 
 const queryDebug = route.query.debug
 const queryDifficulty = route.query.d as string
 const queryType = route.query.t as OTHERS | ORDALIES | TRANSITIONS
 const queryDead = route.query.m
+const querySkip = route.query.skip as string
 
 isDebug.value = queryDebug !== undefined && queryDebug !== 'false'
-difficulty.value = queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY
+OrdalieManager.setDifficulty(queryDifficulty <= '4' ? Object.keys(DIFFICULTY)[queryDifficulty] : DIFFICULTY.EASY)
 isDebugType.value = queryType?.length > 0
+isSkippingIntro.value = querySkip !== undefined && queryDebug !== 'false'
 OrdalieManager.setIsDead(queryDead !== undefined && queryDead !== 'false')
 
 if (isDebugType.value) {

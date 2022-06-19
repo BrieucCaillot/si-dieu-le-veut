@@ -1,8 +1,12 @@
 import gsap from 'gsap'
-import GUI from 'lil-gui'
 import * as THREE from 'three'
 
+import ANIMATIONS from '@/constants/ANIMATIONS'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import SOUNDS from '@/constants/SOUNDS'
+
+import AudioManager from '@/class/three/utils/AudioManager'
+import { getFrame } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
@@ -22,11 +26,9 @@ import backgroundBurningVert from '@/class/three/shaders/backgroundBurning/verte
 class Transition {
   block: Block
   instance: any
-  animation!: { [key: string]: any }
   updateId: () => void
   text: THREE.Mesh
-  character: THREE.Mesh
-  garde: THREE.Mesh
+  characterSide: THREE.Mesh
   planeTexture: THREE.Mesh
   planeBackground: THREE.Mesh
   backgroundMaterial: THREE.Mesh
@@ -34,6 +36,20 @@ class Transition {
     uNoise: { value: THREE.Texture }
     uGradient: { value: THREE.Texture }
     uDissolve: { value: number }
+  }
+  animation: {
+    mixer: THREE.AnimationMixer
+    actions: {
+      [key: string]: {
+        action: THREE.AnimationAction
+        frames: {
+          frame: number
+          sound: string
+        }[]
+        lastFrame: number
+      }
+    }
+    play: (name: string) => void
   }
 
   constructor(_type: TRANSITIONS) {
@@ -48,50 +64,35 @@ class Transition {
     this.updateId = this.update
 
     this.text = this.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'texte')
-    this.character = this.block
-      .getModel()
-      .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Cuisinier')
-      .children.find((mesh: THREE.Mesh) => mesh.name === 'SIDE_Cuisinier')
-    this.garde = this.block
-      .getModel()
-      .scene.children.find((mesh: THREE.Mesh) => mesh.name === 'RIG_Garde')
-      .children.find((mesh: THREE.Mesh) => mesh.name === 'Garde')
-
-    const characterTexture = this.character.material.map
-    characterTexture.encoding = THREE.LinearEncoding
-
-    const gardeTexture = this.garde.material.map
-    gardeTexture.encoding = THREE.LinearEncoding
-
-    this.character.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: characterTexture } },
-      vertexShader: characterBurningVert,
-      fragmentShader: characterBurningFrag,
-    })
-    this.garde.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: gardeTexture } },
-      vertexShader: characterBurningVert,
-      fragmentShader: characterBurningFrag,
-    })
   }
 
   start() {
     if (OrdalieManager.isPlayerDead) return this.hide()
 
-    this.block.showBehind()
+    this.block.moveBehind()
     this.block.toggleGarde(true)
     this.block.toggleCharacter(true)
     this.debugParams().animations.playGroupAnim()
 
     gsap.ticker.add(this.updateId)
     TransitionManager.onStarted()
+
+    AudioManager.play('transition_ambient')
   }
 
   end() {
-    // this.block.showDefault()
+    AudioManager.fadeOut('transition_ambient', 100)
+    this.block.moveDefault()
+    this.block.toggleCharacter(false)
+
+    setTimeout(() => {
+      this.block.toggleGarde(false)
+      this.block.dipose()
+      this.animation.mixer.uncacheRoot(this.block.getModel().scene)
+    }, 6000)
+
     gsap.ticker.remove(this.updateId)
     TransitionManager.onEnded()
-    this.block.toggleCharacter(false)
   }
 
   setPlaneRefs() {
@@ -107,29 +108,46 @@ class Transition {
       uDissolve: { value: 0 },
     }
 
-    const texture = this.planeTexture.material.map
-    texture.encoding = THREE.LinearEncoding
+    // if (WebGL.debug.isActive()) {
+    //   const folder = WebGL.debug.addFolder('Transition')
+    //   folder.add(this.uniforms.uDissolve, 'value', 0, 1, 0.01).name('Dissolve')
+    // }
 
-    const newTransitionTextureMat = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: texture } },
+    // Scene
+    this.planeTexture.material = new THREE.ShaderMaterial({
+      uniforms: { ...this.uniforms, uTexture: { value: this.planeTexture.material.map } },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       transparent: true,
     })
 
-    this.planeTexture.material = newTransitionTextureMat
-
-    const newBackgroundMat = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uTexture: { value: null } },
+    // Background
+    this.planeBackground.material = new THREE.ShaderMaterial({
+      uniforms: { ...this.uniforms, uColor: { value: this.planeBackground.material.color } },
       vertexShader: backgroundBurningVert,
       fragmentShader: backgroundBurningFrag,
+      transparent: true,
     })
 
-    this.planeBackground.material = newBackgroundMat
+    // Character
+    this.characterSide = this.block.getCharacterSide()
+    this.characterSide.material = new THREE.ShaderMaterial({
+      uniforms: { ...this.uniforms, uTexture: { value: this.characterSide.material.map } },
+      vertexShader: characterBurningVert,
+      fragmentShader: characterBurningFrag,
+    })
+
+    // Garde
+    const gardeMesh = this.block.getGardeModel().children.find((mesh: THREE.Mesh) => mesh.name === 'Garde')
+    gardeMesh.material = new THREE.ShaderMaterial({
+      uniforms: { ...this.uniforms, uTexture: { value: gardeMesh.material.map } },
+      vertexShader: characterBurningVert,
+      fragmentShader: characterBurningFrag,
+    })
   }
 
   hide() {
-    gsap.to([this.planeTexture.material.uniforms.uDissolve, this.character.material.uniforms.uDissolve], {
+    gsap.to([this.planeTexture.material.uniforms.uDissolve, this.characterSide.material.uniforms.uDissolve], {
       delay: 1,
       value: 1,
       duration: 3,
@@ -141,22 +159,33 @@ class Transition {
   }
 
   setAnimation() {
-    this.animation = {}
-    this.animation.mixer = new THREE.AnimationMixer(this.block.getModel().scene)
-    this.animation.actions = {
-      Transition_Garde: this.animation.mixer.clipAction(this.block.getModel().animations[0]),
-      Transition_Cuisinier: this.animation.mixer.clipAction(this.block.getModel().animations[1]),
+    const mixer = new THREE.AnimationMixer(this.block.getModel().scene)
+
+    this.animation = {
+      mixer,
+      actions: {
+        [ANIMATIONS.TRANSITION.GARDE]: {
+          action: mixer.clipAction(this.block.getModel().animations[0]),
+          frames: SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.GARDE].frames,
+          lastFrame: 0,
+        },
+        [ANIMATIONS.TRANSITION.CUISINIER]: {
+          action: mixer.clipAction(this.block.getModel().animations[1]),
+          frames: SOUNDS['TRANSITIONS'][ANIMATIONS.TRANSITION.CUISINIER].frames,
+          lastFrame: 0,
+        },
+      },
+      play: (name: string) => {
+        this.animation.actions[name].action.play()
+      },
     }
 
-    this.animation.actions['Transition_Garde'].clampWhenFinished = true
-    this.animation.actions['Transition_Garde'].loop = THREE.LoopOnce
-    this.animation.actions['Transition_Cuisinier'].clampWhenFinished = true
-    this.animation.actions['Transition_Cuisinier'].loop = THREE.LoopOnce
+    this.animation.actions[ANIMATIONS.TRANSITION.GARDE].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.TRANSITION.GARDE].action.loop = THREE.LoopOnce
+    this.animation.actions[ANIMATIONS.TRANSITION.CUISINIER].action.clampWhenFinished = true
+    this.animation.actions[ANIMATIONS.TRANSITION.CUISINIER].action.loop = THREE.LoopOnce
 
     // Play the action
-    this.animation.play = (name: string) => {
-      this.animation.actions[name].play()
-    }
 
     this.animation.mixer.addEventListener('finished', (e) => {
       e.action.getClip().name.includes('Garde') && this.end()
@@ -167,6 +196,22 @@ class Transition {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001 * this.block.getDifficultyData().speedCoef)
     console.log(`🔁 ${this.block.getType()}`)
+
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
+      if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
+        console.log(animation.action._clip.name, currentFrame)
+      }
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
   }
 
   private debugParams() {
