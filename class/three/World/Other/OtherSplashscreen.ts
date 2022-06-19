@@ -160,6 +160,11 @@ class OtherSplashscreen {
       this.animation.play(ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE)
       this.end()
     }
+    // If behind tutorial
+    if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION3) {
+      this.instance.block.showBehind()
+    }
+
     // If last animation is finished
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4) {
       this.kill()
@@ -217,11 +222,14 @@ class OtherSplashscreen {
   }
 
   kill() {
+    this.instance.block.showFarBehind()
+
     setTimeout(() => {
       this.instance.block.toggleCharacter(false)
       this.instance.block.toggleGarde(false)
       this.instance.block.dipose()
       this.animation.mixer.uncacheRoot(this.instance.block.getModel().scene)
+      this.instance.block.showDefault()
     }, 6000)
 
     gsap.ticker.remove(this.instance.updateId)

@@ -1,8 +1,12 @@
 import gsap from 'gsap'
-import GUI from 'lil-gui'
 import * as THREE from 'three'
 
+import ANIMATIONS from '@/constants/ANIMATIONS'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import SOUNDS from '@/constants/SOUNDS'
+
+import AudioManager from '@/class/three/utils/AudioManager'
+import { getFrame } from '@/class/three/utils/Maths'
 
 import WebGL from '@/class/three/WebGL'
 import Block from '@/class/three/World/Block'
@@ -18,10 +22,6 @@ import characterBurningVert from '@/class/three/shaders/characterBurning/vertex.
 
 import backgroundBurningFrag from '@/class/three/shaders/backgroundBurning/fragment.glsl'
 import backgroundBurningVert from '@/class/three/shaders/backgroundBurning/vertex.glsl'
-import AudioManager from '../../utils/AudioManager'
-import ANIMATIONS from '~~/constants/ANIMATIONS'
-import SOUNDS from '@/constants/SOUNDS'
-import { getFrame } from '../../utils/Maths'
 
 class Transition {
   block: Block
@@ -82,7 +82,7 @@ class Transition {
 
   end() {
     AudioManager.fadeOut('transition_ambient', 100)
-    // this.block.showDefault()
+    this.block.showDefault()
     this.block.toggleCharacter(false)
 
     setTimeout(() => {

@@ -1,10 +1,7 @@
 import GUI from 'lil-gui'
 import * as THREE from 'three'
 
-import OTHERS from '@/constants/OTHERS'
-
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
-import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
 import AudioManager from '@/class/three/utils/AudioManager'
 
@@ -20,21 +17,22 @@ class OtherDead {
     this.instance = _other
 
     // Update position to last transition to overlap it
-    this.showFarBehind()
+    this.moveBehindTransition()
 
     this.text = this.instance.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'texte')
     this.metre = this.instance.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'metre')
   }
 
   start() {
-    this.instance.block.showBehind()
     AudioManager.play('gameover')
+    this.instance.block.showDefault()
     setTimeout(() => this.end(), 8000)
   }
 
-  showFarBehind() {
-    const lastBlockPosition = TransitionManager.getLast()?.block.getPosition()
-    if (lastBlockPosition) this.instance.block.updatePosition(new THREE.Vector3(lastBlockPosition.x, lastBlockPosition.y, lastBlockPosition.z - 0.4))
+  moveBehindTransition() {
+    const { x, y, z } = TransitionManager.getLast()?.block.getPosition()
+    if (x) this.instance.block.updatePosition(new THREE.Vector3(x, y, z))
+    this.instance.block.showFarBehind()
   }
 
   end() {

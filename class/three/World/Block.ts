@@ -294,6 +294,15 @@ class Block {
     })
   }
 
+  showFarBehind() {
+    console.log('⬆️ FAR BEHIND', this.type)
+    gsap.to(this.model.scene.position, {
+      z: -this.zMaxPosition * 2,
+      duration: 0.1,
+      ease: 'power3.inOut',
+    })
+  }
+
   /**
    * Get size of model
    */
