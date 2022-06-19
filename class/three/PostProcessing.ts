@@ -107,33 +107,48 @@ class PostProcessing {
   }
 
   private createLUTEffect() {
-    const colorAverageEffect = new ColorAverageEffect(BlendFunction.SKIP)
-    const sepiaEffect = new SepiaEffect({ blendFunction: BlendFunction.SKIP })
-    const { capabilities, context } = WebGL.renderer.instance
+    const { capabilities, getContext } = WebGL.renderer.instance
 
+    // Color average
+    const colorAverageEffect = new ColorAverageEffect(BlendFunction.SKIP)
+
+    // Sepia
+    const sepiaEffect = new SepiaEffect({ blendFunction: BlendFunction.SKIP })
+    sepiaEffect.uniforms.get('intensity').value = 0.258
+    sepiaEffect.blendMode.opacity.value = 1
+    sepiaEffect.blendMode.opacity.value = 1
+    sepiaEffect.blendMode.blendFunction = BlendFunction.SET
+
+    // Brightness contrast
     const brightnessContrastEffect = new BrightnessContrastEffect({
       blendFunction: BlendFunction.SKIP,
     })
 
+    // Hue saturation
     const hueSaturationEffect = new HueSaturationEffect({
       blendFunction: BlendFunction.SKIP,
       saturation: 0.4,
       hue: 0.0,
     })
+    hueSaturationEffect.hue = 0
+    hueSaturationEffect.uniforms.get('saturation').value = 0.272
+    hueSaturationEffect.blendMode.opacity.value = 1
+    hueSaturationEffect.blendMode.blendFunction = BlendFunction.SET
 
-    const luts = new Map([
-      ['lut', WebGL.resources.getItems('COMMON', 'lut')],
-      ['warm-contrast', WebGL.resources.getItems('COMMON', 'warm-contrast')],
-    ])
-
-    const lut = LookupTexture.from(luts.get('lut') as THREE.Texture)
+    const lut = LookupTexture.from(WebGL.resources.getItems('COMMON', 'lut') as THREE.Texture)
     const lutEffect = new LUT3DEffect(lut as THREE.Texture)
     lutEffect.blendMode.blendFunction = BlendFunction.SET
+    lutEffect.blendMode.opacity.value = 0.31
+    lutEffect.blendMode.blendFunction = BlendFunction.OVERLAY
 
     const effectPass = new EffectPass(WebGL.camera.instance, colorAverageEffect, sepiaEffect, brightnessContrastEffect, hueSaturationEffect, lutEffect)
     this.composer.addPass(effectPass)
 
     if (this.debugFolder) {
+      const luts = new Map([
+        ['lut', WebGL.resources.getItems('COMMON', 'lut')],
+        ['warm-contrast', WebGL.resources.getItems('COMMON', 'warm-contrast')],
+      ])
       // DEBUG
       const params = {
         colorAverage: {
@@ -177,7 +192,7 @@ class PostProcessing {
             // lutEffect.lut = lut
 
             if (capabilities.isWebGL2) {
-              if (WebGL.renderer.instance.getContext().getExtension('OES_texture_float_linear') === null) {
+              if (getContext().getExtension('OES_texture_float_linear') === null) {
                 console.log('Linear float filtering not supported, ' + 'converting to Uint8')
 
                 lut.convertToUint8()

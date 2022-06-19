@@ -23,7 +23,7 @@ class Renderer extends THREE.EventDispatcher {
     this.instance.outputEncoding = THREE.sRGBEncoding
 
     this.instance.setSize(WebGL.sizes.width, WebGL.sizes.height)
-    this.instance.setClearColor(0xe6e1db, 1)
+    this.instance.setClearColor(0xffeebf, 1)
     this.instance.setPixelRatio(WebGL.sizes.pixelRatio)
   }
 

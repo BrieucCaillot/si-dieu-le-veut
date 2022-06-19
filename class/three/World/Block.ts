@@ -206,7 +206,7 @@ class Block {
     const bg = this.model.scene.children.find((child) => child.name === 'background')
     bg.material = new THREE.MeshBasicMaterial({
       name: 'background',
-      color: 0xffffff,
+      color: 0xffeebf,
     })
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
