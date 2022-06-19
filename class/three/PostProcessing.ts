@@ -122,22 +122,13 @@ class PostProcessing {
     })
 
     const luts = new Map([
-      ['png/bleach-bypass', WebGL.resources.getItems('COMMON', 'png/bleach-bypass')],
-      ['png/candle-light', WebGL.resources.getItems('COMMON', 'png/candle-light')],
-      ['png/cool-contrast', WebGL.resources.getItems('COMMON', 'png/cool-contrast')],
-      ['png/warm-contrast', WebGL.resources.getItems('COMMON', 'png/warm-contrast')],
-      ['png/desaturated-fog', WebGL.resources.getItems('COMMON', 'png/desaturated-fog')],
-      ['png/evening', WebGL.resources.getItems('COMMON', 'png/evening')],
-      ['png/fall', WebGL.resources.getItems('COMMON', 'png/fall')],
-      ['png/filmic1', WebGL.resources.getItems('COMMON', 'png/filmic1')],
-      ['png/filmic2', WebGL.resources.getItems('COMMON', 'png/filmic2')],
-      ['png/matrix-green', WebGL.resources.getItems('COMMON', 'png/matrix-green')],
-      ['png/strong-amber', WebGL.resources.getItems('COMMON', 'png/strong-amber')],
+      ['lut', WebGL.resources.getItems('COMMON', 'lut')],
+      ['warm-contrast', WebGL.resources.getItems('COMMON', 'warm-contrast')],
     ])
 
-    const lut = LookupTexture.from(luts.get('png/warm-contrast') as THREE.Texture)
+    const lut = LookupTexture.from(luts.get('lut') as THREE.Texture)
     const lutEffect = new LUT3DEffect(lut as THREE.Texture)
-    lutEffect.blendMode.blendFunction = BlendFunction.SKIP
+    lutEffect.blendMode.blendFunction = BlendFunction.SET
 
     const effectPass = new EffectPass(WebGL.camera.instance, colorAverageEffect, sepiaEffect, brightnessContrastEffect, hueSaturationEffect, lutEffect)
     this.composer.addPass(effectPass)
@@ -186,7 +177,7 @@ class PostProcessing {
             // lutEffect.lut = lut
 
             if (capabilities.isWebGL2) {
-              if (context.getExtension('OES_texture_float_linear') === null) {
+              if (WebGL.renderer.instance.getContext().getExtension('OES_texture_float_linear') === null) {
                 console.log('Linear float filtering not supported, ' + 'converting to Uint8')
 
                 lut.convertToUint8()

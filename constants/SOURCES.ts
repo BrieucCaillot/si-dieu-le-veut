@@ -23,91 +23,21 @@ const COMMON_SOURCES = {
     {
       name: 'fabric',
       type: SourceType.texture,
-      path: 'textures/post/fabric_2.webp',
+      path: 'textures/post/fabric.webp',
       encoding: THREE.sRGBEncoding,
       wrap: THREE.RepeatWrapping,
     },
     {
-      name: 'png/bleach-bypass',
+      name: 'lut',
       type: SourceType.texture,
-      path: 'textures/post/png/bleach-bypass.png',
+      path: 'textures/post/lut/flipped.png',
       encoding: THREE.LinearEncoding,
       wrap: THREE.RepeatWrapping,
     },
     {
-      name: 'png/candle-light',
+      name: 'warm-contrast',
       type: SourceType.texture,
-      path: 'textures/post/png/candle-light.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/cool-contrast',
-      type: SourceType.texture,
-      path: 'textures/post/png/cool-contrast.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/warm-contrast',
-      type: SourceType.texture,
-      path: 'textures/post/png/warm-contrast.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/desaturated-fog',
-      type: SourceType.texture,
-      path: 'textures/post/png/desaturated-fog.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/evening',
-      type: SourceType.texture,
-      path: 'textures/post/png/evening.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/fall',
-      type: SourceType.texture,
-      path: 'textures/post/png/fall.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/filmic1',
-      type: SourceType.texture,
-      path: 'textures/post/png/filmic1.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/filmic2',
-      type: SourceType.texture,
-      path: 'textures/post/png/filmic2.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/filmic2',
-      type: SourceType.texture,
-      path: 'textures/post/png/filmic2.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/matrix-green',
-      type: SourceType.texture,
-      path: 'textures/post/png/matrix-green.png',
-      encoding: THREE.LinearEncoding,
-      wrap: THREE.RepeatWrapping,
-    },
-    {
-      name: 'png/strong-amber',
-      type: SourceType.texture,
-      path: 'textures/post/png/strong-amber.png',
+      path: 'textures/post/lut/warm-contrast.png',
       encoding: THREE.LinearEncoding,
       wrap: THREE.RepeatWrapping,
     },
@@ -282,7 +212,7 @@ const ORDALIE_SOURCES = {
 }
 
 const SOUNDS: { name: string; path: string; volume?: number }[] = [
-  /* 
+  /*
   OTHERS
   */
   {
@@ -302,7 +232,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     name: 'gameover',
     path: '/sounds/Other/mort_musique.mp3',
   },
-  /* 
+  /*
   CUISINIER
   */
   {
@@ -325,7 +255,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     name: 'cuisinier_walk_5',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_5.mp3',
   },
-  /* 
+  /*
   GARDE
   */
   {
@@ -349,7 +279,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     path: '/sounds/Character/Garde/Kick/kick_garde.mp3',
   },
 
-  /* 
+  /*
   ORDALIES COMMON
   */
   {
@@ -362,7 +292,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     path: '/sounds/Ordalie/ordalie_end.mp3',
   },
 
-  /* 
+  /*
   ORDALIES BBQ
   */
 
@@ -412,7 +342,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     path: '/sounds/Ordalie/BBQ/Jump/jump4.mp3',
   },
 
-  /* 
+  /*
   ORDALIE CROIX
   */
 
@@ -428,7 +358,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     name: 'ordalie_croix_outro',
     path: '/sounds/Ordalie/CROIX/sortie_croix.mp3',
   },
-  /* 
+  /*
   ORDALIE FOOD
   */
 
