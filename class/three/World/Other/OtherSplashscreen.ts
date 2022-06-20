@@ -17,9 +17,10 @@ import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
 
 class OtherSplashscreen {
-  instance: Other
-  isFollowingCharacter = false
-  animation: {
+  private instance: Other
+  private followedCharacter = false
+  isCharacterMoving = false
+  private animation: {
     mixer: THREE.AnimationMixer
     actions: {
       [key: string]: {
@@ -33,7 +34,7 @@ class OtherSplashscreen {
     }
     play: (name: string) => void
   }
-  title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>
+  private title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>
 
   constructor(_other: Other) {
     this.instance = _other
@@ -172,7 +173,7 @@ class OtherSplashscreen {
   }
 
   onFinish(e) {
-    this.isFollowingCharacter = false
+    this.isCharacterMoving = false
 
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1) {
       this.animation.actions[ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1].action.stop()
@@ -192,7 +193,7 @@ class OtherSplashscreen {
   }
 
   playAnimFromOther(other: OTHERS) {
-    this.isFollowingCharacter = false
+    this.isCharacterMoving = true
 
     switch (other) {
       case OTHERS.SPLASHSCREEN:
@@ -201,6 +202,7 @@ class OtherSplashscreen {
         break
       case OTHERS.CINEMATIC_1:
         // console.log('DO NOT PLAY ON CINEMATIC_1')
+        this.isCharacterMoving = false
         break
       case OTHERS.CINEMATIC_2:
         // console.log('PLAY ON CINEMATIC_2')
@@ -228,16 +230,12 @@ class OtherSplashscreen {
   }
 
   followCharacter() {
-    const currentBlockType = OtherManager.getCurrent().block.getType() as OTHERS
     const characterPosition = this.instance.block.getCharacterRoot().getWorldPosition(new THREE.Vector3())
-
-    // Return if current block type is not Splashscreen or Cinematic 2
-    if (![OTHERS.SPLASHSCREEN].includes(currentBlockType)) return
 
     // END SPLASHSCREEN IF CHARACTER IS MOVING
     if (characterPosition.x > 0) {
       OtherManager.getCurrent().end()
-      return (this.isFollowingCharacter = true)
+      return (this.followedCharacter = true)
     }
   }
 
@@ -276,7 +274,7 @@ class OtherSplashscreen {
       animation.lastFrame = currentFrame
     }
 
-    if (this.isFollowingCharacter) return
+    if (this.followedCharacter) return
     this.followCharacter()
   }
 }

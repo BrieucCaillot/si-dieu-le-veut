@@ -88,7 +88,6 @@ class Block {
    */
   changeCharacterHead(type: HEAD = HEAD.NORMAL) {
     let offset = 0
-    console.log(type)
     switch (type) {
       case HEAD.NORMAL:
         offset = 0
