@@ -88,7 +88,7 @@ const wordCompleted = () => {
 }
 
 const newChar = (e: KeyboardEvent) => {
-  if (KEY.includes(e.key)) return
+  if (KEY.includes(e.key) || OrdalieManager.isPlayerDead) return
   // Fix apostrophe Dead key returned
   let key = e.key.toLowerCase()
   key = key === 'dead' ? `'` : key

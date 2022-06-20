@@ -12,16 +12,45 @@ const ANIMATIONS_SOUNDS = {
   TRANSITIONS: {
     [ANIMATIONS.TRANSITION.GARDE]: {
       frames: [
-        // {
-        //   frame: 1,
-        //   sound: 'garde_walk',
-        // },
-        // {
-        //   frame: 60,
-        //   sound: 'garde_walk',
-        // },
         {
-          frame: 260,
+          frame: 27,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 66,
+          sound: 'garde_walk_2',
+        },
+        {
+          frame: 106,
+          sound: 'garde_walk_3',
+        },
+        {
+          frame: 147,
+          sound: 'garde_walk_4',
+        },
+        {
+          frame: 186,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 225,
+          sound: 'garde_walk_2',
+        },
+        {
+          frame: 61,
+          sound: 'spear_1',
+        },
+        {
+          frame: 138,
+          sound: 'spear_2',
+        },
+        {
+          frame: 220,
+          sound: 'spear_3',
+        },
+
+        {
+          frame: 258,
           sound: 'garde_kick',
         },
       ],
@@ -29,32 +58,32 @@ const ANIMATIONS_SOUNDS = {
     [ANIMATIONS.TRANSITION.CUISINIER]: {
       frames: [
         {
-          frame: 25,
-          sound: 'cuisinier_walk',
+          frame: 26,
+          sound: 'cuisinier_walk_1',
         },
         {
-          frame: 64,
-          sound: 'cuisinier_walk',
+          frame: 66,
+          sound: 'cuisinier_walk_2',
         },
         {
-          frame: 103,
-          sound: 'cuisinier_walk',
+          frame: 107,
+          sound: 'cuisinier_walk_3',
         },
         {
-          frame: 143,
-          sound: 'cuisinier_walk',
+          frame: 147,
+          sound: 'cuisinier_walk_4',
         },
         {
-          frame: 185,
-          sound: 'cuisinier_walk',
+          frame: 186,
+          sound: 'cuisinier_walk_5',
         },
         {
-          frame: 224,
-          sound: 'cuisinier_walk',
+          frame: 226,
+          sound: 'cuisinier_walk_1',
         },
         {
-          frame: 265,
-          sound: 'cuisinier_walk',
+          frame: 267,
+          sound: 'cuisinier_walk_2',
         },
       ],
     },
@@ -71,23 +100,146 @@ const ANIMATIONS_SOUNDS = {
           sound: 'splashscreen_title',
         },
         {
-          frame: 450,
-          sound: 'splashscreen_cinematique',
+          frame: 370,
+          sound: 'cuisinier_walk_1',
         },
         {
-          frame: 25,
-          sound: 'cuisinier_walk',
+          frame: 395,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 423,
+          sound: 'cuisinier_walk_3',
+        },
+        {
+          frame: 451,
+          sound: 'cuisinier_walk_4',
+        },
+        {
+          frame: 479,
+          sound: 'cuisinier_walk_5',
+        },
+        {
+          frame: 508,
+          sound: 'cuisinier_walk_1',
+        },
+        {
+          frame: 535,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 563,
+          sound: 'cuisinier_walk_3',
+        },
+        {
+          frame: 592,
+          sound: 'cuisinier_walk_4',
+        },
+        {
+          frame: 620,
+          sound: 'cuisinier_walk_5',
+        },
+        {
+          frame: 647,
+          sound: 'cuisinier_walk_1',
+        },
+        {
+          frame: 673,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 450,
+          sound: 'splashscreen_cinematique',
         },
       ],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION2]: {
-      frames: [],
+      frames: [
+        {
+          frame: 29,
+          sound: 'cuisinier_walk_1',
+        },
+        {
+          frame: 55,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 82,
+          sound: 'cuisinier_walk_3',
+        },
+        {
+          frame: 110,
+          sound: 'cuisinier_walk_4',
+        },
+        {
+          frame: 139,
+          sound: 'cuisinier_walk_5',
+        },
+        {
+          frame: 168,
+          sound: 'cuisinier_walk_1',
+        },
+        {
+          frame: 195,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 223,
+          sound: 'cuisinier_walk_3',
+        },
+        {
+          frame: 250,
+          sound: 'cuisinier_walk_4',
+        },
+      ],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION3]: {
-      frames: [],
+      frames: [
+        {
+          frame: 6,
+          sound: 'cuisinier_walk_1',
+        },
+        {
+          frame: 32,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 59,
+          sound: 'cuisinier_walk_3',
+        },
+        {
+          frame: 87,
+          sound: 'cuisinier_walk_4',
+        },
+        {
+          frame: 114,
+          sound: 'cuisinier_walk_5',
+        },
+        {
+          frame: 144,
+          sound: 'cuisinier_walk_1',
+        },
+      ],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION4]: {
-      frames: [],
+      frames: [
+        {
+          frame: 1,
+          sound: 'cuisinier_walk_1',
+        },
+        {
+          frame: 22,
+          sound: 'cuisinier_walk_2',
+        },
+        {
+          frame: 49,
+          sound: 'cuisinier_walk_3',
+        },
+        {
+          frame: 78,
+          sound: 'cuisinier_walk_4',
+        },
+      ],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE]: {
       frames: [],
@@ -270,45 +422,71 @@ const ANIMATIONS_SOUNDS = {
 const TRANSITION_4 = {
   [ANIMATIONS.TRANSITION.GARDE]: {
     frames: [
-      // {
-      //   frame: 10,
-      //   sound: 'garde_walk',
-      // },
-      // {
-      //   frame: 60,
-      //   sound: 'garde_walk',
-      // },
       {
-        frame: 197,
+        frame: 79,
+        sound: 'spear_1',
+      },
+      {
+        frame: 158,
+        sound: 'spear_2',
+      },
+      {
+        frame: 7,
+        sound: 'garde_walk_1',
+      },
+      {
+        frame: 45,
+        sound: 'garde_walk_2',
+      },
+      {
+        frame: 82,
+        sound: 'garde_walk_3',
+      },
+      {
+        frame: 126,
+        sound: 'garde_walk_4',
+      },
+      {
+        frame: 163,
+        sound: 'garde_walk_1',
+      },
+      {
+        frame: 198,
         sound: 'garde_kick',
       },
     ],
   },
   [ANIMATIONS.TRANSITION.CUISINIER]: {
+    // 2 (1)
+    // -40 (2)
+    // -79 (3)
+    // -120 (4)
+    // -161 (5)
+    // -200 (1)
     frames: [
       {
-        frame: 1,
-        sound: 'cuisinier_walk',
+        frame: 2,
+        sound: 'cuisinier_walk_1',
       },
       {
-        frame: 38,
-        sound: 'cuisinier_walk',
+        frame: 40,
+        sound: 'cuisinier_walk_2',
       },
       {
-        frame: 78,
-        sound: 'cuisinier_walk',
+        frame: 79,
+        sound: 'cuisinier_walk_3',
       },
       {
-        frame: 118,
-        sound: 'cuisinier_walk',
+        frame: 120,
+        sound: 'cuisinier_walk_4',
       },
       {
-        frame: 157,
-        sound: 'cuisinier_walk',
+        frame: 161,
+        sound: 'cuisinier_walk_5',
       },
       {
-        frame: 198,
-        sound: 'cuisinier_walk',
+        frame: 200,
+        sound: 'cuisinier_walk_1',
       },
     ],
   },

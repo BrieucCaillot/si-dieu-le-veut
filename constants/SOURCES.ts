@@ -350,6 +350,23 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     path: '/sounds/Character/Garde/Kick/kick_garde.mp3',
   },
 
+  {
+    name: 'spear_1',
+    path: '/sounds/Character/Garde/Spear/spear1.mp3',
+  },
+  {
+    name: 'spear_2',
+    path: '/sounds/Character/Garde/Spear/spear2.mp3',
+  },
+  {
+    name: 'spear_3',
+    path: '/sounds/Character/Garde/Spear/spear3.mp3',
+  },
+  {
+    name: 'spear_4',
+    path: '/sounds/Character/Garde/Spear/spear4.mp3',
+  },
+
   /* 
   ORDALIES COMMON
   */
@@ -361,6 +378,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'ordalie_end',
     path: '/sounds/Ordalie/ordalie_end.mp3',
+    volume: 0.5,
   },
 
   /* 

@@ -29,6 +29,7 @@ class AudioManager {
       const s = new Howl({
         src: sound.path,
         volume: sound.volume ? sound.volume : 1,
+        html5: true,
       })
 
       const obj = {
@@ -48,9 +49,8 @@ class AudioManager {
     }
 
     const sound = this.sounds.find((sound) => sound.name === name)
+    // sound.howl.rate(3)
     sound.howl.play()
-
-    if (name === 'ordalie_music') console.log('sound name is', name, 'loop value is', loop, 'and volume is', sound.howl.volume())
 
     if (loop) sound.howl.loop(true)
   }
