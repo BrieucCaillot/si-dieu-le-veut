@@ -67,7 +67,6 @@ class OrdalieFood {
     this.paths = []
     this.setPath()
     this.setAnimation()
-    this.instance.block.toggleFrustumCulling(false)
 
     this.cloneGroup = new THREE.Group()
     WebGL.scene.add(this.cloneGroup)

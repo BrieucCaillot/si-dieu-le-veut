@@ -2,6 +2,7 @@ import * as THREE from 'three'
 
 import WebGL from '@/class/three/WebGL'
 import Social from '@/class/three/utils/Social'
+import SOCIALS from '~~/constants/SOCIALS'
 
 class Raycaster {
   instance: THREE.Raycaster = new THREE.Raycaster()
@@ -22,13 +23,8 @@ class Raycaster {
 
     for (let i = 0; i < intersects.length; i++) {
       const object = intersects[i].object as THREE.Mesh
-      switch (object.name) {
-        case 'TWITTER':
-          Social.onHover(object)
-          break
-        case 'FACEBOOK':
-          Social.onHover(object)
-          break
+      if ([SOCIALS.FACEBOOK, SOCIALS.TWITTER].includes(object.name as SOCIALS)) {
+        Social.onHover(object)
       }
     }
   }

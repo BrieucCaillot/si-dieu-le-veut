@@ -80,13 +80,13 @@ class Block {
     this.character = this.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier')
     this.characterSide = this.character?.children.find((child) => child.name === 'SIDE_Cuisinier') as THREE.SkinnedMesh
     this.characterMainRoot = this.character?.children.find((child) => child.name.includes('MAIN_SIDE_ROOT')) as THREE.Mesh
-    this.characterHead = this.characterSide?.children?.find((child) => child.material.name === 'cuisinier_tete') as THREE.Mesh
+    this.characterHead = this.characterSide?.children?.find((child: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>) => child.material.name === 'cuisinier_tete') as THREE.Mesh
   }
 
   /**
    * Change Character face
    */
-  changeCharacterHead(head: THREE.Mesh, type: HEAD = HEAD.NORMAL) {
+  changeCharacterHead(head: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>, type: HEAD = HEAD.NORMAL) {
     let offset = 0
     console.log(type)
     switch (type) {
@@ -204,10 +204,10 @@ class Block {
    */
   private add() {
     const bg = this.model.scene.children.find((child) => child.name === 'background')
-    bg.material = new THREE.MeshBasicMaterial({
-      name: 'background',
-      color: 0xffffff,
-    })
+    // bg.material = new THREE.MeshBasicMaterial({
+    //   name: 'background',
+    //   color: 0xf9f2e
+    // })
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
   }
