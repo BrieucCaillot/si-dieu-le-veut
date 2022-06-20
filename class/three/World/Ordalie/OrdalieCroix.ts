@@ -177,11 +177,12 @@ class OrdalieCroix {
   }
 
   armsUp() {
-    this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.upSpeedArm
+    this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = -1
 
     setTimeout(() => {
       this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
-    }, this.difficultyData.upDurationArm)
+      // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
+    }, 100)
   }
 
   gameWon() {
@@ -214,7 +215,7 @@ class OrdalieCroix {
 
   update() {
     const { deltaTime } = WebGL.time
-    this.animation.mixer.update(deltaTime * 0.001)
+    this.animation.mixer.update(deltaTime * 0.001 * this.instance.block.getSpeedCoef())
 
     // for (const animation of Object.values(this.animation.actions)) {
     //   const time = animation.action.time

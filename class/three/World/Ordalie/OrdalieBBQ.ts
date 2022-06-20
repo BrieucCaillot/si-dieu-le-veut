@@ -294,7 +294,7 @@ class OrdalieBBQ {
 
   update() {
     const { deltaTime } = WebGL.time
-    this.animation.mixer.update(deltaTime * 0.001)
+    this.animation.mixer.update(deltaTime * 0.001 * this.instance.block.getSpeedCoef())
 
     for (const animation of Object.values(this.animation.actions)) {
       const time = animation.action.time

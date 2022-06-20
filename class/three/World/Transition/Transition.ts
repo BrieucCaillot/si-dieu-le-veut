@@ -199,7 +199,7 @@ class Transition {
 
   update = () => {
     const { deltaTime } = WebGL.time
-    this.animation.mixer.update(deltaTime * 0.001 * this.block.getDifficultyData().speedCoef)
+    this.animation.mixer.update(deltaTime * 0.001 * this.block.getSpeedCoef())
     console.log(`🔁 ${this.block.getType()}`)
 
     for (const animation of Object.values(this.animation.actions)) {

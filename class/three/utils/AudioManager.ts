@@ -1,6 +1,9 @@
 import { Howler, Howl } from 'howler'
 
 import { SOUNDS } from '@/constants/SOURCES'
+import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
+import DIFFICULTY from '@/constants/DIFFICULTY'
+import Blocks from '../World/Blocks'
 
 class AudioManager {
   activeHowl: Howl | null
@@ -49,7 +52,9 @@ class AudioManager {
     }
 
     const sound = this.sounds.find((sound) => sound.name === name)
-    // sound.howl.rate(3)
+
+    if (sound.name !== 'gameover') sound.howl.rate(Blocks.getCurrent().getSpeedCoef())
+
     sound.howl.play()
 
     if (loop) sound.howl.loop(true)
@@ -92,8 +97,6 @@ class AudioManager {
     sound.howl.once('fade', () => {
       sound.howl.stop()
       sound.howl.volume(sound.volume ? sound.volume : 1)
-
-      console.log('fade end', name, 'volume is', sound.howl.volume(), 'sound volume is supposed to be', sound.volume)
     })
   }
 

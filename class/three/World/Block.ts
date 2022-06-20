@@ -266,6 +266,11 @@ class Block {
     return this.difficultyData
   }
 
+  getSpeedCoef() {
+    const difficulty = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]
+    return difficulty['COMMON'].speedCoef
+  }
+
   /**
    * Get position of model
    */

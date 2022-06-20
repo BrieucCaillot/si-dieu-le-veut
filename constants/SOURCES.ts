@@ -228,8 +228,8 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   */
   {
     name: 'success',
-    path: '/sounds/Typing/type-success.mp3',
-    volume: 0.5,
+    path: '/sounds/Typing/typing.mp3',
+    volume: 0.2,
   },
   {
     name: 'splashscreen_title',

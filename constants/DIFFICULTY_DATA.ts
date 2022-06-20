@@ -3,37 +3,29 @@ import ORDALIES from '@/constants/ORDALIES'
 
 interface CroixInterface {
   fallingSpeedArm: number
-  upSpeedArm: number
-  upDurationArm: number
 }
 
 interface BBQInterface {
   fallingSpeedArm: number
-  upSpeedArm: number
-  upDurationArm: number
 }
 interface FoodInterface {
   fallingSpeedArm: number
-  upSpeedArm: number
-  upDurationArm: number
 }
 
 const DIFFICULTY_DATAS = {
   [DIFFICULTY.EASY]: {
+    ['COMMON']: {
+      speedCoef: 1,
+    },
     ['CAMERA']: {
       // Debug
       // moveDuration: 1,
       moveDuration: 6,
     },
-    ['TRANSITIONS']: {
-      speedCoef: 1,
-    },
+
     [ORDALIES.CROIX]: {
       // Debug
-      // fallingSpeedArm: 10,
       fallingSpeedArm: 0.4,
-      upSpeedArm: -1,
-      upDurationArm: 100,
     },
     [ORDALIES.BBQ]: {
       min: 13,
@@ -47,17 +39,15 @@ const DIFFICULTY_DATAS = {
     },
   },
   [DIFFICULTY.MEDIUM]: {
+    ['COMMON']: {
+      speedCoef: 1.25,
+    },
     ['CAMERA']: {
       moveDuration: 4.5,
     },
-    ['TRANSITIONS']: {
-      speedCoef: 1.5,
-    },
+
     [ORDALIES.CROIX]: {
       fallingSpeedArm: 0.66,
-      upSpeedArm: -1,
-      upDurationArm: 100,
-      speedCoef: 1,
     },
     [ORDALIES.BBQ]: {
       min: 11,
@@ -71,16 +61,15 @@ const DIFFICULTY_DATAS = {
     },
   },
   [DIFFICULTY.HARD]: {
+    ['COMMON']: {
+      speedCoef: 1.5,
+    },
     ['CAMERA']: {
       moveDuration: 3,
     },
-    ['TRANSITIONS']: {
-      speedCoef: 1.9,
-    },
+
     [ORDALIES.CROIX]: {
       fallingSpeedArm: 1,
-      upSpeedArm: -1,
-      upDurationArm: 100,
     },
     [ORDALIES.BBQ]: {
       min: 8,
@@ -94,16 +83,15 @@ const DIFFICULTY_DATAS = {
     },
   },
   [DIFFICULTY.VERY_HARD]: {
+    ['COMMON']: {
+      speedCoef: 1.75,
+    },
     ['CAMERA']: {
       moveDuration: 2,
     },
-    ['TRANSITIONS']: {
-      speedCoef: 2.3,
-    },
+
     [ORDALIES.CROIX]: {
       fallingSpeedArm: 1.33,
-      upSpeedArm: -1,
-      upDurationArm: 100,
     },
     [ORDALIES.BBQ]: {
       min: 6,
@@ -117,16 +105,15 @@ const DIFFICULTY_DATAS = {
     },
   },
   [DIFFICULTY.INSANE]: {
+    ['COMMON']: {
+      speedCoef: 2,
+    },
     ['CAMERA']: {
       moveDuration: 1,
     },
-    ['TRANSITIONS']: {
-      speedCoef: 3,
-    },
+
     [ORDALIES.CROIX]: {
       fallingSpeedArm: 1.66,
-      upSpeedArm: -1,
-      upDurationArm: 100,
     },
     [ORDALIES.BBQ]: {
       min: 4,
