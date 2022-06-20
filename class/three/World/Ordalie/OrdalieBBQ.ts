@@ -280,7 +280,7 @@ class OrdalieBBQ {
 
   update() {
     const { deltaTime } = WebGL.time
-    this.animation.mixer.update(deltaTime * 0.001)
+    this.animation.mixer.update(deltaTime * 0.001 * this.instance.block.getSpeedCoef())
 
     // console.log()
     // this.animation.actions[ANIMATIONS.BBQ.MORT].action.isRunning()

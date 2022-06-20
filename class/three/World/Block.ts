@@ -88,7 +88,6 @@ class Block {
    */
   changeCharacterHead(type: HEAD = HEAD.NORMAL) {
     let offset = 0
-    console.log(type)
     switch (type) {
       case HEAD.NORMAL:
         offset = 0
@@ -276,6 +275,11 @@ class Block {
    */
   getDifficultyData() {
     return this.difficultyData
+  }
+
+  getSpeedCoef() {
+    const difficulty = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]
+    return difficulty['COMMON'].speedCoef
   }
 
   /**

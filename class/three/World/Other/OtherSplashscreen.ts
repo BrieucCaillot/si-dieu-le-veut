@@ -13,10 +13,14 @@ import Blocks from '@/class/three/World/Blocks'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
 
+import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
+import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
+
 class OtherSplashscreen {
-  instance: Other
-  isFollowingCharacter = false
-  animation: {
+  private instance: Other
+  private followedCharacter = false
+  isCharacterMoving = false
+  private animation: {
     mixer: THREE.AnimationMixer
     actions: {
       [key: string]: {
@@ -30,7 +34,7 @@ class OtherSplashscreen {
     }
     play: (name: string) => void
   }
-  title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>
+  private title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>
 
   constructor(_other: Other) {
     this.instance = _other
@@ -145,16 +149,31 @@ class OtherSplashscreen {
   }
 
   private fadeInTitle() {
-    gsap.to(this.title.material, {
-      opacity: 1,
-      duration: 2,
-      delay: 5,
+    const texture = 'map' in this.title.material ? this.title.material.map : null
+
+    const uniforms = {
+      uTexture: { value: texture },
+      uNoise: { value: WebGL.resources.getItems('COMMON', 'noise') },
+      uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-4') },
+      uDissolve: { value: 1 },
+    }
+
+    this.title.material = new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+    })
+
+    gsap.to(uniforms.uDissolve, {
+      value: 0,
+      duration: 5,
+      delay: 4.5,
       ease: 'power2.easeOut',
     })
   }
 
   onFinish(e) {
-    this.isFollowingCharacter = false
+    this.isCharacterMoving = false
 
     if (e.action._clip.name === ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1) {
       this.animation.actions[ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION1].action.stop()
@@ -174,7 +193,7 @@ class OtherSplashscreen {
   }
 
   playAnimFromOther(other: OTHERS) {
-    this.isFollowingCharacter = false
+    this.isCharacterMoving = true
 
     switch (other) {
       case OTHERS.SPLASHSCREEN:
@@ -183,6 +202,7 @@ class OtherSplashscreen {
         break
       case OTHERS.CINEMATIC_1:
         // console.log('DO NOT PLAY ON CINEMATIC_1')
+        this.isCharacterMoving = false
         break
       case OTHERS.CINEMATIC_2:
         // console.log('PLAY ON CINEMATIC_2')
@@ -210,16 +230,13 @@ class OtherSplashscreen {
   }
 
   followCharacter() {
-    const currentBlockType = OtherManager.getCurrent().block.getType() as OTHERS
     const characterPosition = this.instance.block.getCharacterRoot().getWorldPosition(new THREE.Vector3())
-
-    // Return if current block type is not Splashscreen or Cinematic 2
-    if (![OTHERS.SPLASHSCREEN].includes(currentBlockType)) return
 
     // END SPLASHSCREEN IF CHARACTER IS MOVING
     if (characterPosition.x > 0) {
       OtherManager.getCurrent().end()
-      return (this.isFollowingCharacter = true)
+      if (useStore().isSkippingIntro.value === false) useStore().isSkippingIntro.value = 'hide'
+      return (this.followedCharacter = true)
     }
   }
 
@@ -258,7 +275,7 @@ class OtherSplashscreen {
       animation.lastFrame = currentFrame
     }
 
-    if (this.isFollowingCharacter) return
+    if (this.followedCharacter) return
     this.followCharacter()
   }
 }
