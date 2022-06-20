@@ -67,8 +67,6 @@ class OrdalieBBQ {
       head: HEAD.SAD,
     }
 
-    let materialRef = null
-
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('BBQ')
       this.debugFolder
