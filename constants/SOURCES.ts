@@ -214,11 +214,6 @@ const ORDALIE_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Ordalies/ordalie_bbq.glb',
     },
-    {
-      name: 'test_uv',
-      type: SourceType.gltfModel,
-      path: 'models/Ordalies/test_uv.glb',
-    },
   ],
 }
 
@@ -326,7 +321,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     path: '/sounds/Character/Garde/Spear/spear4.mp3',
   },
 
-  /* 
+  /*
   ORDALIES COMMON
   */
   {

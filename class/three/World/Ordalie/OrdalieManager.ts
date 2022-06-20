@@ -11,7 +11,7 @@ class OrdalieManager {
   private currentIndex = -1
   private isDead = false
   private score = 0
-  private nbPerDifficulty = 1
+  private nbPerDifficulty = 3
   private difficulty: DIFFICULTY = DIFFICULTY.EASY
   private lastCreated: ORDALIES
   private alreadyPlayed: ORDALIES[] = []
