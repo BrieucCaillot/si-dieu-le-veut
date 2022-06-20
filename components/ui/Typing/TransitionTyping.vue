@@ -43,7 +43,7 @@ onMounted(() => {
   } else if (isOtherEnd) {
     currentBlock.value = OtherManager.getCurrent().instance
     fontSizeCoef = 3.26
-    domText.value.classList.add('-top-[10px]')
+    // domText.value.classList.add('-top-[10px]')
   }
 
   gsap.to(domText.value, {
@@ -68,7 +68,7 @@ const clearEvents = () => {
 
 const positionHTML = () => {
   const positions = setHTMLPosition(currentBlock.value.text)
-  domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y - domText.value.offsetHeight / 3}px, 0) ${type === TRANSITIONS.TRANSITION_4 ? 'rotate(-8deg)' : ''}`
+  domText.value.style.transform = `translate3d(${positions.topLeft.x}px,${positions.topLeft.y}px, 0) ${type === TRANSITIONS.TRANSITION_4 ? 'rotate(-8deg)' : ''}`
   domText.value.style.fontSize = positions.width / fontSizeCoef + 'px'
 }
 
