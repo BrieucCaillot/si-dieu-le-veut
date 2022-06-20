@@ -57,9 +57,10 @@ onMounted(() => {
 
   watch(useStore().resourcesLoaded, () => {
     // Stop css inifinite css animation
+    loaderImgEl.value.classList.add('loader-img--finished')
     loaderImgEl.value.style.animationIterationCount = '1'
     clearInterval(changeSentencesInterval)
-    currentSentence.value = ''
+    currentSentence.value = 'Il en reste une miette..'
 
     showTextStart()
   })

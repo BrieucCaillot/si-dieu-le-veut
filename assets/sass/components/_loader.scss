@@ -10,7 +10,11 @@
     width: 600px;
     height: 460px;
     background-image: url('/images/loader_sprite.webp');
-    animation: loader-sprite 1.5s steps(4) infinite forwards;
+    animation: loader-sprite 1.5s steps(4) infinite;
+
+    &--finished {
+      background-position: -1800px;
+    }
   }
 
   .loader-text {
@@ -18,7 +22,7 @@
   }
 
   .loader-text--start {
-    @apply relative text-xl z-20 bottom-12 bg-contain bg-no-repeat bg-center h-24 w-full opacity-0 outline-none;
+    @apply relative text-lg z-20 bottom-12 bg-contain bg-no-repeat bg-center h-20 w-full opacity-0 outline-none;
     background-image: url('/images/loader-start.webp');
 
     span {
