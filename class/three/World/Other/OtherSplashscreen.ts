@@ -235,6 +235,7 @@ class OtherSplashscreen {
     // END SPLASHSCREEN IF CHARACTER IS MOVING
     if (characterPosition.x > 0) {
       OtherManager.getCurrent().end()
+      if (useStore().isSkippingIntro.value === false) useStore().isSkippingIntro.value = 'hide'
       return (this.followedCharacter = true)
     }
   }
