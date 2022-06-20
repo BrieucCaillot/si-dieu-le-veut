@@ -10,6 +10,17 @@ class Renderer extends THREE.EventDispatcher {
 
     this.instance
     this.setInstance()
+
+    const params = {
+      color: '#f2e7d9f',
+    }
+
+    if (WebGL.debug.isActive()) {
+      const folder = WebGL.debug.addFolder('Renderer')
+      folder.addColor(params, 'color').onChange((value) => {
+        this.instance.setClearColor(value)
+      })
+    }
   }
 
   setInstance() {
@@ -19,11 +30,12 @@ class Renderer extends THREE.EventDispatcher {
       antialias: false,
       stencil: false,
       depth: false,
+      alpha: true,
     })
     this.instance.outputEncoding = THREE.sRGBEncoding
 
     this.instance.setSize(WebGL.sizes.width, WebGL.sizes.height)
-    this.instance.setClearColor(0xffeebf, 1)
+    this.instance.setClearColor(0xf9f2e7, 1)
     this.instance.setPixelRatio(WebGL.sizes.pixelRatio)
   }
 

@@ -204,10 +204,10 @@ class Block {
    */
   private add() {
     const bg = this.model.scene.children.find((child) => child.name === 'background')
-    bg.material = new THREE.MeshBasicMaterial({
-      name: 'background',
-      color: 0xffeebf,
-    })
+    // bg.material = new THREE.MeshBasicMaterial({
+    //   name: 'background',
+    //   color: 0xf9f2e
+    // })
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)
   }
