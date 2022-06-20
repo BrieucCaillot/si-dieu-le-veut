@@ -1,22 +1,23 @@
-import gsap from 'gsap'
 import GUI from 'lil-gui'
 import * as THREE from 'three'
 
 import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
+import { getFrame } from '@/class/three/utils/Maths'
+import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+import AudioManager from '@/class/three/utils/AudioManager'
+import HEAD from '@/constants/HEAD'
+import ANIMATIONS from '@/constants/ANIMATIONS'
+import SOUNDS from '@/constants/SOUNDS'
+import ORDALIES from '@/constants/ORDALIES'
 
 import WebGL from '@/class/three/WebGL'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
-import ANIMATIONS from '@/constants/ANIMATIONS'
-import SOUNDS from '@/constants/SOUNDS'
-import ORDALIES from '@/constants/ORDALIES'
-import { getFrame } from '@/class/three/utils/Maths'
-import AudioManager from '@/class/three/utils/AudioManager'
 
 class OrdalieCroix {
   instance: Ordalie
-  rigCuisinierFront
+  characterRigFront: THREE.Object3D
+  characterRigFrontHead: THREE.Mesh
   animation: {
     mixer: THREE.AnimationMixer
     actions: {
@@ -47,8 +48,23 @@ class OrdalieCroix {
 
     this.planeTextReference = this.instance.block.getModel().scene.children.find((child) => child.name === 'text') as THREE.Mesh
 
-    this.setRigCuisinierFront()
-    // this.toggleRigCuisinierFront(false)
+    const debugParams = {
+      head: HEAD.NORMAL,
+    }
+
+    if (WebGL.debug.isActive()) {
+      this.debugFolder = WebGL.debug.addFolder('Croix')
+      this.debugFolder
+        .add(debugParams, 'head', {
+          ...HEAD,
+        })
+        .onChange((value) => {
+          this.changeCharacterRigFrontHead(value)
+        })
+    }
+
+    this.setCharacterRigFront()
+    // this.toggleCharacterRigFront(false)
     this.setAnimation()
   }
 
@@ -73,12 +89,15 @@ class OrdalieCroix {
     this.updateHTML()
   }
 
-  private setRigCuisinierFront() {
-    this.rigCuisinierFront = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier_FRONT')
+  private setCharacterRigFront() {
+    this.characterRigFront = this.instance.block.getModel().scene.children.find((child) => child.name === 'RIG_Cuisinier_FRONT')
+    this.characterRigFrontHead = this.characterRigFront.children
+      .find((child) => child.name === 'FRONT_Cuisinier')
+      .children.find((child: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>) => child.material.name === 'cuisinier_front_tete') as THREE.Mesh
   }
 
-  private toggleRigCuisinierFront(_value) {
-    this.rigCuisinierFront.visible = _value
+  private toggleCharacterRigFront(_value) {
+    this.characterRigFront.visible = _value
   }
 
   private setAnimation() {
@@ -158,7 +177,7 @@ class OrdalieCroix {
 
     if (e.action._clip.name === ANIMATIONS.CROIX.SIDE_ENTREE) {
       characterPos.set(this.instance.block.getCharacterRoot().position.x, this.instance.block.getCharacterRoot().position.y, this.instance.block.getCharacterRoot().position.z)
-      this.toggleRigCuisinierFront(true)
+      this.toggleCharacterRigFront(true)
       this.instance.block.getCharacterRoot().position.set(characterPos.x, characterPos.y, characterPos.z)
       // this.animation.actions['Croix_CuisinierSIDE_Entree'].stop()
       this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action.stop()
@@ -183,6 +202,26 @@ class OrdalieCroix {
       this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
       // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
     }, 100)
+  }
+
+  /**
+   * Change Character face
+   */
+  private changeCharacterRigFrontHead(type: HEAD = HEAD.NORMAL) {
+    let offset = 0
+    switch (type) {
+      case HEAD.NORMAL:
+        offset = 0
+        break
+      case HEAD.SAD:
+        offset = 0.333
+        break
+      case HEAD.DEAD:
+        offset = 0.666
+        break
+    }
+
+    this.characterRigFrontHead.material.map.offset.x = offset
   }
 
   gameWon() {
@@ -217,21 +256,33 @@ class OrdalieCroix {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001 * this.instance.block.getSpeedCoef())
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
-    //   if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
-    //     console.log(animation.action._clip.name, currentFrame)
-    //   }
+    for (const animation of Object.values(this.animation.actions)) {
+      const action = animation.action
+      const currentFrame = Math.ceil(getFrame(action.time))
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+      // console.log(currentFrame)
 
-    //   animation.lastFrame = currentFrame
-    // }
+      if (action._clip.name === ANIMATIONS.CROIX.FRONT_BRAS && action.isRunning()) {
+        if (currentFrame == 90) {
+          this.changeCharacterRigFrontHead(HEAD.SAD)
+        }
+        if (currentFrame == 89) {
+          this.changeCharacterRigFrontHead(HEAD.NORMAL)
+        }
+      }
+
+      if (action._clip.name === ANIMATIONS.CROIX.FRONT_MORT && action.isRunning() && currentFrame === 30) {
+        this.changeCharacterRigFrontHead(HEAD.DEAD)
+      }
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
   }
 }
 

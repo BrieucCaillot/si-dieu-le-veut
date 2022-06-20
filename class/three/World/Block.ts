@@ -86,22 +86,27 @@ class Block {
   /**
    * Change Character face
    */
-  changeCharacterHead(head: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>, type: HEAD = HEAD.NORMAL) {
+  changeCharacterHead(type: HEAD = HEAD.NORMAL) {
     let offset = 0
     console.log(type)
     switch (type) {
       case HEAD.NORMAL:
         offset = 0
         break
-      case HEAD.HAPPY:
+      case HEAD.SAD:
         offset = 0.2
         break
-      case HEAD.SAD:
+      case HEAD.DEAD:
         offset = 0.4
         break
+      case HEAD.FOOD:
+        offset = 0.6
+        break
+      case HEAD.FOOD_DEAD:
+        offset = 0.8
+        break
     }
-    // this.characterHead.material.map.offset.x = offset
-    head.material.map.offset.x = offset
+    this.characterHead.material.map.offset.x = offset
   }
 
   /**
@@ -123,6 +128,13 @@ class Block {
    */
   getCharacterSide() {
     return this.characterSide
+  }
+
+  /**
+   * Get character head of character model
+   */
+  getCharacterHead() {
+    return this.characterHead
   }
 
   /**
