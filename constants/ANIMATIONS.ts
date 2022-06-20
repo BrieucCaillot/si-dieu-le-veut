@@ -1,6 +1,6 @@
 import ORDALIES from '@/constants/ORDALIES'
 import OTHERS from '@/constants/OTHERS'
-import TRANSITIONS from './TRANSITIONS'
+import TRANSITIONS from '@/constants/TRANSITIONS'
 
 const ANIMATIONS = {
   [OTHERS.SPLASHSCREEN]: {

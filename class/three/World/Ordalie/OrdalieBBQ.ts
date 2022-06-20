@@ -56,13 +56,15 @@ class OrdalieBBQ {
 
   constructor(_ordalie: Ordalie) {
     this.instance = _ordalie
+
+    this.instance.block.changeCharacterHead(HEAD.SAD)
     this.difficultyData = this.instance.block.getDifficultyData() as BBQInterface
     this.texts = []
 
     this.container = []
 
     const debugParams = {
-      offsetX: 0,
+      head: HEAD.SAD,
     }
 
     let materialRef = null
@@ -70,27 +72,13 @@ class OrdalieBBQ {
     if (WebGL.debug.isActive()) {
       this.debugFolder = WebGL.debug.addFolder('BBQ')
       this.debugFolder
-        .add(debugParams, 'offsetX', {
-          normal: 0,
-          sad: 0.2,
-          dead: 0.4,
+        .add(debugParams, 'head', {
+          ...HEAD,
         })
         .onChange((value) => {
-          console.log(value)
-          materialRef.map.offset.x = value
+          this.instance.block.changeCharacterHead(value)
         })
     }
-
-    // const testCharacter = WebGL.resources.getItems(this.instance.block.getType(), 'test_uv').scene
-    // testCharacter.scale.multiplyScalar(0.3)
-
-    // testCharacter.traverse((mesh: THREE.Mesh) => {
-    //   if (mesh.name === 'Plane005_1') {
-    //     this.instance.block.changeCharacterHead(mesh)
-    //   }
-    // })
-
-    // WebGL.scene.add(testCharacter)
 
     this.instance.block.getModel().scene.traverse((mesh) => {
       if (mesh.name.startsWith('banniere_ordalieFER')) {
@@ -296,19 +284,26 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
+    // console.log()
+    // this.animation.actions[ANIMATIONS.BBQ.MORT].action.isRunning()
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       // console.log('play', animation.action._clip.name, currentFrame)
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+    for (const animation of Object.values(this.animation.actions)) {
+      const action = animation.action
+      const currentFrame = Math.ceil(getFrame(action.time))
 
-    //   animation.lastFrame = currentFrame
-    // }
+      if (action._clip.name === ANIMATIONS.BBQ.MORT && action.isRunning() && currentFrame === 50) {
+        this.instance.block.changeCharacterHead(HEAD.DEAD)
+      }
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // console.log('play', animation.action._clip.name, currentFrame)
+          // AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
   }
 }
 

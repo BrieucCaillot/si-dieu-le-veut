@@ -6,7 +6,11 @@ import ORDALIES from '@/constants/ORDALIES'
 import SOUNDS from '@/constants/SOUNDS'
 import ANIMATIONS from '@/constants/ANIMATIONS'
 import PATHS from '@/constants/PATHS'
+import HEAD from '@/constants/HEAD'
 import { FoodInterface } from '@/constants/DIFFICULTY_DATA'
+
+import { getFrame } from '@/class/three/utils/Maths'
+import AudioManager from '@/class/three/utils/AudioManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
@@ -15,7 +19,6 @@ import WebGL from '@/class/three/WebGL'
 
 import fragmentShader from '@/class/three/shaders/bite/fragment.glsl'
 import vertexShader from '@/class/three/shaders/bite/vertex.glsl'
-import AudioManager from '../../utils/AudioManager'
 
 class OrdalieFood {
   instance: Ordalie
@@ -264,8 +267,10 @@ class OrdalieFood {
 
   end() {
     if (this.debugFolder) this.debugFolder.destroy()
-    this.hideEntonnoir()
     this.instance.end()
+
+    if (OrdalieManager.isPlayerDead) return
+    this.hideEntonnoir()
   }
 
   startBiteTransition(mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) {
@@ -361,6 +366,28 @@ class OrdalieFood {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
+
+    for (const animation of Object.values(this.animation.actions)) {
+      const action = animation.action
+      const currentFrame = Math.ceil(getFrame(action.time))
+
+      if (action._clip.name === ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE && action.isRunning() && currentFrame === 40) {
+        this.instance.block.changeCharacterHead(HEAD.FOOD)
+      }
+
+      if (action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_MORT && action.isRunning() && currentFrame === 1) {
+        this.instance.block.changeCharacterHead(HEAD.FOOD_DEAD)
+      }
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // console.log('play', animation.action._clip.name, currentFrame)
+          // AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
   }
 }
 

@@ -1,7 +1,9 @@
 enum HEAD {
   NORMAL = 'NORMAL',
-  HAPPY = 'HAPPY',
   SAD = 'SAD',
+  DEAD = 'DEAD',
+  FOOD = 'FOOD',
+  FOOD_DEAD = 'FOOD_DEAD',
 }
 
 export default HEAD

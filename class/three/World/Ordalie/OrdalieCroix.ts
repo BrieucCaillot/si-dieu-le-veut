@@ -1,18 +1,18 @@
-import gsap from 'gsap'
 import GUI from 'lil-gui'
 import * as THREE from 'three'
 
 import { CroixInterface } from '@/constants/DIFFICULTY_DATA'
+import { getFrame } from '@/class/three/utils/Maths'
+import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
+import AudioManager from '@/class/three/utils/AudioManager'
+import HEAD from '@/constants/HEAD'
+import ANIMATIONS from '@/constants/ANIMATIONS'
+import SOUNDS from '@/constants/SOUNDS'
+import ORDALIES from '@/constants/ORDALIES'
 
 import WebGL from '@/class/three/WebGL'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import Ordalie from '@/class/three/World/Ordalie/Ordalie'
-import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
-import ANIMATIONS from '@/constants/ANIMATIONS'
-import SOUNDS from '@/constants/SOUNDS'
-import ORDALIES from '@/constants/ORDALIES'
-import { getFrame } from '@/class/three/utils/Maths'
-import AudioManager from '@/class/three/utils/AudioManager'
 
 class OrdalieCroix {
   instance: Ordalie
@@ -184,6 +184,26 @@ class OrdalieCroix {
     }, this.difficultyData.upDurationArm)
   }
 
+  /**
+   * Change Character face
+   */
+  private changeCharacterHead(type: HEAD = HEAD.NORMAL) {
+    let offset = 0
+    console.log(type)
+    switch (type) {
+      case HEAD.NORMAL:
+        offset = 0
+        break
+      case HEAD.SAD:
+        offset = 0.2
+        break
+      case HEAD.DEAD:
+        offset = 0.4
+        break
+    }
+    this.instance.block.getCharacterHead().material.map.offset.x = offset
+  }
+
   gameWon() {
     this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.stop()
     // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].stop()
@@ -216,21 +236,29 @@ class OrdalieCroix {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
-    //   if (animation.action._clip.name === 'Croix_CuisinierFRONT_Mort') {
-    //     console.log(animation.action._clip.name, currentFrame)
-    //   }
+    for (const animation of Object.values(this.animation.actions)) {
+      const action = animation.action
+      const currentFrame = Math.ceil(getFrame(action.time))
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+      // console.log(currentFrame)
 
-    //   animation.lastFrame = currentFrame
-    // }
+      if (action._clip.name === ANIMATIONS.CROIX.FRONT_BRAS && action.isRunning()) {
+        if (currentFrame == 120) {
+          this.changeCharacterHead(HEAD.SAD)
+        }
+        if (currentFrame == 119) {
+          this.changeCharacterHead(HEAD.NORMAL)
+        }
+      }
+
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // AudioManager.play(animation.frames[j].sound)
+        }
+      }
+
+      animation.lastFrame = currentFrame
+    }
   }
 }
 
