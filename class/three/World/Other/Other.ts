@@ -76,7 +76,7 @@ class Other {
 
   onSpacePressed = (e: KeyboardEvent) => {
     // Prevent to skip when key pressed is not Space or user is on the splashscreen
-    if (e.code !== 'Space') return
+    if (e.code !== 'Space' || OtherManager.getSplashscreen().instance.isCharacterMoving) return
 
     if (![OTHERS.DEAD, OTHERS.END].includes(this.block.getType() as OTHERS)) {
       // Play animation for the next others

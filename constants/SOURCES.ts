@@ -18,6 +18,8 @@ interface Source {
   wrap?: THREE.Wrapping
 }
 
+const STEPS_VOLUME = 0.5
+
 const COMMON_SOURCES = {
   ['COMMON']: [
     {
@@ -30,7 +32,7 @@ const COMMON_SOURCES = {
     {
       name: 'lut',
       type: SourceType.texture,
-      path: 'textures/post/lut/flipped.png',
+      path: 'textures/post/lut/lut.png',
       encoding: THREE.LinearEncoding,
       wrap: THREE.RepeatWrapping,
     },
@@ -65,6 +67,21 @@ const COMMON_SOURCES = {
       name: 'gradient-1',
       type: SourceType.texture,
       path: 'textures/gradient-1.png',
+    },
+    {
+      name: 'gradient-2',
+      type: SourceType.texture,
+      path: 'textures/gradient-2.png',
+    },
+    {
+      name: 'gradient-3',
+      type: SourceType.texture,
+      path: 'textures/gradient-3.png',
+    },
+    {
+      name: 'gradient-4',
+      type: SourceType.texture,
+      path: 'textures/gradient-4.png',
     },
   ],
 }
@@ -176,19 +193,13 @@ const ORDALIE_SOURCES = {
     {
       name: 'bread',
       type: SourceType.texture,
-      path: 'textures/bread.png',
+      path: 'textures/bread.webp',
       encoding: THREE.sRGBEncoding,
     },
     {
       name: 'cheese',
       type: SourceType.texture,
-      path: 'textures/cheese.png',
-      encoding: THREE.sRGBEncoding,
-    },
-    {
-      name: 'cake',
-      type: SourceType.texture,
-      path: 'textures/cake.png',
+      path: 'textures/cheese.webp',
       encoding: THREE.sRGBEncoding,
     },
     {
@@ -203,11 +214,6 @@ const ORDALIE_SOURCES = {
       type: SourceType.gltfModel,
       path: 'models/Ordalies/ordalie_bbq.glb',
     },
-    {
-      name: 'test_uv',
-      type: SourceType.gltfModel,
-      path: 'models/Ordalies/test_uv.glb',
-    },
   ],
 }
 
@@ -216,6 +222,11 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   OTHERS
   */
   {
+    name: 'success',
+    path: '/sounds/Typing/typing.mp3',
+    volume: 0.2,
+  },
+  {
     name: 'splashscreen_title',
     path: '/sounds/Other/title.mp3',
     volume: 0.1,
@@ -223,6 +234,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'splashscreen_cinematique',
     path: '/sounds/Other/cinematique.mp3',
+    volume: 0.1,
   },
   {
     name: 'splashscreen_cough',
@@ -231,6 +243,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'gameover',
     path: '/sounds/Other/mort_musique.mp3',
+    volume: 0.1,
   },
   /*
   CUISINIER
@@ -238,22 +251,27 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'cuisinier_walk_1',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_1.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'cuisinier_walk_2',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_2.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'cuisinier_walk_3',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_3.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'cuisinier_walk_4',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_4.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'cuisinier_walk_5',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_5.mp3',
+    volume: STEPS_VOLUME,
   },
   /*
   GARDE
@@ -261,22 +279,46 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'garde_walk_1',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde1.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'garde_walk_2',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde2.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'garde_walk_3',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde3.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'garde_walk_4',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde4.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'garde_kick',
     path: '/sounds/Character/Garde/Kick/kick_garde.mp3',
+    volume: STEPS_VOLUME,
+  },
+  /*
+  SPEAR
+  */
+  {
+    name: 'spear_1',
+    path: '/sounds/Character/Garde/Spear/spear1.mp3',
+  },
+  {
+    name: 'spear_2',
+    path: '/sounds/Character/Garde/Spear/spear2.mp3',
+  },
+  {
+    name: 'spear_3',
+    path: '/sounds/Character/Garde/Spear/spear3.mp3',
+  },
+  {
+    name: 'spear_4',
+    path: '/sounds/Character/Garde/Spear/spear4.mp3',
   },
 
   /*
@@ -290,6 +332,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'ordalie_end',
     path: '/sounds/Ordalie/ordalie_end.mp3',
+    volume: 0.5,
   },
 
   /*
@@ -307,22 +350,27 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'ordalie_bbq_walk_braises_1',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises1.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'ordalie_bbq_walk_braises_2',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises2.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'ordalie_bbq_walk_braises_3',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises3.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'ordalie_bbq_walk_braises_4',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises4.mp3',
+    volume: STEPS_VOLUME,
   },
   {
     name: 'ordalie_bbq_walk_braises_5',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises5.mp3',
+    volume: STEPS_VOLUME,
   },
 
   {
@@ -410,42 +458,6 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'walk_braises5',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises5.mp3',
-  },
-  {
-    name: 'success',
-    path: '/sounds/type_2.mp3',
-  },
-  {
-    name: 'oi',
-    path: '/sounds/oi.mp3',
-  },
-  {
-    name: 'ordalie',
-    path: '/sounds/ordalie.mp3',
-  },
-  {
-    name: 'fire-hit',
-    path: '/sounds/fire-hit.mp3',
-  },
-  {
-    name: 'boing',
-    path: '/sounds/boing.mp3',
-  },
-  {
-    name: 'death',
-    path: '/sounds/death.mp3',
-  },
-  {
-    name: 'bone-cracking',
-    path: '/sounds/bone-cracking.mp3',
-  },
-  {
-    name: 'bone-cracking-death',
-    path: '/sounds/bone-cracking-death.mp3',
-  },
-  {
-    name: 'ground-hit',
-    path: '/sounds/ground-hit.mp3',
   },
 ]
 

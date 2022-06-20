@@ -8,7 +8,7 @@
       <Meta name="og:description" :content="description" />
       <Meta name="og:type" content="website" />
       <Meta name="og:url" :content="url" />
-      <Meta name="og:image" :content="`${url}/preview.png`" />
+      <Meta name="og:image" :content="`${url}/images/preview.png`" />
       <Meta name="og:image:width" content="1200" />
       <Meta name="og:image:height" content="630" />
       <Meta name="og:image:type" content="image/png" />
@@ -16,7 +16,7 @@
       <Meta name="twitter:card" content="summary_large_image" />
       <Meta name="twitter:title" :content="description" />
       <Meta name="twitter:description" :content="description" />
-      <Meta name="twitter:image" :content="`${url}/preview.png`" />
+      <Meta name="twitter:image" :content="`${url}/images/preview.png`" />
       <Meta name="twitter:image:alt" :content="`${title} - Preview`" />
     </Head>
     <NuxtLayout />

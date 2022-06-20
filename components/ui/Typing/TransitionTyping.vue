@@ -12,7 +12,7 @@ import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
 import KEY from '@/constants/KEY'
 
 import gsap from 'gsap'
-import TRANSITIONS from '~~/constants/TRANSITIONS'
+import TRANSITIONS from '@/constants/TRANSITIONS'
 
 const domText = ref<HTMLDivElement>(null)
 const text = ref('')

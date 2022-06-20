@@ -107,56 +107,19 @@ class PostProcessing {
   }
 
   private createLUTEffect() {
-    const colorAverageEffect = new ColorAverageEffect(BlendFunction.SKIP)
-    const sepiaEffect = new SepiaEffect({ blendFunction: BlendFunction.SKIP })
-    const { capabilities, context } = WebGL.renderer.instance
+    const { capabilities, getContext } = WebGL.renderer.instance
 
-    const brightnessContrastEffect = new BrightnessContrastEffect({
-      blendFunction: BlendFunction.SKIP,
-    })
-
-    const hueSaturationEffect = new HueSaturationEffect({
-      blendFunction: BlendFunction.SKIP,
-      saturation: 0.4,
-      hue: 0.0,
-    })
-
-    const luts = new Map([
-      ['lut', WebGL.resources.getItems('COMMON', 'lut')],
-      ['warm-contrast', WebGL.resources.getItems('COMMON', 'warm-contrast')],
-    ])
-
-    const lut = LookupTexture.from(luts.get('lut') as THREE.Texture)
+    const lut = LookupTexture.from(WebGL.resources.getItems('COMMON', 'lut') as THREE.Texture)
     const lutEffect = new LUT3DEffect(lut as THREE.Texture)
-    lutEffect.blendMode.blendFunction = BlendFunction.SET
+    lutEffect.blendMode.blendFunction = BlendFunction.LIGHTEN
+    lutEffect.blendMode.opacity.value = 0.3
 
-    const effectPass = new EffectPass(WebGL.camera.instance, colorAverageEffect, sepiaEffect, brightnessContrastEffect, hueSaturationEffect, lutEffect)
+    const effectPass = new EffectPass(WebGL.camera.instance, lutEffect)
     this.composer.addPass(effectPass)
 
     if (this.debugFolder) {
       // DEBUG
       const params = {
-        colorAverage: {
-          opacity: colorAverageEffect.blendMode.opacity.value,
-          'blend mode': colorAverageEffect.blendMode.blendFunction,
-        },
-        sepia: {
-          intensity: sepiaEffect.uniforms.get('intensity').value,
-          opacity: sepiaEffect.blendMode.opacity.value,
-          'blend mode': sepiaEffect.blendMode.blendFunction,
-        },
-        brightnessContrast: {
-          brightness: brightnessContrastEffect.uniforms.get('brightness').value,
-          contrast: brightnessContrastEffect.uniforms.get('contrast').value,
-          opacity: brightnessContrastEffect.blendMode.opacity.value,
-          'blend mode': brightnessContrastEffect.blendMode.blendFunction,
-        },
-        hueSaturation: {
-          hue: 0.0,
-          saturation: hueSaturationEffect.uniforms.get('saturation').value,
-          opacity: hueSaturationEffect.blendMode.opacity.value,
-          'blend mode': hueSaturationEffect.blendMode.blendFunction,
-        },
         lut: {
           LUT: lutEffect.lut.name,
           '3D texture': true,
@@ -177,7 +140,7 @@ class PostProcessing {
             // lutEffect.lut = lut
 
             if (capabilities.isWebGL2) {
-              if (WebGL.renderer.instance.getContext().getExtension('OES_texture_float_linear') === null) {
+              if (getContext().getExtension('OES_texture_float_linear') === null) {
                 console.log('Linear float filtering not supported, ' + 'converting to Uint8')
 
                 lut.convertToUint8()
@@ -193,76 +156,13 @@ class PostProcessing {
 
       const lutFolder = this.debugFolder.addFolder('LUT')
 
-      const subMenu1 = lutFolder.addFolder('Color Average')
-      subMenu1.close()
+      const subMenu = lutFolder.addFolder('Lookup Texture 3D')
 
-      subMenu1.add(params.colorAverage, 'opacity', 0.0, 1.0, 0.01).onChange((value) => {
-        colorAverageEffect.blendMode.opacity.value = value
-      })
-      subMenu1.add(params.colorAverage, 'blend mode', BlendFunction).onChange((value) => {
-        colorAverageEffect.blendMode.blendFunction = Number(value)
-      })
-
-      const subMenu2 = lutFolder.addFolder('Sepia')
-      subMenu2.close()
-
-      subMenu2.add(params.sepia, 'intensity', 0.0, 1.0, 0.001).onChange((value) => {
-        sepiaEffect.uniforms.get('intensity').value = value
-      })
-      subMenu2.add(params.sepia, 'opacity', 0.0, 1.0, 0.01).onChange((value) => {
-        sepiaEffect.blendMode.opacity.value = value
-      })
-
-      subMenu2.add(params.sepia, 'blend mode', BlendFunction).onChange((value) => {
-        sepiaEffect.blendMode.blendFunction = Number(value)
-      })
-
-      const subMenu3 = lutFolder.addFolder('Brightness & Contrast')
-      subMenu3.close()
-
-      subMenu3.add(params.brightnessContrast, 'brightness', -1.0, 1.0, 0.001).onChange((value) => {
-        brightnessContrastEffect.uniforms.get('brightness').value = value
-      })
-
-      subMenu3.add(params.brightnessContrast, 'contrast', -1.0, 1.0, 0.001).onChange((value) => {
-        brightnessContrastEffect.uniforms.get('contrast').value = value
-      })
-
-      subMenu3.add(params.brightnessContrast, 'opacity', 0.0, 1.0, 0.01).onChange((value) => {
-        brightnessContrastEffect.blendMode.opacity.value = value
-      })
-
-      subMenu3.add(params.brightnessContrast, 'blend mode', BlendFunction).onChange((value) => {
-        brightnessContrastEffect.blendMode.blendFunction = Number(value)
-      })
-
-      const subMenu4 = lutFolder.addFolder('Hue & Saturation')
-      subMenu4.close()
-
-      subMenu4.add(params.hueSaturation, 'hue', 0.0, Math.PI * 2.0, 0.001).onChange((value) => {
-        hueSaturationEffect.setHue(value)
-      })
-
-      subMenu4.add(params.hueSaturation, 'saturation', -1.0, 1.0, 0.001).onChange((value) => {
-        hueSaturationEffect.uniforms.get('saturation').value = value
-      })
-
-      subMenu4.add(params.hueSaturation, 'opacity', 0.0, 1.0, 0.01).onChange((value) => {
-        hueSaturationEffect.blendMode.opacity.value = value
-      })
-
-      subMenu4.add(params.hueSaturation, 'blend mode', BlendFunction).onChange((value) => {
-        hueSaturationEffect.blendMode.blendFunction = Number(value)
-      })
-
-      const subMenu5 = lutFolder.addFolder('Lookup Texture 3D')
-      subMenu5.add(params.lut, 'LUT', [...luts.keys()]).onChange(changeLUT)
-
-      subMenu5.add(params.lut, 'opacity', 0.0, 1.0, 0.01).onChange((value) => {
+      subMenu.add(params.lut, 'opacity', 0.0, 1.0, 0.01).onChange((value) => {
         lutEffect.blendMode.opacity.value = value
       })
 
-      subMenu5.add(params.lut, 'blend mode', BlendFunction).onChange((value) => {
+      subMenu.add(params.lut, 'blend mode', BlendFunction).onChange((value) => {
         lutEffect.blendMode.blendFunction = Number(value)
       })
     }

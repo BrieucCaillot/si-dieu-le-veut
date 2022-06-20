@@ -30,8 +30,9 @@ class OtherDead {
   }
 
   moveBehindTransition() {
+    if (!TransitionManager.getLast()?.block.getPosition()) return
     const { x, y, z } = TransitionManager.getLast()?.block.getPosition()
-    if (x) this.instance.block.updatePosition(new THREE.Vector3(x, y, z))
+    this.instance.block.updatePosition(new THREE.Vector3(x, y, z))
     this.instance.block.moveFarBehind()
   }
 

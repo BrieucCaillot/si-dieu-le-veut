@@ -3,9 +3,9 @@
     <p ref="meters" class="text-[231px] text-[#f9bd65] score opacity-0">{{ width }}m</p>
     <p class="absolute top-0 left-0 text-[35px] text-black-primary z-30 font-primary leading-[30px] opacity-0" ref="subtitle">
       C’est la longeur de la tapisserie qui retrace le supplice de ce pauvre cuisinier. <br />Cela correspond à <span>{{ useHUD().score.value }}</span> ordalie{{
-        useHUD().score.value > 0 ? 's' : ''
+        useHUD().score.value > 1 ? 's' : ''
       }}
-      survécue{{ useHUD().score.value > 0 ? 's' : '' }}.
+      survécue{{ useHUD().score.value > 1 ? 's' : '' }}.
     </p>
   </div>
 </template>

@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import gsap from 'gsap'
 import debounce from 'lodash.debounce'
 
+import SOCIALS from '@/constants/SOCIALS'
+
 import useHUD from '@/composables/useHUD'
 
 interface SocialInterface {
@@ -54,15 +56,9 @@ class Social {
     this.clickEvent = document.addEventListener('click', () => this.onClick())
   }
 
-  share(name: 'twitter' | 'facebook') {
-    switch (name) {
-      case 'twitter':
-        this.openTwitterLink()
-        break
-      case 'facebook':
-        this.openFacebookLink()
-        break
-    }
+  share(name: SOCIALS) {
+    if (name === SOCIALS.FACEBOOK) return this.openFacebookLink()
+    if (name === SOCIALS.TWITTER) return this.openTwitterLink()
   }
 
   openTwitterLink() {
