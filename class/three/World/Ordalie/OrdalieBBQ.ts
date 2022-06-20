@@ -296,19 +296,19 @@ class OrdalieBBQ {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001)
 
-    // for (const animation of Object.values(this.animation.actions)) {
-    //   const time = animation.action.time
-    //   const currentFrame = Math.ceil(getFrame(time))
+    for (const animation of Object.values(this.animation.actions)) {
+      const time = animation.action.time
+      const currentFrame = Math.ceil(getFrame(time))
 
-    //   for (let j = 0; j < animation.frames.length; j++) {
-    //     if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
-    //       // console.log('play', animation.action._clip.name, currentFrame)
-    //       AudioManager.play(animation.frames[j].sound)
-    //     }
-    //   }
+      for (let j = 0; j < animation.frames.length; j++) {
+        if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
+          // console.log('play', animation.action._clip.name, currentFrame)
+          AudioManager.play(animation.frames[j].sound)
+        }
+      }
 
-    //   animation.lastFrame = currentFrame
-    // }
+      animation.lastFrame = currentFrame
+    }
   }
 }
 

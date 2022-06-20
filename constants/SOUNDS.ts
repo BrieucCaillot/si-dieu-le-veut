@@ -2,12 +2,6 @@ import ANIMATIONS from '@/constants/ANIMATIONS'
 import OTHERS from '@/constants/OTHERS'
 import ORDALIES from '@/constants/ORDALIES'
 
-const SOUNDS = {
-  [ORDALIES.BBQ]: {
-    INTRODUCTION: 'ordalie',
-  },
-}
-
 const ANIMATIONS_SOUNDS = {
   TRANSITIONS: {
     [ANIMATIONS.TRANSITION.GARDE]: {
@@ -247,174 +241,201 @@ const ANIMATIONS_SOUNDS = {
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_IDLE]: {
       frames: [],
     },
+
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION2]: {
-      frames: [],
+      frames: [
+        {
+          frame: 64,
+          sound: 'spear_1',
+        },
+        {
+          frame: 119,
+          sound: 'spear_2',
+        },
+        {
+          frame: 175,
+          sound: 'spear_3',
+        },
+        {
+          frame: 229,
+          sound: 'spear_4',
+        },
+        {
+          frame: 288,
+          sound: 'spear_1',
+        },
+        {
+          frame: 42,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 69,
+          sound: 'garde_walk_2',
+        },
+        {
+          frame: 96,
+          sound: 'garde_walk_3',
+        },
+        {
+          frame: 128,
+          sound: 'garde_walk_4',
+        },
+        {
+          frame: 154,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 181,
+          sound: 'garde_walk_2',
+        },
+        {
+          frame: 208,
+          sound: 'garde_walk_3',
+        },
+        {
+          frame: 238,
+          sound: 'garde_walk_4',
+        },
+        {
+          frame: 265,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 292,
+          sound: 'garde_walk_2',
+        },
+      ],
     },
+
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION3]: {
-      frames: [],
+      frames: [
+        {
+          frame: 68,
+          sound: 'spear_1',
+        },
+        {
+          frame: 123,
+          sound: 'spear_2',
+        },
+        {
+          frame: 46,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 73,
+          sound: 'garde_walk_2',
+        },
+        {
+          frame: 100,
+          sound: 'garde_walk_3',
+        },
+        {
+          frame: 132,
+          sound: 'garde_walk_4',
+        },
+        {
+          frame: 158,
+          sound: 'garde_walk_1',
+        },
+      ],
     },
     [ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION4]: {
-      frames: [],
+      frames: [
+        {
+          frame: 45,
+          sound: 'garde_walk_1',
+        },
+        {
+          frame: 41,
+          sound: 'spear_1',
+        },
+        {
+          frame: 64,
+          sound: 'garde_kick',
+        },
+      ],
     },
   },
   [ORDALIES.BBQ]: {
     [ANIMATIONS.BBQ.IDLE]: {
-      // frames: [
-      //   {
-      //     frame: 20,
-      //     sound: 'fire-hit',
-      //   },
-      //   {
-      //     frame: 40,
-      //     sound: 'fire-hit',
-      //   },
-      // ],
+      frames: [
+        {
+          frame: 11,
+          sound: 'ordalie_bbq_walk_braises',
+        },
+        {
+          frame: 31,
+          sound: 'ordalie_bbq_walk_braises',
+        },
+      ],
     },
     [ANIMATIONS.BBQ.ENTREE]: {
       frames: [
-        // {
-        //   frame: 1,
-        //   sound: 'oi',
-        // },
+        {
+          frame: 11,
+          sound: 'ordalie_bbq_walk_braises',
+        },
       ],
     },
     [ANIMATIONS.BBQ.AVANCE]: {
-      frames: [
-        // {
-        //   frame: 1,
-        //   sound: 'boing',
-        // },
-      ],
+      frames: [],
     },
     [ANIMATIONS.BBQ.MORT]: {
-      frames: [
-        // {
-        //   frame: 1,
-        //   sound: 'death',
-        // },
-      ],
+      frames: [],
     },
     [ANIMATIONS.BBQ.SORTIE]: {
       frames: [
-        // {
-        //   frame: 10,
-        //   sound: 'oi',
-        // },
+        {
+          frame: 1,
+          sound: 'cuisinier_walk_1',
+        },
       ],
     },
   },
   [ORDALIES.CROIX]: {
     [ANIMATIONS.CROIX.FRONT_ENTREE]: {
-      frames: [
-        {
-          frame: 20,
-          sound: 'boing',
-        },
-        {
-          frame: 45,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.CROIX.FRONT_SORTIE]: {
       frames: [],
     },
     [ANIMATIONS.CROIX.FRONT_BRAS]: {
-      frames: [
-        {
-          frame: 100,
-          sound: 'bone-cracking',
-        },
-        {
-          frame: 140,
-          sound: 'bone-cracking-death',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.CROIX.FRONT_MORT]: {
-      frames: [
-        {
-          frame: 40,
-          sound: 'ground-hit',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.CROIX.SIDE_ENTREE]: {
       frames: [],
     },
     [ANIMATIONS.CROIX.SIDE_SORTIE]: {
-      frames: [
-        {
-          frame: 20,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
   },
   [ORDALIES.FOOD]: {
     [ANIMATIONS.FOOD.FOOD_CUISINIER_ENTREE]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'boing',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_CUISINIER_MORT]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
     [ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE]: {
-      frames: [
-        {
-          frame: 0,
-          sound: 'oi',
-        },
-      ],
+      frames: [],
     },
   },
 }
@@ -457,12 +478,6 @@ const TRANSITION_4 = {
     ],
   },
   [ANIMATIONS.TRANSITION.CUISINIER]: {
-    // 2 (1)
-    // -40 (2)
-    // -79 (3)
-    // -120 (4)
-    // -161 (5)
-    // -200 (1)
     frames: [
       {
         frame: 2,

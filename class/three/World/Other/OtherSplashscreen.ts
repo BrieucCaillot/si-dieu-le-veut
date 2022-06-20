@@ -13,6 +13,9 @@ import Blocks from '@/class/three/World/Blocks'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import Other from '@/class/three/World/Other/Other'
 
+import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
+import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
+
 class OtherSplashscreen {
   instance: Other
   isFollowingCharacter = false
@@ -30,7 +33,7 @@ class OtherSplashscreen {
     }
     play: (name: string) => void
   }
-  title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>
+  title: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial | THREE.ShaderMaterial>
 
   constructor(_other: Other) {
     this.instance = _other
@@ -145,10 +148,25 @@ class OtherSplashscreen {
   }
 
   private fadeInTitle() {
-    gsap.to(this.title.material, {
-      opacity: 1,
-      duration: 2,
-      delay: 5,
+    const texture = 'map' in this.title.material ? this.title.material.map : null
+
+    const uniforms = {
+      uTexture: { value: texture },
+      uNoise: { value: WebGL.resources.getItems('COMMON', 'noise') },
+      uGradient: { value: WebGL.resources.getItems('COMMON', 'gradient-4') },
+      uDissolve: { value: 1 },
+    }
+
+    this.title.material = new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+    })
+
+    gsap.to(uniforms.uDissolve, {
+      value: 0,
+      duration: 5,
+      delay: 4.5,
       ease: 'power2.easeOut',
     })
   }

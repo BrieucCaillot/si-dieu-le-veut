@@ -246,11 +246,7 @@ class OrdalieFood {
 
     this.biteTexture = WebGL.resources.getItems(this.instance.block.getType(), 'miam') as THREE.Texture
 
-    this.textures = [
-      WebGL.resources.getItems(this.instance.block.getType(), 'bread') as THREE.Texture,
-      WebGL.resources.getItems(this.instance.block.getType(), 'cheese') as THREE.Texture,
-      WebGL.resources.getItems(this.instance.block.getType(), 'cake') as THREE.Texture,
-    ]
+    this.textures = [WebGL.resources.getItems(this.instance.block.getType(), 'bread') as THREE.Texture, WebGL.resources.getItems(this.instance.block.getType(), 'cheese') as THREE.Texture]
 
     this.geometry = new THREE.PlaneGeometry(0.05, 0.05)
     this.material = new THREE.ShaderMaterial({
