@@ -25,6 +25,7 @@ class AudioManager {
     }
 
     this.sounds = await Promise.all(promises)
+    useStore().soundsLoaded.value = true
   }
 
   async loadSound(sound: { name: string; path: string; volume?: number }) {
@@ -32,6 +33,7 @@ class AudioManager {
       const s = new Howl({
         src: sound.path,
         volume: sound.volume ? sound.volume : 1,
+        preload: true,
         html5: true,
       })
 

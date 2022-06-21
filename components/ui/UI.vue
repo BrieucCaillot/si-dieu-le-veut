@@ -4,7 +4,6 @@
   <main id="main" class="page">
     <template v-if="startWebGL">
       <Loader v-if="showLoader" />
-      <Canvas />
       <Skip v-if="showSkip" />
       <Typing />
       <Score v-if="isEndOrDead()" />
@@ -18,7 +17,6 @@
 <script setup lang="ts">
 import Mobile from '@/components/ui/Mobile.vue'
 import Loader from '@/components/ui/Loader.vue'
-import Canvas from '@/components/three/Canvas.vue'
 import Skip from '@/components/ui/Skip.vue'
 import Typing from '@/components/ui/Typing/Typing.vue'
 import Score from '@/components/ui/Score.vue'
