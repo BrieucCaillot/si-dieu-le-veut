@@ -324,9 +324,12 @@ class OrdalieFood {
   }
 
   gameWon() {
-    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE].action, 0.03, false)
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE].action, 0.03, false)
+
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE)
-    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE)
 
     AudioManager.play('ordalie_food_outro')
@@ -346,9 +349,13 @@ class OrdalieFood {
       })
     })
 
-    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_MORT].action, 0.03, false)
+
+    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT].action, 0.03, false)
+
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_CUISINIER_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_CUISINIER_MORT)
-    this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
+    // this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_IDLE].action.stop()
     this.animation.play(ANIMATIONS.FOOD.FOOD_ENTONNOIR_MORT)
 
     OrdalieManager.setIsDead(true)

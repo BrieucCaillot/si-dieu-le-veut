@@ -164,7 +164,7 @@ class Block {
     })
 
     // Garde
-    this.garde.traverse((child) => {
+    this.garde?.traverse((child) => {
       if (child.type === 'SkinnedMesh') {
         ;(child as THREE.SkinnedMesh).geometry.dispose()
         ;((child as THREE.SkinnedMesh).material as THREE.MeshBasicMaterial).dispose()

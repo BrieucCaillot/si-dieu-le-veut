@@ -15,11 +15,14 @@ import Other from '@/class/three/World/Other/Other'
 
 import fragmentShader from '@/class/three/shaders/burning/fragment.glsl'
 import vertexShader from '@/class/three/shaders/burning/vertex.glsl'
+// import GUI from 'lil-gui'
 
 class OtherSplashscreen {
   private instance: Other
   private followedCharacter = false
   isCharacterMoving = false
+  // debugFolder: GUI
+  // debugObject: any
   private animation: {
     mixer: THREE.AnimationMixer
     actions: {
@@ -42,6 +45,18 @@ class OtherSplashscreen {
     this.setAnimation()
     this.instance.block.toggleFrustumCulling(false)
     this.setTitle()
+
+    // this.debugObject = {
+    //   speedMixer: 10,
+    // }
+
+    // if (WebGL.debug.isActive()) {
+    //   this.debugFolder = WebGL.debug.addFolder('Croix')
+    //   this.debugFolder
+    //     .add(this.debugObject, 'speedMixer', 0, 10)
+    //     .step(0.1)
+    //     .onChange((value: number) => (this.debugObject.speedMixer = value))
+    // }
   }
 
   start() {
@@ -205,9 +220,10 @@ class OtherSplashscreen {
         this.isCharacterMoving = false
         break
       case OTHERS.CINEMATIC_2:
-        // console.log('PLAY ON CINEMATIC_2')
-        this.animation.actions[ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE].action.stop()
+        this.animation.actions[ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_SADIDLE].action.crossFadeTo(this.animation.actions[ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION2].action, 0.03, false)
+
         this.animation.play(ANIMATIONS.SPLASHSCREEN.INTRO_CUISINIER_LOCATION2)
+
         this.animation.actions[ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_IDLE].action.stop()
         this.animation.play(ANIMATIONS.SPLASHSCREEN.INTRO_GARDE_LOCATION2)
 

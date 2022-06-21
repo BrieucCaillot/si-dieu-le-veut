@@ -98,7 +98,7 @@ class Transition {
   setPlaneRefs() {
     const objs = this.block.getModel().scene.children.filter((obj) => obj.material)
     this.planeTexture = objs.find((obj) => obj.material.name === 'transition_texture')
-    this.planeBackground = objs.find((obj) => obj.material.name === 'background')
+    this.planeBackground = objs.find((obj) => obj.material.name === 'mask')
   }
 
   changeMaterials() {
