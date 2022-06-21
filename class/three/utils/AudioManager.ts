@@ -53,7 +53,7 @@ class AudioManager {
 
     const sound = this.sounds.find((sound) => sound.name === name)
 
-    if (sound.name !== 'gameover') sound.howl.rate(Blocks.getCurrent().getSpeedCoef())
+    if (sound.name !== 'gameover' && sound.name !== 'success') sound.howl.rate(Blocks.getCurrent().getSpeedCoef())
 
     sound.howl.play()
 

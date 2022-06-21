@@ -47,7 +47,8 @@ const DIFFICULTY_DATAS = {
     },
 
     [ORDALIES.CROIX]: {
-      fallingSpeedArm: 0.66,
+      // fallingSpeedArm: 0.66,
+      fallingSpeedArm: 0.53,
     },
     [ORDALIES.BBQ]: {
       min: 11,
@@ -69,7 +70,7 @@ const DIFFICULTY_DATAS = {
     },
 
     [ORDALIES.CROIX]: {
-      fallingSpeedArm: 1,
+      fallingSpeedArm: 0.67,
     },
     [ORDALIES.BBQ]: {
       min: 8,
@@ -91,7 +92,7 @@ const DIFFICULTY_DATAS = {
     },
 
     [ORDALIES.CROIX]: {
-      fallingSpeedArm: 1.33,
+      fallingSpeedArm: 0.76,
     },
     [ORDALIES.BBQ]: {
       min: 6,
@@ -113,7 +114,7 @@ const DIFFICULTY_DATAS = {
     },
 
     [ORDALIES.CROIX]: {
-      fallingSpeedArm: 1.66,
+      fallingSpeedArm: 0.83,
     },
     [ORDALIES.BBQ]: {
       min: 4,

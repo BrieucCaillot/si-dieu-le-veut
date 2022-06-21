@@ -296,7 +296,7 @@ class OrdalieBBQ {
       for (let j = 0; j < animation.frames.length; j++) {
         if (animation.frames[j].frame === currentFrame && animation.frames[j].frame !== animation.lastFrame) {
           // console.log('play', animation.action._clip.name, currentFrame)
-          // AudioManager.play(animation.frames[j].sound)
+          AudioManager.play(animation.frames[j].sound)
         }
       }
 
