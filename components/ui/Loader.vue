@@ -3,6 +3,7 @@
     <div id="loader-content">
       <div ref="loaderImgEl" class="loader-img">
         <span class="loader-text">{{ currentSentence }}</span>
+        <span class="font-primary opacity-0">{{ currentSentence }}</span>
       </div>
       <button ref="textStartEl" class="loader-text--start">
         <span>{{ textStart }}</span>
@@ -22,6 +23,10 @@ const currentSentence = ref(sentences.value[0])
 const loaderImgEl = ref<HTMLDivElement>(null)
 const textStartEl = ref<HTMLButtonElement>(null)
 const textStart = ref('Clique pour commencer')
+
+const img = new Image()
+img.onload = () => (useStore().imgLoaded.value = true)
+img.src = '/images/loader_sprite.webp'
 
 const onClick = () => {
   gsap.to(root.value, {
@@ -50,12 +55,7 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
-  const changeSentencesInterval = setInterval(() => {
-    currentIndex.value++
-    currentSentence.value = sentences.value[currentIndex.value % sentences.value.length]
-  }, 1000)
-
-  watch(useStore().resourcesLoaded, () => {
+  const onLoaded = () => {
     // Stop css inifinite css animation
     loaderImgEl.value.classList.add('loader-img--finished')
     loaderImgEl.value.style.animationIterationCount = '1'
@@ -63,6 +63,15 @@ onMounted(() => {
     currentSentence.value = 'Il en reste une miette..'
 
     showTextStart()
+  }
+
+  const changeSentencesInterval = setInterval(() => {
+    currentIndex.value++
+    currentSentence.value = sentences.value[currentIndex.value % sentences.value.length]
+  }, 1000)
+
+  watch([useStore().resourcesLoaded, useStore().soundsLoaded], ([resourcesLoaded, soundsLoaded]) => {
+    resourcesLoaded && soundsLoaded && onLoaded()
   })
 })
 </script>

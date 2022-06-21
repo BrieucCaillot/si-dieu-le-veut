@@ -9,7 +9,9 @@ const debugType = ref<OTHERS | ORDALIES | TRANSITIONS>(null)
 const showLoader = ref(true)
 const showSkip = ref(true)
 const isSkippingIntro = ref<boolean | 'hide'>(false)
+const imgLoaded = ref(false)
 const resourcesLoaded = ref(false)
+const soundsLoaded = ref(false)
 const currentType = ref<OTHERS | ORDALIES | TRANSITIONS>(null)
 
 export default () => {
@@ -21,7 +23,9 @@ export default () => {
     showLoader,
     showSkip,
     isSkippingIntro,
+    imgLoaded,
     resourcesLoaded,
+    soundsLoaded,
     currentType,
   }
 }
