@@ -378,6 +378,9 @@ class OrdalieFood {
       if (action._clip.name === ANIMATIONS.FOOD.FOOD_ENTONNOIR_ENTREE && action.isRunning() && currentFrame === 40) {
         this.instance.block.changeCharacterHead(HEAD.FOOD)
       }
+      if (action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE && action.isRunning() && currentFrame === 8) {
+        this.instance.block.changeCharacterHead(HEAD.NORMAL)
+      }
 
       if (action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_MORT && action.isRunning() && currentFrame === 1) {
         this.instance.block.changeCharacterHead(HEAD.FOOD_DEAD)

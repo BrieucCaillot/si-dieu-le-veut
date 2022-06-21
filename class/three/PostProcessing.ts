@@ -170,7 +170,7 @@ class PostProcessing {
 
   private createSMAAEffect() {
     this.smaaEffect = new SMAAEffect({
-      preset: SMAAPreset.HIGH,
+      preset: SMAAPreset.LOW,
       edgeDetectionMode: EdgeDetectionMode.COLOR,
     })
     this.smaaEffect.edgeDetectionMaterial.edgeDetectionThreshold = 0.02

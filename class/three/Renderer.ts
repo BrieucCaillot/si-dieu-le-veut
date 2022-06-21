@@ -26,11 +26,9 @@ class Renderer extends THREE.EventDispatcher {
   setInstance() {
     this.instance = new THREE.WebGLRenderer({
       canvas: WebGL.canvas,
-      powerPreference: 'high-performance',
       antialias: false,
       stencil: false,
       depth: false,
-      alpha: true,
     })
     this.instance.outputEncoding = THREE.sRGBEncoding
 
