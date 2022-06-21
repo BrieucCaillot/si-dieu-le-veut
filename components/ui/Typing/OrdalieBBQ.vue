@@ -20,7 +20,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import ORDALIES from '@/constants/ORDALIES'
 import WORDS_LIST from '@/constants/WORDS_LIST'
-import KEY from '@/constants/KEY'
+import { KEY } from '@/constants/KEY'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48
@@ -28,7 +28,7 @@ let MAX_DISPLAY_TIME = {
   MIN: 13,
   MAX: 15,
 }
-const NB_WORDS_TO_WRITE = 10
+const NB_WORDS_TO_WRITE = 1
 const BASE_BURNING = 0
 const MAX_BURNING = 0.3
 const START_BURNING_TIME = 2

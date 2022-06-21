@@ -14,14 +14,14 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import { random } from '@/class/three/utils/Maths'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
-import KEY from '@/constants/KEY'
+import { KEY } from '@/constants/KEY'
 
 const ordalie = ref()
 const wordList = ref([])
 let displayedWords = []
 
 let COUNTER = 0
-const NB_WORDS_TO_WRITE = 10
+const NB_WORDS_TO_WRITE = 1
 let CURRENT_TIME_BEFORE_NEW_WORD = 0
 const TIME_BEFORE_NEW_WORD = {
   MIN: 1.8,
@@ -71,6 +71,9 @@ const initialization = () => {
 
   TIME_BEFORE_NEW_WORD.MIN = ordalie.value.difficultyData.minTimeBeforeNewWord
   TIME_BEFORE_NEW_WORD.MAX = ordalie.value.difficultyData.maxTimeBeforeNewWord
+
+  console.log('min et max', MAX_DISPLAY_TIME.MIN, MAX_DISPLAY_TIME.MAX)
+  console.log('time before new word', TIME_BEFORE_NEW_WORD.MIN, TIME_BEFORE_NEW_WORD.MAX)
 
   gsap.ticker.add(update)
 }
@@ -254,6 +257,7 @@ const update = (time: number, deltaTime: number, frame: number) => {
         current.displayTime = 0
 
         gameOver()
+        return
       }
 
       ordalie.value.updateHTML(current.el, current.mesh, current.scale)

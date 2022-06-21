@@ -11,7 +11,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
-import KEY from '@/constants/KEY'
+import { MAP, KEY } from '@/constants/KEY'
 
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
@@ -92,6 +92,20 @@ const newChar = (e: KeyboardEvent) => {
   // Fix apostrophe Dead key returned
   let key = e.key.toLowerCase()
   key = key === 'dead' ? `'` : key
+
+  // console.log(letterToType.toLowerCase(), key)
+  // console.log(MAP)
+
+  // Object.entries(entry )
+  // const inMap = MAP.has(letterToType.toLowerCase())
+  // console.log(inMap)
+
+  // if (inMap) {
+  //   letterToType = MAP.get(letterToType.toLowerCase())
+  // }
+
+  // if(letterToType)
+  // if(!wordToType) return
 
   if (letterToType.toLowerCase() === key && wordToType) validChar()
   else invalidChar()

@@ -9,10 +9,11 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OtherManager from '@/class/three/World/Other/OtherManager'
 import TransitionManager from '@/class/three/World/Transition/TransitionManager'
 import setHTMLPosition from '@/class/three/utils/setHTMLPosition'
-import KEY from '@/constants/KEY'
+import { KEY } from '@/constants/KEY'
 
 import gsap from 'gsap'
 import TRANSITIONS from '@/constants/TRANSITIONS'
+import OrdalieManager from '~~/class/three/World/Ordalie/OrdalieManager'
 
 const domText = ref<HTMLDivElement>(null)
 const text = ref('')
@@ -119,10 +120,11 @@ const newChar = (e: KeyboardEvent) => {
 }
 
 const completed = () => {
-  console.log('game over')
   clearEvents()
 
-  if (props.type.startsWith('Transition')) {
+  if (props.type.startsWith('TRANSITION')) {
+    OrdalieManager.setIsDead(true)
+
     currentBlock.value.hide()
     gsap.to(domText.value, {
       opacity: 0,
