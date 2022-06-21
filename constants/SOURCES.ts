@@ -18,7 +18,10 @@ interface Source {
   wrap?: THREE.Wrapping
 }
 
-const STEPS_VOLUME = 0.5
+const VOLUME = {
+  CUISINIER_WALK: 0.5,
+  GARDE_WALK: 0.2,
+}
 
 const COMMON_SOURCES = {
   ['COMMON']: [
@@ -251,27 +254,27 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'cuisinier_walk_1',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_1.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'cuisinier_walk_2',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_2.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'cuisinier_walk_3',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_3.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'cuisinier_walk_4',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_4.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'cuisinier_walk_5',
     path: '/sounds/Character/Cuisinier/Walk_Normal/walk_5.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   /*
   GARDE
@@ -279,27 +282,27 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'garde_walk_1',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde1.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'garde_walk_2',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde2.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'garde_walk_3',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde3.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'garde_walk_4',
     path: '/sounds/Character/Garde/Walk_garde/walk_garde4.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'garde_kick',
     path: '/sounds/Character/Garde/Kick/kick_garde.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.GARDE_WALK,
   },
   /*
   SPEAR
@@ -307,18 +310,22 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'spear_1',
     path: '/sounds/Character/Garde/Spear/spear1.mp3',
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'spear_2',
     path: '/sounds/Character/Garde/Spear/spear2.mp3',
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'spear_3',
     path: '/sounds/Character/Garde/Spear/spear3.mp3',
+    volume: VOLUME.GARDE_WALK,
   },
   {
     name: 'spear_4',
     path: '/sounds/Character/Garde/Spear/spear4.mp3',
+    volume: VOLUME.GARDE_WALK,
   },
 
   /*
@@ -350,27 +357,27 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'ordalie_bbq_walk_braises_1',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises1.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'ordalie_bbq_walk_braises_2',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises2.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'ordalie_bbq_walk_braises_3',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises3.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'ordalie_bbq_walk_braises_4',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises4.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
   {
     name: 'ordalie_bbq_walk_braises_5',
     path: '/sounds/Ordalie/BBQ/walk_braises/walk_braises5.mp3',
-    volume: STEPS_VOLUME,
+    volume: VOLUME.CUISINIER_WALK,
   },
 
   {

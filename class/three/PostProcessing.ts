@@ -29,7 +29,7 @@ class PostProcessing {
   private debugParams: { [key: string]: any }
 
   constructor() {
-    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('PostProcessing')
+    if (WebGL.debug.isActive()) this.debugFolder = WebGL.debug.addFolder('PostProcessing').close()
 
     this.createRenderScene()
     this.createLUTEffect()
