@@ -8,6 +8,8 @@ import WebGL from '@/class/three/WebGL'
 const canvas = ref(null)
 
 onMounted(() => {
-  WebGL.setup(canvas.value)
+  watch(useStore().imgLoaded, (value) => {
+    value && WebGL.setup(canvas.value)
+  })
 })
 </script>
