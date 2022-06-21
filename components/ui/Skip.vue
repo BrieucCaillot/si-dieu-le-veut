@@ -1,7 +1,7 @@
 <template>
   <div id="skip" ref="root">
     <button ref="btnSkip" @click="onClick" class="btn">
-      <span>Appuie pour skip</span>
+      <span>Clique pour passer</span>
     </button>
   </div>
 </template>
