@@ -72,6 +72,7 @@ class OrdalieManager {
    */
   setDifficulty(_difficulty: DIFFICULTY) {
     this.difficulty = _difficulty
+    useHUD().difficulty.value = _difficulty
   }
 
   /**

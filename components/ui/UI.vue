@@ -8,7 +8,7 @@
       <Skip v-if="showSkip" />
       <Typing />
       <Score v-if="isEndOrDead()" />
-      <HUD />
+      <!-- <HUD /> -->
     </template>
 
     <slot />
