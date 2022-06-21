@@ -68,6 +68,7 @@ class OrdalieFood {
     this.BASE_PATHS = JSON.parse(JSON.stringify(PATHS))
 
     this.paths = []
+    this.changeHideMesh()
     this.setPath()
     this.setAnimation()
 
@@ -212,11 +213,11 @@ class OrdalieFood {
     this.animation.actions[ANIMATIONS.FOOD.FOOD_ENTONNOIR_SORTIE].action.loop = THREE.LoopOnce
 
     this.animation.mixer.addEventListener('finished', (e) => this.onFinish(e))
+  }
 
-    // Debug
-    // if (WebGL.debug.isActive()) {
-    //   this.debugFolder.add(this.debugParams().animations, 'playCharacterEnter')
-    // }
+  private changeHideMesh() {
+    const hideMesh = this.instance.block.getModel().scene.children.find((child) => child.name == 'hide')
+    hideMesh.material.color = new THREE.Color(0xf5f5f5)
   }
 
   private hideEntonnoir() {
