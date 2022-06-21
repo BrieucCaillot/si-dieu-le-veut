@@ -93,22 +93,15 @@ const newChar = (e: KeyboardEvent) => {
   let key = e.key.toLowerCase()
   key = key === 'dead' ? `'` : key
 
-  // console.log(letterToType.toLowerCase(), key)
-  // console.log(MAP)
+  const inMap = MAP.has(letterToType.toLowerCase())
 
-  // Object.entries(entry )
-  // const inMap = MAP.has(letterToType.toLowerCase())
-  // console.log(inMap)
+  let correspondance = null
+  if (inMap) correspondance = MAP.get(letterToType.toLowerCase())
 
-  // if (inMap) {
-  //   letterToType = MAP.get(letterToType.toLowerCase())
-  // }
-
-  // if(letterToType)
-  // if(!wordToType) return
-
-  if (letterToType.toLowerCase() === key && wordToType) validChar()
-  else invalidChar()
+  if (wordToType) {
+    if (letterToType.toLowerCase() === key || correspondance === key) validChar()
+    else invalidChar()
+  }
 
   if (!letterToType) wordCompleted()
 }
