@@ -17,6 +17,7 @@ class OtherDead {
     this.instance = _other
 
     // Update position to last transition to overlap it
+    this.instance.block.getModel().scene.visible = false
     this.moveBehindTransition()
 
     this.text = this.instance.block.getModel().scene.children.find((mesh: THREE.Mesh) => mesh.name === 'texte')
@@ -32,8 +33,10 @@ class OtherDead {
   moveBehindTransition() {
     if (!TransitionManager.getLast()?.block.getPosition()) return
     const { x, y, z } = TransitionManager.getLast()?.block.getPosition()
-    this.instance.block.updatePosition(new THREE.Vector3(x, y, z))
     this.instance.block.moveFarBehind()
+    this.instance.block.updatePosition(new THREE.Vector3(x, y, z))
+
+    this.instance.block.getModel().scene.visible = true
   }
 
   end() {
