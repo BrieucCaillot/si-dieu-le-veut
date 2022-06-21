@@ -20,7 +20,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import ORDALIES from '@/constants/ORDALIES'
 import WORDS_LIST from '@/constants/WORDS_LIST'
-import KEY from '@/constants/KEY'
+import { KEY } from '@/constants/KEY'
 
 const BASE_SCALE = 1
 const MAX_SCALE = 1.48

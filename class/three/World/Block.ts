@@ -220,7 +220,7 @@ class Block {
     //   color: 0xf9f2e
     // })
     const maskMesh = this.getModel().scene.children.find((child) => child.name == 'mask')
-    maskMesh.material.color = new THREE.Color(0xf5f5f5)
+    if (maskMesh) maskMesh.material.color = new THREE.Color(0xf5f5f5)
 
     this.size = new THREE.Box3().setFromObject(bg).getSize(new THREE.Vector3())
     WebGL.scene.add(this.model.scene)

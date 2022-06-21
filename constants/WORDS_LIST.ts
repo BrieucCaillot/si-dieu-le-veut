@@ -6,7 +6,6 @@ export default {
     'O sire, puysse ma trèz célèbre recette de ragoutz de boudain estre preservé a jamais et restez dans les mèmoir de touz ceux qui onz eu la joy dy gouter !',
     "Pour confectionnez un flan aux pruneau, il vous fauds des oeufs fraiz de la matinée, du lait tiréz des éstable du chasteau, ez des pruneau d'un diamètre équidvalant à un écu.",
     "Chanceux es le biensheureux qui jouy de l'insouciance de la libertéz, puis que je n'atens plus que l'heure de la mort, asfin de festoyer de vin et de ragoutz au paradiz des cuisiniez.",
-    // 'ûôêîâéèùà',
   ],
   [ORDALIES.BBQ]: [
     'Attrapoire',

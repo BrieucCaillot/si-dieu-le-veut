@@ -11,7 +11,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import OrdalieManager from '@/class/three/World/Ordalie/OrdalieManager'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
-import KEY from '@/constants/KEY'
+import { MAP, KEY } from '@/constants/KEY'
 
 const currentWordDOM = ref(null)
 const containerRef = ref<HTMLDivElement>()
@@ -93,8 +93,15 @@ const newChar = (e: KeyboardEvent) => {
   let key = e.key.toLowerCase()
   key = key === 'dead' ? `'` : key
 
-  if (letterToType.toLowerCase() === key && wordToType) validChar()
-  else invalidChar()
+  const inMap = MAP.has(letterToType.toLowerCase())
+
+  let correspondance = null
+  if (inMap) correspondance = MAP.get(letterToType.toLowerCase())
+
+  if (wordToType) {
+    if (letterToType.toLowerCase() === key || correspondance === key) validChar()
+    else invalidChar()
+  }
 
   if (!letterToType) wordCompleted()
 }

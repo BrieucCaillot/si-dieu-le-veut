@@ -14,7 +14,7 @@ import AudioManager from '@/class/three/utils/AudioManager'
 import { random } from '@/class/three/utils/Maths'
 import WORDS_LIST from '@/constants/WORDS_LIST'
 import ORDALIES from '@/constants/ORDALIES'
-import KEY from '@/constants/KEY'
+import { KEY } from '@/constants/KEY'
 
 const ordalie = ref()
 const wordList = ref([])
@@ -205,7 +205,6 @@ const replaceWord = async () => {
 }
 
 const gameWon = () => {
-  console.log('game won bro')
   ordalie.value.gameWon()
   gsap.ticker.remove(update)
 }
@@ -254,6 +253,7 @@ const update = (time: number, deltaTime: number, frame: number) => {
         current.displayTime = 0
 
         gameOver()
+        return
       }
 
       ordalie.value.updateHTML(current.el, current.mesh, current.scale)
