@@ -54,7 +54,7 @@ class Blocks {
     if (this.isStarted) return
     this.isStarted = true
 
-    useStore().isSkippingIntro.value && this.skipIntro()
+    useStore().isSkippingIntro.value === true && this.skipIntro()
 
     const currentType = this.getCurrent().getType() as OTHERS | ORDALIES | TRANSITIONS
 

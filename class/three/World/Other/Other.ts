@@ -51,12 +51,9 @@ class Other {
     OtherManager.onStarted()
 
     // Add update only if we are on Splashscreen
-    if (this.isSplashscreen) {
-      gsap.ticker.add(this.updateId)
-    } else {
-      // Prevent to add event on Splashscreen
-      document.addEventListener('keydown', this.onSpacePressed)
-    }
+    this.isSplashscreen && gsap.ticker.add(this.updateId)
+
+    document.addEventListener('keydown', this.onKeyPressed)
   }
 
   end() {
@@ -65,8 +62,7 @@ class Other {
     this.isEnded = true
 
     OtherManager.onEnded()
-    if (this.isSplashscreen) return
-    document.removeEventListener('keydown', this.onSpacePressed)
+    document.removeEventListener('keydown', this.onKeyPressed)
   }
 
   update = () => {
@@ -74,12 +70,15 @@ class Other {
     console.log(`🔁 ${this.block.getType()}`)
   }
 
-  onSpacePressed = (e: KeyboardEvent) => {
-    // Prevent to skip when key pressed is not Space or user is on the splashscreen
-    if (e.code !== 'Space' || OtherManager.getSplashscreen().instance.isCharacterMoving) return
+  onKeyPressed = (e: KeyboardEvent) => {
+    if (e.code === 'Escape' && this.isSplashscreen) useStore().isSkippingIntro.value = true
 
+    if (this.isSplashscreen) return
+    if (e.code !== 'Space') return
+    if (OtherManager.getSplashscreen().instance.isCharacterMoving) return
+
+    // Play animation from splashscreen only if it is not dead or end
     if (![OTHERS.DEAD, OTHERS.END].includes(this.block.getType() as OTHERS)) {
-      // Play animation for the next others
       OtherManager.getSplashscreen().instance.playAnimFromOther(this.block.getType() as OTHERS)
     }
 

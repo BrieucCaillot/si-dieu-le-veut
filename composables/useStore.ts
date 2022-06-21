@@ -8,7 +8,7 @@ const isDebugType = ref(false)
 const debugType = ref<OTHERS | ORDALIES | TRANSITIONS>(null)
 const showLoader = ref(true)
 const showSkip = ref(true)
-const isSkippingIntro = ref(false)
+const isSkippingIntro = ref<boolean | 'hide'>(false)
 const resourcesLoaded = ref(false)
 const currentType = ref<OTHERS | ORDALIES | TRANSITIONS>(null)
 

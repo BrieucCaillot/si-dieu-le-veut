@@ -82,7 +82,6 @@ class OrdalieCroix {
   end() {
     window.removeEventListener('resize', this.onResize)
     this.instance.end()
-    AudioManager.fadeOut('ordalie', 500)
   }
 
   onResize = () => {
@@ -160,6 +159,8 @@ class OrdalieCroix {
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.loop = THREE.LoopOnce
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
 
+    // console.log(this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale)
+
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.clampWhenFinished = true
     this.animation.actions[ANIMATIONS.CROIX.FRONT_MORT].action.loop = THREE.LoopOnce
 
@@ -200,7 +201,7 @@ class OrdalieCroix {
 
     setTimeout(() => {
       this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
-      // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale = this.difficultyData.fallingSpeedArm
+      // console.log(this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.timeScale)
     }, 100)
   }
 
