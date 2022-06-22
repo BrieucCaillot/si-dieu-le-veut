@@ -25,17 +25,24 @@ const DIFFICULTY_DATAS = {
 
     [ORDALIES.CROIX]: {
       // Debug
-      fallingSpeedArm: 0.4,
+      // fallingSpeedArm: 0.4,
+      fallingSpeedArm: 0.67,
     },
     [ORDALIES.BBQ]: {
-      min: 13,
-      max: 15,
+      // min: 13,
+      // max: 15,
+      min: 6,
+      max: 8,
     },
     [ORDALIES.FOOD]: {
-      minDisplayTime: 13,
-      maxDisplayTime: 15,
-      minTimeBeforeNewWord: 2,
-      maxTimeBeforeNewWord: 2.2,
+      // minDisplayTime: 13,
+      // maxDisplayTime: 15,
+      // minTimeBeforeNewWord: 2,
+      // maxTimeBeforeNewWord: 2.2,
+      minDisplayTime: 5,
+      maxDisplayTime: 7,
+      minTimeBeforeNewWord: 0.8,
+      maxTimeBeforeNewWord: 1.2,
     },
   },
   [DIFFICULTY.MEDIUM]: {
@@ -48,7 +55,8 @@ const DIFFICULTY_DATAS = {
 
     [ORDALIES.CROIX]: {
       // fallingSpeedArm: 0.66,
-      fallingSpeedArm: 0.53,
+      // fallingSpeedArm: 0.53,
+      fallingSpeedArm: 0.67,
     },
     [ORDALIES.BBQ]: {
       min: 11,
