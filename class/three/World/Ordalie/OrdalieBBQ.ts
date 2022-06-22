@@ -262,6 +262,9 @@ class OrdalieBBQ {
   }
 
   gameOver() {
+    if (OrdalieManager.isPlayerDead) {
+      return
+    }
     AudioManager.play('ordalie_bbq_death')
     OrdalieManager.setIsDead(true)
     // this.animation.actions[ANIMATIONS.BBQ.ENTREE].fadeOut(0)

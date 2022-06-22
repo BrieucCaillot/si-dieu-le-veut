@@ -131,6 +131,7 @@ const newChar = (e: KeyboardEvent) => {
     } else {
       const expectedLetterDOM = wordList.value[wordIndex].el.children.item(wordToTypeIndex)
       expectedLetterDOM.classList.add('text-food-error')
+      AudioManager.play('typing-error')
       gsap.to(expectedLetterDOM, {
         scale: 2,
         duration: 0.1,

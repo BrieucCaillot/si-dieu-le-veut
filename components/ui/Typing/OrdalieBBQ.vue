@@ -1,12 +1,12 @@
 <template>
   <div class="text-[25px]">
-    <div ref="parent1" class="fixed -top-2 flex justify-center items-center">
+    <div ref="parent1" class="fixed -top-[6px] flex justify-center items-center">
       <div ref="placeholder1"></div>
     </div>
-    <div ref="parent2" class="fixed -top-2 flex justify-center items-center">
+    <div ref="parent2" class="fixed -top-[6px] flex justify-center items-center">
       <div ref="placeholder2"></div>
     </div>
-    <div ref="parent3" class="fixed -top-2 flex justify-center items-center">
+    <div ref="parent3" class="fixed -top-[6px] flex justify-center items-center">
       <div ref="placeholder3"></div>
     </div>
   </div>
@@ -194,7 +194,7 @@ const newChar = (e: KeyboardEvent) => {
       if (!letterToType) replaceWord()
     } else {
       const expectedLetterDOM = refArray[wordIndex].value.children.item(wordToTypeIndex)
-
+      AudioManager.play('typing-error')
       gsap.to(expectedLetterDOM, {
         scale: 2,
         duration: 0.1,
@@ -229,6 +229,9 @@ const gameOver = () => {
 }
 
 const update = (time: any, deltaTime: number, frame: any) => {
+  for (let i = 0; i < 3; i++) {
+    ordalie.value.updateHTML(i)
+  }
   for (let i = 0; i < displayedWords.length; i++) {
     //increment display time of each word
     displayedWords[i].displayTime += deltaTime * 0.001

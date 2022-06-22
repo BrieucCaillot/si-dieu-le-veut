@@ -17,37 +17,51 @@ const DIFFICULTY_DATAS = {
     ['COMMON']: {
       speedCoef: 1,
     },
+    ['TRANSITION']: {
+      speedCoef: 1.25,
+    },
     ['CAMERA']: {
       // Debug
       // moveDuration: 1,
       moveDuration: 6,
     },
 
+    // [ORDALIES.CROIX]: {
+    //   // Debug
+    //   fallingSpeedArm: 0.4,
+    // },
+    // [ORDALIES.BBQ]: {
+    //   min: 13,
+    //   max: 15,
+    // },
+    // [ORDALIES.FOOD]: {
+    //   minDisplayTime: 13,
+    //   maxDisplayTime: 15,
+    //   minTimeBeforeNewWord: 2,
+    //   maxTimeBeforeNewWord: 2.2,
+    // },
+
+    //POUR LA PRÉSENTATION
     [ORDALIES.CROIX]: {
-      // Debug
-      // fallingSpeedArm: 0.4,
-      fallingSpeedArm: 0.67,
+      fallingSpeedArm: 1,
     },
     [ORDALIES.BBQ]: {
-      // min: 13,
-      // max: 15,
-      min: 6,
-      max: 8,
+      min: 7,
+      max: 9,
     },
     [ORDALIES.FOOD]: {
-      // minDisplayTime: 13,
-      // maxDisplayTime: 15,
-      // minTimeBeforeNewWord: 2,
-      // maxTimeBeforeNewWord: 2.2,
-      minDisplayTime: 5,
-      maxDisplayTime: 7,
-      minTimeBeforeNewWord: 0.8,
+      minDisplayTime: 8,
+      maxDisplayTime: 10,
+      minTimeBeforeNewWord: 1,
       maxTimeBeforeNewWord: 1.2,
     },
   },
   [DIFFICULTY.MEDIUM]: {
     ['COMMON']: {
       speedCoef: 1.25,
+    },
+    ['TRANSITION']: {
+      speedCoef: 1.5,
     },
     ['CAMERA']: {
       moveDuration: 4.5,
@@ -73,6 +87,9 @@ const DIFFICULTY_DATAS = {
     ['COMMON']: {
       speedCoef: 1.5,
     },
+    ['TRANSITION']: {
+      speedCoef: 1.75,
+    },
     ['CAMERA']: {
       moveDuration: 3,
     },
@@ -95,6 +112,9 @@ const DIFFICULTY_DATAS = {
     ['COMMON']: {
       speedCoef: 1.75,
     },
+    ['TRANSITION']: {
+      speedCoef: 2,
+    },
     ['CAMERA']: {
       moveDuration: 2,
     },
@@ -116,6 +136,9 @@ const DIFFICULTY_DATAS = {
   [DIFFICULTY.INSANE]: {
     ['COMMON']: {
       speedCoef: 2,
+    },
+    ['TRANSITION']: {
+      speedCoef: 2.25,
     },
     ['CAMERA']: {
       moveDuration: 1,

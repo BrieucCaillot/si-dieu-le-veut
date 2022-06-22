@@ -39,6 +39,7 @@ class OrdalieFood {
   debugFolder: GUI
   path: THREE.CatmullRomCurve3
   mesh: THREE.Mesh
+  hideMesh: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>
   debug: {
     progress: number
     displayTime: number
@@ -216,8 +217,13 @@ class OrdalieFood {
   }
 
   private changeHideMesh() {
-    const hideMesh = this.instance.block.getModel().scene.children.find((child) => child.name == 'hide')
-    hideMesh.material.color = new THREE.Color(0xf5f5f5)
+    this.hideMesh = this.instance.block.getModel().scene.children.find((child) => child.name == 'hide')
+    this.hideMesh.material.color = new THREE.Color(0xebe2d7)
+
+    // if (WebGL.debug.isActive) {
+    //   const folder = WebGL.debug.addFolder('color')
+    //   folder.addColor(this.hideMesh.material, 'color')
+    // }
   }
 
   private hideEntonnoir() {
@@ -233,6 +239,7 @@ class OrdalieFood {
     }
 
     if (e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_SORTIE || e.action._clip.name === ANIMATIONS.FOOD.FOOD_CUISINIER_MORT) {
+      this.hideMesh.visible = false
       this.end()
     }
   }

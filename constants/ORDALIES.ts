@@ -1,7 +1,7 @@
 enum ORDALIES {
-  CROIX = 'CROIX',
-  BBQ = 'BBQ',
   FOOD = 'FOOD',
+  BBQ = 'BBQ',
+  CROIX = 'CROIX',
 }
 
 export default ORDALIES

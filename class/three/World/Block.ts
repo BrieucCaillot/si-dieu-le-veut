@@ -282,7 +282,11 @@ class Block {
 
   getSpeedCoef() {
     const difficulty = DIFFICULTY_DATAS[OrdalieManager.getDifficulty()]
-    return difficulty['COMMON'].speedCoef
+    if (Blocks.isTransition(this.type as TRANSITIONS)) {
+      return difficulty['TRANSITION'].speedCoef
+    } else {
+      return difficulty['COMMON'].speedCoef
+    }
   }
 
   /**

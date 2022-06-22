@@ -52,6 +52,7 @@ class AudioManager {
     }
 
     const sound = this.sounds.find((sound) => sound.name === name)
+    // console.log('called in update')
 
     if (sound.name !== 'gameover' && sound.name !== 'success') sound.howl.rate(Blocks.getCurrent().getSpeedCoef())
 
@@ -65,21 +66,6 @@ class AudioManager {
     const sound = sounds[Math.floor(Math.random() * sounds.length)]
 
     sound.howl.play()
-
-    // switch (name) {
-    //   case 'ordalie_bbq_walk_braises':
-    //     break
-    //   case 'ordalie_bbq_jump':
-    //     break
-    //   case 'garde_walk':
-
-    //     break
-    //   case 'cuisinier_walk':
-    //     break
-
-    //   default:
-    //     break
-    // }
   }
 
   fadeIn(name: string, durationInMs: number) {
