@@ -34,7 +34,7 @@ class OtherDead {
     if (!TransitionManager.getLast()?.block.getPosition()) return
     const { x, y } = TransitionManager.getLast()?.block.getPosition()
     this.instance.block.moveFarBehind()
-    this.instance.block.updatePosition(new THREE.Vector3(x, y, 0.202))
+    this.instance.block.updatePosition(new THREE.Vector3(x, y, -0.202))
 
     this.instance.block.getModel().scene.visible = true
   }
