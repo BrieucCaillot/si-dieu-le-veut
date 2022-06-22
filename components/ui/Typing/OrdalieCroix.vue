@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed top-0 left-0 text-croix-base text-[27px] pr-[15px] hidden" id="typing" ref="containerRef" v-SplitText></div>
+    <div class="fixed top-2 left-0 text-croix-base text-[27px] pr-[15px] hidden" id="typing" ref="containerRef" v-SplitText></div>
   </div>
 </template>
 

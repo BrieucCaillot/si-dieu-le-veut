@@ -141,7 +141,9 @@ class OrdalieCroix {
       },
     }
 
-    this.delay = this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action._clip.duration
+    const initialDuration = this.animation.actions[ANIMATIONS.CROIX.FRONT_ENTREE].action._clip.duration
+    const timeScale = this.instance.block.getSpeedCoef()
+    this.delay = initialDuration / timeScale
 
     this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.clampWhenFinished = true
     this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.loop = THREE.LoopOnce
@@ -227,6 +229,7 @@ class OrdalieCroix {
 
   gameWon() {
     // this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.stop()
+    this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
     this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.crossFadeTo(this.animation.actions[ANIMATIONS.CROIX.SIDE_SORTIE].action, 0.03, false)
     // this.animation.actions[ANIMATIONS.CROIX.F].action.crossFadeTo(this.animation.actions[ANIMATIONS.CROIX.SIDE_SORTIE])
     // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].stop()
@@ -258,6 +261,8 @@ class OrdalieCroix {
   update() {
     const { deltaTime } = WebGL.time
     this.animation.mixer.update(deltaTime * 0.001 * this.instance.block.getSpeedCoef())
+
+    this.updateHTML()
 
     for (const animation of Object.values(this.animation.actions)) {
       const action = animation.action
