@@ -26,35 +26,35 @@ const DIFFICULTY_DATAS = {
       moveDuration: 6,
     },
 
-    // [ORDALIES.CROIX]: {
-    //   // Debug
-    //   fallingSpeedArm: 0.4,
-    // },
-    // [ORDALIES.BBQ]: {
-    //   min: 13,
-    //   max: 15,
-    // },
-    // [ORDALIES.FOOD]: {
-    //   minDisplayTime: 13,
-    //   maxDisplayTime: 15,
-    //   minTimeBeforeNewWord: 2,
-    //   maxTimeBeforeNewWord: 2.2,
-    // },
-
-    //POUR LA PRÉSENTATION
     [ORDALIES.CROIX]: {
-      fallingSpeedArm: 1,
+      // Debug
+      fallingSpeedArm: 0.4,
     },
     [ORDALIES.BBQ]: {
-      min: 7,
-      max: 9,
+      min: 13,
+      max: 15,
     },
     [ORDALIES.FOOD]: {
-      minDisplayTime: 8,
-      maxDisplayTime: 10,
-      minTimeBeforeNewWord: 1,
-      maxTimeBeforeNewWord: 1.2,
+      minDisplayTime: 13,
+      maxDisplayTime: 15,
+      minTimeBeforeNewWord: 2,
+      maxTimeBeforeNewWord: 2.2,
     },
+
+    //POUR LA PRÉSENTATION
+    // [ORDALIES.CROIX]: {
+    //   fallingSpeedArm: 1,
+    // },
+    // [ORDALIES.BBQ]: {
+    //   min: 7,
+    //   max: 9,
+    // },
+    // [ORDALIES.FOOD]: {
+    //   minDisplayTime: 8,
+    //   maxDisplayTime: 10,
+    //   minTimeBeforeNewWord: 1,
+    //   maxTimeBeforeNewWord: 1.2,
+    // },
   },
   [DIFFICULTY.MEDIUM]: {
     ['COMMON']: {
