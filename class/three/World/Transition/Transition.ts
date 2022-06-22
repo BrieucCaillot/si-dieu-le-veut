@@ -123,7 +123,7 @@ class Transition {
 
     // Background
     this.planeBackground.material = new THREE.ShaderMaterial({
-      uniforms: { ...this.uniforms, uColor: { value: this.planeBackground.material.color } },
+      uniforms: { ...this.uniforms, uColor: { value: new THREE.Color(0xebe2d7) } },
       vertexShader: backgroundBurningVert,
       fragmentShader: backgroundBurningFrag,
       transparent: true,
