@@ -77,10 +77,10 @@ const DIFFICULTY_DATAS = {
       max: 11,
     },
     [ORDALIES.FOOD]: {
-      minDisplayTime: 8,
-      maxDisplayTime: 10,
-      minTimeBeforeNewWord: 1.6,
-      maxTimeBeforeNewWord: 1.8,
+      minDisplayTime: 5,
+      maxDisplayTime: 7,
+      minTimeBeforeNewWord: 0.8,
+      maxTimeBeforeNewWord: 1.2,
     },
   },
   [DIFFICULTY.VERY_HARD]: {
