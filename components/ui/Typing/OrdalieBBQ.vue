@@ -194,7 +194,7 @@ const newChar = (e: KeyboardEvent) => {
       if (!letterToType) replaceWord()
     } else {
       const expectedLetterDOM = refArray[wordIndex].value.children.item(wordToTypeIndex)
-
+      AudioManager.play('typing-error')
       gsap.to(expectedLetterDOM, {
         scale: 2,
         duration: 0.1,

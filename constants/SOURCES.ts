@@ -231,6 +231,11 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     volume: 0.2,
   },
   {
+    name: 'typing-error',
+    path: '/sounds/Typing/type-error.mp3',
+    volume: 0.2,
+  },
+  {
     name: 'splashscreen_title',
     path: '/sounds/Other/title.mp3',
     volume: 0.4,

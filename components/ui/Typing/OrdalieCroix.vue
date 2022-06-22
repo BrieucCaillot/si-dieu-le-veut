@@ -120,6 +120,8 @@ const invalidChar = () => {
   const letter = currentWordDOM.value.children.item(wordProgressIndex)
   letter.classList.add('text-croix-error')
 
+  AudioManager.play('typing-error')
+
   gsap.to(letter, {
     scale: 2,
     duration: 0.1,
