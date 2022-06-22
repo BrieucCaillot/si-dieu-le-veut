@@ -37,8 +37,8 @@ class OrdalieManager {
    */
   createNext() {
     const randomIndex = Math.floor(Math.random() * Object.values(ORDALIES).length)
-    const randomOrdalie = Object.values(ORDALIES)[randomIndex]
-    // const randomOrdalie = Object.values(ORDALIES)[this.presJury]
+    // const randomOrdalie = Object.values(ORDALIES)[randomIndex]
+    const randomOrdalie = Object.values(ORDALIES)[this.presJury]
 
     this.presJury++
 
