@@ -44,8 +44,12 @@ const ANIMATIONS_SOUNDS = {
         },
 
         {
-          frame: 258,
+          frame: 261,
           sound: 'garde_kick',
+        },
+        {
+          frame: 302,
+          sound: 'garde_impact',
         },
       ],
     },
@@ -353,6 +357,10 @@ const ANIMATIONS_SOUNDS = {
           frame: 64,
           sound: 'garde_kick',
         },
+        {
+          frame: 105,
+          sound: 'garde_impact',
+        },
       ],
     },
   },
@@ -472,8 +480,12 @@ const TRANSITION_4 = {
         sound: 'garde_walk_1',
       },
       {
-        frame: 198,
+        frame: 196,
         sound: 'garde_kick',
+      },
+      {
+        frame: 237,
+        sound: 'garde_impact',
       },
     ],
   },

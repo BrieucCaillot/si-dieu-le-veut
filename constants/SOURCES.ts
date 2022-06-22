@@ -21,6 +21,7 @@ interface Source {
 const VOLUME = {
   CUISINIER_WALK: 0.5,
   GARDE_WALK: 0.2,
+  GARDE_IMPACT: 0.5,
 }
 
 const COMMON_SOURCES = {
@@ -232,12 +233,12 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'splashscreen_title',
     path: '/sounds/Other/title.mp3',
-    volume: 0.1,
+    volume: 0.4,
   },
   {
     name: 'splashscreen_cinematique',
     path: '/sounds/Other/cinematique.mp3',
-    volume: 0.1,
+    volume: 0.2,
   },
   {
     name: 'splashscreen_cough',
@@ -246,7 +247,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'gameover',
     path: '/sounds/Other/mort_musique.mp3',
-    volume: 0.1,
+    volume: 0.2,
   },
   /*
   CUISINIER
@@ -304,6 +305,11 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
     path: '/sounds/Character/Garde/Kick/kick_garde.mp3',
     volume: VOLUME.GARDE_WALK,
   },
+  {
+    name: 'garde_impact',
+    path: '/sounds/Character/Garde/Kick/impact_garde.mp3',
+    volume: VOLUME.GARDE_IMPACT,
+  },
   /*
   SPEAR
   */
@@ -334,7 +340,7 @@ const SOUNDS: { name: string; path: string; volume?: number }[] = [
   {
     name: 'ordalie_music',
     path: '/sounds/Ordalie/ordalie_loop.mp3',
-    volume: 0.1,
+    volume: 0.2,
   },
   {
     name: 'ordalie_end',

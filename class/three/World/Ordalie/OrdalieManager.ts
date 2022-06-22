@@ -15,6 +15,7 @@ class OrdalieManager {
   private difficulty: DIFFICULTY = DIFFICULTY.EASY
   private lastCreated: ORDALIES
   private alreadyPlayed: ORDALIES[] = []
+  private presJury = 0
 
   constructor() {}
 
@@ -36,7 +37,9 @@ class OrdalieManager {
    */
   createNext() {
     const randomIndex = Math.floor(Math.random() * Object.values(ORDALIES).length)
-    const randomOrdalie = Object.values(ORDALIES)[randomIndex]
+    const randomOrdalie = Object.values(ORDALIES)[this.presJury]
+
+    this.presJury++
 
     // Recall the function if the random ordalie picked is already played
     if (this.alreadyPlayed.includes(randomOrdalie)) return this.createNext()

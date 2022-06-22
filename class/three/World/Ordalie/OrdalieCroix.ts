@@ -230,6 +230,8 @@ class OrdalieCroix {
   gameWon() {
     // this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.stop()
     this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.stop()
+
+    // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].action.crossFadeTo(this.animation.actions[ANIMATIONS.CROIX.SIDE_SORTIE].action, 0.03, false)
     this.animation.actions[ANIMATIONS.CROIX.SIDE_ENTREE].action.crossFadeTo(this.animation.actions[ANIMATIONS.CROIX.SIDE_SORTIE].action, 0.03, false)
     // this.animation.actions[ANIMATIONS.CROIX.F].action.crossFadeTo(this.animation.actions[ANIMATIONS.CROIX.SIDE_SORTIE])
     // this.animation.actions[ANIMATIONS.CROIX.FRONT_BRAS].stop()

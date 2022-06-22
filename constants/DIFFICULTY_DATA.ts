@@ -50,26 +50,11 @@ const DIFFICULTY_DATAS = {
       max: 9,
     },
     [ORDALIES.FOOD]: {
-      minDisplayTime: 6,
-      maxDisplayTime: 8,
-      minTimeBeforeNewWord: 0.8,
-      maxTimeBeforeNewWord: 1,
+      minDisplayTime: 8,
+      maxDisplayTime: 10,
+      minTimeBeforeNewWord: 1,
+      maxTimeBeforeNewWord: 1.2,
     },
-
-    //POUR LA PRÉSENTATION
-    // [ORDALIES.CROIX]: {
-    //   fallingSpeedArm: 1,
-    // },
-    // [ORDALIES.BBQ]: {
-    //   min: 7,
-    //   max: 9,
-    // },
-    // [ORDALIES.FOOD]: {
-    //   minDisplayTime: 6,
-    //   maxDisplayTime: 8,
-    //   minTimeBeforeNewWord: 0.8,
-    //   maxTimeBeforeNewWord: 1,
-    // },
   },
   [DIFFICULTY.MEDIUM]: {
     ['COMMON']: {
