@@ -26,19 +26,34 @@ const DIFFICULTY_DATAS = {
       moveDuration: 6,
     },
 
+    // [ORDALIES.CROIX]: {
+    //   // Debug
+    //   fallingSpeedArm: 0.4,
+    // },
+    // [ORDALIES.BBQ]: {
+    //   min: 13,
+    //   max: 15,
+    // },
+    // [ORDALIES.FOOD]: {
+    //   minDisplayTime: 13,
+    //   maxDisplayTime: 15,
+    //   minTimeBeforeNewWord: 2,
+    //   maxTimeBeforeNewWord: 2.2,
+    // },
+
+    //POUR LA PRÉSENTATION
     [ORDALIES.CROIX]: {
-      // Debug
-      fallingSpeedArm: 0.4,
+      fallingSpeedArm: 1,
     },
     [ORDALIES.BBQ]: {
-      min: 13,
-      max: 15,
+      min: 7,
+      max: 9,
     },
     [ORDALIES.FOOD]: {
-      minDisplayTime: 13,
-      maxDisplayTime: 15,
-      minTimeBeforeNewWord: 2,
-      maxTimeBeforeNewWord: 2.2,
+      minDisplayTime: 6,
+      maxDisplayTime: 8,
+      minTimeBeforeNewWord: 0.8,
+      maxTimeBeforeNewWord: 1,
     },
 
     //POUR LA PRÉSENTATION
