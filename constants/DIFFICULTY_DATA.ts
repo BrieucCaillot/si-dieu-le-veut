@@ -46,12 +46,12 @@ const DIFFICULTY_DATAS = {
       fallingSpeedArm: 1,
     },
     [ORDALIES.BBQ]: {
-      min: 7,
-      max: 9,
+      min: 8,
+      max: 10,
     },
     [ORDALIES.FOOD]: {
-      minDisplayTime: 8,
-      maxDisplayTime: 10,
+      minDisplayTime: 10,
+      maxDisplayTime: 11,
       minTimeBeforeNewWord: 1,
       maxTimeBeforeNewWord: 1.2,
     },
